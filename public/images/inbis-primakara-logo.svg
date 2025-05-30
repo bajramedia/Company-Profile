@@ -1,0 +1,6 @@
+<svg width="300" height="300" viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M150 50L37.5 125V250H150H262.5V125L150 50Z" fill="#2ED573" fill-opacity="0.1"/>
+  <path d="M150 75L62.5 137.5V225H150H237.5V137.5L150 75Z" fill="#2ED573" fill-opacity="0.2"/>
+  <path d="M150 100L87.5 150V200H150H212.5V150L150 100Z" fill="#2ED573" fill-opacity="0.4"/>
+  <path d="M150 125L112.5 162.5V175H150H187.5V162.5L150 125Z" fill="#2ED573"/>
+</svg>

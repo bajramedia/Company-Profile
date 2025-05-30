@@ -1,0 +1,81 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// Blog post model
+model Post {
+  id            String     @id @default(cuid())
+  slug          String     @unique
+  title         String
+  excerpt       String     @db.Text
+  content       String     @db.Text
+  featuredImage String
+  published     Boolean    @default(false)
+  date          DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  readTime      Int?
+  views         Int        @default(0)
+  authorId      String
+  author        Author     @relation(fields: [authorId], references: [id])
+  categoryId    String
+  category      Category   @relation(fields: [categoryId], references: [id])
+  tags          PostTags[]
+  postViews     PostView[]
+}
+
+// Blog post author
+model Author {
+  id     String  @id @default(cuid())
+  name   String
+  email  String  @unique
+  avatar String?
+  bio    String? @db.Text
+  posts  Post[]
+}
+
+// Blog post category
+model Category {
+  id    String @id @default(cuid())
+  name  String @unique
+  slug  String @unique
+  posts Post[]
+}
+
+// Blog post tag
+model Tag {
+  id    String     @id @default(cuid())
+  name  String     @unique
+  slug  String     @unique
+  posts PostTags[]
+}
+
+// Many-to-many relationship between posts and tags
+model PostTags {
+  postId String
+  post   Post   @relation(fields: [postId], references: [id])
+  tagId  String
+  tag    Tag    @relation(fields: [tagId], references: [id])
+
+  @@id([postId, tagId])
+}
+
+// Post view tracking for analytics
+model PostView {
+  id        String   @id @default(cuid())
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id])
+  ipAddress String?
+  userAgent String?
+  viewedAt  DateTime @default(now())
+
+  @@index([postId])
+  @@index([viewedAt])
+}
