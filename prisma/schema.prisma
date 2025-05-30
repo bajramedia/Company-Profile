@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
@@ -15,8 +15,8 @@ model Post {
   id            String     @id @default(cuid())
   slug          String     @unique
   title         String
-  excerpt       String     @db.Text
-  content       String     @db.Text
+  excerpt       String
+  content       String
   featuredImage String
   published     Boolean    @default(false)
   date          DateTime   @default(now())
@@ -37,7 +37,7 @@ model Author {
   name   String
   email  String  @unique
   avatar String?
-  bio    String? @db.Text
+  bio    String?
   posts  Post[]
 }
 
