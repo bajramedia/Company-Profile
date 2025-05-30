@@ -51,3 +51,5 @@ prisma/dev.db*
 # Local database scripts
 create-database.sql
 create-db.bat
+
+.vercel
