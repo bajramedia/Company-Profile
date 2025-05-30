@@ -2,16 +2,17 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
 interface Params {
-  params: {
+  params: Promise<{
     id: string;
-  }
+  }>
 }
 
 // Get a single tag
 export async function GET(request: Request, { params }: Params) {
   try {
+    const { id } = await params;
     const tag = await prisma.tag.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         _count: {
           select: { posts: true }
@@ -45,6 +46,7 @@ export async function GET(request: Request, { params }: Params) {
 // Update a tag
 export async function PUT(request: Request, { params }: Params) {
   try {
+    const { id } = await params;
     const body = await request.json();
     const { name } = body;
     
@@ -57,7 +59,7 @@ export async function PUT(request: Request, { params }: Params) {
     
     // Check if the tag exists
     const existingTag = await prisma.tag.findUnique({
-      where: { id: params.id }
+      where: { id }
     });
     
     if (!existingTag) {
@@ -66,17 +68,13 @@ export async function PUT(request: Request, { params }: Params) {
         { status: 404 }
       );
     }
-    
-    // Check if another tag with the same name exists (case insensitive)
+      // Check if another tag with the same name exists (case insensitive)
     if (name.trim().toLowerCase() !== existingTag.name.toLowerCase()) {
       const nameExists = await prisma.tag.findFirst({
         where: {
-          name: {
-            equals: name.trim(),
-            mode: 'insensitive'
-          },
+          name: name.trim(),
           NOT: {
-            id: params.id
+            id
           }
         }
       });
@@ -86,11 +84,10 @@ export async function PUT(request: Request, { params }: Params) {
           { error: 'A tag with this name already exists' }, 
           { status: 409 }
         );
-      }
-    }
+      }    }
     
     const updatedTag = await prisma.tag.update({
-      where: { id: params.id },
+      where: { id },
       data: { name: name.trim() }
     });
     
@@ -107,9 +104,10 @@ export async function PUT(request: Request, { params }: Params) {
 // Delete a tag
 export async function DELETE(request: Request, { params }: Params) {
   try {
+    const { id } = await params;
     // Check if the tag exists
     const existingTag = await prisma.tag.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         _count: {
           select: { posts: true }
@@ -129,11 +127,10 @@ export async function DELETE(request: Request, { params }: Params) {
       return NextResponse.json(
         { error: 'Cannot delete tag with associated posts. Remove the tag from posts first.' }, 
         { status: 400 }
-      );
-    }
+      );    }
     
     await prisma.tag.delete({
-      where: { id: params.id }
+      where: { id }
     });
     
     return NextResponse.json({ success: true });

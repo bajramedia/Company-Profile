@@ -1,12 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
+interface Params {
+  params: Promise<{
+    slug: string;
+  }>
+}
+
 export async function POST(
   request: NextRequest,
-  { params }: { params: { slug: string } }
+  { params }: Params
 ) {
   try {
-    const slug = params.slug;
+    const { slug } = await params;
     
     // Get client IP and user agent for basic tracking
     const forwarded = request.headers.get("x-forwarded-for");

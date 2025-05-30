@@ -2,16 +2,17 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
 interface Params {
-  params: {
+  params: Promise<{
     id: string;
-  }
+  }>
 }
 
 // Get a single category
 export async function GET(request: Request, { params }: Params) {
   try {
+    const { id } = await params;
     const category = await prisma.category.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         _count: {
           select: { posts: true }
@@ -45,6 +46,7 @@ export async function GET(request: Request, { params }: Params) {
 // Update a category
 export async function PUT(request: Request, { params }: Params) {
   try {
+    const { id } = await params;
     const body = await request.json();
     const { name, slug } = body;
     
@@ -57,7 +59,7 @@ export async function PUT(request: Request, { params }: Params) {
     
     // Check if the category exists
     const existingCategory = await prisma.category.findUnique({
-      where: { id: params.id }
+      where: { id }
     });
     
     if (!existingCategory) {
@@ -80,9 +82,8 @@ export async function PUT(request: Request, { params }: Params) {
         );
       }
     }
-    
-    const updatedCategory = await prisma.category.update({
-      where: { id: params.id },
+      const updatedCategory = await prisma.category.update({
+      where: { id },
       data: { name, slug }
     });
     
@@ -99,9 +100,10 @@ export async function PUT(request: Request, { params }: Params) {
 // Delete a category
 export async function DELETE(request: Request, { params }: Params) {
   try {
+    const { id } = await params;
     // Check if the category exists
     const existingCategory = await prisma.category.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         _count: {
           select: { posts: true }
@@ -125,7 +127,7 @@ export async function DELETE(request: Request, { params }: Params) {
     }
     
     await prisma.category.delete({
-      where: { id: params.id }
+      where: { id }
     });
     
     return NextResponse.json({ success: true });

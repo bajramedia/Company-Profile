@@ -53,9 +53,11 @@ export async function POST(request: Request) {
         { status: 409 }
       );
     }
-    
-    const tag = await prisma.tag.create({
-      data: { name: name.trim() }
+      const tag = await prisma.tag.create({
+      data: { 
+        name: name.trim(),
+        slug: name.trim().toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
+      }
     });
     
     return NextResponse.json(tag, { status: 201 });

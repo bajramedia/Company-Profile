@@ -1,14 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
+interface Params {
+  params: Promise<{
+    slug: string;
+  }>
+}
+
 export async function GET(
   request: NextRequest,
-  { params }: { params: { slug: string } }
+  { params }: Params
 ) {
   try {
-    // In newer Next.js versions, params may be a promise that needs to be awaited
-    const p = params ? await params : params;
-    const slug = p.slug;
+    const { slug } = await params;
 
     const post = await prisma.post.findUnique({
       where: { 

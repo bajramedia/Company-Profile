@@ -18,10 +18,9 @@ export default function BlogPostPage() {
   const [post, setPost] = useState<BlogPost | null>(null);
   const [loading, setLoading] = useState(true);  const [relatedPosts, setRelatedPosts] = useState<BlogPost[]>([]);
   const [shareMessage, setShareMessage] = useState<string>('');
-  
-  // Initialize view tracking and counter
-  const viewCounter = useViewCounter(post?.slug || '');
-  useViewTracker(post?.slug || '', post !== null);
+    // Initialize view tracking and counter
+  const viewCounter = useViewCounter(post?.views || 0);
+  const viewTracker = useViewTracker({ slug: post?.slug || '', delay: 3000 });
   
   useEffect(() => {
     const fetchPost = async () => {
@@ -193,10 +192,9 @@ export default function BlogPostPage() {
                     <FiClock className="mr-1" size={14} />
                     {post.readTime} min read
                   </span>
-                )}
-                <span className="flex items-center">
+                )}                <span className="flex items-center">
                   <FiEye className="mr-1" size={14} />
-                  {viewCounter.count !== null ? viewCounter.count : (post.views || 0)} views
+                  {viewTracker.views > 0 ? viewTracker.views : (post.views || 0)} views
                 </span>
               </div>
             </div>
@@ -405,9 +403,8 @@ export default function BlogPostPage() {
                 {t('blog.sharePost') || 'Found this article helpful?'}
               </h4>
               <p className="text-gray-600">Share it with your network and help others discover great content</p>
-            </div>            <div className="flex items-center space-x-4">
-              {/* Show native share button on mobile/supported devices */}
-              {typeof window !== 'undefined' && navigator.share && (
+            </div>            <div className="flex items-center space-x-4">              {/* Show native share button on mobile/supported devices */}
+              {typeof window !== 'undefined' && 'share' in navigator && (
                 <button 
                   onClick={() => handleShare('native')}
                   className="flex items-center px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-all duration-300 shadow-sm hover:shadow-md"
