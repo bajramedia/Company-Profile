@@ -13,7 +13,7 @@ const Heading: React.FC<HeadingProps> = ({
   color = 'foreground',
   className = '',
 }) => {
-  const baseClasses = 'font-poppins font-bold';
+  const baseClasses = 'font-poppins font-bold transition-colors duration-300';
   
   const variantClasses = {
     h1: 'text-4xl md:text-5xl lg:text-6xl leading-tight',

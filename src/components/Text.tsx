@@ -19,7 +19,7 @@ const Text: React.FC<TextProps> = ({
   className = '',
   as = 'p',
 }) => {
-  const baseClasses = 'font-poppins';
+  const baseClasses = 'font-poppins transition-colors duration-300';
   
   const variantClasses = {
     body: 'leading-relaxed',

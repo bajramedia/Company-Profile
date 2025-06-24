@@ -49,12 +49,51 @@ DATABASE_URL=mysql://username:password@host:port/database_name
 4. Test view tracking and social sharing
 
 ## Local Development
+
+### Database Setup (First Time)
+
+1. **Install MySQL or MariaDB** (see INSTALL-DATABASE.md for detailed instructions)
+   - MySQL: <https://dev.mysql.com/downloads/installer/>
+   - MariaDB: <https://mariadb.org/download/>
+   - Or use XAMPP: <https://www.apachefriends.org/>
+
+2. **Create Database**
+
+   ```bash
+   # Run the setup script
+   .\setup-mysql.bat
+   
+   # Or manually create database
+   mysql -u root -e "CREATE DATABASE IF NOT EXISTS db_bajramedia;"
+   ```
+
+3. **Setup Project**
+
+   ```bash
+   npm install
+   npx prisma generate
+   npx prisma db push
+   npm run db:seed
+   npm run dev
+   ```
+
+### Regular Development
+
 ```bash
 npm install
 npm run dev
 ```
 
+### Database Configuration
+
+Your `.env` file should contain:
+
+```
+DATABASE_URL="mysql://root@localhost:3306/db_bajramedia"
+```
+
 ## Database Commands
+
 ```bash
 # Generate Prisma client
 npx prisma generate

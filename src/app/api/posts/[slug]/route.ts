@@ -2,9 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
 interface Params {
-  params: Promise<{
+  params: {
     slug: string;
-  }>
+  }
 }
 
 export async function GET(
@@ -12,9 +12,17 @@ export async function GET(
   { params }: Params
 ) {
   try {
-    const { slug } = await params;
+    const { slug } = params;
 
-    const post = await prisma.post.findUnique({
+    if (!slug) {
+      return NextResponse.json(
+        { error: 'Slug parameter is required' },
+        { status: 400 }
+      );
+    }
+
+    // Try to find the post
+    const post = await prisma.post.findFirst({
       where: { 
         slug: slug,
         published: true

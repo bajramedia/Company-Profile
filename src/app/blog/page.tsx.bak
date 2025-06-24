@@ -1,0 +1,19 @@
+// filepath: d:\LandingPage\bajramedia\src\app\blog\page.tsx
+""use client"";
+
+import dynamic from 'next/dynamic';
+
+// Import BlogListingPage with dynamic import to avoid SSR issues
+const BlogListingPage = dynamic(() => import('@/components/BlogListingPage'), { 
+  ssr: false,
+  loading: () => (
+    <div className=""min-h-screen bg-white dark:bg-gray-900 pt-24 pb-16 flex items-center justify-center"">
+      <div className=""animate-pulse"">Loading blog posts...</div>
+    </div>
+  )
+});
+
+// Use Client directive is needed because we're importing a client component
+export default function BlogPage() {
+  return <BlogListingPage />;
+}

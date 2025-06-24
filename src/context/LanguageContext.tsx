@@ -496,7 +496,76 @@ export const translations: Translations = {  // Supported By section
     en: "hrough a hands-on entrepreneurship program and intensive mentorship. We've grown with clear direction and strong startup support.",
     id: "melalui program kewirausahaan dan mentorship intensif. Kami tumbuh dengan arahan yang jelas dan dukungan dari ekosistem startup yang solid."
   },
-  
+    // Team Section
+  "team.badge": {
+    en: "OUR TEAM",
+    id: "TIM KAMI",
+  },
+  "team.title": {
+    en: "Meet Our Amazing",
+    id: "Kenali Tim Luar Biasa",
+  },
+  "team.titleHighlight": {
+    en: "Team",
+    id: "Kami",
+  },
+  "team.subtitle": {
+    en: "We are a team of passionate professionals dedicated to delivering exceptional digital solutions for your business.",
+    id: "Kami adalah tim profesional yang berdedikasi untuk memberikan solusi digital terbaik bagi bisnis Anda.",
+  },
+  "team.position.ceo": {
+    en: "CEO & Founder",
+    id: "CEO & Founder",
+  },
+  "team.position.cto": {
+    en: "CTO",
+    id: "CTO",
+  },
+  "team.position.designer": {
+    en: "Head of Design",
+    id: "Head of Design",
+  },
+  "team.position.marketing": {
+    en: "Marketing Director",
+    id: "Marketing Director",
+  },
+  "team.member1.name": {
+    en: "Ahmad Rahman",
+    id: "Ahmad Rahman",
+  },
+  "team.member1.bio": {
+    en: "Experienced in leading digital transformation projects with over 8 years in the industry.",
+    id: "Berpengalaman memimpin proyek transformasi digital dengan lebih dari 8 tahun di industri ini.",
+  },
+  "team.member2.name": {
+    en: "Sari Indah",
+    id: "Sari Indah",
+  },
+  "team.member2.bio": {
+    en: "Technical expert with deep knowledge in modern web and mobile application development.",
+    id: "Ahli teknis dengan pengetahuan mendalam dalam pengembangan aplikasi web dan mobile modern.",
+  },
+  "team.member3.name": {
+    en: "Budi Santoso",
+    id: "Budi Santoso",
+  },
+  "team.member3.bio": {
+    en: "Creative designer passionate about creating beautiful and functional user interfaces.",
+    id: "Desainer kreatif yang passionate dalam menciptakan antarmuka yang indah dan funktional.",
+  },
+  "team.member4.name": {
+    en: "Diana Putri",
+    id: "Diana Putri",
+  },
+  "team.member4.bio": {
+    en: "Marketing strategist with expertise in digital marketing and brand development.",
+    id: "Ahli strategi pemasaran dengan keahlian dalam digital marketing dan pengembangan brand.",
+  },
+  "team.viewAll": {
+    en: "View All Team Members",
+    id: "Lihat Semua Anggota Tim",
+  },
+
   // CTA Section
   "cta.title": {
     en: "Ready to Transform Your Digital Presence?",

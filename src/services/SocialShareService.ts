@@ -7,6 +7,32 @@ export interface ShareOptions {
 
 export class SocialShareService {
   
+  // URL Generation Methods (used by SocialShare component)
+  static generateFacebookShareUrl(url: string, title?: string): string {
+    const shareUrl = encodeURIComponent(url);
+    return `https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`;
+  }
+
+  static generateTwitterShareUrl(url: string, title: string, hashtags: string[] = []): string {
+    const text = encodeURIComponent(title);
+    const shareUrl = encodeURIComponent(url);
+    const tags = hashtags.length > 0 ? `&hashtags=${hashtags.join(',')}` : '';
+    return `https://twitter.com/intent/tweet?text=${text}&url=${shareUrl}${tags}`;
+  }
+
+  static generateLinkedInShareUrl(url: string, title: string, description?: string): string {
+    const shareUrl = encodeURIComponent(url);
+    const shareTitle = encodeURIComponent(title);
+    const summary = description ? encodeURIComponent(description) : '';
+    return `https://www.linkedin.com/sharing/share-offsite/?url=${shareUrl}&title=${shareTitle}&summary=${summary}`;
+  }
+
+  static generateEmailShareUrl(url: string, title: string, description?: string): string {
+    const subject = encodeURIComponent(`Check out: ${title}`);
+    const body = encodeURIComponent(`${description ? description + '\n\n' : ''}Read more: ${url}`);
+    return `mailto:?subject=${subject}&body=${body}`;
+  }
+
   // Share to Twitter/X
   static shareToTwitter(options: ShareOptions): void {
     const { url, title, hashtags = [] } = options;

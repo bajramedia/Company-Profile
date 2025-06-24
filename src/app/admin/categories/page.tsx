@@ -173,30 +173,14 @@ export default function CategoriesPage() {
       <div className="bg-white rounded-md shadow-sm">
         <h2 className="font-semibold p-4 border-b">All Categories</h2>
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Name
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Slug
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Posts
-                </th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Actions
-                </th>
-              </tr>
+          <table className="min-w-full divide-y divide-gray-200">          <thead className="bg-gray-50">
+            <tr>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Slug</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Posts</th>
+              <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th></tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {categories.length === 0 ? (
-                <tr>
-                  <td colSpan={4} className="px-6 py-4 text-center text-sm text-gray-500">
-                    No categories found
-                  </td>
-                </tr>
+            <tbody className="bg-white divide-y divide-gray-200">            {categories.length === 0 ? (<tr><td colSpan={4} className="px-6 py-4 text-center text-sm text-gray-500">No categories found</td></tr>
               ) : (
                 categories.map((category) => (
                   <tr key={category.id}>

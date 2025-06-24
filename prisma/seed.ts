@@ -6,92 +6,158 @@ const prisma = new PrismaClient();
 async function main() {
   console.log('Starting database seed...');
 
+  // Create default settings
+  const defaultSettings = [
+    { key: 'siteName', value: 'Bajramedia', type: 'string' },
+    { key: 'siteDescription', value: 'Creative Digital Agency & Blog Platform', type: 'string' },
+    { key: 'siteUrl', value: 'https://bajramedia.com', type: 'string' },
+    { key: 'adminEmail', value: 'admin@bajramedia.com', type: 'string' },
+    { key: 'postsPerPage', value: '10', type: 'number' },
+    { key: 'enableComments', value: 'true', type: 'boolean' },
+    { key: 'enableSocialShare', value: 'true', type: 'boolean' },
+    { key: 'analyticsCode', value: '', type: 'string' },
+    { key: 'footerText', value: '© 2025 Bajramedia. All rights reserved.', type: 'string' },
+    { key: 'contactEmail', value: 'contact@bajramedia.com', type: 'string' },
+    { key: 'contactPhone', value: '+62 123 456 7890', type: 'string' },
+    { key: 'contactAddress', value: 'Bali, Indonesia', type: 'string' },
+    { 
+      key: 'socialLinks', 
+      value: JSON.stringify({
+        facebook: '',
+        twitter: '',
+        instagram: '',
+        linkedin: '',
+        youtube: ''
+      }), 
+      type: 'json' 
+    },
+    {
+      key: 'seoSettings',
+      value: JSON.stringify({
+        metaTitle: 'Bajramedia - Creative Digital Agency',
+        metaDescription: 'Professional digital agency providing creative solutions for your business needs.',
+        metaKeywords: 'digital agency, creative, design, development, bali',
+        ogImage: ''
+      }),
+      type: 'json'
+    }
+  ];
+
+  // Insert settings
+  for (const setting of defaultSettings) {
+    await prisma.setting.upsert({
+      where: { key: setting.key },
+      update: { value: setting.value, type: setting.type },
+      create: setting
+    });
+  }
+  console.log('Created default settings');
   // Create an initial author
-  const author = await prisma.author.create({
-    data: {
+  const author = await prisma.author.upsert({
+    where: { email: 'admin@bajramedia.com' },
+    update: {},
+    create: {
       name: 'Admin User',
       email: 'admin@bajramedia.com',
       avatar: '/images/team.jpg',
       bio: 'Administrator and main content creator for Bajramedia.'
     }
   });
-  console.log('Created author:', author.name);
-
+  console.log('Created/found author:', author.name);
   // Create categories
   const categories = await Promise.all([
-    prisma.category.create({
-      data: {
+    prisma.category.upsert({
+      where: { slug: 'web-design' },
+      update: {},
+      create: {
         name: 'Web Design',
         slug: 'web-design'
       }
     }),
-    prisma.category.create({
-      data: {
+    prisma.category.upsert({
+      where: { slug: 'mobile-design' },
+      update: {},
+      create: {
         name: 'Mobile Design',
         slug: 'mobile-design'
       }
     }),
-    prisma.category.create({
-      data: {
+    prisma.category.upsert({
+      where: { slug: 'technology' },
+      update: {},
+      create: {
         name: 'Technology',
         slug: 'technology'
       }
     })
   ]);
-  console.log('Created categories:', categories.map(c => c.name).join(', '));
-
+  console.log('Created/found categories:', categories.map(c => c.name).join(', '));
   // Create tags
   const tags = await Promise.all([
-    prisma.tag.create({
-      data: {
+    prisma.tag.upsert({
+      where: { slug: 'design' },
+      update: {},
+      create: {
         name: 'Design',
         slug: 'design'
       }
     }),
-    prisma.tag.create({
-      data: {
+    prisma.tag.upsert({
+      where: { slug: 'conversion' },
+      update: {},
+      create: {
         name: 'Conversion',
         slug: 'conversion'
       }
     }),
-    prisma.tag.create({
-      data: {
+    prisma.tag.upsert({
+      where: { slug: 'ux' },
+      update: {},
+      create: {
         name: 'UX',
         slug: 'ux'
       }
     }),
-    prisma.tag.create({
-      data: {
+    prisma.tag.upsert({
+      where: { slug: 'mobile' },
+      update: {},
+      create: {
         name: 'Mobile',
         slug: 'mobile'
-      }
-    }),
-    prisma.tag.create({
-      data: {
+      }    }),
+    prisma.tag.upsert({
+      where: { slug: 'responsive' },
+      update: {},
+      create: {
         name: 'Responsive',
         slug: 'responsive'
       }
     }),
-    prisma.tag.create({
-      data: {
+    prisma.tag.upsert({
+      where: { slug: 'technology' },
+      update: {},
+      create: {
         name: 'Technology',
         slug: 'technology'
-      }
-    }),
-    prisma.tag.create({
-      data: {
+      }    }),
+    prisma.tag.upsert({
+      where: { slug: 'ai' },
+      update: {},
+      create: {
         name: 'AI',
         slug: 'ai'
       }
     }),
-    prisma.tag.create({
-      data: {
+    prisma.tag.upsert({
+      where: { slug: 'development' },
+      update: {},
+      create: {
         name: 'Development',
         slug: 'development'
       }
     })
   ]);
-  console.log('Created tags:', tags.map(t => t.name).join(', '));
+  console.log('Created/found tags:', tags.map(t => t.name).join(', '));
 
   // Create sample blog posts
   const posts = [
@@ -292,13 +358,14 @@ The integration of AI into web development is still evolving, but its impact is 
       }
     }
   ];
-
   for (const postData of posts) {
-    const post = await prisma.post.create({
-      data: postData,
+    const post = await prisma.post.upsert({
+      where: { slug: postData.slug },
+      update: {},
+      create: postData,
       include: { tags: true }
     });
-    console.log('Created post:', post.title);
+    console.log('Created/found post:', post.title);
   }
 
   console.log('Database seed completed successfully!');

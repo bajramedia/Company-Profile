@@ -43,9 +43,8 @@ const Portfolio: React.FC = () => {
       category: 'Digital Marketing, SEO'
     }
   ];
-
   return (
-    <section className="py-16 md:py-24 bg-white relative overflow-hidden">
+    <section className="py-16 md:py-24 bg-white dark:bg-gray-900 relative overflow-hidden transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
         <div className="text-center mb-14">
           <AnimatedText as="div">
@@ -58,27 +57,23 @@ const Portfolio: React.FC = () => {
               {t('portfolio.subtitle')}
             </Text>
           </AnimatedText>
-        </div>
-
-        <AnimatedText as="div">
+        </div>        <AnimatedText as="div">
           <div className="flex justify-center mb-8">
-            <div className="inline-flex border border-gray-200 rounded-md overflow-hidden">
-              <button className="px-4 py-2 text-sm font-medium bg-primary text-white">
+            <div className="inline-flex border border-gray-200 dark:border-gray-700 rounded-md overflow-hidden transition-colors duration-300">
+              <button className="px-4 py-2 text-sm font-medium bg-primary text-white dark:bg-green-600 transition-colors duration-300">
                 {t('portfolio.filter.all')}
               </button>
-              <button className="px-4 py-2 text-sm font-medium text-secondary hover:bg-gray-50">
+              <button className="px-4 py-2 text-sm font-medium text-secondary dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-300">
                 {t('portfolio.filter.website')}
               </button>
-              <button className="px-4 py-2 text-sm font-medium text-secondary hover:bg-gray-50">
+              <button className="px-4 py-2 text-sm font-medium text-secondary dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-300">
                 {t('portfolio.filter.mobileApp')}
               </button>
             </div>
           </div>
-        </AnimatedText>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        </AnimatedText>        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {portfolioItems.map((item) => (
-            <div key={item.id} className="group relative overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-all duration-300">
+            <div key={item.id} className="group relative overflow-hidden rounded-lg shadow-md dark:shadow-lg hover:shadow-xl dark:hover:shadow-2xl transition-all duration-300 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700">
               <div className="relative aspect-[4/3] overflow-hidden">
                 <Image
                   src={item.image}
@@ -87,26 +82,22 @@ const Portfolio: React.FC = () => {
                   style={{ objectFit: 'cover' }}
                   className="group-hover:scale-105 transition-transform duration-300"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <div className="absolute bottom-4 left-4 right-4 transform translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                  <h3 className="text-white font-semibold text-lg mb-1">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>                <div className="absolute bottom-4 left-4 right-4 transform translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                  <h3 className="text-white dark:text-gray-100 font-semibold text-lg mb-1 transition-colors duration-300">
                     {t('portfolio.item.titleOverlay', { number: item.id })}
                   </h3>
-                  <p className="text-white/80 text-sm">{item.category}</p>
+                  <p className="text-white/80 dark:text-gray-300 text-sm transition-colors duration-300">{item.category}</p>
                 </div>
-              </div>
-              <div className="p-4 bg-white">
-                <h3 className="font-semibold text-lg mb-2">
+              </div>              <div className="p-4 bg-white dark:bg-gray-800 transition-colors duration-300">
+                <h3 className="font-semibold text-lg mb-2 text-gray-900 dark:text-gray-100 transition-colors duration-300">
                   {t('portfolio.item.title', { number: item.id })}
                 </h3>
-                <p className="text-secondary text-sm">{item.category}</p>
+                <p className="text-secondary dark:text-gray-400 text-sm transition-colors duration-300">{item.category}</p>
               </div>
             </div>
           ))}
-        </div>
-
-        <div className="text-center mt-10">
-          <Button variant="outline" size="md" className="px-6 py-3 border-primary text-primary hover:bg-primary/5">
+        </div>        <div className="text-center mt-10">
+          <Button variant="outline" size="md" className="px-6 py-3 border-primary text-primary hover:bg-primary/5 dark:border-green-600 dark:text-green-400 dark:hover:bg-green-600/10 transition-colors duration-300">
             {t('portfolio.viewAll')}
           </Button>
         </div>

@@ -2,9 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
 interface Params {
-  params: Promise<{
+  params: {
     category: string;
-  }>
+  }
 }
 
 export async function GET(
@@ -12,7 +12,7 @@ export async function GET(
   { params }: Params
 ) {
   try {
-    const { category } = await params;
+    const { category } = params;
     const searchParams = request.nextUrl.searchParams;
     const limit = parseInt(searchParams.get('limit') || '10');
 

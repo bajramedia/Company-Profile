@@ -12,3 +12,8 @@ export { default as AnimatedText } from './AnimatedText';
 export { default as SupportedBy } from './SupportedBy';
 export { default as CTA } from './CTA';
 export { default as Blog, BlogPostCard } from './Blog';
+export { default as Team } from './Team';
+export { default as EnhancedHome } from './EnhancedHome';
+export { default as BlogListingPage } from './BlogListingPage';
+export { default as BlogPostDetail } from './BlogPostDetail';
+export { default as SEO } from './SEO';

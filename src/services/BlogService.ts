@@ -79,20 +79,25 @@ class BlogService {
    * Get a single blog post by slug
    * @param slug The post slug
    * @returns Promise resolving to a blog post
-   */
-  async getPostBySlug(slug: string): Promise<BlogPost | null> {
+   */  async getPostBySlug(slug: string): Promise<BlogPost | null> {
     try {
-      const response = await fetch(`${API_BASE}/posts/${slug}`);
+      const response = await fetch(`${API_BASE}/posts/${slug}`, {
+        cache: 'no-store', // Disable caching to ensure fresh data
+        next: { revalidate: 30 } // Revalidate every 30 seconds as a fallback
+      });
       
       if (response.status === 404) {
+        console.log(`Post with slug "${slug}" not found`);
         return null;
       }
       
       if (!response.ok) {
-        throw new Error(`Failed to fetch post: ${response.status}`);
+        console.error(`Failed to fetch post: ${response.status}`);
+        return null; // Return null instead of throwing to prevent UI crashes
       }
       
-      return await response.json();
+      const data = await response.json();
+      return data;
     } catch (error) {
       console.error(`Error fetching post with slug "${slug}":`, error);
       return null;
