@@ -2,10 +2,10 @@
 
 import { revalidatePath } from "next/cache";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "https://bajramedia.com/api_bridge.php";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://bajramedia.com/api_bridge.php';
 
 // Interface for blog post creation/update
-export interface PostFormData {
+interface PostFormData {
   title: string;
   slug?: string;
   excerpt: string;
@@ -22,8 +22,8 @@ export interface PostFormData {
 function generateSlug(title: string): string {
   return title
     .toLowerCase()
-    .replace(/[^\w\s]/g, "")
-    .replace(/\s+/g, "-");
+    .replace(/[^\w\s]/g, '')
+    .replace(/\s+/g, '-');
 }
 
 // Create a new blog post using API bridge
@@ -46,9 +46,9 @@ export async function createPost(formData: PostFormData) {
 
     // Create the post via API bridge
     const response = await fetch(`${API_BASE_URL}?endpoint=posts`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         title,
@@ -71,13 +71,13 @@ export async function createPost(formData: PostFormData) {
     const result = await response.json();
 
     if (!result.success) {
-      throw new Error("Failed to create post");
+      throw new Error('Failed to create post');
     }
 
     // Revalidate paths to update cached data
-    revalidatePath("/blog");
+    revalidatePath('/blog');
     revalidatePath(`/blog/${slug}`);
-    revalidatePath("/admin/posts");
+    revalidatePath('/admin/posts');
     
     return { success: true, post: { id: result.id } };
   } catch (error) {
@@ -106,9 +106,9 @@ export async function updatePost(postId: string, formData: PostFormData) {
 
     // Update the post via API bridge
     const response = await fetch(`${API_BASE_URL}?endpoint=posts&id=${postId}`, {
-      method: "PUT",
+      method: 'PUT',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         title,
@@ -131,13 +131,13 @@ export async function updatePost(postId: string, formData: PostFormData) {
     const result = await response.json();
 
     if (!result.success) {
-      throw new Error("Failed to update post");
+      throw new Error('Failed to update post');
     }
 
     // Revalidate paths to update cached data
-    revalidatePath("/blog");
+    revalidatePath('/blog');
     revalidatePath(`/blog/${slug}`);
-    revalidatePath("/admin/posts");
+    revalidatePath('/admin/posts');
     
     return { success: true, post: { id: postId } };
   } catch (error) {
@@ -151,9 +151,9 @@ export async function deletePost(postId: string) {
   try {
     // Delete the post via API bridge
     const response = await fetch(`${API_BASE_URL}?endpoint=posts&id=${postId}`, {
-      method: "DELETE",
+      method: 'DELETE',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       }
     });
 
@@ -164,12 +164,12 @@ export async function deletePost(postId: string) {
     const result = await response.json();
 
     if (!result.success) {
-      throw new Error("Failed to delete post");
+      throw new Error('Failed to delete post');
     }
 
     // Revalidate the blog path
-    revalidatePath("/blog");
-    revalidatePath("/admin/posts");
+    revalidatePath('/blog');
+    revalidatePath('/admin/posts');
     
     return { success: true };
   } catch (error) {
@@ -199,9 +199,9 @@ export async function togglePublishPost(postId: string) {
 
     // Update the post with new publish status
     const updateResponse = await fetch(`${API_BASE_URL}?endpoint=posts&id=${postId}`, {
-      method: "PUT",
+      method: 'PUT',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         ...post,
@@ -216,17 +216,17 @@ export async function togglePublishPost(postId: string) {
     const result = await updateResponse.json();
 
     if (!result.success) {
-      throw new Error("Failed to update post");
+      throw new Error('Failed to update post');
     }
 
     // Revalidate paths to update cached data
-    revalidatePath("/blog");
+    revalidatePath('/blog');
     revalidatePath(`/blog/${post.slug}`);
-    revalidatePath("/admin/posts");
+    revalidatePath('/admin/posts');
     
     return { success: true, post: { ...post, published: newPublished } };
   } catch (error) {
     console.error("Error toggling post publish status:", error);
     return { success: false, error: "Failed to update post" };
   }
-}
+} 

@@ -62,6 +62,12 @@ switch ($method) {
     case 'POST':
         handlePost($pdo, $endpoint);
         break;
+    case 'PUT':
+        handlePut($pdo, $endpoint, $id);
+        break;
+    case 'DELETE':
+        handleDelete($pdo, $endpoint, $id);
+        break;
     default:
         http_response_code(405);
         echo json_encode(['error' => 'Method not allowed']);
@@ -89,6 +95,12 @@ function getDateColumn($columns) {
         }
     }
     return 'id'; // fallback to id if no date column found
+}
+
+function generateSlug($title) {
+    // Convert to lowercase and replace non-alphanumeric characters with hyphens
+    $slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $title)));
+    return $slug;
 }
 
 function handleGet($pdo, $endpoint, $id) {
@@ -296,6 +308,76 @@ function handlePost($pdo, $endpoint) {
     
     try {
         switch ($endpoint) {
+            case 'posts':
+                // Create new post
+                $title = $data['title'] ?? '';
+                $slug = $data['slug'] ?? generateSlug($title);
+                $excerpt = $data['excerpt'] ?? '';
+                $content = $data['content'] ?? '';
+                $featuredImage = $data['featuredImage'] ?? '';
+                $published = $data['published'] ?? false;
+                $readTime = $data['readTime'] ?? 5;
+                $authorId = $data['authorId'] ?? '1';
+                $categoryId = $data['categoryId'] ?? '1';
+                
+                // Convert boolean to int for MySQL
+                $publishedInt = $published ? 1 : 0;
+                
+                $stmt = $pdo->prepare("
+                    INSERT INTO post (title, slug, excerpt, content, featuredImage, published, readTime, authorId, categoryId, createdAt) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
+                ");
+                $stmt->execute([$title, $slug, $excerpt, $content, $featuredImage, $publishedInt, $readTime, $authorId, $categoryId]);
+                
+                $postId = $pdo->lastInsertId();
+                
+                // Handle tags if provided
+                if (isset($data['tags']) && is_array($data['tags'])) {
+                    foreach ($data['tags'] as $tagId) {
+                        $stmt = $pdo->prepare("INSERT INTO posttags (postId, tagId) VALUES (?, ?)");
+                        $stmt->execute([$postId, $tagId]);
+                    }
+                }
+                
+                echo json_encode(['success' => true, 'id' => $postId]);
+                break;
+
+            case 'categories':
+                // Create new category
+                $name = $data['name'] ?? '';
+                $slug = $data['slug'] ?? generateSlug($name);
+                $description = $data['description'] ?? '';
+                
+                $stmt = $pdo->prepare("INSERT INTO category (name, slug, description) VALUES (?, ?, ?)");
+                $stmt->execute([$name, $slug, $description]);
+                
+                echo json_encode(['success' => true, 'id' => $pdo->lastInsertId()]);
+                break;
+
+            case 'authors':
+                // Create new author
+                $name = $data['name'] ?? '';
+                $email = $data['email'] ?? '';
+                $bio = $data['bio'] ?? '';
+                $avatar = $data['avatar'] ?? '';
+                
+                $stmt = $pdo->prepare("INSERT INTO author (name, email, bio, avatar) VALUES (?, ?, ?, ?)");
+                $stmt->execute([$name, $email, $bio, $avatar]);
+                
+                echo json_encode(['success' => true, 'id' => $pdo->lastInsertId()]);
+                break;
+
+            case 'tags':
+                // Create new tag
+                $name = $data['name'] ?? '';
+                $slug = $data['slug'] ?? generateSlug($name);
+                
+                $stmt = $pdo->prepare("INSERT INTO tag (name, slug) VALUES (?, ?)");
+                $stmt->execute([$name, $slug]);
+                
+                echo json_encode(['success' => true, 'id' => $pdo->lastInsertId()]);
+                break;
+
             case 'post-view':
                 try {
                     $stmt = $pdo->prepare("INSERT INTO postview (postId, ipAddress, createdAt) VALUES (?, ?, NOW())");
@@ -304,6 +386,196 @@ function handlePost($pdo, $endpoint) {
                 } catch (Exception $e) {
                     echo json_encode(['success' => true, 'note' => 'View tracking not available']);
                 }
+                break;
+
+            default:
+                http_response_code(404);
+                echo json_encode(['error' => 'Endpoint not found']);
+        }
+    } catch (Exception $e) {
+        http_response_code(500);
+        echo json_encode(['error' => 'Database error: ' . $e->getMessage()]);
+    }
+}
+
+function handlePut($pdo, $endpoint, $id) {
+    $data = json_decode(file_get_contents('php://input'), true);
+    
+    try {
+        switch ($endpoint) {
+            case 'posts':
+                if (!$id) {
+                    http_response_code(400);
+                    echo json_encode(['error' => 'ID required for update']);
+                    return;
+                }
+                
+                // Update post
+                $title = $data['title'] ?? '';
+                $slug = $data['slug'] ?? generateSlug($title);
+                $excerpt = $data['excerpt'] ?? '';
+                $content = $data['content'] ?? '';
+                $featuredImage = $data['featuredImage'] ?? '';
+                $published = $data['published'] ?? false;
+                $readTime = $data['readTime'] ?? 5;
+                $authorId = $data['authorId'] ?? '1';
+                $categoryId = $data['categoryId'] ?? '1';
+                
+                // Convert boolean to int for MySQL
+                $publishedInt = $published ? 1 : 0;
+                
+                $stmt = $pdo->prepare("
+                    UPDATE post 
+                    SET title = ?, slug = ?, excerpt = ?, content = ?, featuredImage = ?, 
+                        published = ?, readTime = ?, authorId = ?, categoryId = ?, updatedAt = NOW()
+                    WHERE id = ?
+                ");
+                $stmt->execute([$title, $slug, $excerpt, $content, $featuredImage, $publishedInt, $readTime, $authorId, $categoryId, $id]);
+                
+                // Handle tags - first delete existing ones
+                $stmt = $pdo->prepare("DELETE FROM posttags WHERE postId = ?");
+                $stmt->execute([$id]);
+                
+                // Add new tags
+                if (isset($data['tags']) && is_array($data['tags'])) {
+                    foreach ($data['tags'] as $tagId) {
+                        $stmt = $pdo->prepare("INSERT INTO posttags (postId, tagId) VALUES (?, ?)");
+                        $stmt->execute([$id, $tagId]);
+                    }
+                }
+                
+                echo json_encode(['success' => true]);
+                break;
+
+            case 'categories':
+                if (!$id) {
+                    http_response_code(400);
+                    echo json_encode(['error' => 'ID required for update']);
+                    return;
+                }
+                
+                $name = $data['name'] ?? '';
+                $slug = $data['slug'] ?? generateSlug($name);
+                $description = $data['description'] ?? '';
+                
+                $stmt = $pdo->prepare("UPDATE category SET name = ?, slug = ?, description = ? WHERE id = ?");
+                $stmt->execute([$name, $slug, $description, $id]);
+                
+                echo json_encode(['success' => true]);
+                break;
+
+            case 'authors':
+                if (!$id) {
+                    http_response_code(400);
+                    echo json_encode(['error' => 'ID required for update']);
+                    return;
+                }
+                
+                $name = $data['name'] ?? '';
+                $email = $data['email'] ?? '';
+                $bio = $data['bio'] ?? '';
+                $avatar = $data['avatar'] ?? '';
+                
+                $stmt = $pdo->prepare("UPDATE author SET name = ?, email = ?, bio = ?, avatar = ? WHERE id = ?");
+                $stmt->execute([$name, $email, $bio, $avatar, $id]);
+                
+                echo json_encode(['success' => true]);
+                break;
+
+            case 'tags':
+                if (!$id) {
+                    http_response_code(400);
+                    echo json_encode(['error' => 'ID required for update']);
+                    return;
+                }
+                
+                $name = $data['name'] ?? '';
+                $slug = $data['slug'] ?? generateSlug($name);
+                
+                $stmt = $pdo->prepare("UPDATE tag SET name = ?, slug = ? WHERE id = ?");
+                $stmt->execute([$name, $slug, $id]);
+                
+                echo json_encode(['success' => true]);
+                break;
+
+            default:
+                http_response_code(404);
+                echo json_encode(['error' => 'Endpoint not found']);
+        }
+    } catch (Exception $e) {
+        http_response_code(500);
+        echo json_encode(['error' => 'Database error: ' . $e->getMessage()]);
+    }
+}
+
+function handleDelete($pdo, $endpoint, $id) {
+    try {
+        switch ($endpoint) {
+            case 'posts':
+                if (!$id) {
+                    http_response_code(400);
+                    echo json_encode(['error' => 'ID required for delete']);
+                    return;
+                }
+                
+                // Delete in proper order to maintain referential integrity
+                // 1. Delete post views
+                $stmt = $pdo->prepare("DELETE FROM postview WHERE postId = ?");
+                $stmt->execute([$id]);
+                
+                // 2. Delete post tags
+                $stmt = $pdo->prepare("DELETE FROM posttags WHERE postId = ?");
+                $stmt->execute([$id]);
+                
+                // 3. Delete the post
+                $stmt = $pdo->prepare("DELETE FROM post WHERE id = ?");
+                $stmt->execute([$id]);
+                
+                echo json_encode(['success' => true]);
+                break;
+
+            case 'categories':
+                if (!$id) {
+                    http_response_code(400);
+                    echo json_encode(['error' => 'ID required for delete']);
+                    return;
+                }
+                
+                $stmt = $pdo->prepare("DELETE FROM category WHERE id = ?");
+                $stmt->execute([$id]);
+                
+                echo json_encode(['success' => true]);
+                break;
+
+            case 'authors':
+                if (!$id) {
+                    http_response_code(400);
+                    echo json_encode(['error' => 'ID required for delete']);
+                    return;
+                }
+                
+                $stmt = $pdo->prepare("DELETE FROM author WHERE id = ?");
+                $stmt->execute([$id]);
+                
+                echo json_encode(['success' => true]);
+                break;
+
+            case 'tags':
+                if (!$id) {
+                    http_response_code(400);
+                    echo json_encode(['error' => 'ID required for delete']);
+                    return;
+                }
+                
+                // Delete tag relations first
+                $stmt = $pdo->prepare("DELETE FROM posttags WHERE tagId = ?");
+                $stmt->execute([$id]);
+                
+                // Delete the tag
+                $stmt = $pdo->prepare("DELETE FROM tag WHERE id = ?");
+                $stmt->execute([$id]);
+                
+                echo json_encode(['success' => true]);
                 break;
 
             default:
