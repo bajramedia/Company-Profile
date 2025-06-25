@@ -15,6 +15,7 @@ export interface BlogPost {
     id: string;
     name: string;
     email: string;
+    avatar?: string;
   };
   category: {
     id: string;
@@ -57,6 +58,7 @@ class BlogServiceAPI {
           id: post.authorId?.toString() || '1',
           name: post.authorName || 'Unknown Author',
           email: post.authorEmail || '',
+          avatar: post.authorAvatar || '',
         },
         category: {
           id: post.categoryId?.toString() || '1',
@@ -90,6 +92,7 @@ class BlogServiceAPI {
           id: post.authorId?.toString() || '1',
           name: post.authorName || 'Unknown Author',
           email: post.authorEmail || '',
+          avatar: post.authorAvatar || '',
         },
         category: {
           id: post.categoryId?.toString() || '1',
