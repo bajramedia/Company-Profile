@@ -23,6 +23,7 @@ export interface BlogPost {
     slug: string;
   };
   views?: number;
+  readTime?: string;
 }
 
 export interface BlogCategory {
@@ -30,6 +31,14 @@ export interface BlogCategory {
   name: string;
   slug: string;
   description?: string;
+}
+
+// Utility function to calculate read time
+function calculateReadTime(content: string): string {
+  const wordsPerMinute = 200;
+  const words = content.replace(/<[^>]*>/g, '').trim().split(/\s+/).filter(word => word.length > 0);
+  const readTime = Math.ceil(words.length / wordsPerMinute);
+  return readTime.toString();
 }
 
 class BlogServiceAPI {
@@ -54,6 +63,7 @@ class BlogServiceAPI {
       return posts.map((post: any) => ({
         ...post,
         date: post.createdAt,
+        readTime: post.readTime || calculateReadTime(post.content || ''),
         author: {
           id: post.authorId?.toString() || '1',
           name: post.authorName || 'Unknown Author',
@@ -88,6 +98,7 @@ class BlogServiceAPI {
       return {
         ...post,
         date: post.createdAt,
+        readTime: post.readTime || calculateReadTime(post.content || ''),
         author: {
           id: post.authorId?.toString() || '1',
           name: post.authorName || 'Unknown Author',
