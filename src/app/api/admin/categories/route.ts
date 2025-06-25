@@ -29,39 +29,10 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  try {
-    const body = await request.json();
-    const { name, slug } = body;
-    
-    if (!name || !slug) {
-      return NextResponse.json(
-        { error: 'Name and slug are required' }, 
-        { status: 400 }
-      );
-    }
-    
-    // Check if category with same slug already exists
-    const existing = await prisma.category.findUnique({
-      where: { slug }
-    });
-    
-    if (existing) {
-      return NextResponse.json(
-        { error: 'A category with this slug already exists' }, 
-        { status: 409 }
-      );
-    }
-    
-    const category = await prisma.category.create({
-      data: { name, slug }
-    });
-    
-    return NextResponse.json(category, { status: 201 });
-  } catch (error) {
-    console.error('Error creating category:', error);
-    return NextResponse.json(
-      { error: 'Failed to create category' }, 
-      { status: 500 }
-    );
-  }
+  // TODO: Implement category creation via external API bridge
+  // For now, return not implemented
+  return NextResponse.json(
+    { error: 'Category creation not yet implemented with external API bridge' }, 
+    { status: 501 }
+  );
 }
