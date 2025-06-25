@@ -4,10 +4,7 @@ import { prisma } from '@/lib/prisma';
 // GET /api/portfolio/categories - Get all portfolio categories
 export async function GET(request: NextRequest) {
   try {
-    const categories = await prisma.category.findMany({
-      where: {
-        type: 'PORTFOLIO'
-      },
+    const categories = await prisma.portfolioCategory.findMany({
       orderBy: {
         name: 'asc'
       }

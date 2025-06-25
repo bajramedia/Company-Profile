@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useLanguage } from '@/context/LanguageContext';
-import { Blog } from '@/components';
+import { Blog, BlogPostCard } from '@/components';
 import SocialShare from '@/components/SocialShare';
 import { BlogPost } from '@/services/BlogService';
 import { useViewTracker, useViewCounter } from '@/hooks/useViewTracker';
@@ -185,13 +185,6 @@ const BlogPostDetail: React.FC<BlogPostDetailProps> = ({ post }) => {
     }
   }, [post]);
 
-  // Track page view
-  useEffect(() => {
-    if (post?.slug) {
-      viewTracker.trackView();
-    }
-  }, [post?.slug, viewTracker]);
-
   // Generate structured data for the article
   const articleSchema = post ? generateArticleSchema({
     headline: post.title,
@@ -359,7 +352,7 @@ const BlogPostDetail: React.FC<BlogPostDetailProps> = ({ post }) => {
                 </span>
               )}
               <span className="inline-flex items-center">
-                <FiEye className="mr-1" /> {viewCounter.count} {viewCounter.count === 1 ? 'view' : 'views'}
+                <FiEye className="mr-1" /> {viewCounter.views} {viewCounter.views === 1 ? 'view' : 'views'}
               </span>
             </div>
 
@@ -539,7 +532,7 @@ const BlogPostDetail: React.FC<BlogPostDetailProps> = ({ post }) => {
               <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-8">Related Articles</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {relatedPosts.map(relatedPost => (
-                  <Blog.BlogPostCard key={relatedPost.id} post={relatedPost} />
+                  <BlogPostCard key={relatedPost.id} post={relatedPost} />
                 ))}
               </div>
             </div>

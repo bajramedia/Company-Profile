@@ -5,9 +5,26 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components';
 
+// Interface untuk portfolio item
+interface PortfolioItem {
+    id: string;
+    title: string;
+    description: string;
+    clientName: string;
+    featuredImage: string;
+    published: boolean;
+    featured: boolean;
+    views: number;
+    createdAt: Date;
+        category: {
+        name: string;
+        icon: string;
+    };
+}
+
 // Portfolio data - akan dimuat dari database
 // Saat ini kosong untuk testing
-const portfolioItems = [];
+const portfolioItems: PortfolioItem[] = [];
 
 export default function AdminPortfolioPage() {
     const [portfolios, setPortfolios] = useState(portfolioItems);
@@ -293,8 +310,8 @@ export default function AdminPortfolioPage() {
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
                                             <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${portfolio.published
-                                                ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400'
-                                                : 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-400'
+                                                    ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400'
+                                                    : 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-400'
                                                 }`}>
                                                 {portfolio.published ? '✅ Published' : '📝 Draft'}
                                             </span>
@@ -318,8 +335,8 @@ export default function AdminPortfolioPage() {
                                                 <button
                                                     onClick={() => handleTogglePublished(portfolio.id)}
                                                     className={`px-2 py-1 rounded text-xs font-medium transition-colors ${portfolio.published
-                                                        ? 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-900/50'
-                                                        : 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400 hover:bg-green-200 dark:hover:bg-green-900/50'
+                                                            ? 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-900/50'
+                                                            : 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400 hover:bg-green-200 dark:hover:bg-green-900/50'
                                                         }`}
                                                 >
                                                     {portfolio.published ? 'Unpublish' : 'Publish'}
@@ -327,8 +344,8 @@ export default function AdminPortfolioPage() {
                                                 <button
                                                     onClick={() => handleToggleFeatured(portfolio.id)}
                                                     className={`px-2 py-1 rounded text-xs font-medium transition-colors ${portfolio.featured
-                                                        ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-400 hover:bg-yellow-200 dark:hover:bg-yellow-900/50'
-                                                        : 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
+                                                            ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-400 hover:bg-yellow-200 dark:hover:bg-yellow-900/50'
+                                                            : 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
                                                         }`}
                                                 >
                                                     {portfolio.featured ? 'Unfeature' : 'Feature'}

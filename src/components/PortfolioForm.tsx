@@ -138,7 +138,7 @@ export default function PortfolioForm({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
@@ -157,7 +157,7 @@ export default function PortfolioForm({
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">
           Informasi Dasar
         </h3>
-        
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -167,9 +167,8 @@ export default function PortfolioForm({
               type="text"
               value={formData.title}
               onChange={(e) => handleInputChange('title', e.target.value)}
-              className={`w-full px-3 py-2 border rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-primary focus:border-primary ${
-                errors.title ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
-              }`}
+              className={`w-full px-3 py-2 border rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-primary focus:border-primary ${errors.title ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
+                }`}
               placeholder="Nama project yang menarik"
             />
             {errors.title && <p className="text-red-500 text-xs mt-1">{errors.title}</p>}
@@ -183,9 +182,8 @@ export default function PortfolioForm({
               type="text"
               value={formData.slug}
               onChange={(e) => handleInputChange('slug', e.target.value)}
-              className={`w-full px-3 py-2 border rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-primary focus:border-primary ${
-                errors.slug ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
-              }`}
+              className={`w-full px-3 py-2 border rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-primary focus:border-primary ${errors.slug ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
+                }`}
               placeholder="project-url-slug"
             />
             {errors.slug && <p className="text-red-500 text-xs mt-1">{errors.slug}</p>}
@@ -199,9 +197,8 @@ export default function PortfolioForm({
               type="text"
               value={formData.clientName}
               onChange={(e) => handleInputChange('clientName', e.target.value)}
-              className={`w-full px-3 py-2 border rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-primary focus:border-primary ${
-                errors.clientName ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
-              }`}
+              className={`w-full px-3 py-2 border rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-primary focus:border-primary ${errors.clientName ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
+                }`}
               placeholder="Nama perusahaan atau klien"
             />
             {errors.clientName && <p className="text-red-500 text-xs mt-1">{errors.clientName}</p>}
@@ -214,9 +211,8 @@ export default function PortfolioForm({
             <select
               value={formData.categoryId}
               onChange={(e) => handleInputChange('categoryId', e.target.value)}
-              className={`w-full px-3 py-2 border rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-primary focus:border-primary ${
-                errors.categoryId ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
-              }`}
+              className={`w-full px-3 py-2 border rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-primary focus:border-primary ${errors.categoryId ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
+                }`}
             >
               <option value="">Pilih kategori</option>
               {categories.map(category => (
@@ -237,9 +233,8 @@ export default function PortfolioForm({
             value={formData.description}
             onChange={(e) => handleInputChange('description', e.target.value)}
             rows={3}
-            className={`w-full px-3 py-2 border rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-primary focus:border-primary ${
-              errors.description ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
-            }`}
+            className={`w-full px-3 py-2 border rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-primary focus:border-primary ${errors.description ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
+              }`}
             placeholder="Deskripsi singkat project untuk preview card"
           />
           {errors.description && <p className="text-red-500 text-xs mt-1">{errors.description}</p>}
@@ -251,13 +246,13 @@ export default function PortfolioForm({
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">
           Konten Detail
         </h3>
-        
+
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             Konten Lengkap *
           </label>
           <RichTextEditor
-            value={formData.content}
+            content={formData.content}
             onChange={(value) => handleInputChange('content', value)}
             placeholder="Tulis detail lengkap tentang project ini..."
           />
@@ -270,7 +265,7 @@ export default function PortfolioForm({
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">
           Gambar Project
         </h3>
-        
+
         <div className="space-y-6">
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -279,7 +274,6 @@ export default function PortfolioForm({
             <ImageUpload
               value={formData.featuredImage}
               onChange={(url) => handleInputChange('featuredImage', url)}
-              folder="portfolio"
             />
             {errors.featuredImage && <p className="text-red-500 text-xs mt-1">{errors.featuredImage}</p>}
           </div>
@@ -306,7 +300,7 @@ export default function PortfolioForm({
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">
           Link Project
         </h3>
-        
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -316,9 +310,8 @@ export default function PortfolioForm({
               type="url"
               value={formData.projectUrl}
               onChange={(e) => handleInputChange('projectUrl', e.target.value)}
-              className={`w-full px-3 py-2 border rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-primary focus:border-primary ${
-                errors.projectUrl ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
-              }`}
+              className={`w-full px-3 py-2 border rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-primary focus:border-primary ${errors.projectUrl ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
+                }`}
               placeholder="https://project-website.com"
             />
             {errors.projectUrl && <p className="text-red-500 text-xs mt-1">{errors.projectUrl}</p>}
@@ -332,9 +325,8 @@ export default function PortfolioForm({
               type="url"
               value={formData.githubUrl}
               onChange={(e) => handleInputChange('githubUrl', e.target.value)}
-              className={`w-full px-3 py-2 border rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-primary focus:border-primary ${
-                errors.githubUrl ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
-              }`}
+              className={`w-full px-3 py-2 border rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-primary focus:border-primary ${errors.githubUrl ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
+                }`}
               placeholder="https://github.com/username/repo"
             />
             {errors.githubUrl && <p className="text-red-500 text-xs mt-1">{errors.githubUrl}</p>}
@@ -347,7 +339,7 @@ export default function PortfolioForm({
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">
           Timeline Project
         </h3>
-        
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -380,16 +372,15 @@ export default function PortfolioForm({
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">
           Teknologi yang Digunakan
         </h3>
-        
+
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
           {tags.map(tag => (
             <label
               key={tag.id}
-              className={`flex items-center space-x-2 p-3 rounded-lg border cursor-pointer transition-all duration-200 ${
-                formData.tagIds.includes(tag.id)
+              className={`flex items-center space-x-2 p-3 rounded-lg border cursor-pointer transition-all duration-200 ${formData.tagIds.includes(tag.id)
                   ? 'border-primary bg-primary/10 text-primary'
                   : 'border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500'
-              }`}
+                }`}
             >
               <input
                 type="checkbox"
@@ -412,7 +403,7 @@ export default function PortfolioForm({
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">
           Pengaturan
         </h3>
-        
+
         <div className="space-y-4">
           <label className="flex items-center space-x-3">
             <input

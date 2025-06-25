@@ -31,7 +31,7 @@ export default function AdminError({
             Something went wrong in the admin panel. Please try again or return to the dashboard.
           </p>
         </div>
-        
+
         <div className="space-y-4">
           <Button
             onClick={reset}
@@ -41,20 +41,20 @@ export default function AdminError({
           >
             Try again
           </Button>
-          
+
           <Link href="/admin">
             <Button variant="outline" size="lg" className="w-full">
               Back to Dashboard
             </Button>
           </Link>
-          
+
           <Link href="/">
-            <Button variant="ghost" size="lg" className="w-full">
+            <Button variant="outline" size="lg" className="w-full">
               Exit Admin Panel
             </Button>
           </Link>
         </div>
-        
+
         {process.env.NODE_ENV === 'development' && (
           <details className="mt-8 text-left">
             <summary className="cursor-pointer text-sm text-gray-500 hover:text-gray-700">

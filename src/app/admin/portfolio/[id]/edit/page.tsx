@@ -11,7 +11,7 @@ export default function EditPortfolioPage() {
     const params = useParams();
     const portfolioId = params?.id as string;
 
-    const [portfolioData, setPortfolioData] = useState(null);
+    const [portfolioData, setPortfolioData] = useState<any>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [isSubmitting, setIsSubmitting] = useState(false);
 

@@ -63,26 +63,47 @@ export async function generateMetadata(
   const metadataImage = image || ogImage;
   const metadataUrl = url || siteUrl;
   
+  // Create openGraph object based on type
+  const openGraphConfig = type === 'article' ? {
+    title: metadataTitle,
+    description: metadataDescription,
+    url: metadataUrl,
+    siteName: siteName,
+    locale: locale,
+    type: 'article' as const,
+    images: [
+      {
+        url: metadataImage,
+        alt: `${title || siteName} image`,
+      },
+    ],
+    publishedTime: publishedTime,
+    modifiedTime: modifiedTime,
+    authors: author ? [author] : undefined,
+    section: section,
+    tags: tags,
+  } : {
+    title: metadataTitle,
+    description: metadataDescription,
+    url: metadataUrl,
+    siteName: siteName,
+    locale: locale,
+    type: 'website' as const,
+    images: [
+      {
+        url: metadataImage,
+        alt: `${title || siteName} image`,
+      },
+    ],
+  };
+
   // Basic metadata
   const metadata: Metadata = {
     title: metadataTitle,
     description: metadataDescription,
     keywords: keywords,
     authors: author ? [{ name: author }] : [{ name: siteName }],
-    openGraph: {
-      title: metadataTitle,
-      description: metadataDescription,
-      url: metadataUrl,
-      siteName: siteName,
-      locale: locale,
-      type: type,
-      images: [
-        {
-          url: metadataImage,
-          alt: `${title || siteName} image`,
-        },
-      ],
-    },
+    openGraph: openGraphConfig,
     twitter: {
       card: twitterCard as 'summary_large_image' | 'summary',
       title: metadataTitle,
@@ -99,20 +120,6 @@ export async function generateMetadata(
       follow: true,
     },
   };
-
-  // Add article specific metadata
-  if (type === 'article') {
-    if (metadata.openGraph) {
-      metadata.openGraph.type = 'article';
-      metadata.openGraph.article = {
-        publishedTime: publishedTime,
-        modifiedTime: modifiedTime,
-        authors: author ? [author] : undefined,
-        section: section,
-        tags: tags,
-      };
-    }
-  }
 
   return metadata;
 }

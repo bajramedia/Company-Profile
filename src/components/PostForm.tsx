@@ -16,7 +16,7 @@ interface PostFormProps {
 export default function PostForm({ postId, initialData }: PostFormProps) {
   const router = useRouter();
   const isEditing = !!postId;
-    // Form state
+  // Form state
   const [formData, setFormData] = useState({
     title: initialData?.title || '',
     slug: initialData?.slug || '',
@@ -35,7 +35,7 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
     socialShareText: initialData?.socialShareText || '',
     isScheduled: initialData?.isScheduled || false
   });
-    const [authors, setAuthors] = useState<any[]>([]);
+  const [authors, setAuthors] = useState<any[]>([]);
   const [categories, setCategories] = useState<any[]>([]);
   const [allTags, setAllTags] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
@@ -44,7 +44,7 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
   const [activeTab, setActiveTab] = useState('content');
   const [wordCount, setWordCount] = useState(0);
   const [saveStatus, setSaveStatus] = useState<'saved' | 'saving' | 'unsaved'>('saved');
-  
+
   // Fetch authors, categories and tags on component mount
   useEffect(() => {
     const fetchData = async () => {
@@ -53,17 +53,17 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
         const authorsRes = await fetch('/api/admin/authors');
         const authorsData = await authorsRes.json();
         setAuthors(authorsData);
-        
+
         // Fetch categories
         const categoriesRes = await fetch('/api/admin/categories');
         const categoriesData = await categoriesRes.json();
         setCategories(categoriesData);
-        
+
         // Fetch tags
         const tagsRes = await fetch('/api/admin/tags');
         const tagsData = await tagsRes.json();
         setAllTags(tagsData);
-        
+
         // Set default values if not editing
         if (!isEditing && authorsData.length > 0 && categoriesData.length > 0) {
           setFormData(prev => ({
@@ -77,37 +77,37 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
         setError('Failed to load form data. Please try refreshing the page.');
       }
     };
-    
+
     fetchData();
   }, [isEditing]);
-  
+
   // Handle form input changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
-    
+
     setFormData(prev => ({
       ...prev,
-      [name]: type === 'checkbox' 
-        ? (e.target as HTMLInputElement).checked 
+      [name]: type === 'checkbox'
+        ? (e.target as HTMLInputElement).checked
         : value
     }));
   };
-  
+
   // Handle checkbox changes
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = e.target;
-    
+
     setFormData(prev => ({
       ...prev,
       [name]: checked
     }));
   };
-  
+
   // Handle tag selection changes
   const handleTagChange = (tagId: string) => {
     setFormData(prev => {
       const currentTags = [...prev.tags];
-      
+
       if (currentTags.includes(tagId)) {
         return { ...prev, tags: currentTags.filter(id => id !== tagId) };
       } else {
@@ -115,30 +115,30 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
       }
     });
   };
-  
+
   // Auto-generate slug from title
   const generateSlug = () => {
     if (!formData.title) return;
-    
+
     const slug = formData.title
       .toLowerCase()
       .replace(/[^\w\s]/g, '')
       .replace(/\s+/g, '-');
-    
+
     setFormData(prev => ({ ...prev, slug }));
   };
-  
+
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
-    
+
     try {
-      const result = isEditing 
+      const result = isEditing
         ? await updatePost(postId!, formData)
         : await createPost(formData);
-      
+
       if (result.success) {
         router.push('/admin/posts');
       } else {
@@ -150,12 +150,12 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
       setLoading(false);
     }
   };
-    // Calculate estimated read time based on content length
+  // Calculate estimated read time based on content length
   const calculateReadTime = () => {
-    const words = formData.content.replace(/<[^>]*>/g, '').trim().split(/\s+/).filter(word => word.length > 0);
+    const words = formData.content.replace(/<[^>]*>/g, '').trim().split(/\s+/).filter((word: string) => word.length > 0);
     const wordCount = words.length;
     const readTime = Math.max(1, Math.ceil(wordCount / 200)); // Assuming 200 words per minute
-    
+
     setWordCount(wordCount);
     setFormData(prev => ({ ...prev, readTime }));
   };
@@ -163,19 +163,19 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
   // Auto-save draft function
   const autoSaveDraft = async () => {
     if (!formData.title.trim() || loading) return;
-    
+
     setSaveStatus('saving');
     try {
       // Create a draft version
       const draftData = { ...formData, published: false };
-      
+
       if (isEditing) {
         await updatePost(postId!, draftData);
       } else {
         // For new posts, we could save as draft to localStorage or database
         localStorage.setItem('blog_draft', JSON.stringify(draftData));
       }
-      
+
       setSaveStatus('saved');
     } catch (error) {
       console.error('Auto-save failed:', error);
@@ -220,8 +220,8 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
     return (
       <div className="bg-white rounded-lg shadow-lg overflow-hidden">
         {formData.featuredImage && (
-          <img 
-            src={formData.featuredImage} 
+          <img
+            src={formData.featuredImage}
             alt={formData.title}
             className="w-full h-64 object-cover"
           />
@@ -246,11 +246,11 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
             <p className="text-xl text-gray-600 mb-8 leading-relaxed">{formData.excerpt}</p>
           )}
           <div className="prose prose-lg max-w-none" dangerouslySetInnerHTML={{ __html: formData.content }} />
-          
+
           {formData.tags.length > 0 && (
             <div className="mt-8 pt-6 border-t border-gray-200">
               <div className="flex flex-wrap gap-2">
-                {formData.tags.map(tagId => {
+                {formData.tags.map((tagId: string) => {
                   const tag = allTags.find(t => t.id === tagId);
                   return tag ? (
                     <span key={tagId} className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
@@ -272,7 +272,7 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
     { id: 'seo', label: 'SEO', icon: FiGlobe },
     { id: 'social', label: 'Social', icon: FiTag }
   ];
-    return (
+  return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <div className="bg-white border-b border-gray-200 sticky top-0 z-40">
@@ -291,17 +291,16 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
                   <FiClock size={16} />
                   {formData.readTime} min read
                 </span>
-                <div className={`flex items-center gap-1 ${
-                  saveStatus === 'saved' ? 'text-green-600' : 
+                <div className={`flex items-center gap-1 ${saveStatus === 'saved' ? 'text-green-600' :
                   saveStatus === 'saving' ? 'text-yellow-600' : 'text-red-600'
-                }`}>
+                  }`}>
                   {saveStatus === 'saved' && '✓ Saved'}
                   {saveStatus === 'saving' && '⏳ Saving...'}
                   {saveStatus === 'unsaved' && '⚠ Unsaved'}
                 </div>
               </div>
             </div>
-            
+
             <div className="flex space-x-3">
               <button
                 type="button"
@@ -311,7 +310,7 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
                 <FiEye className="mr-2" size={16} />
                 {previewMode ? 'Edit' : 'Preview'}
               </button>
-              
+
               <button
                 type="button"
                 onClick={() => router.push('/admin/posts')}
@@ -320,14 +319,13 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
                 <FiX className="mr-2" size={16} />
                 Cancel
               </button>
-              
+
               <button
                 type="submit"
                 disabled={loading}
                 onClick={handleSubmit}
-                className={`${
-                  loading ? 'opacity-75 cursor-wait' : 'hover:bg-green-700'
-                } bg-green-600 text-white px-6 py-2 rounded-lg flex items-center transition-colors`}
+                className={`${loading ? 'opacity-75 cursor-wait' : 'hover:bg-green-700'
+                  } bg-green-600 text-white px-6 py-2 rounded-lg flex items-center transition-colors`}
               >
                 <FiSave className="mr-2" size={16} />
                 {loading ? 'Saving...' : (isEditing ? 'Update Post' : 'Publish Post')}
@@ -362,11 +360,10 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
                     <button
                       key={tab.id}
                       onClick={() => setActiveTab(tab.id)}
-                      className={`flex items-center space-x-2 py-4 border-b-2 font-medium text-sm transition-colors ${
-                        activeTab === tab.id
-                          ? 'border-blue-500 text-blue-600'
-                          : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                      }`}
+                      className={`flex items-center space-x-2 py-4 border-b-2 font-medium text-sm transition-colors ${activeTab === tab.id
+                        ? 'border-blue-500 text-blue-600'
+                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                        }`}
                     >
                       <Icon size={18} />
                       <span>{tab.label}</span>
@@ -750,8 +747,8 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
                     <div className="border border-gray-300 rounded-lg p-4 bg-gray-50">
                       <div className="flex">
                         {formData.featuredImage && (
-                          <img 
-                            src={formData.featuredImage} 
+                          <img
+                            src={formData.featuredImage}
                             alt="Preview"
                             className="w-20 h-20 object-cover rounded-lg mr-4"
                           />
@@ -782,13 +779,12 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
                   <button
                     type="submit"
                     disabled={loading}
-                    className={`${
-                      loading ? 'opacity-75 cursor-wait' : 'hover:bg-blue-700'
-                    } bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold transition-colors`}
+                    className={`${loading ? 'opacity-75 cursor-wait' : 'hover:bg-blue-700'
+                      } bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold transition-colors`}
                   >
                     {loading ? 'Saving...' : (
-                      formData.published ? 'Publish Post' : 
-                      formData.isScheduled ? 'Schedule Post' : 'Save Draft'
+                      formData.published ? 'Publish Post' :
+                        formData.isScheduled ? 'Schedule Post' : 'Save Draft'
                     )}
                   </button>
                 </div>

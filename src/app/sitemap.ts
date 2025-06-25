@@ -3,7 +3,7 @@ import { blogService } from '@/services/BlogService';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Get all blog posts
-  const { posts } = await blogService.getAllPosts(1, 100);
+  const posts = await blogService.getAllPosts(1, 100);
   
   const blogPosts = posts.map((post) => ({
     url: `https://bajramedia.com/blog/${post.slug}`,
