@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { deletePost, togglePublishPost } from '@/actions/post-actions';
 import { FiEdit, FiTrash2, FiEye, FiEyeOff, FiPlusCircle, FiSearch } from 'react-icons/fi';
-import { BlogPost } from '@/services/BlogService';
+import { BlogPost } from '@/services/BlogService.api';
 
 function AdminPostsContent() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
@@ -65,9 +65,9 @@ function AdminPostsContent() {
     const result = await togglePublishPost(postId);
     if (result.success) {
       // Update the post status in the list
-      setPosts(posts.map(post => 
-        post.id === postId 
-          ? { ...post, published: !currentStatus } 
+      setPosts(posts.map(post =>
+        post.id === postId
+          ? { ...post, published: !currentStatus }
           : post
       ));
     } else {
@@ -86,10 +86,10 @@ function AdminPostsContent() {
   // Format date for display
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('id-ID', { 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
+    return date.toLocaleDateString('id-ID', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
     });
   };
 
@@ -229,9 +229,8 @@ function AdminPostsContent() {
             <button
               onClick={() => goToPage(currentPage - 1)}
               disabled={currentPage === 1}
-              className={`${
-                currentPage === 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-50'
-              } relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 rounded-l-md`}
+              className={`${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-50'
+                } relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 rounded-l-md`}
             >
               Previous
             </button>
@@ -239,11 +238,10 @@ function AdminPostsContent() {
               <button
                 key={index}
                 onClick={() => goToPage(index + 1)}
-                className={`${
-                  currentPage === index + 1
-                    ? 'bg-primary text-white'
-                    : 'bg-white text-gray-700 hover:bg-gray-50'
-                } relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium`}
+                className={`${currentPage === index + 1
+                  ? 'bg-primary text-white'
+                  : 'bg-white text-gray-700 hover:bg-gray-50'
+                  } relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium`}
               >
                 {index + 1}
               </button>
@@ -251,9 +249,8 @@ function AdminPostsContent() {
             <button
               onClick={() => goToPage(currentPage + 1)}
               disabled={currentPage === totalPages}
-              className={`${
-                currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-50'
-              } relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 rounded-r-md`}
+              className={`${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-50'
+                } relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 rounded-r-md`}
             >
               Next
             </button>

@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useLanguage } from '@/context/LanguageContext';
 import { useViewTracker } from '@/hooks/useViewTracker';
 import { FiArrowLeft, FiCalendar, FiClock, FiEye, FiShare2, FiUser, FiTag, FiHeart, FiBookmark, FiTwitter, FiLinkedin, FiFacebook, FiLink } from 'react-icons/fi';
-import { blogService, BlogPost } from '@/services/BlogService';
+import { blogService, BlogPost } from '@/services/BlogService.api';
 import Link from 'next/link';
 import { WhatsAppChat } from '@/components';
 

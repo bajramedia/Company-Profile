@@ -1,7 +1,7 @@
 import React from 'react';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { blogService, BlogPost } from '@/services/BlogService';
+import { blogService, BlogPost } from '@/services/BlogService.api';
 import { SEO } from '@/components';
 import BlogPostClient from '@/components/BlogPostClient';
 
@@ -82,7 +82,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
   try {
     post = await blogService.getPostBySlug(slug);
-      } catch (error) {
+  } catch (error) {
     console.error('Error fetching blog post:', error);
   }
 

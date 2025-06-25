@@ -43,73 +43,73 @@ const ModernBlogPostCard: React.FC<{ post: BlogPost }> = ({ post }) => {
   return (
     <Link href={`/blog/${post.slug}`} className="block h-full">
       <article className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm hover:shadow-xl border border-gray-100 dark:border-gray-700 overflow-hidden transition-all duration-300 hover:-translate-y-1 group cursor-pointer h-full flex flex-col">
-        {/* Modern Image with badges */}
-        <div className="relative h-48 w-full overflow-hidden bg-gray-100 dark:bg-gray-700">
-          <img
-            src={post.featuredImage}
-            alt={post.title}
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-            loading="lazy"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+      {/* Modern Image with badges */}
+      <div className="relative h-48 w-full overflow-hidden bg-gray-100 dark:bg-gray-700">
+        <img
+          src={post.featuredImage}
+          alt={post.title}
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          loading="lazy"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
 
-          {/* Category Badge */}
-          <div className="absolute top-3 left-3 z-10">
-            <span className="bg-white dark:bg-gray-900 text-xs px-3 py-1.5 rounded-full font-medium shadow-sm text-gray-700 dark:text-gray-300 transition-colors duration-300">
-              {typeof post.category === 'string' ? post.category : post.category.name}
-            </span>
-          </div>
+        {/* Category Badge */}
+        <div className="absolute top-3 left-3 z-10">
+          <span className="bg-white dark:bg-gray-900 text-xs px-3 py-1.5 rounded-full font-medium shadow-sm text-gray-700 dark:text-gray-300 transition-colors duration-300">
+            {typeof post.category === 'string' ? post.category : post.category.name}
+          </span>
+        </div>
+      </div>
+
+      {/* Content Area */}
+      <div className="p-5 flex-1 flex flex-col text-gray-800 dark:text-gray-100 transition-colors duration-300">
+        <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 mb-3">
+          <span className="flex items-center">
+            <FiClock className="mr-1" size={12} />
+            {formatDate(post.date)}
+          </span>
+          <span className="flex items-center">
+            <FiEye className="mr-1" size={12} />
+            {post.views || 0} views
+          </span>
         </div>
 
-        {/* Content Area */}
-        <div className="p-5 flex-1 flex flex-col text-gray-800 dark:text-gray-100 transition-colors duration-300">
-          <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 mb-3">
-            <span className="flex items-center">
-              <FiClock className="mr-1" size={12} />
-              {formatDate(post.date)}
-            </span>
-            <span className="flex items-center">
-              <FiEye className="mr-1" size={12} />
-              {post.views || 0} views
-            </span>
+        <h3 className="font-bold text-lg mb-2 line-clamp-2 group-hover:text-primary transition-colors text-gray-900 dark:text-gray-100">
+          {post.title}
+        </h3>
+
+        <p className="text-sm text-gray-600 dark:text-gray-300 mb-4 line-clamp-3 flex-1">
+          {post.excerpt}
+        </p>
+
+        <div className="border-t border-gray-100 dark:border-gray-700 pt-3 mt-auto flex justify-between items-center">
+          {/* Author info */}
+          <div className="flex items-center">
+            {post.author.avatar && (
+              <img
+                src={post.author.avatar}
+                alt={post.author.name}
+                className="w-6 h-6 rounded-full mr-2 border border-gray-200 dark:border-gray-600"
+              />
+            )}
+            <span className="text-xs font-medium">{post.author.name}</span>
           </div>
 
-          <h3 className="font-bold text-lg mb-2 line-clamp-2 group-hover:text-primary transition-colors text-gray-900 dark:text-gray-100">
-            {post.title}
-          </h3>
-
-          <p className="text-sm text-gray-600 dark:text-gray-300 mb-4 line-clamp-3 flex-1">
-            {post.excerpt}
-          </p>
-
-          <div className="border-t border-gray-100 dark:border-gray-700 pt-3 mt-auto flex justify-between items-center">
-            {/* Author info */}
-            <div className="flex items-center">
-              {post.author.avatar && (
-                <img
-                  src={post.author.avatar}
-                  alt={post.author.name}
-                  className="w-6 h-6 rounded-full mr-2 border border-gray-200 dark:border-gray-600"
-                />
-              )}
-              <span className="text-xs font-medium">{post.author.name}</span>
-            </div>
-
-            {/* Action icons */}
-            <div className="flex space-x-2">
-              <button onClick={(e) => {
-                e.preventDefault();
-                setIsBookmarked(!isBookmarked);
-              }} className="text-gray-400 hover:text-primary transition-colors">
-                <FiBookmark size={14} className={isBookmarked ? "fill-primary text-primary" : ""} />
-              </button>
-              <button className="text-gray-400 hover:text-primary transition-colors">
-                <FiShare2 size={14} />
-              </button>
-            </div>
+          {/* Action icons */}
+          <div className="flex space-x-2">
+            <button onClick={(e) => {
+              e.preventDefault();
+              setIsBookmarked(!isBookmarked);
+            }} className="text-gray-400 hover:text-primary transition-colors">
+              <FiBookmark size={14} className={isBookmarked ? "fill-primary text-primary" : ""} />
+            </button>
+            <button className="text-gray-400 hover:text-primary transition-colors">
+              <FiShare2 size={14} />
+            </button>
           </div>
         </div>
-      </article>
+      </div>
+    </article>
     </Link>
   );
 };

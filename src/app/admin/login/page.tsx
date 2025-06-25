@@ -44,7 +44,7 @@ function LoginForm() {
     if (username === 'admin' && password === 'admin') {
       // Set a cookie for authentication
       document.cookie = 'admin_auth=1; path=/; max-age=86400'; // 24 hours
-
+      
       // Redirect to admin dashboard or return URL
       router.push(returnUrl);
     } else {
@@ -80,7 +80,7 @@ function LoginForm() {
               Masuk ke panel administrasi
             </p>
           </div>
-
+          
           {error && (
             <div className="mb-6 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 p-4 text-sm text-red-600 dark:text-red-400">
               <div className="flex items-center space-x-2">
@@ -89,11 +89,11 @@ function LoginForm() {
               </div>
             </div>
           )}
-
+          
           <form onSubmit={handleLogin} className="space-y-6">
             <div>
-              <label
-                htmlFor="username"
+              <label 
+                htmlFor="username" 
                 className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
               >
                 Username
@@ -108,10 +108,10 @@ function LoginForm() {
                 required
               />
             </div>
-
+            
             <div>
-              <label
-                htmlFor="password"
+              <label 
+                htmlFor="password" 
                 className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
               >
                 Password
@@ -126,10 +126,10 @@ function LoginForm() {
                 required
               />
             </div>
-
+            
             <div className="pt-2">
-              <Button
-                type="submit"
+              <Button 
+                type="submit" 
                 variant="primary"
                 size="lg"
                 className="w-full shadow-lg hover:shadow-xl transition-all duration-300"

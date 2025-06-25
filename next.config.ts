@@ -5,6 +5,12 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
+        hostname: 'bajramedia.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
         hostname: 'txcdn-prod-a1art.xiaopiu.com',
         port: '',
         pathname: '/**',
@@ -34,6 +40,9 @@ const nextConfig: NextConfig = {
         pathname: '/**',
       }
     ],
+  },
+  env: {
+    NEXT_PUBLIC_API_BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL || 'https://bajramedia.com/api_bridge.php',
   },
 };
 

@@ -83,18 +83,18 @@ export async function generateMetadata(
     section: section,
     tags: tags,
   } : {
-    title: metadataTitle,
-    description: metadataDescription,
-    url: metadataUrl,
-    siteName: siteName,
-    locale: locale,
+      title: metadataTitle,
+      description: metadataDescription,
+      url: metadataUrl,
+      siteName: siteName,
+      locale: locale,
     type: 'website' as const,
-    images: [
-      {
-        url: metadataImage,
-        alt: `${title || siteName} image`,
-      },
-    ],
+      images: [
+        {
+          url: metadataImage,
+          alt: `${title || siteName} image`,
+        },
+      ],
   };
 
   // Basic metadata

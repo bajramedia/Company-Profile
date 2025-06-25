@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useLanguage } from '@/context/LanguageContext';
 import AnimatedText from './AnimatedText';
 import { FiCalendar, FiArrowRight, FiTag, FiEye } from 'react-icons/fi';
-import { blogService, BlogPost } from '@/services/BlogService';
+import { blogService, BlogPost } from '@/services/BlogService.api';
 
 interface BlogProps {
   className?: string;

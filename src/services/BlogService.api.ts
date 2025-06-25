@@ -16,6 +16,7 @@ export interface BlogPost {
     name: string;
     email: string;
     avatar?: string;
+    bio?: string;
   };
   category: {
     id: string;
@@ -23,7 +24,8 @@ export interface BlogPost {
     slug: string;
   };
   views?: number;
-  readTime?: string;
+  readTime?: number;
+  tags?: string[];
 }
 
 export interface BlogCategory {
@@ -34,11 +36,11 @@ export interface BlogCategory {
 }
 
 // Utility function to calculate read time
-function calculateReadTime(content: string): string {
+function calculateReadTime(content: string): number {
   const wordsPerMinute = 200;
   const words = content.replace(/<[^>]*>/g, '').trim().split(/\s+/).filter(word => word.length > 0);
   const readTime = Math.ceil(words.length / wordsPerMinute);
-  return readTime.toString();
+  return readTime;
 }
 
 class BlogServiceAPI {
@@ -46,7 +48,7 @@ class BlogServiceAPI {
 
   constructor() {
     // Use environment variable or fallback
-    this.apiBaseUrl = process.env.API_BASE_URL || process.env.NEXT_PUBLIC_API_BASE_URL || '';
+    this.apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://bajramedia.com/api_bridge.php';
   }
 
   async getAllPosts(page: number = 1, limit: number = 10): Promise<BlogPost[]> {
@@ -63,7 +65,7 @@ class BlogServiceAPI {
       return posts.map((post: any) => ({
         ...post,
         date: post.createdAt,
-        readTime: post.readTime || calculateReadTime(post.content || ''),
+        readTime: parseInt(post.readTime) || calculateReadTime(post.content || ''),
         author: {
           id: post.authorId?.toString() || '1',
           name: post.authorName || 'Unknown Author',
@@ -98,7 +100,7 @@ class BlogServiceAPI {
       return {
         ...post,
         date: post.createdAt,
-        readTime: post.readTime || calculateReadTime(post.content || ''),
+        readTime: parseInt(post.readTime) || calculateReadTime(post.content || ''),
         author: {
           id: post.authorId?.toString() || '1',
           name: post.authorName || 'Unknown Author',
@@ -117,20 +119,20 @@ class BlogServiceAPI {
     }
   }
 
-  async getFeaturedPosts(): Promise<BlogPost[]> {
+  async getFeaturedPosts(limit: number = 3): Promise<BlogPost[]> {
     try {
       const allPosts = await this.getAllPosts(1, 100);
-      return allPosts.filter(post => post.featured);
+      return allPosts.filter(post => post.featured).slice(0, limit);
     } catch (error) {
       console.error('Error fetching featured posts:', error);
       return [];
     }
   }
 
-  async getPostsByCategory(categorySlug: string): Promise<BlogPost[]> {
+  async getPostsByCategory(categorySlug: string, limit: number = 4): Promise<BlogPost[]> {
     try {
       const allPosts = await this.getAllPosts(1, 100);
-      return allPosts.filter(post => post.category.slug === categorySlug);
+      return allPosts.filter(post => post.category.slug === categorySlug).slice(0, limit);
     } catch (error) {
       console.error('Error fetching posts by category:', error);
       return [];
