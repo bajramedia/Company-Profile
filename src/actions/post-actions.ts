@@ -137,12 +137,19 @@ export async function updatePost(postId: string, formData: PostFormData) {
 // Delete a blog post
 export async function deletePost(postId: string) {
   try {
-    // First delete related tags
+    // First delete all related data in the correct order
+    
+    // 1. Delete related post views (analytics data)
+    await prisma.postView.deleteMany({
+      where: { postId }
+    });
+    
+    // 2. Delete related tags (many-to-many relationship)
     await prisma.postTags.deleteMany({
       where: { postId }
     });
     
-    // Then delete the post
+    // 3. Finally delete the post itself
     await prisma.post.delete({
       where: { id: postId }
     });

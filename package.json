@@ -24,6 +24,7 @@
     "@tiptap/pm": "^2.12.0",
     "@tiptap/react": "^2.12.0",
     "@tiptap/starter-kit": "^2.12.0",
+    "aos": "^2.3.4",
     "install": "^0.13.0",
     "next": "15.1.8",
     "npm": "^11.4.1",
@@ -34,6 +35,7 @@
     "uuid": "^11.1.0"
   },
   "devDependencies": {
+    "@types/aos": "^3.0.7",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

@@ -7,7 +7,8 @@ import { deletePost, togglePublishPost } from '@/actions/post-actions';
 import { FiEdit, FiTrash2, FiEye, FiEyeOff, FiPlusCircle, FiSearch } from 'react-icons/fi';
 import { BlogPost } from '@/services/BlogService';
 
-function AdminPostsContent() {const [posts, setPosts] = useState<BlogPost[]>([]);
+function AdminPostsContent() {
+  const [posts, setPosts] = useState<BlogPost[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
   const [isUpdating, setIsUpdating] = useState<string | null>(null);
@@ -24,6 +25,7 @@ function AdminPostsContent() {const [posts, setPosts] = useState<BlogPost[]>([])
     if (page) setCurrentPage(parseInt(page));
     if (search) setSearchQuery(search);
   }, [searchParams]);
+
   // Function to reload posts
   const loadPosts = async () => {
     try {
@@ -73,6 +75,7 @@ function AdminPostsContent() {const [posts, setPosts] = useState<BlogPost[]>([])
     }
     setIsUpdating(null);
   };
+
   // Handle search
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -146,16 +149,24 @@ function AdminPostsContent() {const [posts, setPosts] = useState<BlogPost[]>([])
 
       {/* Posts table */}
       <div className="overflow-x-auto bg-white shadow rounded-lg">
-        <table className="min-w-full divide-y divide-gray-200">          <thead className="bg-gray-50">
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead className="bg-gray-50">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Author</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-              <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th></tr>
+              <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+            </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">            {posts.length === 0 ? (<tr><td colSpan={6} className="px-6 py-4 text-center text-gray-500">{loading ? 'Loading...' : 'No posts found'}</td></tr>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {posts.length === 0 ? (
+              <tr>
+                <td colSpan={6} className="px-6 py-4 text-center text-gray-500">
+                  {loading ? 'Loading...' : 'No posts found'}
+                </td>
+              </tr>
             ) : (
               posts.map((post) => (
                 <tr key={post.id} className="hover:bg-gray-50">
@@ -242,7 +253,8 @@ function AdminPostsContent() {const [posts, setPosts] = useState<BlogPost[]>([])
               disabled={currentPage === totalPages}
               className={`${
                 currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-50'
-              } relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 rounded-r-md`}            >
+              } relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 rounded-r-md`}
+            >
               Next
             </button>
           </nav>

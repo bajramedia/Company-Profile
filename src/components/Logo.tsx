@@ -18,7 +18,7 @@ const Logo: React.FC<LogoProps> = ({
   showImage = true,
 }) => {
   const baseClasses = 'font-poppins font-bold transition-all duration-200';
-  
+
   const variantClasses = {
     light: 'text-white',
     dark: 'text-foreground',
@@ -39,8 +39,8 @@ const Logo: React.FC<LogoProps> = ({
   const finalClasses = `${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${className}`;
 
   const imageHeight = size === 'sm' ? 'h-[20px] md:h-[24px]' :
-                       size === 'md' ? 'h-[24px] md:h-[30px]' :
-                       'h-[30px] md:h-[36px]';
+    size === 'md' ? 'h-[24px] md:h-[30px]' :
+      'h-[30px] md:h-[36px]';
 
   return (
     <Link href="/" className={`flex items-center gap-1 md:gap-2 ${finalClasses}`}>
@@ -53,7 +53,7 @@ const Logo: React.FC<LogoProps> = ({
           className={`object-contain w-auto ${imageHeight}`}
         />
       )}
-      Bajra<span className="text-primary">media</span>
+      Bajra<span className="text-green-500">media</span>
     </Link>
   );
 };

@@ -2,9 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
 interface Params {
-  params: {
+  params: Promise<{
     slug: string;
-  }
+  }>
 }
 
 export async function GET(
@@ -12,7 +12,7 @@ export async function GET(
   { params }: Params
 ) {
   try {
-    const { slug } = params;
+    const { slug } = await params;
 
     if (!slug) {
       return NextResponse.json(

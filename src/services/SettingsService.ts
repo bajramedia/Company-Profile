@@ -37,7 +37,7 @@ export const defaultSettings: SiteSettings = {
   analyticsCode: '',
   footerText: '© 2025 Bajramedia. All rights reserved.',
   contactEmail: 'contact@bajramedia.com',
-  contactPhone: '+62 123 456 7890',
+      contactPhone: '+6285739402436',
   contactAddress: 'Bali, Indonesia',
   socialLinks: {
     facebook: '',

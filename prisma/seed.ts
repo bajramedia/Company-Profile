@@ -18,7 +18,7 @@ async function main() {
     { key: 'analyticsCode', value: '', type: 'string' },
     { key: 'footerText', value: '© 2025 Bajramedia. All rights reserved.', type: 'string' },
     { key: 'contactEmail', value: 'contact@bajramedia.com', type: 'string' },
-    { key: 'contactPhone', value: '+62 123 456 7890', type: 'string' },
+    { key: 'contactPhone', value: '+6285739402436', type: 'string' },
     { key: 'contactAddress', value: 'Bali, Indonesia', type: 'string' },
     { 
       key: 'socialLinks', 
@@ -367,6 +367,146 @@ The integration of AI into web development is still evolving, but its impact is 
     });
     console.log('Created/found post:', post.title);
   }
+
+  // Create portfolio categories
+  const portfolioCategories = await Promise.all([
+    prisma.portfolioCategory.upsert({
+      where: { slug: 'web-development' },
+      update: {},
+      create: {
+        name: 'Web Development',
+        slug: 'web-development',
+        color: '#3B82F6',
+        icon: '🌐'
+      }
+    }),
+    prisma.portfolioCategory.upsert({
+      where: { slug: 'mobile-apps' },
+      update: {},
+      create: {
+        name: 'Mobile Apps',
+        slug: 'mobile-apps',
+        color: '#10B981',
+        icon: '📱'
+      }
+    }),
+    prisma.portfolioCategory.upsert({
+      where: { slug: 'uiux-design' },
+      update: {},
+      create: {
+        name: 'UI/UX Design',
+        slug: 'uiux-design',
+        color: '#8B5CF6',
+        icon: '🎨'
+      }
+    }),
+    prisma.portfolioCategory.upsert({
+      where: { slug: 'digital-marketing' },
+      update: {},
+      create: {
+        name: 'Digital Marketing',
+        slug: 'digital-marketing',
+        color: '#F59E0B',
+        icon: '📈'
+      }
+    })
+  ]);
+  console.log('Created/found portfolio categories:', portfolioCategories.map(c => c.name).join(', '));
+
+  // Create portfolio tags
+  const portfolioTags = await Promise.all([
+    prisma.portfolioTag.upsert({
+      where: { slug: 'nextjs' },
+      update: {},
+      create: {
+        name: 'Next.js',
+        slug: 'nextjs',
+        color: '#000000'
+      }
+    }),
+    prisma.portfolioTag.upsert({
+      where: { slug: 'typescript' },
+      update: {},
+      create: {
+        name: 'TypeScript',
+        slug: 'typescript',
+        color: '#3178C6'
+      }
+    }),
+    prisma.portfolioTag.upsert({
+      where: { slug: 'tailwindcss' },
+      update: {},
+      create: {
+        name: 'Tailwind CSS',
+        slug: 'tailwindcss',
+        color: '#06B6D4'
+      }
+    }),
+    prisma.portfolioTag.upsert({
+      where: { slug: 'react' },
+      update: {},
+      create: {
+        name: 'React',
+        slug: 'react',
+        color: '#61DAFB'
+      }
+    }),
+    prisma.portfolioTag.upsert({
+      where: { slug: 'react-native' },
+      update: {},
+      create: {
+        name: 'React Native',
+        slug: 'react-native',
+        color: '#61DAFB'
+      }
+    }),
+    prisma.portfolioTag.upsert({
+      where: { slug: 'figma' },
+      update: {},
+      create: {
+        name: 'Figma',
+        slug: 'figma',
+        color: '#F24E1E'
+      }
+    }),
+    prisma.portfolioTag.upsert({
+      where: { slug: 'prisma' },
+      update: {},
+      create: {
+        name: 'Prisma',
+        slug: 'prisma',
+        color: '#2D3748'
+      }
+    }),
+    prisma.portfolioTag.upsert({
+      where: { slug: 'mysql' },
+      update: {},
+      create: {
+        name: 'MySQL',
+        slug: 'mysql',
+        color: '#4479A1'
+      }
+    }),
+    prisma.portfolioTag.upsert({
+      where: { slug: 'firebase' },
+      update: {},
+      create: {
+        name: 'Firebase',
+        slug: 'firebase',
+        color: '#FFCA28'
+      }
+    }),
+    prisma.portfolioTag.upsert({
+      where: { slug: 'framer-motion' },
+      update: {},
+      create: {
+        name: 'Framer Motion',
+        slug: 'framer-motion',
+        color: '#0055FF'
+      }
+    })
+  ]);
+  console.log('Created/found portfolio tags:', portfolioTags.map(t => t.name).join(', '));
 
   console.log('Database seed completed successfully!');
 }

@@ -29,8 +29,17 @@ export interface BlogPost {
   views?: number;
 }
 
-// API base URL
-const API_BASE = '/api';
+// Helper to build API URL
+const getApiUrl = (endpoint: string) => {
+  if (typeof window !== 'undefined') {
+    // Client-side: use relative URL
+    return `/api${endpoint}`;
+  } else {
+    // Server-side: use absolute URL  
+    const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3001';
+    return `${baseUrl}/api${endpoint}`;
+  }
+};
 
 // Service class with methods for fetching blog posts
 class BlogService {
@@ -41,7 +50,7 @@ class BlogService {
    */
   async getFeaturedPosts(limit: number = 3): Promise<BlogPost[]> {
     try {
-      const response = await fetch(`${API_BASE}/posts/featured?limit=${limit}`);
+      const response = await fetch(getApiUrl(`/posts/featured?limit=${limit}`));
       
       if (!response.ok) {
         throw new Error(`Failed to fetch featured posts: ${response.status}`);
@@ -58,20 +67,24 @@ class BlogService {
    * Get all blog posts, with optional pagination
    * @param page Page number (starts at 1)
    * @param limit Number of posts per page
-   * @returns Promise resolving to blog posts and pagination info
+   * @returns Promise resolving to blog posts array
    */
-  async getAllPosts(page: number = 1, limit: number = 10): Promise<{ posts: BlogPost[], total: number, page: number, totalPages: number }> {
+  async getAllPosts(page: number = 1, limit: number = 10): Promise<BlogPost[]> {
     try {
-      const response = await fetch(`${API_BASE}/posts?page=${page}&limit=${limit}`);
+      const response = await fetch(getApiUrl(`/posts?page=${page}&limit=${limit}`));
       
       if (!response.ok) {
         throw new Error(`Failed to fetch posts: ${response.status}`);
       }
       
-      return await response.json();
+      const data = await response.json();
+      
+      // API returns { posts: [...], total, page, totalPages }
+      // Return just the posts array
+      return data.posts || [];
     } catch (error) {
       console.error('Error fetching posts:', error);
-      return { posts: [], total: 0, page: 1, totalPages: 0 };
+      return [];
     }
   }
   
@@ -81,7 +94,7 @@ class BlogService {
    * @returns Promise resolving to a blog post
    */  async getPostBySlug(slug: string): Promise<BlogPost | null> {
     try {
-      const response = await fetch(`${API_BASE}/posts/${slug}`, {
+      const response = await fetch(getApiUrl(`/posts/${slug}`), {
         cache: 'no-store', // Disable caching to ensure fresh data
         next: { revalidate: 30 } // Revalidate every 30 seconds as a fallback
       });
@@ -112,7 +125,7 @@ class BlogService {
    */
   async getPostsByCategory(category: string, limit: number = 4): Promise<BlogPost[]> {
     try {
-      const response = await fetch(`${API_BASE}/posts/category/${category}?limit=${limit}`);
+      const response = await fetch(getApiUrl(`/posts/category/${category}?limit=${limit}`));
       
       if (!response.ok) {
         throw new Error(`Failed to fetch posts by category: ${response.status}`);
@@ -133,7 +146,7 @@ class BlogService {
    */
   async searchPosts(query: string, limit: number = 10): Promise<BlogPost[]> {
     try {
-      const response = await fetch(`${API_BASE}/posts/search?q=${encodeURIComponent(query)}&limit=${limit}`);
+      const response = await fetch(getApiUrl(`/posts/search?q=${encodeURIComponent(query)}&limit=${limit}`));
       
       if (!response.ok) {
         throw new Error(`Failed to search posts: ${response.status}`);

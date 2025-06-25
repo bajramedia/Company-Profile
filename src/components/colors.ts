@@ -4,7 +4,7 @@ const colors = {
   light: {
     background: '#ffffff',
     foreground: '#171717',
-    primary: '#39ff14',
+    primary: '#047857',
     secondary: '#6b7280',
     accent: '#8b5cf6',
     muted: '#f3f4f6',
@@ -16,7 +16,7 @@ const colors = {
   dark: {
     background: '#0a0a0a',
     foreground: '#ededed',
-    primary: '#39ff14',
+    primary: '#059669',
     secondary: '#9ca3af',
     accent: '#a78bfa',
     muted: '#374151',

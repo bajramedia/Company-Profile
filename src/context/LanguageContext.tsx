@@ -64,8 +64,8 @@ export const translations: Translations = {  // Supported By section
     id: "Memberdayakan Dunia Dengan",
   },
   "hero.title.highlight": {
-    en: "human power",
-    id: "Inovasi Manusia",
+    en: "human power ",
+    id: "Inovasi Manusia ",
   },
   "hero.title.part2": {
     en: "and technology",
@@ -230,6 +230,75 @@ export const translations: Translations = {  // Supported By section
     en: "Some of the works and projects we have completed for our clients",
     id: "Beberapa hasil karya dan proyek yang telah kami kerjakan untuk klien kami",
   },
+
+  // Portfolio Page
+  "portfolio.page.title.main": {
+    en: "Portfolio",
+    id: "Portfolio",
+  },
+  "portfolio.page.title.highlight": {
+    en: "Kami",
+    id: "Kami",
+  },
+  "portfolio.page.subtitle": {
+    en: "A collection of projects we have worked on with love and high dedication. Each project has a unique story and solution that we provide.",
+    id: "Kumpulan project yang telah kami kerjakan dengan cinta dan dedikasi tinggi. Setiap project memiliki cerita dan solusi unik yang kami berikan.",
+  },
+
+  // Portfolio Categories
+  "portfolio.categories.all": {
+    en: "All",
+    id: "Semua",
+  },
+  "portfolio.categories.webDevelopment": {
+    en: "Web Development",
+    id: "Web Development",
+  },
+  "portfolio.categories.gameAssets": {
+    en: "Game Assets",
+    id: "Game Assets",
+  },
+  "portfolio.categories.uiuxDesign": {
+    en: "UI/UX Design",
+    id: "UI/UX Design",
+  },
+
+  // Portfolio Project Details
+  "portfolio.project.viewDetail": {
+    en: "View Detail",
+    id: "Lihat Detail",
+  },
+  "portfolio.project.visitWebsite": {
+    en: "Visit Website",
+    id: "Kunjungi Website",
+  },
+  "portfolio.project.viewCode": {
+    en: "View Code",
+    id: "Lihat Kode",
+  },
+  "portfolio.project.featured": {
+    en: "Featured",
+    id: "Unggulan",
+  },
+
+  // Portfolio CTA Section
+  "portfolio.cta.title": {
+    en: "Have a Dream Project?",
+    id: "Punya Project Impian?",
+  },
+  "portfolio.cta.subtitle": {
+    en: "Let's make your digital vision come true together with our expert team. Free consultation for your first project!",
+    id: "Mari wujudkan visi digital kamu bersama tim expert kami. Konsultasi gratis untuk project pertama!",
+  },
+  "portfolio.cta.startProject": {
+    en: "Start Project",
+    id: "Mulai Project",
+  },
+  "portfolio.cta.viewServices": {
+    en: "View Services",
+    id: "Lihat Services",
+  },
+
   "portfolio.filter.all": {
     en: "All",
     id: "Semua",
@@ -265,6 +334,22 @@ export const translations: Translations = {  // Supported By section
   "portfolio.viewAll": {
     en: "View All Portfolio",
     id: "Lihat Semua Portofolio",
+  },
+  "portfolio.comingSoon.title": {
+    en: "Coming Soon",
+    id: "Segera Hadir",
+  },
+  "portfolio.comingSoon.subtitle": {
+    en: "We're working on some amazing projects that will be showcased here soon. Stay tuned!",
+    id: "Kami sedang mengerjakan beberapa proyek luar biasa yang akan ditampilkan di sini segera. Nantikan!",
+  },
+  "portfolio.comingSoon.adminNote": {
+    en: "Portfolio is empty. Please add some projects from the admin panel.",
+    id: "Portfolio kosong. Silakan tambahkan beberapa proyek dari panel admin.",
+  },
+  "portfolio.goToAdmin": {
+    en: "Go to Admin Panel",
+    id: "Ke Panel Admin",
   },
 
   // Testimonials Section
@@ -343,8 +428,8 @@ export const translations: Translations = {  // Supported By section
     id: "Telepon",
   },
   "contact.phone.text": {
-    en: "+62 000000",
-    id: "+62 000000",
+    en: "+6285739402436",
+    id: "+6285739402436",
   },
   "contact.email.title": {
     en: "Email",
@@ -373,7 +458,8 @@ export const translations: Translations = {  // Supported By section
   "contact.subject": {
     en: "Subject",
     id: "Subjek",
-  },  "contact.message": {
+  },
+  "contact.message": {
     en: "Message",
     id: "Pesan",
   },
@@ -409,7 +495,7 @@ export const translations: Translations = {  // Supported By section
     en: "Support",
     id: "Dukungan",
   },
-  
+
   // Footer Section
   "footer.description": {
     en: "Building technology that creates value for your business. Integrated digital solutions for company growth.",
@@ -478,25 +564,197 @@ export const translations: Translations = {  // Supported By section
   "footer.services.mobileDevelopment": {
     en: "Mobile Development",
     id: "Pengembangan Mobile",
-  },  "footer.services.uiDesign": {
+  },
+  "footer.services.uiDesign": {
     en: "UI/UX Design",
     id: "Desain UI/UX",
-  },  
+  },
   "footer.services.consultation": {
     en: "Consultation",
     id: "Konsultasi",
   },
+
+  "description": {
+    en: "Bajramedia is a digital technology company specializing in web development, mobile applications, and digital marketing solutions. We help businesses transform digitally with innovative, reliable, and scalable technology solutions.",
+    id: "Bajramedia adalah perusahaan teknologi digital yang mengkhususkan diri dalam pengembangan web, aplikasi mobile, dan solusi pemasaran digital. Kami membantu bisnis bertransformasi digital dengan solusi teknologi yang inovatif, terpercaya, dan dapat berkembang.",
+  },
+
+
 
   // Supported By Section
   "inbis.officialCollaboration": {
     en: "Bajramedia is proudly incubated by Inbis Primakara",
     id: "Bajramedia dibina langsung oleh Inbis Primakara",
   },
+
+  // 404 Page
+  "404.title": {
+    en: "Oops! Page Not Found",
+    id: "Oops! Halaman Tidak Ditemukan",
+  },
+  "404.description": {
+    en: "It seems the page you're looking for has been moved, deleted, or perhaps never existed. But don't worry, we have many other interesting things!",
+    id: "Sepertinya halaman yang kamu cari sudah pindah, dihapus, atau mungkin tidak pernah ada. Tapi jangan khawatir, kami punya banyak hal menarik lainnya!",
+  },
+  "404.backToHome": {
+    en: "Back to Home",
+    id: "Kembali ke Beranda",
+  },
+  "404.readBlog": {
+    en: "Read Blog",
+    id: "Baca Blog",
+  },
+  "404.viewPortfolio": {
+    en: "View Portfolio",
+    id: "Lihat Portfolio",
+  },
+  "404.popularPages": {
+    en: "Popular Pages",
+    id: "Halaman Populer",
+  },
+  "404.ourServices": {
+    en: "Our Services",
+    id: "Layanan Kami",
+  },
+  "404.servicesDescription": {
+    en: "Web development, mobile apps, and digital marketing",
+    id: "Web development, mobile apps, dan digital marketing",
+  },
+  "404.webDevDescription": {
+    en: "Modern and responsive websites",
+    id: "Website modern dan responsif",
+  },
+  "404.mobileDescription": {
+    en: "iOS and Android applications",
+    id: "Aplikasi iOS dan Android",
+  },
+  "404.copyright": {
+    en: "© 2024 Bajramedia. Made with Bajra ❤️ Team",
+    id: "© 2024 Bajramedia. Made with Bajra ❤️ Team",
+  },
+  "404.whatsappMessage": {
+    en: "Hello! I got lost on your website, can you help direct me to the right page?",
+    id: "Halo! Saya tersesat di website kamu, bisa bantu arahkan ke halaman yang tepat?",
+  },
+
+  // Blog Page
+  "blog.title": {
+    en: "Latest News & Insights",
+    id: "Berita & Wawasan Terbaru",
+  },
+  "blog.subtitle": {
+    en: "Discover in-depth articles about design, development, and digital marketing strategies to help your business grow.",
+    id: "Temukan artikel mendalam tentang desain, pengembangan, dan strategi pemasaran digital untuk membantu bisnis Anda berkembang.",
+  },
+  "blog.badge": {
+    en: "Blog Posts & Articles",
+    id: "Artikel & Blog Posts",
+  },
+  "blog.searchPlaceholder": {
+    en: "Search articles...",
+    id: "Cari artikel...",
+  },
+  "blog.filter.all": {
+    en: "All",
+    id: "Semua",
+  },
+  "blog.label": {
+    en: "Blog",
+    id: "Blog",
+  },
+  "blog.description": {
+    en: "Stay updated with the latest insights, tips, and trends in technology, design, and digital business.",
+    id: "Tetap update dengan wawasan, tips, dan tren terbaru dalam teknologi, desain, dan bisnis digital.",
+  },
+  "blog.Button": {
+    en: "View All Articles",
+    id: "Lihat Semua Artikel",
+  },
+  "blog.noArticles": {
+    en: "No articles found",
+    id: "Tidak ada artikel ditemukan",
+  },
+  "blog.adjustFilter": {
+    en: "Try adjusting your search or filter criteria",
+    id: "Coba sesuaikan pencarian atau kriteria filter Anda",
+  },
+  "blog.trending": {
+    en: "Trending Articles",
+    id: "Artikel Trending",
+  },
+  "blog.readMore": {
+    en: "Read more",
+    id: "Baca selengkapnya",
+  },
+  "blog.shareArticle": {
+    en: "Share this article",
+    id: "Bagikan artikel ini",
+  },
+  "blog.relatedArticles": {
+    en: "Related Articles",
+    id: "Artikel Terkait",
+  },
+  "blog.postNotFound": {
+    en: "Blog Post Not Found",
+    id: "Artikel Blog Tidak Ditemukan",
+  },
+  "blog.postNotFoundDescription": {
+    en: "The blog post you are looking for does not exist or has been removed.",
+    id: "Artikel blog yang Anda cari tidak ada atau telah dihapus.",
+  },
+  "blog.backToBlog": {
+    en: "Back to Blog",
+    id: "Kembali ke Blog",
+  },
+
+  // Services Page
+  "services.pageTitle": {
+    en: "Our Professional Services",
+    id: "Layanan Profesional Kami",
+  },
+  "services.pageSubtitle": {
+    en: "Comprehensive digital solutions to grow your business. From websites to mobile applications, we are ready to realize your digital vision with cutting-edge technology.",
+    id: "Solusi digital terpadu untuk mengembangkan bisnis kamu. Dari website hingga aplikasi mobile, kami siap mewujudkan visi digital kamu dengan teknologi terdepan.",
+  },
+  "services.learnMore": {
+    en: "Learn More",
+    id: "Pelajari Lebih Lanjut",
+  },
+  "services.cta.title": {
+    en: "Ready to Start Your Dream Project?",
+    id: "Siap Memulai Proyek Impian Kamu?",
+  },
+  "services.cta.subtitle": {
+    en: "Free consultation to discuss your digital needs. Our expert team is ready to help!",
+    id: "Konsultasi gratis untuk membahas kebutuhan digital kamu. Tim expert kami siap membantu!",
+  },
+  "services.cta.consultation": {
+    en: "Free Consultation",
+    id: "Konsultasi Gratis",
+  },
+  "services.cta.portfolio": {
+    en: "View Portfolio",
+    id: "Lihat Portfolio",
+  },
+
+  // Common
+  "common.goHome": {
+    en: "Go to Homepage",
+    id: "Ke Halaman Utama",
+  },
+  "common.loading": {
+    en: "Loading...",
+    id: "Memuat...",
+  },
+  "common.error": {
+    en: "An error occurred",
+    id: "Terjadi kesalahan",
+  },
   "inbis.partnershipDescription": {
     en: "hrough a hands-on entrepreneurship program and intensive mentorship. We've grown with clear direction and strong startup support.",
     id: "melalui program kewirausahaan dan mentorship intensif. Kami tumbuh dengan arahan yang jelas dan dukungan dari ekosistem startup yang solid."
   },
-    // Team Section
+  // Team Section
   "team.badge": {
     en: "OUR TEAM",
     id: "TIM KAMI",
@@ -578,83 +836,13 @@ export const translations: Translations = {  // Supported By section
   "cta.primaryButton": {
     en: "Start Your Project",
     id: "Mulai Proyek Anda",
-  },  "cta.secondaryButton": {
+  },
+  "cta.secondaryButton": {
     en: "Contact Us",
     id: "Hubungi Kami",
   },
 
-  // Blog section
-  "blog.label": {
-    en: "Our Blog",
-    id: "Blog Kami",
-  },
-  "blog.title": {
-    en: "Latest Insights & Articles",
-    id: "Artikel & Wawasan Terbaru",
-  },
-  "blog.description": {
-    en: "Stay updated with our latest thinking on digital strategy, design trends, technology innovations, and more.",
-    id: "Tetap up to date dengan pemikiran terbaru kami tentang strategi digital, tren desain, inovasi teknologi, dan lainnya.",
-  },  "blog.viewAllButton": {
-    en: "View All Articles",
-    id: "Lihat Semua Artikel",
-  },
-  "blog.noPosts": {
-    en: "No blog posts found",
-    id: "Tidak ada artikel blog ditemukan",
-  },
-  "blog.noPostsDescription": {
-    en: "We'll be adding new content soon. Please check back later!",
-    id: "Kami akan menambahkan konten baru segera. Silakan periksa kembali nanti!",
-  },
-  "blog.noSearchResults": {
-    en: "Try using different keywords or browse all articles",
-    id: "Coba gunakan kata kunci yang berbeda atau jelajahi semua artikel",
-  },
-  "blog.pageTitle": {
-    en: "Our Blog",
-    id: "Blog Kami",
-  },
-  "blog.pageDescription": {
-    en: "Explore our collection of articles, insights and resources on digital marketing, design, development and more.",
-    id: "Jelajahi koleksi artikel, wawasan, dan sumber daya kami tentang pemasaran digital, desain, pengembangan, dan banyak lagi.",
-  },
-  "blog.searchPlaceholder": {
-    en: "Search articles...",
-    id: "Cari artikel...",
-  },
-  "blog.postNotFound": {
-    en: "Blog Post Not Found",
-    id: "Artikel Blog Tidak Ditemukan",
-  },
-  "blog.postNotFoundDescription": {
-    en: "The blog post you are looking for does not exist or has been removed.",
-    id: "Artikel blog yang Anda cari tidak ada atau telah dihapus.",
-  },
-  "blog.backToBlog": {
-    en: "Back to Blog",
-    id: "Kembali ke Blog",
-  },
-  "blog.readTime": {
-    en: "min read",
-    id: "menit membaca",
-  },
-  "blog.sharePost": {
-    en: "Share this post:",
-    id: "Bagikan artikel ini:",
-  },
-  "blog.relatedPosts": {
-    en: "Related Posts",
-    id: "Artikel Terkait",
-  },
-  "blog.previous": {
-    en: "Previous",
-    id: "Sebelumnya",
-  },
-  "blog.next": {
-    en: "Next",
-    id: "Berikutnya",
-  }
+
 };
 
 interface LanguageContextType {
@@ -666,7 +854,7 @@ interface LanguageContextType {
 
 const defaultContext: LanguageContextType = {
   language: "en",
-  setLanguage: () => {},
+  setLanguage: () => { },
   isChanging: false,
   t: (key: string) => key,
 };
@@ -682,9 +870,9 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   // Enhanced setLanguage with smooth transition
   const handleSetLanguage = (newLanguage: Language) => {
     if (newLanguage === language) return;
-    
+
     setIsChanging(true);
-    
+
     // Add a small delay for smooth transition effect
     setTimeout(() => {
       setLanguage(newLanguage);

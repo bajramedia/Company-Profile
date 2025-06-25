@@ -69,7 +69,7 @@ const CTA: React.FC<CTAProps> = ({ className = '' }) => {
             <Button 
               variant="primary" 
               size="lg" 
-              className="bg-[#f7d046] hover:bg-[#ffd54f] text-gray-800 py-5 px-8 rounded-xl font-bold shadow-xl w-full md:w-auto lg:w-full hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 group"
+              className="bg-[#f7d046] hover:bg-[#03b150] text-gray-800 hover:text-white py-5 px-8 rounded-xl font-bold shadow-xl w-full md:w-auto lg:w-full hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 group"
             >
               <span className="text-base font-semibold flex items-center justify-center">
                 {t('cta.primaryButton') || 'Start Your Project'}
