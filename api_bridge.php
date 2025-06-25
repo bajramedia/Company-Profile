@@ -2,8 +2,13 @@
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
+header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With, Origin, Accept');
 header('Access-Control-Allow-Credentials: true');
+
+// Debug headers
+error_log("API Bridge called: " . $_SERVER['REQUEST_URI']);
+error_log("Origin: " . ($_SERVER['HTTP_ORIGIN'] ?? 'none'));
+error_log("User Agent: " . ($_SERVER['HTTP_USER_AGENT'] ?? 'none'));
 
 // Handle preflight OPTIONS request
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
