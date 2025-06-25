@@ -49,7 +49,7 @@ function handleGet($pdo, $endpoint, $id) {
         switch ($endpoint) {
             case 'posts':
                 if ($id) {
-                    // Get single post by slug - using correct column names
+                    // Get single post by slug - using CORRECT column names
                     $stmt = $pdo->prepare("
                         SELECT p.*, 
                                p.date as createdAt,
@@ -66,7 +66,7 @@ function handleGet($pdo, $endpoint, $id) {
                     $stmt->execute([$id, $id]);
                     echo json_encode($stmt->fetch());
                 } else {
-                    // Get all posts with pagination - using correct column names
+                    // Get all posts - using CORRECT column names
                     $page = max(1, intval($_GET['page'] ?? 1));
                     $limit = max(1, min(100, intval($_GET['limit'] ?? 10)));
                     $offset = ($page - 1) * $limit;
@@ -92,42 +92,21 @@ function handleGet($pdo, $endpoint, $id) {
                 break;
 
             case 'portfolio':
-                if ($id) {
-                    // Get single portfolio by slug
-                    $stmt = $pdo->prepare("
-                        SELECT p.*, 
-                               p.date as createdAt,
-                               pc.name as categoryName, 
-                               pc.icon as categoryIcon
-                        FROM portfolio p 
-                        LEFT JOIN portfoliocategory pc ON p.categoryId = pc.id
-                        WHERE (p.slug = ? OR p.id = ?) AND p.published = 1
-                    ");
-                    $stmt->execute([$id, $id]);
-                    echo json_encode($stmt->fetch());
-                } else {
-                    // Get all portfolio items
-                    $stmt = $pdo->query("
-                        SELECT p.*, 
-                               p.date as createdAt,
-                               pc.name as categoryName, 
-                               pc.icon as categoryIcon
-                        FROM portfolio p 
-                        LEFT JOIN portfoliocategory pc ON p.categoryId = pc.id
-                        WHERE p.published = 1 
-                        ORDER BY p.date DESC
-                    ");
-                    echo json_encode($stmt->fetchAll());
-                }
+                $stmt = $pdo->query("
+                    SELECT p.*, 
+                           p.date as createdAt,
+                           pc.name as categoryName, 
+                           pc.icon as categoryIcon
+                    FROM portfolio p 
+                    LEFT JOIN portfoliocategory pc ON p.categoryId = pc.id
+                    WHERE p.published = 1 
+                    ORDER BY p.date DESC
+                ");
+                echo json_encode($stmt->fetchAll());
                 break;
 
             case 'categories':
                 $stmt = $pdo->query("SELECT * FROM category ORDER BY name ASC");
-                echo json_encode($stmt->fetchAll());
-                break;
-
-            case 'portfolio-categories':
-                $stmt = $pdo->query("SELECT * FROM portfoliocategory ORDER BY name ASC");
                 echo json_encode($stmt->fetchAll());
                 break;
 
@@ -204,14 +183,10 @@ function handlePost($pdo, $endpoint) {
     try {
         switch ($endpoint) {
             case 'post-view':
-                // Update views count directly in post table
-                try {
-                    $stmt = $pdo->prepare("UPDATE post SET views = views + 1 WHERE id = ?");
-                    $stmt->execute([$data['postId']]);
-                    echo json_encode(['success' => true]);
-                } catch (Exception $e) {
-                    echo json_encode(['success' => true, 'note' => 'View tracking failed']);
-                }
+                // Update views directly in post table
+                $stmt = $pdo->prepare("UPDATE post SET views = views + 1 WHERE id = ?");
+                $stmt->execute([$data['postId']]);
+                echo json_encode(['success' => true]);
                 break;
 
             default:
