@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import prisma from "@/lib/prisma";
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://bajramedia.com/api_bridge.php';
 
 export async function GET(request: NextRequest) {
   try {
@@ -7,75 +8,58 @@ export async function GET(request: NextRequest) {
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '10');
     const search = searchParams.get('search') || '';
-    const skip = (page - 1) * limit;
 
-    // Prepare where clause with search if provided
-    const whereClause: any = {};
+    // Get posts from external API
+    const response = await fetch(`${API_BASE_URL}?endpoint=posts&page=${page}&limit=${limit}`);
     
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const posts = await response.json();
+    
+    // Filter posts based on search if provided
+    let filteredPosts = posts;
     if (search) {
-      whereClause.OR = [
-        { title: { contains: search } },
-        { excerpt: { contains: search } },
-        { content: { contains: search } }
-      ];
+      const searchLower = search.toLowerCase();
+      filteredPosts = posts.filter((post: any) => 
+        post.title?.toLowerCase().includes(searchLower) ||
+        post.excerpt?.toLowerCase().includes(searchLower) ||
+        post.content?.toLowerCase().includes(searchLower)
+      );
     }
 
-    // Get total count for pagination
-    const totalCount = await prisma.post.count({ where: whereClause });
-
-    // Get posts with related data
-    const posts = await prisma.post.findMany({
-      where: whereClause,
-      skip,
-      take: limit,
-      orderBy: { 
-        date: 'desc' 
-      },
-      include: {
-        author: {
-          select: {
-            id: true,
-            name: true,
-            avatar: true,
-            bio: true
-          }
-        },
-        category: true,
-        tags: {
-          include: {
-            tag: true
-          }
-        }
-      }
-    });
-
-    // Format the posts to match your frontend model
-    const formattedPosts = posts.map(post => ({
+    // Format the posts to match admin panel expectations
+    const formattedPosts = filteredPosts.map((post: any) => ({
       id: post.id,
       title: post.title,
       slug: post.slug,
       excerpt: post.excerpt,
       content: post.content,
       featuredImage: post.featuredImage,
-      date: post.date.toISOString(),
-      readTime: post.readTime,
-      published: post.published,
+      date: post.createdAt || post.date,
+      readTime: post.readTime || 5,
+      published: post.published === '1' || post.published === 1 || post.published === true,
       author: {
-        id: post.author.id,
-        name: post.author.name,
-        avatar: post.author.avatar,
-        bio: post.author.bio
+        id: post.authorId || '1',
+        name: post.authorName || 'Admin User',
+        avatar: post.authorAvatar || '',
+        bio: post.authorBio || ''
       },
-      category: post.category,
-      tags: post.tags.map(pt => pt.tag.name)
+      category: {
+        id: post.categoryId || '1',
+        name: post.categoryName || 'Uncategorized',
+        slug: post.categorySlug || 'uncategorized'
+      },
+      tags: post.tags || []
     }));
 
     return NextResponse.json({ 
       posts: formattedPosts, 
-      total: totalCount,
+      total: filteredPosts.length,
       page,
       limit,
-      totalPages: Math.ceil(totalCount / limit)
+      totalPages: Math.ceil(filteredPosts.length / limit)
     });
   } catch (error) {
     console.error('Error fetching admin posts:', error);
@@ -84,4 +68,4 @@ export async function GET(request: NextRequest) {
       { status: 500 }
     );
   }
-}
+} 

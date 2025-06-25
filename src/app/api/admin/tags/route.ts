@@ -1,22 +1,21 @@
 import { NextResponse } from "next/server";
-import prisma from "@/lib/prisma";
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://bajramedia.com/api_bridge.php';
 
 export async function GET() {
   try {
-    // Fetch tags with post count
-    const tags = await prisma.tag.findMany({
-      orderBy: { name: 'asc' },
-      include: {
-        _count: {
-          select: { posts: true }
-        }
-      }
-    });
+    const response = await fetch(`${API_BASE_URL}?endpoint=tags`);
     
-    // Format response to include post count
-    const formattedTags = tags.map(tag => ({
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const tags = await response.json();
+    
+    // Add postCount (for now set to 0, can be enhanced later)
+    const formattedTags = tags.map((tag: any) => ({
       ...tag,
-      postCount: tag._count.posts
+      postCount: 0 // TODO: Get actual post count from API
     }));
     
     return NextResponse.json(formattedTags);
