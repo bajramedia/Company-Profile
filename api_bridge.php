@@ -1,6 +1,18 @@
 <?php
 header('Content-Type: application/json');
-header('Access-Control-Allow-Origin: *');
+// Allow specific origins and fallback to *
+$allowedOrigins = [
+    'https://company-profile-git-main-bajra-media.vercel.app',
+    'https://company-profile-c0emzkquv-bajra-media.vercel.app', 
+    'https://bajramedia.vercel.app'
+];
+
+$origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+if (in_array($origin, $allowedOrigins)) {
+    header("Access-Control-Allow-Origin: $origin");
+} else {
+    header('Access-Control-Allow-Origin: *');
+}
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With, Origin, Accept');
 header('Access-Control-Allow-Credentials: true');

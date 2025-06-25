@@ -53,10 +53,10 @@ class BlogServiceAPI {
 
   async getAllPosts(page: number = 1, limit: number = 10): Promise<BlogPost[]> {
     try {
-      const response = await fetch(${this.apiBaseUrl}?endpoint=posts&page=&limit=);
+      const response = await fetch(`${this.apiBaseUrl}?endpoint=posts&page=${page}&limit=${limit}`);
       
       if (!response.ok) {
-        throw new Error(HTTP error! status: );
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
       
       const posts = await response.json();
@@ -87,10 +87,10 @@ class BlogServiceAPI {
 
   async getPostBySlug(slug: string): Promise<BlogPost | null> {
     try {
-      const response = await fetch(${this.apiBaseUrl}?endpoint=posts&id=);
+      const response = await fetch(`${this.apiBaseUrl}?endpoint=posts&id=${slug}`);
       
       if (!response.ok) {
-        throw new Error(HTTP error! status: );
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
       
       const post = await response.json();
@@ -169,10 +169,10 @@ class BlogServiceAPI {
 
   async getCategories(): Promise<BlogCategory[]> {
     try {
-      const response = await fetch(${this.apiBaseUrl}?endpoint=categories);
+      const response = await fetch(`${this.apiBaseUrl}?endpoint=categories`);
       
       if (!response.ok) {
-        throw new Error(HTTP error! status: );
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
       
       return await response.json();
@@ -184,7 +184,7 @@ class BlogServiceAPI {
 
   async trackPostView(postId: string): Promise<void> {
     try {
-      await fetch(${this.apiBaseUrl}?endpoint=post-view, {
+      await fetch(`${this.apiBaseUrl}?endpoint=post-view`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -199,4 +199,4 @@ class BlogServiceAPI {
 
 // Export singleton instance
 export const blogService = new BlogServiceAPI();
-export { BlogServiceAPI };
+export { BlogServiceAPI }; 
