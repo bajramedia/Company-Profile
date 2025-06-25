@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useLanguage } from '@/context/LanguageContext';
-import { blogService, BlogPost } from '@/services/BlogService';
+import { blogService, BlogPost } from '@/services/BlogService.api';
 import { FiSearch, FiClock, FiEye, FiTrendingUp, FiGrid, FiList, FiBookmark, FiShare2, FiHome, FiChevronRight } from 'react-icons/fi';
 import Link from 'next/link';
 import Head from 'next/head';

@@ -1,5 +1,5 @@
 import { MetadataRoute } from 'next';
-import { blogService } from '@/services/BlogService';
+import { blogService } from '@/services/BlogService.api';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Get all blog posts

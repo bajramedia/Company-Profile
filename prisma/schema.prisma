@@ -6,8 +6,8 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("POSTGRES_PRISMA_URL")
+  provider = "mysql"
+  url      = env("DATABASE_URL")
 }
 
 // Blog post model
@@ -16,7 +16,7 @@ model Post {
   slug          String     @unique
   title         String     @db.VarChar(500)
   excerpt       String     @db.Text
-  content       String     @db.Text
+  content       String     @db.LongText
   featuredImage String     @db.VarChar(500)
   published     Boolean    @default(false)
   date          DateTime   @default(now())
@@ -96,7 +96,7 @@ model Portfolio {
   slug          String              @unique
   title         String              @db.VarChar(500)
   description   String              @db.Text
-  content       String              @db.Text
+  content       String              @db.LongText
   featuredImage String              @db.VarChar(500)
   images        String?             @db.Text // JSON array of image URLs
   clientName    String?             @db.VarChar(255)

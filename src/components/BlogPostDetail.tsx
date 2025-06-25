@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { useLanguage } from '@/context/LanguageContext';
 import { Blog, BlogPostCard } from '@/components';
 import SocialShare from '@/components/SocialShare';
-import { BlogPost } from '@/services/BlogService';
+import { BlogPost } from '@/services/BlogService.api';
 import { useViewTracker, useViewCounter } from '@/hooks/useViewTracker';
 import { SocialShareService } from '@/services/SocialShareService';
 import { FiCalendar, FiClock, FiTag, FiArrowLeft, FiEye, FiTwitter, FiLinkedin, FiFacebook, FiCopy, FiShare2 } from 'react-icons/fi';
