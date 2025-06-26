@@ -44,8 +44,9 @@ export default function Navbar({
 
     // Get text color classes for navigation links
     const getLinkStyles = (isActive: boolean, isServices?: boolean) => {
-        if (isServices && pathname === '/') {
-            return 'text-green-500 hover:text-green-600';
+        // If we're on homepage and it's services link, don't make it green unless it's actually active
+        if (isServices && pathname === '/' && !isActive) {
+            return 'text-white-700 dark:text-white-300 hover:text-green-500';
         }
 
         return isActive
@@ -227,56 +228,58 @@ export default function Navbar({
             </div>
 
             {/* Mobile Menu */}
-            {isMobileMenuOpen && (
-                <div className="md:hidden bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
-                    <div className="px-4 py-6 space-y-4">
-                        <Link
-                            href="/"
-                            className={`block py-2 text-base font-medium ${getLinkStyles(currentTab === 'home')}`}
+            <div className={`md:hidden transition-all duration-300 ease-in-out ${isMobileMenuOpen
+                ? 'max-h-96 opacity-100'
+                : 'max-h-0 opacity-0 overflow-hidden'
+                } bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700`}>
+                <div className="px-4 py-6 space-y-4">
+                    <Link
+                        href="/"
+                        className={`block py-2 text-base font-medium transition-colors ${getLinkStyles(currentTab === 'home')}`}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                        {t('nav.home')}
+                    </Link>
+                    <a
+                        href="#about"
+                        className={`block py-2 text-base font-medium transition-colors ${getLinkStyles(false)}`}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                        {t('nav.about')}
+                    </a>
+                    <Link
+                        href="/services"
+                        className={`block py-2 text-base font-medium transition-colors ${getLinkStyles(currentTab === 'services')}`}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                        {t('nav.services')}
+                    </Link>
+                    <Link
+                        href="/portfolio"
+                        className={`block py-2 text-base font-medium transition-colors ${getLinkStyles(currentTab === 'portfolio')}`}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                        {t('nav.portfolio')}
+                    </Link>
+                    <Link
+                        href="/blog"
+                        className={`block py-2 text-base font-medium transition-colors ${getLinkStyles(currentTab === 'blog')}`}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                        {t('nav.blog')}
+                    </Link>
+                    <div className="pt-4">
+                        <Button
+                            variant="primary"
+                            size="sm"
+                            className="w-full justify-center"
                             onClick={() => setIsMobileMenuOpen(false)}
                         >
-                            {t('nav.home')}
-                        </Link>
-                        <a
-                            href="#about"
-                            className={`block py-2 text-base font-medium ${getLinkStyles(false)}`}
-                            onClick={() => setIsMobileMenuOpen(false)}
-                        >
-                            {t('nav.about')}
-                        </a>
-                        <Link
-                            href="/services"
-                            className={`block py-2 text-base font-medium ${getLinkStyles(currentTab === 'services')}`}
-                            onClick={() => setIsMobileMenuOpen(false)}
-                        >
-                            {t('nav.services')}
-                        </Link>
-                        <Link
-                            href="/portfolio"
-                            className={`block py-2 text-base font-medium ${getLinkStyles(currentTab === 'portfolio')}`}
-                            onClick={() => setIsMobileMenuOpen(false)}
-                        >
-                            {t('nav.portfolio')}
-                        </Link>
-                        <Link
-                            href="/blog"
-                            className={`block py-2 text-base font-medium ${getLinkStyles(currentTab === 'blog')}`}
-                            onClick={() => setIsMobileMenuOpen(false)}
-                        >
-                            {t('nav.blog')}
-                        </Link>
-                        <div className="pt-4">
-                            <Button
-                                variant="primary"
-                                size="sm"
-                                className="w-full"
-                            >
-                                {t('nav.contact')}
-                            </Button>
-                        </div>
+                            {t('nav.contact')}
+                        </Button>
                     </div>
                 </div>
-            )}
+            </div>
         </header>
     );
 } 

@@ -16,6 +16,7 @@
     "vercel-build": "prisma generate && next build"
   },
   "dependencies": {
+    "@google-cloud/translate": "^9.1.0",
     "@prisma/client": "^6.8.2",
     "@tiptap/extension-color": "^2.12.0",
     "@tiptap/extension-image": "^2.12.0",

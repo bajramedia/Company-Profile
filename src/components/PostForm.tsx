@@ -6,6 +6,8 @@ import { createPost, updatePost } from '@/actions/post-actions';
 import { FiSave, FiX, FiEye, FiCalendar, FiClock, FiUser, FiTag, FiFolder, FiImage, FiFileText, FiGlobe, FiSettings } from 'react-icons/fi';
 import ImageUpload from './ImageUpload';
 import RichTextEditor from './RichTextEditor';
+import { useLanguage } from '@/context/LanguageContext';
+import { translationService, type BlogContent } from '@/services/TranslationService';
 
 // Interface for the post form props
 interface PostFormProps {
@@ -15,6 +17,7 @@ interface PostFormProps {
 
 export default function PostForm({ postId, initialData }: PostFormProps) {
   const router = useRouter();
+  const { t } = useLanguage();
   const isEditing = !!postId;
   // Form state
   const [formData, setFormData] = useState({
@@ -44,6 +47,14 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
   const [activeTab, setActiveTab] = useState('content');
   const [wordCount, setWordCount] = useState(0);
   const [saveStatus, setSaveStatus] = useState<'saved' | 'saving' | 'unsaved'>('saved');
+
+  // Auto-translation states
+  const [autoTranslateEnabled, setAutoTranslateEnabled] = useState(false);
+  const [sourceLang, setSourceLang] = useState('id');
+  const [targetLang, setTargetLang] = useState('en');
+  const [translationStatus, setTranslationStatus] = useState<'idle' | 'detecting' | 'translating' | 'success' | 'error'>('idle');
+  const [translatedContent, setTranslatedContent] = useState<BlogContent | null>(null);
+  const [supportedLanguages, setSupportedLanguages] = useState<Array<{ code: string, name: string }>>([]);
 
   // Fetch authors, categories and tags on component mount
   useEffect(() => {
@@ -316,34 +327,35 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
   };
 
   const tabs = [
-    { id: 'content', label: 'Content', icon: FiFileText },
-    { id: 'settings', label: 'Settings', icon: FiSettings },
-    { id: 'seo', label: 'SEO', icon: FiGlobe },
-    { id: 'social', label: 'Social', icon: FiTag }
+    { id: 'content', label: t('postForm.content'), icon: FiFileText },
+    { id: 'settings', label: t('postForm.settings'), icon: FiSettings },
+    { id: 'seo', label: t('postForm.seo'), icon: FiGlobe },
+    { id: 'social', label: t('postForm.social'), icon: FiTag },
+    { id: 'translation', label: t('autoTranslate.title'), icon: FiGlobe }
   ];
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200 sticky top-0 z-40">
+      <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-40">
         <div className="container mx-auto px-4 py-4">
           <div className="flex justify-between items-center">
             <div className="flex items-center space-x-4">
-              <h1 className="text-2xl font-bold text-gray-900">
-                {isEditing ? 'Edit Post' : 'Create New Post'}
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+                {isEditing ? t('postForm.editPost') : t('postForm.createNew')}
               </h1>
-              <div className="flex items-center space-x-2 text-sm text-gray-500">
+              <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
                 <span className="flex items-center gap-1">
                   <FiFileText size={16} />
-                  {wordCount} words
+                  {wordCount} {t('postForm.words')}
                 </span>
                 <span className="flex items-center gap-1">
                   <FiClock size={16} />
-                  {formData.readTime} min read
+                  {formData.readTime} {t('postForm.minRead')}
                 </span>
-                <div className="flex items-center text-sm text-gray-600">
-                  {saveStatus === 'saved' && <span className="text-green-600">✓ Saved</span>}
-                  {saveStatus === 'saving' && <span className="text-yellow-600">⏳ Saving...</span>}
-                  {saveStatus === 'unsaved' && <span className="text-red-600">⚠ Unsaved</span>}
+                <div className="flex items-center text-sm text-gray-600 dark:text-gray-300">
+                  {saveStatus === 'saved' && <span className="text-green-600">✓ {t('postForm.saved')}</span>}
+                  {saveStatus === 'saving' && <span className="text-yellow-600">⏳ {t('postForm.saving')}</span>}
+                  {saveStatus === 'unsaved' && <span className="text-red-600">⚠ {t('postForm.unsaved')}</span>}
                 </div>
               </div>
             </div>
@@ -355,7 +367,7 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
                 className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg flex items-center transition-colors"
               >
                 <FiEye className="mr-2" size={16} />
-                {previewMode ? 'Edit' : 'Preview'}
+                {previewMode ? t('postForm.edit') : t('postForm.preview')}
               </button>
 
               <button
@@ -364,7 +376,7 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
                 className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg flex items-center transition-colors"
               >
                 <FiX className="mr-2" size={16} />
-                Cancel
+                {t('postForm.cancel')}
               </button>
             </div>
           </div>
@@ -373,7 +385,7 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
 
       <div className="container mx-auto px-4 py-8">
         {error && (
-          <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded-r-lg">
+          <div className="bg-red-100 dark:bg-red-900/20 border-l-4 border-red-500 text-red-700 dark:text-red-400 p-4 mb-6 rounded-r-lg">
             <div className="flex items-center">
               <span className="mr-2">⚠</span>
               <p>{error}</p>
@@ -388,7 +400,7 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
         ) : (
           <div className="max-w-6xl mx-auto">
             {/* Tab Navigation */}
-            <div className="bg-white rounded-t-lg border-b border-gray-200">
+            <div className="bg-white dark:bg-gray-800 rounded-t-lg border-b border-gray-200 dark:border-gray-700">
               <nav className="flex space-x-8 px-6">
                 {tabs.map((tab) => {
                   const Icon = tab.icon;
@@ -398,7 +410,7 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
                       onClick={() => setActiveTab(tab.id)}
                       className={`flex items-center space-x-2 py-4 border-b-2 font-medium text-sm transition-colors ${activeTab === tab.id
                         ? 'border-blue-500 text-blue-600'
-                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                        : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600'
                         }`}
                     >
                       <Icon size={18} />
@@ -410,13 +422,13 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
             </div>
 
             {/* Tab Content */}
-            <form onSubmit={handleSubmit} className="bg-white rounded-b-lg shadow-lg">
+            <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-800 rounded-b-lg shadow-lg">
               {activeTab === 'content' && (
                 <div className="p-6 space-y-6">
                   {/* Title */}
                   <div>
-                    <label className="block text-gray-700 font-semibold mb-2">
-                      Post Title *
+                    <label className="block text-gray-700 dark:text-gray-300 font-semibold mb-2">
+                      {t('postForm.title')} *
                     </label>
                     <input
                       type="text"
@@ -427,19 +439,19 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
                         if (!formData.slug) generateSlug();
                         if (!formData.metaTitle) generateMetaTitle();
                       }}
-                      placeholder="Enter an engaging title for your post..."
-                      className="w-full px-4 py-3 text-lg border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      placeholder={t('postForm.titlePlaceholder')}
+                      className="w-full px-4 py-3 text-lg border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       required
                     />
                   </div>
 
                   {/* Slug */}
                   <div>
-                    <label className="block text-gray-700 font-semibold mb-2">
-                      URL Slug *
+                    <label className="block text-gray-700 dark:text-gray-300 font-semibold mb-2">
+                      {t('postForm.slug')} *
                     </label>
                     <div className="flex">
-                      <span className="inline-flex items-center px-3 rounded-l-lg border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">
+                      <span className="inline-flex items-center px-3 rounded-l-lg border border-r-0 border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-500 dark:text-gray-400 text-sm">
                         /blog/
                       </span>
                       <input
@@ -447,24 +459,24 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
                         name="slug"
                         value={formData.slug}
                         onChange={handleChange}
-                        placeholder="url-friendly-slug"
-                        className="flex-1 px-4 py-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        placeholder={t('postForm.slugPlaceholder')}
+                        className="flex-1 px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         required
                       />
                       <button
                         type="button"
                         onClick={generateSlug}
-                        className="px-4 py-3 bg-gray-100 border border-l-0 border-gray-300 rounded-r-lg hover:bg-gray-200 transition-colors"
+                        className="px-4 py-3 bg-gray-100 dark:bg-gray-600 border border-l-0 border-gray-300 dark:border-gray-600 rounded-r-lg hover:bg-gray-200 dark:hover:bg-gray-500 transition-colors text-gray-700 dark:text-gray-300"
                       >
-                        Generate
+                        {t('postForm.generate')}
                       </button>
                     </div>
                   </div>
 
                   {/* Featured Image */}
                   <div>
-                    <label className="block text-gray-700 font-semibold mb-2">
-                      Featured Image
+                    <label className="block text-gray-700 dark:text-gray-300 font-semibold mb-2">
+                      {t('postForm.featuredImage')}
                     </label>
                     <ImageUpload
                       value={formData.featuredImage}
@@ -476,8 +488,8 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
 
                   {/* Excerpt */}
                   <div>
-                    <label className="block text-gray-700 font-semibold mb-2">
-                      Excerpt *
+                    <label className="block text-gray-700 dark:text-gray-300 font-semibold mb-2">
+                      {t('postForm.excerpt')} *
                     </label>
                     <textarea
                       name="excerpt"
@@ -485,19 +497,19 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
                       onChange={handleChange}
                       onBlur={generateMetaDescription}
                       rows={3}
-                      placeholder="Write a compelling summary that will appear in post previews..."
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      placeholder={t('postForm.excerptPlaceholder')}
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       required
                     />
-                    <p className="text-sm text-gray-500 mt-1">
+                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
                       {formData.excerpt.length}/300 characters
                     </p>
                   </div>
 
                   {/* Content Editor */}
                   <div>
-                    <label className="block text-gray-700 font-semibold mb-2">
-                      Content *
+                    <label className="block text-gray-700 dark:text-gray-300 font-semibold mb-2">
+                      {t('postForm.content')} *
                     </label>
                     <RichTextEditor
                       content={formData.content}
@@ -518,14 +530,14 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {/* Author */}
                     <div>
-                      <label className="block text-gray-700 font-semibold mb-2">
+                      <label className="block text-gray-700 dark:text-gray-300 font-semibold mb-2">
                         Author *
                       </label>
                       <select
                         name="authorId"
                         value={formData.authorId}
                         onChange={handleChange}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                         required
                       >
                         <option value="">Select an author</option>
@@ -539,14 +551,14 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
 
                     {/* Category */}
                     <div>
-                      <label className="block text-gray-700 font-semibold mb-2">
+                      <label className="block text-gray-700 dark:text-gray-300 font-semibold mb-2">
                         Category *
                       </label>
                       <select
                         name="categoryId"
                         value={formData.categoryId}
                         onChange={handleChange}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                         required
                       >
                         <option value="">Select a category</option>
@@ -560,7 +572,7 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
 
                     {/* Read Time */}
                     <div>
-                      <label className="block text-gray-700 font-semibold mb-2">
+                      <label className="block text-gray-700 dark:text-gray-300 font-semibold mb-2">
                         Estimated Read Time (minutes)
                       </label>
                       <div className="flex">
@@ -571,12 +583,12 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
                           onChange={handleChange}
                           min="1"
                           max="60"
-                          className="flex-1 px-4 py-3 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          className="flex-1 px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
                         <button
                           type="button"
                           onClick={calculateReadTime}
-                          className="px-4 py-3 bg-gray-100 border border-l-0 border-gray-300 rounded-r-lg hover:bg-gray-200 transition-colors"
+                          className="px-4 py-3 bg-gray-100 dark:bg-gray-600 border border-l-0 border-gray-300 dark:border-gray-600 rounded-r-lg hover:bg-gray-200 dark:hover:bg-gray-500 transition-colors text-gray-700 dark:text-gray-300"
                         >
                           Auto-calculate
                         </button>
@@ -585,7 +597,7 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
 
                     {/* Publication Status */}
                     <div>
-                      <label className="block text-gray-700 font-semibold mb-2">
+                      <label className="block text-gray-700 dark:text-gray-300 font-semibold mb-2">
                         Publication
                       </label>
                       <div className="space-y-3">
@@ -626,7 +638,7 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
                   {/* Scheduled Date */}
                   {formData.isScheduled && (
                     <div>
-                      <label className="block text-gray-700 font-semibold mb-2">
+                      <label className="block text-gray-700 dark:text-gray-300 font-semibold mb-2">
                         Scheduled Date & Time
                       </label>
                       <input
@@ -634,14 +646,14 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
                         name="scheduledDate"
                         value={formData.scheduledDate}
                         onChange={handleChange}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                     </div>
                   )}
 
                   {/* Tags */}
                   <div>
-                    <label className="block text-gray-700 font-semibold mb-2">
+                    <label className="block text-gray-700 dark:text-gray-300 font-semibold mb-2">
                       Tags
                     </label>
                     <div className="flex flex-wrap gap-2 max-h-40 overflow-y-auto">
@@ -673,7 +685,7 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
 
                   {/* Meta Title */}
                   <div>
-                    <label className="block text-gray-700 font-semibold mb-2">
+                    <label className="block text-gray-700 dark:text-gray-300 font-semibold mb-2">
                       Meta Title
                     </label>
                     <input
@@ -682,10 +694,10 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
                       value={formData.metaTitle}
                       onChange={handleChange}
                       placeholder="SEO-optimized title for search engines..."
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                       maxLength={60}
                     />
-                    <div className="flex justify-between text-sm text-gray-500 mt-1">
+                    <div className="flex justify-between text-sm text-gray-500 dark:text-gray-400 mt-1">
                       <span>This will appear as the title in search results</span>
                       <span>{formData.metaTitle.length}/60</span>
                     </div>
@@ -700,7 +712,7 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
 
                   {/* Meta Description */}
                   <div>
-                    <label className="block text-gray-700 font-semibold mb-2">
+                    <label className="block text-gray-700 dark:text-gray-300 font-semibold mb-2">
                       Meta Description
                     </label>
                     <textarea
@@ -709,10 +721,10 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
                       onChange={handleChange}
                       rows={3}
                       placeholder="A concise description that will appear in search results..."
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                       maxLength={155}
                     />
-                    <div className="flex justify-between text-sm text-gray-500 mt-1">
+                    <div className="flex justify-between text-sm text-gray-500 dark:text-gray-400 mt-1">
                       <span>This will appear as the description in search results</span>
                       <span>{formData.metaDescription.length}/155</span>
                     </div>
@@ -727,7 +739,7 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
 
                   {/* Keywords */}
                   <div>
-                    <label className="block text-gray-700 font-semibold mb-2">
+                    <label className="block text-gray-700 dark:text-gray-300 font-semibold mb-2">
                       Focus Keywords
                     </label>
                     <input
@@ -736,9 +748,9 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
                       value={formData.keywords}
                       onChange={handleChange}
                       placeholder="Enter keywords separated by commas..."
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
-                    <p className="text-sm text-gray-500 mt-1">
+                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
                       Example: web development, react, javascript, tutorial
                     </p>
                   </div>
@@ -757,7 +769,7 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
 
                   {/* Social Share Text */}
                   <div>
-                    <label className="block text-gray-700 font-semibold mb-2">
+                    <label className="block text-gray-700 dark:text-gray-300 font-semibold mb-2">
                       Social Share Text
                     </label>
                     <textarea
@@ -766,10 +778,10 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
                       onChange={handleChange}
                       rows={3}
                       placeholder="Custom text that will be used when sharing this post..."
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                       maxLength={280}
                     />
-                    <div className="flex justify-between text-sm text-gray-500 mt-1">
+                    <div className="flex justify-between text-sm text-gray-500 dark:text-gray-400 mt-1">
                       <span>Twitter-optimized length recommended</span>
                       <span>{formData.socialShareText.length}/280</span>
                     </div>
@@ -777,7 +789,7 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
 
                   {/* Social Preview */}
                   <div>
-                    <label className="block text-gray-700 font-semibold mb-2">
+                    <label className="block text-gray-700 dark:text-gray-300 font-semibold mb-2">
                       Social Media Preview
                     </label>
                     <div className="border border-gray-300 rounded-lg p-4 bg-gray-50">

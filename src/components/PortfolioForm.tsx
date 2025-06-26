@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Button, RichTextEditor, ImageUpload } from '@/components';
+import { useLanguage } from '@/context/LanguageContext';
 
 interface PortfolioCategory {
   id: string;
@@ -55,6 +56,8 @@ export default function PortfolioForm({
   isLoading = false,
   isEditing = false
 }: PortfolioFormProps) {
+  const { t } = useLanguage();
+
   const [formData, setFormData] = useState<PortfolioFormData>({
     title: '',
     slug: '',
@@ -107,20 +110,20 @@ export default function PortfolioForm({
   const validateForm = (): boolean => {
     const newErrors: Record<string, string> = {};
 
-    if (!formData.title.trim()) newErrors.title = 'Judul harus diisi';
-    if (!formData.slug.trim()) newErrors.slug = 'Slug harus diisi';
-    if (!formData.description.trim()) newErrors.description = 'Deskripsi harus diisi';
-    if (!formData.content.trim()) newErrors.content = 'Konten harus diisi';
-    if (!formData.featuredImage.trim()) newErrors.featuredImage = 'Gambar utama harus diisi';
-    if (!formData.clientName.trim()) newErrors.clientName = 'Nama klien harus diisi';
-    if (!formData.categoryId) newErrors.categoryId = 'Kategori harus dipilih';
+    if (!formData.title.trim()) newErrors.title = t('validation.titleRequired');
+    if (!formData.slug.trim()) newErrors.slug = t('validation.slugRequired');
+    if (!formData.description.trim()) newErrors.description = t('validation.descriptionRequired');
+    if (!formData.content.trim()) newErrors.content = t('validation.contentRequired');
+    if (!formData.featuredImage.trim()) newErrors.featuredImage = t('validation.featuredImageRequired');
+    if (!formData.clientName.trim()) newErrors.clientName = t('validation.clientNameRequired');
+    if (!formData.categoryId) newErrors.categoryId = t('validation.categoryRequired');
 
     // Validate URLs if provided
     if (formData.projectUrl && !isValidUrl(formData.projectUrl)) {
-      newErrors.projectUrl = 'URL project tidak valid';
+      newErrors.projectUrl = t('validation.invalidProjectUrl');
     }
     if (formData.githubUrl && !isValidUrl(formData.githubUrl)) {
-      newErrors.githubUrl = 'URL GitHub tidak valid';
+      newErrors.githubUrl = t('validation.invalidGithubUrl');
     }
 
     setErrors(newErrors);
@@ -155,13 +158,13 @@ export default function PortfolioForm({
       {/* Basic Information */}
       <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">
-          Informasi Dasar
+          {t('portfolioForm.basicInfo')}
         </h3>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Judul Project *
+              {t('portfolioForm.projectTitle')} *
             </label>
             <input
               type="text"
@@ -169,14 +172,14 @@ export default function PortfolioForm({
               onChange={(e) => handleInputChange('title', e.target.value)}
               className={`w-full px-3 py-2 border rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-primary focus:border-primary ${errors.title ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
                 }`}
-              placeholder="Nama project yang menarik"
+              placeholder={t('portfolioForm.projectTitlePlaceholder')}
             />
             {errors.title && <p className="text-red-500 text-xs mt-1">{errors.title}</p>}
           </div>
 
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Slug *
+              {t('portfolioForm.slug')} *
             </label>
             <input
               type="text"
@@ -184,14 +187,14 @@ export default function PortfolioForm({
               onChange={(e) => handleInputChange('slug', e.target.value)}
               className={`w-full px-3 py-2 border rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-primary focus:border-primary ${errors.slug ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
                 }`}
-              placeholder="project-url-slug"
+              placeholder={t('portfolioForm.slugPlaceholder')}
             />
             {errors.slug && <p className="text-red-500 text-xs mt-1">{errors.slug}</p>}
           </div>
 
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Nama Klien *
+              {t('portfolioForm.clientName')} *
             </label>
             <input
               type="text"
@@ -199,14 +202,14 @@ export default function PortfolioForm({
               onChange={(e) => handleInputChange('clientName', e.target.value)}
               className={`w-full px-3 py-2 border rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-primary focus:border-primary ${errors.clientName ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
                 }`}
-              placeholder="Nama perusahaan atau klien"
+              placeholder={t('portfolioForm.clientNamePlaceholder')}
             />
             {errors.clientName && <p className="text-red-500 text-xs mt-1">{errors.clientName}</p>}
           </div>
 
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Kategori *
+              {t('portfolioForm.category')} *
             </label>
             <select
               value={formData.categoryId}
@@ -214,7 +217,7 @@ export default function PortfolioForm({
               className={`w-full px-3 py-2 border rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-primary focus:border-primary ${errors.categoryId ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
                 }`}
             >
-              <option value="">Pilih kategori</option>
+              <option value="">{t('portfolioForm.selectCategory')}</option>
               {categories.map(category => (
                 <option key={category.id} value={category.id}>
                   {category.icon} {category.name}
@@ -227,7 +230,7 @@ export default function PortfolioForm({
 
         <div className="mt-6">
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            Deskripsi Singkat *
+            {t('portfolioForm.shortDescription')} *
           </label>
           <textarea
             value={formData.description}
@@ -235,7 +238,7 @@ export default function PortfolioForm({
             rows={3}
             className={`w-full px-3 py-2 border rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-primary focus:border-primary ${errors.description ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
               }`}
-            placeholder="Deskripsi singkat project untuk preview card"
+            placeholder={t('portfolioForm.shortDescriptionPlaceholder')}
           />
           {errors.description && <p className="text-red-500 text-xs mt-1">{errors.description}</p>}
         </div>
@@ -244,17 +247,17 @@ export default function PortfolioForm({
       {/* Content */}
       <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">
-          Konten Detail
+          {t('portfolioForm.detailContent')}
         </h3>
 
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            Konten Lengkap *
+            {t('portfolioForm.fullContent')} *
           </label>
           <RichTextEditor
             content={formData.content}
             onChange={(value) => handleInputChange('content', value)}
-            placeholder="Tulis detail lengkap tentang project ini..."
+            placeholder={t('portfolioForm.fullContentPlaceholder')}
           />
           {errors.content && <p className="text-red-500 text-xs mt-1">{errors.content}</p>}
         </div>
@@ -263,13 +266,13 @@ export default function PortfolioForm({
       {/* Images */}
       <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">
-          Gambar Project
+          {t('portfolioForm.projectImages')}
         </h3>
 
         <div className="space-y-6">
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Gambar Utama *
+              {t('portfolioForm.mainImage')} *
             </label>
             <ImageUpload
               value={formData.featuredImage}
@@ -280,10 +283,10 @@ export default function PortfolioForm({
 
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Gambar Tambahan
+              {t('portfolioForm.additionalImages')}
             </label>
             <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">
-              Upload hingga 5 gambar tambahan untuk gallery project
+              {t('portfolioForm.additionalImagesDesc')}
             </p>
             {/* Multiple image upload component would go here */}
             <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-8 text-center">
@@ -298,13 +301,13 @@ export default function PortfolioForm({
       {/* Project Links */}
       <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">
-          Link Project
+          {t('portfolioForm.projectLinks')}
         </h3>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              URL Project
+              {t('portfolioForm.projectUrl')}
             </label>
             <input
               type="url"
@@ -319,7 +322,7 @@ export default function PortfolioForm({
 
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              URL GitHub
+              {t('portfolioForm.githubUrl')}
             </label>
             <input
               type="url"
@@ -337,13 +340,13 @@ export default function PortfolioForm({
       {/* Timeline */}
       <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">
-          Timeline Project
+          {t('portfolioForm.timeline')}
         </h3>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Tanggal Mulai
+              {t('portfolioForm.startDate')}
             </label>
             <input
               type="date"
@@ -355,7 +358,7 @@ export default function PortfolioForm({
 
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Tanggal Selesai
+              {t('portfolioForm.endDate')}
             </label>
             <input
               type="date"
@@ -370,7 +373,7 @@ export default function PortfolioForm({
       {/* Technologies */}
       <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">
-          Teknologi yang Digunakan
+          {t('portfolioForm.technologies')}
         </h3>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
@@ -378,8 +381,8 @@ export default function PortfolioForm({
             <label
               key={tag.id}
               className={`flex items-center space-x-2 p-3 rounded-lg border cursor-pointer transition-all duration-200 ${formData.tagIds.includes(tag.id)
-                  ? 'border-primary bg-primary/10 text-primary'
-                  : 'border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500'
+                ? 'border-primary bg-primary/10 text-primary'
+                : 'border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500'
                 }`}
             >
               <input
@@ -401,7 +404,7 @@ export default function PortfolioForm({
       {/* Settings */}
       <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">
-          Pengaturan
+          {t('portfolioForm.settings')}
         </h3>
 
         <div className="space-y-4">
@@ -414,10 +417,10 @@ export default function PortfolioForm({
             />
             <div>
               <span className="text-sm font-medium text-gray-900 dark:text-white">
-                ⭐ Project Unggulan
+                ⭐ {t('portfolioForm.featuredProject')}
               </span>
               <p className="text-xs text-gray-500 dark:text-gray-400">
-                Project akan ditampilkan di bagian featured
+                {t('portfolioForm.featuredProjectDesc')}
               </p>
             </div>
           </label>
@@ -431,10 +434,10 @@ export default function PortfolioForm({
             />
             <div>
               <span className="text-sm font-medium text-gray-900 dark:text-white">
-                ✅ Publikasikan
+                ✅ {t('portfolioForm.publish')}
               </span>
               <p className="text-xs text-gray-500 dark:text-gray-400">
-                Project akan terlihat di website publik
+                {t('portfolioForm.publishDesc')}
               </p>
             </div>
           </label>
@@ -450,7 +453,7 @@ export default function PortfolioForm({
           onClick={onCancel}
           disabled={isLoading}
         >
-          Batal
+          {t('portfolioForm.cancel')}
         </Button>
         <Button
           type="submit"
@@ -461,10 +464,10 @@ export default function PortfolioForm({
           {isLoading ? (
             <div className="flex items-center space-x-2">
               <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-              <span>{isEditing ? 'Mengupdate...' : 'Menyimpan...'}</span>
+              <span>{isEditing ? t('portfolioForm.updating') : t('portfolioForm.saving')}</span>
             </div>
           ) : (
-            <span>{isEditing ? 'Update Project' : 'Simpan Project'}</span>
+            <span>{isEditing ? t('portfolioForm.updateProject') : t('portfolioForm.saveProject')}</span>
           )}
         </Button>
       </div>
