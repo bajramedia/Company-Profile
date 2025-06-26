@@ -102,11 +102,7 @@ export default function WebDevelopmentPage() {
                                 className="mb-6 text-[32px] md:text-[40px] lg:text-[48px] font-bold"
                                 data-aos="fade-up"
                             >
-                                Web Development {' '}
-                                <span className="text-green-500 relative">
-                                    <span className="relative z-10">Profesional</span>
-                                    <span className="absolute bottom-1 left-0 w-full h-3 bg-green-500/10 -z-0"></span>
-                                </span>
+                                {t('service.webDev.title')}
                             </Heading>
                         </AnimatedText>
 
@@ -116,8 +112,7 @@ export default function WebDevelopmentPage() {
                                 data-aos="fade-up"
                                 data-aos-delay="200"
                             >
-                                Bangun website modern dan responsif dengan teknologi terdepan. Dari landing page hingga e-commerce kompleks,
-                                kami siap mewujudkan visi digital kamu dengan performa optimal.
+                                {t('service.webDev.subtitle')}
                             </p>
                         </AnimatedText>
                     </div>
@@ -240,17 +235,17 @@ export default function WebDevelopmentPage() {
 
                         <div className="relative z-10">
                             <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">
-                                Siap Membangun Website Impian?
+                                {t('service.webDev.cta.title')}
                             </h2>
                             <p className="text-xl opacity-90 mb-8 max-w-2xl mx-auto leading-relaxed">
-                                Konsultasi gratis untuk membahas kebutuhan website kamu. Tim developer expert siap membantu!
+                                {t('service.webDev.cta.subtitle')}
                             </p>
                             <div className="flex flex-col sm:flex-row gap-4 justify-center">
                                 <Button variant="outline" size="lg" className="bg-white text-gray-900 border-white hover:bg-gray-50 hover:scale-105 transition-all duration-300 px-8 py-4 font-semibold shadow-lg">
-                                    Konsultasi Gratis
+                                    {t('service.webDev.cta.consultation')}
                                 </Button>
                                 <Button variant="outline" size="lg" className="border-white/60 text-white hover:bg-white/10 dark:hover:bg-white/15 hover:scale-105 transition-all duration-300 px-8 py-4 font-semibold backdrop-blur-sm">
-                                    Lihat Portfolio
+                                    {t('service.webDev.cta.portfolio')}
                                 </Button>
                             </div>
                         </div>

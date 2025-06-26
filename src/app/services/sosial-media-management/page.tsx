@@ -116,15 +116,15 @@ export default function SosialMediaManagementPage() {
                                             </div>
                                         </Link>
 
-                                                                <Link href="/services/sistem-development" className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
-                            <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-green-500 to-green-600 flex items-center justify-center text-white text-sm">
-                                ⚙️
-                            </div>
-                            <div>
-                                <div className="font-medium text-gray-900 dark:text-white text-sm">Sistem Development</div>
-                                <div className="text-gray-500 dark:text-gray-400 text-xs">Enterprise & custom system</div>
-                            </div>
-                        </Link>
+                                        <Link href="/services/sistem-development" className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
+                                            <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-green-500 to-green-600 flex items-center justify-center text-white text-sm">
+                                                ⚙️
+                                            </div>
+                                            <div>
+                                                <div className="font-medium text-gray-900 dark:text-white text-sm">Sistem Development</div>
+                                                <div className="text-gray-500 dark:text-gray-400 text-xs">Enterprise & custom system</div>
+                                            </div>
+                                        </Link>
 
                                         <Link href="/services/sosial-media-management" className="flex items-center space-x-3 px-3 py-2 rounded-lg bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400">
                                             <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-orange-500 to-orange-600 flex items-center justify-center text-white text-sm">
@@ -174,20 +174,19 @@ export default function SosialMediaManagementPage() {
                             📱
                         </div>
                         <Heading variant="h1" color="foreground" className="mb-6 text-[32px] md:text-[40px] lg:text-[48px] font-bold">
-                            Social Media <span className="text-green-500">Management</span>
+                            {t('service.socialMedia.title')}
                         </Heading>
 
                         <p className="text-gray-600 dark:text-gray-400 text-lg leading-relaxed mb-8 max-w-3xl mx-auto">
-                            Tingkatkan engagement dan brand awareness dengan strategi social media yang tepat.
-                            Dari konten kreatif hingga community management yang profesional.
+                            {t('service.socialMedia.subtitle')}
                         </p>
 
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
                             <Button variant="primary" size="lg" className="px-8 py-4">
-                                Audit Media Sosial
+                                {t('service.socialMedia.cta.audit')}
                             </Button>
                             <Button variant="outline" size="lg" className="px-8 py-4">
-                                Lihat Portfolio
+                                {t('service.socialMedia.cta.portfolio')}
                             </Button>
                         </div>
                     </div>

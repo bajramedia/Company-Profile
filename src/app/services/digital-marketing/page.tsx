@@ -174,20 +174,19 @@ export default function DigitalMarketingPage() {
                             📢
                         </div>
                         <Heading variant="h1" color="foreground" className="mb-6 text-[32px] md:text-[40px] lg:text-[48px] font-bold">
-                            Strategi Marketing <span className="text-green-500">Digital</span>
+                            {t('service.digitalMarketing.title')}
                         </Heading>
 
                         <p className="text-gray-600 dark:text-gray-400 text-lg leading-relaxed mb-8 max-w-3xl mx-auto">
-                            Tingkatkan brand awareness dan penjualan dengan strategi digital marketing yang tepat sasaran.
-                            Dari social media hingga Google Ads.
+                            {t('service.digitalMarketing.subtitle')}
                         </p>
 
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
                             <Button variant="primary" size="lg" className="px-8 py-4">
-                                Konsultasi Strategy
+                                {t('service.digitalMarketing.cta.strategy')}
                             </Button>
                             <Button variant="outline" size="lg" className="px-8 py-4">
-                                Audit Gratis
+                                {t('service.digitalMarketing.cta.audit')}
                             </Button>
                         </div>
                     </div>

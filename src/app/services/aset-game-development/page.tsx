@@ -126,11 +126,7 @@ export default function AsetGameDevelopmentPage() {
                             className="mb-6 text-[32px] md:text-[40px] lg:text-[48px] font-bold"
                             data-aos="fade-up"
                         >
-                            Aset Game {' '}
-                            <span className="text-green-500 relative">
-                                <span className="relative z-10">Development</span>
-                                <span className="absolute bottom-1 left-0 w-full h-3 bg-green-500/10 -z-0"></span>
-                            </span>
+                            {t('service.gameAsset.title')}
                         </Heading>
 
                         <p
@@ -138,16 +134,15 @@ export default function AsetGameDevelopmentPage() {
                             data-aos="fade-up"
                             data-aos-delay="200"
                         >
-                            Ciptakan karakter, environment, dan asset game yang memukau. Dari 2D sprite hingga 3D models,
-                            kami siap buat game kamu jadi lebih hidup dan engaging.
+                            {t('service.gameAsset.subtitle')}
                         </p>
 
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
                             <Button variant="primary" size="lg" className="px-8 py-4">
-                                Diskusi Asset
+                                {t('service.gameAsset.cta.discuss')}
                             </Button>
                             <Button variant="outline" size="lg" className="px-8 py-4">
-                                Lihat Gallery
+                                {t('service.gameAsset.cta.gallery')}
                             </Button>
                         </div>
                     </div>
@@ -160,14 +155,14 @@ export default function AsetGameDevelopmentPage() {
                             className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4"
                             data-aos="fade-up"
                         >
-                            Jenis Asset Game
+                            {t('service.gameAsset.sectionTitle')}
                         </h2>
                         <p
                             className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto"
                             data-aos="fade-up"
                             data-aos-delay="100"
                         >
-                            Asset berkualitas tinggi untuk semua jenis game kamu
+                            {t('service.gameAsset.sectionSubtitle')}
                         </p>
                     </div>
 

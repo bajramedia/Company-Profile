@@ -108,6 +108,133 @@ const translations = {
   "portfolio.filter.website": { en: "Website", id: "Website" },
   "portfolio.filter.mobileApp": { en: "Mobile App", id: "Aplikasi Mobile" },
   "portfolio.viewAll": { en: "View All Projects", id: "Lihat Semua Proyek" },
+  "portfolio.categories.all": { en: "All Categories", id: "Semua Kategori" },
+  "portfolio.categories.webDevelopment": { en: "Web Development", id: "Pengembangan Web" },
+  "portfolio.categories.gameAssets": { en: "Game Assets", id: "Aset Game" },
+  "portfolio.categories.uiuxDesign": { en: "UI/UX Design", id: "Desain UI/UX" },
+
+  // Hero Section
+  "hero.imageAlt": { en: "Bajramedia Team", id: "Tim Bajramedia" },
+  "hero.title.part1": { en: "We Build", id: "Kami Membangun" },
+  "hero.title.highlight": { en: "Digital Solutions", id: "Solusi Digital" },
+  "hero.title.part2": { en: "That Drive Success", id: "Yang Mendorong Kesuksesan" },
+  "hero.subtitle": { en: "Transform your business with cutting-edge web development, mobile apps, and digital marketing solutions tailored to your needs.", id: "Transformasikan bisnis Anda dengan pengembangan web terdepan, aplikasi mobile, dan solusi pemasaran digital yang disesuaikan dengan kebutuhan Anda." },
+  "hero.cta.consultation": { en: "Get Free Consultation", id: "Konsultasi Gratis" },
+  "hero.cta.portfolio": { en: "View Our Portfolio", id: "Lihat Portfolio Kami" },
+
+  // Blog Section
+  "blog.badge": { en: "Latest", id: "Terbaru" },
+  "blog.title": { en: "Blog & News", id: "Blog & Berita" },
+  "blog.subtitle": { en: "Stay updated with the latest trends in technology and digital marketing", id: "Tetap update dengan tren terbaru teknologi dan pemasaran digital" },
+  "blog.searchPlaceholder": { en: "Search articles...", id: "Cari artikel..." },
+  "blog.label": { en: "Blog", id: "Blog" },
+  "blog.description": { en: "Read our latest insights about technology, design, and digital solutions", id: "Baca wawasan terbaru kami tentang teknologi, desain, dan solusi digital" },
+  "blog.Button": { en: "Read All Articles", id: "Baca Semua Artikel" },
+  "blog.backToBlog": { en: "Back to Blog", id: "Kembali ke Blog" },
+
+  // CTA Section
+  "cta.title": { en: "Ready to Start Your Project?", id: "Siap Memulai Proyek Anda?" },
+  "cta.description": { en: "Let's discuss your ideas and create something amazing together. Our team is ready to bring your vision to life.", id: "Mari diskusikan ide Anda dan ciptakan sesuatu yang luar biasa bersama. Tim kami siap mewujudkan visi Anda." },
+  "cta.primaryButton": { en: "Start Your Project", id: "Mulai Proyek Anda" },
+  "cta.secondaryButton": { en: "Get in Touch", id: "Hubungi Kami" },
+
+  // Footer
+  "description": { en: "We are a creative digital agency that helps businesses grow through innovative web solutions, mobile applications, and digital marketing strategies.", id: "Kami adalah agensi digital kreatif yang membantu bisnis berkembang melalui solusi web inovatif, aplikasi mobile, dan strategi pemasaran digital." },
+  "Follow Us": { en: "Follow Us", id: "Ikuti Kami" },
+  "Quick Links": { en: "Quick Links", id: "Tautan Cepat" },
+  "Services": { en: "Services", id: "Layanan" },
+  "Web Development": { en: "Web Development", id: "Pengembangan Web" },
+  "Game Assets": { en: "Game Assets", id: "Aset Game" },
+  "Uiux Design": { en: "UI/UX Design", id: "Desain UI/UX" },
+  "System Development": { en: "System Development", id: "Pengembangan Sistem" },
+  "Social Media": { en: "Social Media Management", id: "Manajemen Media Sosial" },
+  "Email": { en: "Email", id: "Email" },
+  "Phone": { en: "Phone", id: "Telepon" },
+  "Location": { en: "Location", id: "Lokasi" },
+  "rightsReserved": { en: "All rights reserved", id: "Semua hak dilindungi" },
+  "privacy": { en: "Privacy Policy", id: "Kebijakan Privasi" },
+  "terms": { en: "Terms of Service", id: "Syarat Layanan" },
+  "Made With": { en: "Made with", id: "Dibuat dengan" },
+  "Bajra Team": { en: "by Bajra Team", id: "oleh Tim Bajra" },
+
+  // Services
+  "services.website.title": { en: "Web Development", id: "Pengembangan Web" },
+  "services.mobile.title": { en: "Mobile App Development", id: "Pengembangan Aplikasi Mobile" },
+
+  // 404 Page
+  "404.title": { en: "Page Not Found", id: "Halaman Tidak Ditemukan" },
+  "404.description": { en: "Sorry, the page you are looking for could not be found.", id: "Maaf, halaman yang Anda cari tidak dapat ditemukan." },
+  "404.backToHome": { en: "Back to Home", id: "Kembali ke Beranda" },
+  "404.readBlog": { en: "Read Our Blog", id: "Baca Blog Kami" },
+  "404.viewPortfolio": { en: "View Portfolio", id: "Lihat Portfolio" },
+  "404.popularPages": { en: "Popular Pages", id: "Halaman Populer" },
+  "404.ourServices": { en: "Our Services", id: "Layanan Kami" },
+  "404.servicesDescription": { en: "Discover our range of digital solutions", id: "Temukan berbagai solusi digital kami" },
+  "404.webDevDescription": { en: "Custom web development solutions", id: "Solusi pengembangan web kustom" },
+  "404.mobileDescription": { en: "Native and cross-platform mobile apps", id: "Aplikasi mobile native dan lintas platform" },
+  "404.copyright": { en: "© 2024 Bajramedia. All rights reserved.", id: "© 2024 Bajramedia. Semua hak dilindungi." },
+  "404.whatsappMessage": { en: "Hello! I'm interested in your services.", id: "Halo! Saya tertarik dengan layanan Anda." },
+
+  // Admin Navigation
+  "admin.backToWebsite": { en: "Back to Website", id: "Kembali ke Website" },
+
+  // Team Section
+  "team.badge": { en: "Our Team", id: "Tim Kami" },
+  "team.title": { en: "Meet Our", id: "Kenali Tim" },
+  "team.titleHighlight": { en: "Expert Team", id: "Ahli Kami" },
+  "team.subtitle": { en: "Passionate professionals dedicated to bringing your digital vision to life with creativity and expertise.", id: "Profesional berpengalaman yang berdedikasi mewujudkan visi digital Anda dengan kreativitas dan keahlian." },
+
+  // Testimonials Section  
+  "testimonials.title.main": { en: "What Our", id: "Apa Kata" },
+  "testimonials.title.highlight": { en: "Clients Say", id: "Klien Kami" },
+  "testimonials.subtitle": { en: "Don't just take our word for it. Here's what our amazing clients have to say about our work.", id: "Jangan hanya percaya kata kami. Ini yang dikatakan klien luar biasa kami tentang pekerjaan kami." },
+
+  // Portfolio Page
+  "portfolio.page.title.main": { en: "Our Amazing", id: "Portfolio" },
+  "portfolio.page.title.highlight": { en: "Portfolio", id: "Luar Biasa Kami" },
+  "portfolio.page.subtitle": { en: "Showcasing our best work and creative solutions", id: "Menampilkan karya terbaik dan solusi kreatif kami" },
+  "portfolio.comingSoon.title": { en: "Amazing Projects Coming Soon!", id: "Proyek Luar Biasa Segera Hadir!" },
+  "portfolio.comingSoon.subtitle": { en: "We're working on some fantastic projects that will blow your mind. Stay tuned for our latest creations!", id: "Kami sedang mengerjakan beberapa proyek fantastis yang akan memukau Anda. Nantikan kreasi terbaru kami!" },
+  "portfolio.cta.title": { en: "Ready to Start Your Next Project?", id: "Siap Memulai Proyek Selanjutnya?" },
+  "portfolio.cta.subtitle": { en: "Let's create something amazing together. Our team is ready to bring your vision to life.", id: "Mari ciptakan sesuatu yang luar biasa bersama. Tim kami siap mewujudkan visi Anda." },
+  "portfolio.cta.startProject": { en: "Start Your Project", id: "Mulai Proyek Anda" },
+  "portfolio.cta.viewServices": { en: "View Our Services", id: "Lihat Layanan Kami" },
+
+  // Services Page
+  "services.page.title.main": { en: "Professional", id: "Layanan" },
+  "services.page.title.highlight": { en: "Services", id: "Profesional" },
+  "services.page.title.end": { en: "We Offer", id: "Kami" },
+  "services.page.subtitle": { en: "Comprehensive digital solutions to grow your business. From websites to mobile apps, we're ready to realize your digital vision with cutting-edge technology.", id: "Solusi digital terpadu untuk mengembangkan bisnis kamu. Dari website hingga aplikasi mobile, kami siap mewujudkan visi digital kamu dengan teknologi terdepan." },
+
+  // Service Details
+  "service.webDev.title": { en: "Web Development Professional", id: "Web Development Profesional" },
+  "service.webDev.subtitle": { en: "Build modern and responsive websites with cutting-edge technology. From landing pages to complex e-commerce, we're ready to realize your digital vision with optimal performance.", id: "Bangun website modern dan responsif dengan teknologi terdepan. Dari landing page hingga e-commerce kompleks, kami siap mewujudkan visi digital kamu dengan performa optimal." },
+  "service.webDev.cta.title": { en: "Ready to Build Your Dream Website?", id: "Siap Membangun Website Impian?" },
+  "service.webDev.cta.subtitle": { en: "Free consultation to discuss your website needs. Our expert developer team is ready to help!", id: "Konsultasi gratis untuk membahas kebutuhan website kamu. Tim developer expert siap membantu!" },
+  "service.webDev.cta.consultation": { en: "Free Consultation", id: "Konsultasi Gratis" },
+  "service.webDev.cta.portfolio": { en: "View Portfolio", id: "Lihat Portfolio" },
+
+  "service.gameAsset.title": { en: "Game Asset Development", id: "Aset Game Development" },
+  "service.gameAsset.subtitle": { en: "Create stunning characters, environments, and game assets. From 2D sprites to 3D models, we're ready to make your game more lively and engaging.", id: "Ciptakan karakter, environment, dan asset game yang memukau. Dari 2D sprite hingga 3D models, kami siap buat game kamu jadi lebih hidup dan engaging." },
+  "service.gameAsset.sectionTitle": { en: "Game Asset Types", id: "Jenis Asset Game" },
+  "service.gameAsset.sectionSubtitle": { en: "High-quality assets for all your game types", id: "Asset berkualitas tinggi untuk semua jenis game kamu" },
+  "service.gameAsset.cta.discuss": { en: "Discuss Assets", id: "Diskusi Asset" },
+  "service.gameAsset.cta.gallery": { en: "View Gallery", id: "Lihat Gallery" },
+
+  "service.digitalMarketing.title": { en: "Digital Marketing Strategy", id: "Strategi Marketing Digital" },
+  "service.digitalMarketing.subtitle": { en: "Increase brand awareness and sales with targeted digital marketing strategies. From social media to Google Ads.", id: "Tingkatkan brand awareness dan penjualan dengan strategi digital marketing yang tepat sasaran. Dari social media hingga Google Ads." },
+  "service.digitalMarketing.cta.strategy": { en: "Strategy Consultation", id: "Konsultasi Strategy" },
+  "service.digitalMarketing.cta.audit": { en: "Free Audit", id: "Audit Gratis" },
+
+  "service.socialMedia.title": { en: "Social Media Management", id: "Social Media Management" },
+  "service.socialMedia.subtitle": { en: "Increase engagement and brand awareness with effective social media strategies. From creative content to professional community management.", id: "Tingkatkan engagement dan brand awareness dengan strategi social media yang tepat. Dari konten kreatif hingga community management yang profesional." },
+  "service.socialMedia.cta.audit": { en: "Social Media Audit", id: "Audit Media Sosial" },
+  "service.socialMedia.cta.portfolio": { en: "View Portfolio", id: "Lihat Portfolio" },
+
+  "service.consulting.title": { en: "Digital Business Consulting", id: "Konsultasi Bisnis Digital" },
+  "service.consulting.subtitle": { en: "Get strategic guidance for your business digital transformation. From strategy to targeted implementation.", id: "Dapatkan panduan strategis untuk transformasi digital bisnis kamu. Dari strategi hingga implementasi yang tepat sasaran." },
+  "service.consulting.cta.consultation": { en: "Free Consultation", id: "Konsultasi Gratis" },
+  "service.consulting.cta.assessment": { en: "Business Assessment", id: "Assessment Bisnis" },
 };
 
 interface LanguageContextType {

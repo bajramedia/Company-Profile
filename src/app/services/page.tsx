@@ -153,19 +153,18 @@ export default function ServicesPage() {
                     <div className="text-center">
                         <AnimatedText as="div">
                             <Heading variant="h1" color="foreground" className="mb-6 text-[32px] md:text-[40px] lg:text-[48px] font-bold" data-aos="fade-up">
-                                Layanan {' '}
+                                {t('services.page.title.main')} {' '}
                                 <span className="text-primary relative">
-                                    <span className="relative z-10">Profesional</span>
+                                    <span className="relative z-10">{t('services.page.title.highlight')}</span>
                                     <span className="absolute bottom-1 left-0 w-full h-3 bg-primary/10 -z-0"></span>
                                 </span>
-                                {' '} Kami
+                                {' '} {t('services.page.title.end')}
                             </Heading>
                         </AnimatedText>
 
                         <AnimatedText as="div">
                             <p className="text-gray-600 dark:text-gray-400 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed mb-8" data-aos="fade-up" data-aos-delay="200">
-                                Solusi digital terpadu untuk mengembangkan bisnis kamu. Dari website hingga aplikasi mobile,
-                                kami siap mewujudkan visi digital kamu dengan teknologi terdepan.
+                                {t('services.page.subtitle')}
                             </p>
                         </AnimatedText>
                     </div>

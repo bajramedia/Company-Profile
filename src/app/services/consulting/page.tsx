@@ -174,20 +174,19 @@ export default function ConsultingPage() {
                             💼
                         </div>
                         <Heading variant="h1" color="foreground" className="mb-6 text-[32px] md:text-[40px] lg:text-[48px] font-bold">
-                            Konsultasi Bisnis <span className="text-green-500">Digital</span>
+                            {t('service.consulting.title')}
                         </Heading>
 
                         <p className="text-gray-600 dark:text-gray-400 text-lg leading-relaxed mb-8 max-w-3xl mx-auto">
-                            Dapatkan panduan strategis untuk transformasi digital bisnis kamu.
-                            Dari strategi hingga implementasi yang tepat sasaran.
+                            {t('service.consulting.subtitle')}
                         </p>
 
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
                             <Button variant="primary" size="lg" className="px-8 py-4">
-                                Konsultasi Gratis
+                                {t('service.consulting.cta.consultation')}
                             </Button>
                             <Button variant="outline" size="lg" className="px-8 py-4">
-                                Assessment Bisnis
+                                {t('service.consulting.cta.assessment')}
                             </Button>
                         </div>
                     </div>
