@@ -29,10 +29,56 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  // TODO: Implement category creation via external API bridge
-  // For now, return not implemented
-  return NextResponse.json(
-    { error: 'Category creation not yet implemented with external API bridge' }, 
-    { status: 501 }
-  );
+  try {
+    const body = await request.json();
+    const { name, slug, description } = body;
+
+    // Validate required fields
+    if (!name) {
+      return NextResponse.json(
+        { error: 'Name is required' },
+        { status: 400 }
+      );
+    }
+
+    // Create category via external API bridge
+    const response = await fetch(`${API_BASE_URL}?endpoint=categories`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name,
+        slug: slug || name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''),
+        description: description || ''
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const result = await response.json();
+
+    if (!result.success) {
+      throw new Error('Failed to create category');
+    }
+
+    return NextResponse.json({ 
+      success: true, 
+      category: { 
+        id: result.id,
+        name,
+        slug: slug || name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''),
+        description: description || ''
+      }
+    }, { status: 201 });
+
+  } catch (error) {
+    console.error('Error creating category:', error);
+    return NextResponse.json(
+      { error: 'Failed to create category' },
+      { status: 500 }
+    );
+  }
 }

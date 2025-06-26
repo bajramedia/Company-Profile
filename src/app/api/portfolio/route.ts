@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://bajramedia.com/api_bridge.php';
 
 // GET /api/portfolio - Get all portfolios with filters
 export async function GET(request: NextRequest) {
@@ -12,61 +13,61 @@ export async function GET(request: NextRequest) {
     const published = searchParams.get('published');
     const search = searchParams.get('search');
 
-    const skip = (page - 1) * limit;
-
-    const where: any = {};
+    // Get portfolio from external API
+    const response = await fetch(`${API_BASE_URL}?endpoint=portfolio&page=${page}&limit=${limit}`);
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const portfolios = await response.json();
+    
+    // Apply filters on frontend since API bridge doesn't support all filtering yet
+    let filteredPortfolios = portfolios;
     
     if (published !== null) {
-      where.published = published === 'true';
+      const isPublished = published === 'true';
+      filteredPortfolios = filteredPortfolios.filter((p: any) => 
+        (p.published === 1 || p.published === "1" || p.published === true) === isPublished
+      );
     }
     
     if (featured !== null) {
-      where.featured = featured === 'true';
+      const isFeatured = featured === 'true';
+      filteredPortfolios = filteredPortfolios.filter((p: any) => 
+        (p.featured === 1 || p.featured === "1" || p.featured === true) === isFeatured
+      );
     }
     
     if (category && category !== 'all') {
-      where.category = { slug: category };
+      filteredPortfolios = filteredPortfolios.filter((p: any) => 
+        p.categoryName?.toLowerCase() === category.toLowerCase() ||
+        p.categorySlug?.toLowerCase() === category.toLowerCase()
+      );
     }
     
     if (search) {
-      where.OR = [
-        { title: { contains: search, mode: 'insensitive' } },
-        { description: { contains: search, mode: 'insensitive' } },
-        { clientName: { contains: search, mode: 'insensitive' } }
-      ];
+      const searchLower = search.toLowerCase();
+      filteredPortfolios = filteredPortfolios.filter((p: any) =>
+        p.title?.toLowerCase().includes(searchLower) ||
+        p.description?.toLowerCase().includes(searchLower) ||
+        p.clientName?.toLowerCase().includes(searchLower)
+      );
     }
 
-    const [portfolios, total] = await Promise.all([
-      prisma.portfolio.findMany({
-        where,
-        skip,
-        take: limit,
-        orderBy: [
-          { featured: 'desc' },
-          { createdAt: 'desc' }
-        ],
-        include: {
-          category: true,
-          tags: {
-            include: {
-              tag: true
-            }
-          },
-          _count: {
-            select: {
-              portfolioViews: true
-            }
-          }
-        }
-      }),
-      prisma.portfolio.count({ where })
-    ]);
-
-    const formattedPortfolios = portfolios.map(portfolio => ({
+    const formattedPortfolios = filteredPortfolios.map((portfolio: any) => ({
       ...portfolio,
       images: portfolio.images ? JSON.parse(portfolio.images) : [],
-      tags: portfolio.tags.map(pt => pt.tag),
-      viewCount: portfolio._count.portfolioViews
+      featured: portfolio.featured === 1 || portfolio.featured === "1" || portfolio.featured === true,
+      published: portfolio.published === 1 || portfolio.published === "1" || portfolio.published === true,
+      category: {
+        id: portfolio.categoryId,
+        name: portfolio.categoryName || 'Uncategorized',
+        slug: portfolio.categorySlug || 'uncategorized',
+        icon: portfolio.categoryIcon || ''
+      },
+      tags: portfolio.tags || [],
+      viewCount: portfolio.views || 0
     }));
 
     return NextResponse.json({
@@ -74,8 +75,8 @@ export async function GET(request: NextRequest) {
       pagination: {
         page,
         limit,
-        total,
-        pages: Math.ceil(total / limit)
+        total: formattedPortfolios.length,
+        pages: Math.ceil(formattedPortfolios.length / limit)
       }
     });
 

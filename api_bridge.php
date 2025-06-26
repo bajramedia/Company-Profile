@@ -379,6 +379,49 @@ function handlePost($pdo, $endpoint) {
                 echo json_encode(['success' => true, 'id' => $pdo->lastInsertId()]);
                 break;
 
+            case 'portfolio':
+                // Create new portfolio
+                $title = $data['title'] ?? '';
+                $slug = $data['slug'] ?? generateSlug($title);
+                $description = $data['description'] ?? '';
+                $content = $data['content'] ?? '';
+                $featuredImage = $data['featuredImage'] ?? '';
+                $images = $data['images'] ?? null;
+                $clientName = $data['clientName'] ?? '';
+                $projectUrl = $data['projectUrl'] ?? '';
+                $githubUrl = $data['githubUrl'] ?? '';
+                $featured = $data['featured'] ?? false;
+                $published = $data['published'] ?? false;
+                $startDate = $data['startDate'] ?? null;
+                $endDate = $data['endDate'] ?? null;
+                $categoryId = $data['categoryId'] ?? '1';
+                
+                // Convert boolean to int for MySQL
+                $featuredInt = $featured ? 1 : 0;
+                $publishedInt = $published ? 1 : 0;
+                
+                // Check if portfolio table has date column or createdAt
+                $portfolioColumns = getTableColumns($pdo, 'portfolio');
+                $hasCreatedAt = in_array('createdAt', $portfolioColumns);
+                
+                if ($hasCreatedAt) {
+                    $stmt = $pdo->prepare("
+                        INSERT INTO portfolio (title, slug, description, content, featuredImage, images, clientName, projectUrl, githubUrl, featured, published, startDate, endDate, categoryId, createdAt) 
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
+                    ");
+                    $stmt->execute([$title, $slug, $description, $content, $featuredImage, $images, $clientName, $projectUrl, $githubUrl, $featuredInt, $publishedInt, $startDate, $endDate, $categoryId]);
+                } else {
+                    // Use without createdAt if column doesn't exist
+                    $stmt = $pdo->prepare("
+                        INSERT INTO portfolio (title, slug, description, content, featuredImage, images, clientName, projectUrl, githubUrl, featured, published, startDate, endDate, categoryId) 
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    ");
+                    $stmt->execute([$title, $slug, $description, $content, $featuredImage, $images, $clientName, $projectUrl, $githubUrl, $featuredInt, $publishedInt, $startDate, $endDate, $categoryId]);
+                }
+                
+                echo json_encode(['success' => true, 'id' => $pdo->lastInsertId()]);
+                break;
+
             case 'post-view':
                 try {
                     $stmt = $pdo->prepare("INSERT INTO postview (postId, ipAddress, createdAt) VALUES (?, ?, NOW())");
@@ -495,6 +538,44 @@ function handlePut($pdo, $endpoint, $id) {
                 
                 $stmt = $pdo->prepare("UPDATE tag SET name = ?, slug = ? WHERE id = ?");
                 $stmt->execute([$name, $slug, $id]);
+                
+                echo json_encode(['success' => true]);
+                break;
+
+            case 'portfolio':
+                if (!$id) {
+                    http_response_code(400);
+                    echo json_encode(['error' => 'ID required for update']);
+                    return;
+                }
+                
+                $title = $data['title'] ?? '';
+                $slug = $data['slug'] ?? generateSlug($title);
+                $description = $data['description'] ?? '';
+                $content = $data['content'] ?? '';
+                $featuredImage = $data['featuredImage'] ?? '';
+                $images = $data['images'] ?? null;
+                $clientName = $data['clientName'] ?? '';
+                $projectUrl = $data['projectUrl'] ?? '';
+                $githubUrl = $data['githubUrl'] ?? '';
+                $featured = $data['featured'] ?? false;
+                $published = $data['published'] ?? false;
+                $startDate = $data['startDate'] ?? null;
+                $endDate = $data['endDate'] ?? null;
+                $categoryId = $data['categoryId'] ?? '1';
+                
+                // Convert boolean to int for MySQL
+                $featuredInt = $featured ? 1 : 0;
+                $publishedInt = $published ? 1 : 0;
+                
+                $stmt = $pdo->prepare("
+                    UPDATE portfolio 
+                    SET title = ?, slug = ?, description = ?, content = ?, featuredImage = ?, images = ?,
+                        clientName = ?, projectUrl = ?, githubUrl = ?, featured = ?, published = ?,
+                        startDate = ?, endDate = ?, categoryId = ?, updatedAt = NOW()
+                    WHERE id = ?
+                ");
+                $stmt->execute([$title, $slug, $description, $content, $featuredImage, $images, $clientName, $projectUrl, $githubUrl, $featuredInt, $publishedInt, $startDate, $endDate, $categoryId, $id]);
                 
                 echo json_encode(['success' => true]);
                 break;
