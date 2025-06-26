@@ -1,85 +1,119 @@
 "use server";
 
-import prisma from "@/lib/prisma";
-import { revalidatePath } from "next/cache";
+import { revalidatePath } from 'next/cache';
 
-// Interface for tag creation/update
-interface TagFormData {
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://bajramedia.com/api_bridge.php';
+
+export interface TagData {
   name: string;
-  slug?: string;
+  slug: string;
 }
 
-// Generate a slug from name
-function generateSlug(name: string): string {
-  return name
-    .toLowerCase()
-    .replace(/[^\w\s]/g, '')
-    .replace(/\s+/g, '-');
-}
-
-// Create a new tag
-export async function createTag(formData: TagFormData) {
+// Get all tags
+export async function getTags() {
   try {
-    const { name } = formData;
-    const slug = formData.slug || generateSlug(name);
-
-    const tag = await prisma.tag.create({
-      data: {
-        name,
-        slug
-      }
-    });
-
-    revalidatePath('/admin/tags');
+    const response = await fetch(`${API_BASE_URL}?endpoint=tags`);
     
-    return { success: true, tag };
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const tags = await response.json();
+    return Array.isArray(tags) ? tags : [];
   } catch (error) {
-    console.error("Error creating tag:", error);
-    return { success: false, error: "Failed to create tag" };
+    console.error('Error fetching tags:', error);
+    return [];
   }
 }
 
-// Update an existing tag
-export async function updateTag(tagId: string, formData: TagFormData) {
+// Create new tag
+export async function createTag(data: TagData) {
   try {
-    const { name } = formData;
-    const slug = formData.slug || generateSlug(name);
-
-    const tag = await prisma.tag.update({
-      where: { id: tagId },
-      data: {
-        name,
-        slug
-      }
+    const response = await fetch(`${API_BASE_URL}?endpoint=tags`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data)
     });
 
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const result = await response.json();
+
+    if (!result.success) {
+      throw new Error(result.message || 'Failed to create tag');
+    }
+
     revalidatePath('/admin/tags');
+    revalidatePath('/blog');
     
-    return { success: true, tag };
+    return { success: true, tag: result.data };
   } catch (error) {
-    console.error("Error updating tag:", error);
-    return { success: false, error: "Failed to update tag" };
+    console.error('Error creating tag:', error);
+    return { success: false, error: 'Failed to create tag' };
   }
 }
 
-// Delete a tag
-export async function deleteTag(tagId: string) {
+// Update tag
+export async function updateTag(id: string, data: TagData) {
   try {
-    // First delete the post-tag relations
-    await prisma.postTags.deleteMany({
-      where: { tagId }
+    const response = await fetch(`${API_BASE_URL}?endpoint=tags&id=${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data)
     });
 
-    // Then delete the tag
-    await prisma.tag.delete({
-      where: { id: tagId }
-    });
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const result = await response.json();
+
+    if (!result.success) {
+      throw new Error(result.message || 'Failed to update tag');
+    }
 
     revalidatePath('/admin/tags');
+    revalidatePath('/blog');
+    
+    return { success: true, tag: result.data };
+  } catch (error) {
+    console.error('Error updating tag:', error);
+    return { success: false, error: 'Failed to update tag' };
+  }
+}
+
+// Delete tag
+export async function deleteTag(id: string) {
+  try {
+    const response = await fetch(`${API_BASE_URL}?endpoint=tags&id=${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const result = await response.json();
+
+    if (!result.success) {
+      throw new Error(result.message || 'Failed to delete tag');
+    }
+
+    revalidatePath('/admin/tags');
+    revalidatePath('/blog');
     
     return { success: true };
   } catch (error) {
-    console.error("Error deleting tag:", error);
-    return { success: false, error: "Failed to delete tag" };
+    console.error('Error deleting tag:', error);
+    return { success: false, error: 'Failed to delete tag' };
   }
 }

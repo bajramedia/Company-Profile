@@ -1,8 +1,9 @@
 'use server';
 
-import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://bajramedia.com/api_bridge.php';
 
 export interface PortfolioData {
   title: string;
@@ -40,132 +41,123 @@ export async function getPortfolios(params: {
     search
   } = params;
 
-  const skip = (page - 1) * limit;
+  try {
+    // Build query parameters
+    const queryParams = new URLSearchParams({
+      endpoint: 'portfolio',
+      page: page.toString(),
+      limit: limit.toString()
+    });
 
-  const where: any = {};
-  
-  if (published !== undefined) {
-    where.published = published;
-  }
-  
-  if (featured !== undefined) {
-    where.featured = featured;
-  }
-  
-  if (category) {
-    where.category = { slug: category };
-  }
-  
-  if (search) {
-    where.OR = [
-      { title: { contains: search, mode: 'insensitive' } },
-      { description: { contains: search, mode: 'insensitive' } },
-      { clientName: { contains: search, mode: 'insensitive' } }
-    ];
-  }
+    if (category) queryParams.append('category', category);
+    if (featured !== undefined) queryParams.append('featured', featured.toString());
+    if (published !== undefined) queryParams.append('published', published.toString());
+    if (search) queryParams.append('search', search);
 
-  const [portfolios, total] = await Promise.all([
-    prisma.portfolio.findMany({
-      where,
-      skip,
-      take: limit,
-      orderBy: [
-        { featured: 'desc' },
-        { createdAt: 'desc' }
-      ],
-      include: {
-        category: true,
-        tags: {
-          include: {
-            tag: true
-          }
-        },
-        _count: {
-          select: {
-            portfolioViews: true
-          }
-        }
-      }
-    }),
-    prisma.portfolio.count({ where })
-  ]);
-
-  return {
-    portfolios: portfolios.map(portfolio => ({
-      ...portfolio,
-      images: portfolio.images ? JSON.parse(portfolio.images) : [],
-      tags: portfolio.tags.map(pt => pt.tag),
-      viewCount: portfolio._count.portfolioViews
-    })),
-    pagination: {
-      page,
-      limit,
-      total,
-      pages: Math.ceil(total / limit)
+    const response = await fetch(`${API_BASE_URL}?${queryParams}`);
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
-  };
+
+    const data = await response.json();
+    
+    // Format response to match expected structure
+    const portfolios = Array.isArray(data) ? data : data.portfolios || [];
+    
+    return {
+      portfolios: portfolios.map((portfolio: any) => ({
+        ...portfolio,
+        images: portfolio.images ? JSON.parse(portfolio.images) : [],
+        featured: portfolio.featured === "1" || portfolio.featured === 1 || portfolio.featured === true,
+        published: portfolio.published === "1" || portfolio.published === 1 || portfolio.published === true,
+        tags: portfolio.tags || [],
+        viewCount: portfolio.views || 0
+      })),
+      pagination: {
+        page,
+        limit,
+        total: portfolios.length,
+        pages: Math.ceil(portfolios.length / limit)
+      }
+    };
+    
+  } catch (error) {
+    console.error('Error fetching portfolios:', error);
+    return {
+      portfolios: [],
+      pagination: { page: 1, limit: 12, total: 0, pages: 0 }
+    };
+  }
 }
 
 // Get single portfolio by slug
 export async function getPortfolioBySlug(slug: string) {
-  const portfolio = await prisma.portfolio.findUnique({
-    where: { slug },
-    include: {
-      category: true,
-      tags: {
-        include: {
-          tag: true
-        }
-      },
-      _count: {
-        select: {
-          portfolioViews: true
-        }
-      }
+  try {
+    const response = await fetch(`${API_BASE_URL}?endpoint=portfolio&slug=${slug}`);
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
-  });
+    
+    const data = await response.json();
+    
+    if (!data || (Array.isArray(data) && data.length === 0)) {
+      return null;
+    }
 
-  if (!portfolio) {
+    const portfolio = Array.isArray(data) ? data[0] : data;
+    
+    return {
+      ...portfolio,
+      images: portfolio.images ? JSON.parse(portfolio.images) : [],
+      featured: portfolio.featured === "1" || portfolio.featured === 1 || portfolio.featured === true,
+      published: portfolio.published === "1" || portfolio.published === 1 || portfolio.published === true,
+      tags: portfolio.tags || [],
+      viewCount: portfolio.views || 0
+    };
+    
+  } catch (error) {
+    console.error('Error fetching portfolio by slug:', error);
     return null;
   }
-
-  return {
-    ...portfolio,
-    images: portfolio.images ? JSON.parse(portfolio.images) : [],
-    tags: portfolio.tags.map(pt => pt.tag),
-    viewCount: portfolio._count.portfolioViews
-  };
 }
 
 // Create new portfolio
 export async function createPortfolio(data: PortfolioData) {
   try {
-    const { tagIds, images, ...portfolioData } = data;
+    const portfolioData = {
+      ...data,
+      images: data.images ? JSON.stringify(data.images) : null,
+      featured: data.featured ? 1 : 0,
+      published: data.published ? 1 : 0,
+      startDate: data.startDate ? data.startDate.toISOString().slice(0, 19).replace('T', ' ') : null,
+      endDate: data.endDate ? data.endDate.toISOString().slice(0, 19).replace('T', ' ') : null,
+      tags: data.tagIds || []
+    };
 
-    const portfolio = await prisma.portfolio.create({
-      data: {
-        ...portfolioData,
-        images: images ? JSON.stringify(images) : null,
-        tags: {
-          create: tagIds.map(tagId => ({
-            tagId
-          }))
-        }
+    const response = await fetch(`${API_BASE_URL}?endpoint=portfolio`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
       },
-      include: {
-        category: true,
-        tags: {
-          include: {
-            tag: true
-          }
-        }
-      }
+      body: JSON.stringify(portfolioData)
     });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const result = await response.json();
+
+    if (!result.success) {
+      throw new Error(result.message || 'Failed to create portfolio');
+    }
 
     revalidatePath('/admin/portfolio');
     revalidatePath('/portfolio');
     
-    return { success: true, portfolio };
+    return { success: true, portfolio: result.data };
   } catch (error) {
     console.error('Error creating portfolio:', error);
     return { success: false, error: 'Failed to create portfolio' };
@@ -175,39 +167,39 @@ export async function createPortfolio(data: PortfolioData) {
 // Update portfolio
 export async function updatePortfolio(id: string, data: PortfolioData) {
   try {
-    const { tagIds, images, ...portfolioData } = data;
+    const portfolioData = {
+      ...data,
+      images: data.images ? JSON.stringify(data.images) : null,
+      featured: data.featured ? 1 : 0,
+      published: data.published ? 1 : 0,
+      startDate: data.startDate ? data.startDate.toISOString().slice(0, 19).replace('T', ' ') : null,
+      endDate: data.endDate ? data.endDate.toISOString().slice(0, 19).replace('T', ' ') : null,
+      tags: data.tagIds || []
+    };
 
-    // Delete existing tags
-    await prisma.portfolioTags.deleteMany({
-      where: { portfolioId: id }
-    });
-
-    const portfolio = await prisma.portfolio.update({
-      where: { id },
-      data: {
-        ...portfolioData,
-        images: images ? JSON.stringify(images) : null,
-        tags: {
-          create: tagIds.map(tagId => ({
-            tagId
-          }))
-        }
+    const response = await fetch(`${API_BASE_URL}?endpoint=portfolio&id=${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
       },
-      include: {
-        category: true,
-        tags: {
-          include: {
-            tag: true
-          }
-        }
-      }
+      body: JSON.stringify(portfolioData)
     });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const result = await response.json();
+
+    if (!result.success) {
+      throw new Error(result.message || 'Failed to update portfolio');
+    }
 
     revalidatePath('/admin/portfolio');
     revalidatePath('/portfolio');
-    revalidatePath(`/portfolio/${portfolio.slug}`);
+    revalidatePath(`/portfolio/${data.slug}`);
     
-    return { success: true, portfolio };
+    return { success: true, portfolio: result.data };
   } catch (error) {
     console.error('Error updating portfolio:', error);
     return { success: false, error: 'Failed to update portfolio' };
@@ -217,9 +209,22 @@ export async function updatePortfolio(id: string, data: PortfolioData) {
 // Delete portfolio
 export async function deletePortfolio(id: string) {
   try {
-    await prisma.portfolio.delete({
-      where: { id }
+    const response = await fetch(`${API_BASE_URL}?endpoint=portfolio&id=${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      }
     });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const result = await response.json();
+
+    if (!result.success) {
+      throw new Error(result.message || 'Failed to delete portfolio');
+    }
 
     revalidatePath('/admin/portfolio');
     revalidatePath('/portfolio');
@@ -231,88 +236,110 @@ export async function deletePortfolio(id: string) {
   }
 }
 
-// Toggle portfolio published status
-export async function togglePortfolioPublished(id: string) {
+// Toggle portfolio featured status
+export async function togglePortfolioFeatured(id: string, featured: boolean) {
   try {
-    const portfolio = await prisma.portfolio.findUnique({
-      where: { id }
+    const response = await fetch(`${API_BASE_URL}?endpoint=portfolio&id=${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ featured: featured ? 1 : 0 })
     });
 
-    if (!portfolio) {
-      return { success: false, error: 'Portfolio not found' };
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    const updated = await prisma.portfolio.update({
-      where: { id },
-      data: {
-        published: !portfolio.published
-      }
-    });
+    const result = await response.json();
+
+    if (!result.success) {
+      throw new Error(result.message || 'Failed to update portfolio');
+    }
 
     revalidatePath('/admin/portfolio');
     revalidatePath('/portfolio');
     
-    return { success: true, portfolio: updated };
+    return { success: true };
   } catch (error) {
-    console.error('Error toggling portfolio published:', error);
-    return { success: false, error: 'Failed to toggle published status' };
+    console.error('Error toggling portfolio featured:', error);
+    return { success: false, error: 'Failed to update portfolio' };
   }
 }
 
-// Toggle portfolio featured status
-export async function togglePortfolioFeatured(id: string) {
+// Toggle portfolio published status
+export async function togglePortfolioPublished(id: string, published: boolean) {
   try {
-    const portfolio = await prisma.portfolio.findUnique({
-      where: { id }
+    const response = await fetch(`${API_BASE_URL}?endpoint=portfolio&id=${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ published: published ? 1 : 0 })
     });
 
-    if (!portfolio) {
-      return { success: false, error: 'Portfolio not found' };
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    const updated = await prisma.portfolio.update({
-      where: { id },
-      data: {
-        featured: !portfolio.featured
-      }
-    });
+    const result = await response.json();
+
+    if (!result.success) {
+      throw new Error(result.message || 'Failed to update portfolio');
+    }
 
     revalidatePath('/admin/portfolio');
     revalidatePath('/portfolio');
     
-    return { success: true, portfolio: updated };
+    return { success: true };
   } catch (error) {
-    console.error('Error toggling portfolio featured:', error);
-    return { success: false, error: 'Failed to toggle featured status' };
+    console.error('Error toggling portfolio published:', error);
+    return { success: false, error: 'Failed to update portfolio' };
   }
 }
 
 // Get portfolio categories
 export async function getPortfolioCategories() {
-  return await prisma.portfolioCategory.findMany({
-    orderBy: { name: 'asc' },
-    include: {
-      _count: {
-        select: {
-          portfolios: true
-        }
-      }
+  try {
+    const response = await fetch(`${API_BASE_URL}?endpoint=portfolio_categories`);
+    
+    if (!response.ok) {
+      // Fallback to default categories
+      return [
+        { id: 'web-dev-001', name: 'Web Development', slug: 'web-development', color: '#3B82F6', icon: '🌐' },
+        { id: 'mobile-001', name: 'Mobile Apps', slug: 'mobile-apps', color: '#10B981', icon: '📱' },
+        { id: 'uiux-001', name: 'UI/UX Design', slug: 'uiux-design', color: '#8B5CF6', icon: '🎨' }
+      ];
     }
-  });
+
+    const categories = await response.json();
+    return Array.isArray(categories) ? categories : [];
+  } catch (error) {
+    console.error('Error fetching portfolio categories:', error);
+    return [];
+  }
 }
 
 // Get portfolio tags
 export async function getPortfolioTags() {
-  return await prisma.portfolioTag.findMany({
-    orderBy: { name: 'asc' },
-    include: {
-      _count: {
-        select: {
-          portfolios: true
-        }
-      }
+  try {
+    const response = await fetch(`${API_BASE_URL}?endpoint=portfolio_tags`);
+    
+    if (!response.ok) {
+      // Fallback to default tags
+      return [
+        { id: 'react-001', name: 'React', slug: 'react', color: '#61DAFB' },
+        { id: 'nextjs-001', name: 'Next.js', slug: 'nextjs', color: '#000000' },
+        { id: 'typescript-001', name: 'TypeScript', slug: 'typescript', color: '#3178C6' }
+      ];
     }
-  });
+
+    const tags = await response.json();
+    return Array.isArray(tags) ? tags : [];
+  } catch (error) {
+    console.error('Error fetching portfolio tags:', error);
+    return [];
+  }
 }
 
 // Create portfolio category
@@ -323,12 +350,26 @@ export async function createPortfolioCategory(data: {
   icon?: string;
 }) {
   try {
-    const category = await prisma.portfolioCategory.create({
-      data
+    const response = await fetch(`${API_BASE_URL}?endpoint=portfolio_categories`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data)
     });
 
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const result = await response.json();
+
+    if (!result.success) {
+      throw new Error(result.message || 'Failed to create category');
+    }
+
     revalidatePath('/admin/portfolio');
-    return { success: true, category };
+    return { success: true, category: result.data };
   } catch (error) {
     console.error('Error creating portfolio category:', error);
     return { success: false, error: 'Failed to create category' };
@@ -342,12 +383,26 @@ export async function createPortfolioTag(data: {
   color?: string;
 }) {
   try {
-    const tag = await prisma.portfolioTag.create({
-      data
+    const response = await fetch(`${API_BASE_URL}?endpoint=portfolio_tags`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data)
     });
 
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const result = await response.json();
+
+    if (!result.success) {
+      throw new Error(result.message || 'Failed to create tag');
+    }
+
     revalidatePath('/admin/portfolio');
-    return { success: true, tag };
+    return { success: true, tag: result.data };
   } catch (error) {
     console.error('Error creating portfolio tag:', error);
     return { success: false, error: 'Failed to create tag' };
@@ -357,25 +412,25 @@ export async function createPortfolioTag(data: {
 // Track portfolio view
 export async function trackPortfolioView(portfolioId: string, ipAddress?: string, userAgent?: string) {
   try {
-    await prisma.portfolioView.create({
-      data: {
+    const response = await fetch(`${API_BASE_URL}?endpoint=portfolio_views`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
         portfolioId,
         ipAddress,
-        userAgent
-      }
+        userAgent,
+        viewedAt: new Date().toISOString()
+      })
     });
 
-    // Increment views count
-    await prisma.portfolio.update({
-      where: { id: portfolioId },
-      data: {
-        views: {
-          increment: 1
-        }
-      }
-    });
-
-    return { success: true };
+    if (response.ok) {
+      const result = await response.json();
+      return { success: result.success };
+    }
+    
+    return { success: false };
   } catch (error) {
     console.error('Error tracking portfolio view:', error);
     return { success: false };

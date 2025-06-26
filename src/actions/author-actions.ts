@@ -1,88 +1,130 @@
 "use server";
 
-import prisma from "@/lib/prisma";
-import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
+import { revalidatePath } from 'next/cache';
 
-// Interface for author creation/update
-interface AuthorFormData {
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://bajramedia.com/api_bridge.php';
+
+export interface AuthorData {
   name: string;
   email: string;
   avatar?: string;
   bio?: string;
 }
 
-// Create a new author
-export async function createAuthor(formData: AuthorFormData) {
+// Get all authors
+export async function getAuthors() {
   try {
-    const { name, email, avatar, bio } = formData;
-
-    const author = await prisma.author.create({
-      data: {
-        name,
-        email,
-        avatar,
-        bio
-      }
-    });
-
-    revalidatePath('/admin/authors');
+    const response = await fetch(`${API_BASE_URL}?endpoint=authors`);
     
-    return { success: true, author };
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const authors = await response.json();
+    return Array.isArray(authors) ? authors : [];
   } catch (error) {
-    console.error("Error creating author:", error);
-    return { success: false, error: "Failed to create author" };
+    console.error('Error fetching authors:', error);
+    return [];
   }
 }
 
-// Update an existing author
-export async function updateAuthor(authorId: string, formData: AuthorFormData) {
+// Create new author
+export async function createAuthor(data: AuthorData) {
   try {
-    const { name, email, avatar, bio } = formData;
-
-    const author = await prisma.author.update({
-      where: { id: authorId },
-      data: {
-        name,
-        email,
-        avatar,
-        bio
-      }
+    const response = await fetch(`${API_BASE_URL}?endpoint=authors`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data)
     });
 
-    revalidatePath('/admin/authors');
-    
-    return { success: true, author };
-  } catch (error) {
-    console.error("Error updating author:", error);
-    return { success: false, error: "Failed to update author" };
-  }
-}
-
-// Delete an author
-export async function deleteAuthor(authorId: string) {
-  try {
-    // Check if the author has any posts
-    const postCount = await prisma.post.count({
-      where: { authorId }
-    });
-
-    if (postCount > 0) {
-      return { 
-        success: false, 
-        error: "Cannot delete author who has posts. Reassign or delete the posts first." 
-      };
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    await prisma.author.delete({
-      where: { id: authorId }
-    });
+    const result = await response.json();
+
+    if (!result.success) {
+      throw new Error(result.message || 'Failed to create author');
+    }
 
     revalidatePath('/admin/authors');
+    revalidatePath('/blog');
+    
+    return { success: true, author: result.data };
+  } catch (error) {
+    console.error('Error creating author:', error);
+    return { success: false, error: 'Failed to create author' };
+  }
+}
+
+// Update author
+export async function updateAuthor(id: string, data: AuthorData) {
+  try {
+    const response = await fetch(`${API_BASE_URL}?endpoint=authors&id=${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data)
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const result = await response.json();
+
+    if (!result.success) {
+      throw new Error(result.message || 'Failed to update author');
+    }
+
+    revalidatePath('/admin/authors');
+    revalidatePath('/blog');
+    
+    return { success: true, author: result.data };
+  } catch (error) {
+    console.error('Error updating author:', error);
+    return { success: false, error: 'Failed to update author' };
+  }
+}
+
+// Delete author
+export async function deleteAuthor(id: string) {
+  try {
+    // Check if author has posts
+    const postsResponse = await fetch(`${API_BASE_URL}?endpoint=posts&authorId=${id}&limit=1`);
+    if (postsResponse.ok) {
+      const posts = await postsResponse.json();
+      if (Array.isArray(posts) && posts.length > 0) {
+        return { success: false, error: 'Cannot delete author with existing posts' };
+      }
+    }
+
+    const response = await fetch(`${API_BASE_URL}?endpoint=authors&id=${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const result = await response.json();
+
+    if (!result.success) {
+      throw new Error(result.message || 'Failed to delete author');
+    }
+
+    revalidatePath('/admin/authors');
+    revalidatePath('/blog');
     
     return { success: true };
   } catch (error) {
-    console.error("Error deleting author:", error);
-    return { success: false, error: "Failed to delete author" };
+    console.error('Error deleting author:', error);
+    return { success: false, error: 'Failed to delete author' };
   }
 }
