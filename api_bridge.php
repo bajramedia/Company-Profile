@@ -318,8 +318,8 @@ function handlePost($pdo, $endpoint) {
                 $featuredImage = $data['featuredImage'] ?? '';
                 $published = $data['published'] ?? false;
                 $readTime = $data['readTime'] ?? 5;
-                $authorId = $data['authorId'] ?? '1';
-                $categoryId = $data['categoryId'] ?? '1';
+                $authorId = $data['authorId'] ?? 'cmbf4aq8s0000tsa4kiz9m58q'; // Valid author ID
+                $categoryId = $data['categoryId'] ?? 'cmbf4aq900001tsa4kx7e1sgo'; // Valid category ID
                 
                 // Convert boolean to int for MySQL
                 $publishedInt = $published ? 1 : 0;
