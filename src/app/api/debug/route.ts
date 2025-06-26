@@ -19,17 +19,6 @@ export async function GET() {
       hasApiSecret: !!process.env.CLOUDINARY_API_SECRET,
       cloudName: process.env.CLOUDINARY_CLOUD_NAME || 'NOT_SET'
     },
-    cloudinary: {
-      configured: !!(
-        process.env.CLOUDINARY_CLOUD_NAME && 
-        process.env.CLOUDINARY_API_KEY && 
-        process.env.CLOUDINARY_API_SECRET
-      ),
-      hasCloudName: !!process.env.CLOUDINARY_CLOUD_NAME,
-      hasApiKey: !!process.env.CLOUDINARY_API_KEY,
-      hasApiSecret: !!process.env.CLOUDINARY_API_SECRET,
-      cloudName: process.env.CLOUDINARY_CLOUD_NAME || 'NOT_SET'
-    },
     api_tests: {}
   };
 
@@ -89,5 +78,4 @@ export async function GET() {
   }
 
   return NextResponse.json(debugInfo, { status: 200 });
-}
- 
+} 
