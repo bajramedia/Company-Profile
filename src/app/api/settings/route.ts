@@ -1,61 +1,67 @@
 import { NextResponse } from 'next/server';
-import prisma from '@/lib/prisma';
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "https://bajramedia.com/api_bridge.php";
 
 // GET - Ambil public settings (tanpa admin settings)
 export async function GET() {
   try {
-    const settings = await prisma.setting.findMany({
-      where: {
-        key: {
-          in: [
-            'siteName',
-            'siteDescription', 
-            'siteUrl',
-            'contactEmail',
-            'contactPhone',
-            'contactAddress',
-            'socialLinks',
-            'footerText',
-            'seoSettings',
-            'enableComments',
-            'enableSocialShare'
-          ]
-        }
-      }
-    });
-      // Transform array ke object
-    const settingsObject = settings.reduce((acc, setting) => {
-      let value: any = setting.value;
-      
-      // Parse nilai berdasarkan tipe
-      switch (setting.type) {
-        case 'number':
-          value = parseFloat(setting.value);
-          break;
-        case 'boolean':
-          value = setting.value === 'true';
-          break;
-        case 'json':
-          try {
-            value = JSON.parse(setting.value);
-          } catch {
-            value = setting.value;
-          }
-          break;
-        default:
-          value = setting.value;
-      }
-      
-      acc[setting.key] = value;
-      return acc;
-    }, {} as Record<string, any>);
+    // Get settings from external API
+    const response = await fetch(`${API_BASE_URL}?endpoint=settings`);
+    
+    if (!response.ok) {
+      console.error(`API Bridge settings error: ${response.status}`);
+      // Return default settings if API fails
+      return NextResponse.json({
+        siteName: 'Bajramedia',
+        siteDescription: 'Professional Web Development & Digital Solutions',
+        siteUrl: 'https://bajramedia.com',
+        contactEmail: 'info@bajramedia.com',
+        contactPhone: '+62 123 456 789',
+        contactAddress: 'Bali, Indonesia',
+        socialLinks: {},
+        footerText: '© 2024 Bajramedia. All rights reserved.',
+        seoSettings: {},
+        enableComments: false,
+        enableSocialShare: true
+      });
+    }
+    
+    const settings = await response.json();
+    
+    // If API returns empty object, use defaults
+    if (!settings || Object.keys(settings).length === 0) {
+      return NextResponse.json({
+        siteName: 'Bajramedia',
+        siteDescription: 'Professional Web Development & Digital Solutions',
+        siteUrl: 'https://bajramedia.com',
+        contactEmail: 'info@bajramedia.com',
+        contactPhone: '+62 123 456 789',
+        contactAddress: 'Bali, Indonesia',
+        socialLinks: {},
+        footerText: '© 2024 Bajramedia. All rights reserved.',
+        seoSettings: {},
+        enableComments: false,
+        enableSocialShare: true
+      });
+    }
 
-    return NextResponse.json(settingsObject);
+    return NextResponse.json(settings);
   } catch (error) {
     console.error('Error fetching public settings:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch public settings' },
-      { status: 500 }
-    );
+    
+    // Return default settings as fallback
+    return NextResponse.json({
+      siteName: 'Bajramedia',
+      siteDescription: 'Professional Web Development & Digital Solutions',
+      siteUrl: 'https://bajramedia.com',
+      contactEmail: 'info@bajramedia.com',
+      contactPhone: '+62 123 456 789',
+      contactAddress: 'Bali, Indonesia',
+      socialLinks: {},
+      footerText: '© 2024 Bajramedia. All rights reserved.',
+      seoSettings: {},
+      enableComments: false,
+      enableSocialShare: true
+    });
   }
 }
