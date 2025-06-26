@@ -73,6 +73,23 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
+    console.log("Creating post with data:", body);
+    
+    // Extract and format post data
+    const postData = {
+      title: body.title || "",
+      slug: body.slug || "",
+      excerpt: body.excerpt || "",
+      content: body.content || "",
+      featuredImage: body.featuredImage || "",
+      published: body.published === true || body.published === "true" || body.published === 1,
+      readTime: parseInt(body.readTime) || 5,
+      authorId: body.authorId || body.author?.id || "1",
+      categoryId: body.categoryId || body.category?.id || "1",
+      tags: body.tagIds || body.tags || []
+    };
+
+    console.log("Formatted post data:", postData);
     
     // Create post via API bridge
     const response = await fetch(`${API_BASE_URL}?endpoint=posts`, {
@@ -80,24 +97,34 @@ export async function POST(request: NextRequest) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(body)
+      body: JSON.stringify(postData)
     });
 
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      const errorText = await response.text();
+      console.error("API Bridge error response:", errorText);
+      throw new Error(`HTTP error! status: ${response.status}, response: ${errorText}`);
     }
 
     const result = await response.json();
+    console.log("API Bridge result:", result);
 
     if (!result.success) {
-      throw new Error("Failed to create post");
+      throw new Error(result.error || "Failed to create post");
     }
 
-    return NextResponse.json({ success: true, id: result.id });
+    return NextResponse.json({ 
+      success: true, 
+      id: result.id,
+      message: "Post created successfully"
+    });
   } catch (error) {
     console.error("Error creating post:", error);
     return NextResponse.json(
-      { error: "Failed to create post" }, 
+      { 
+        error: error.message || "Failed to create post",
+        details: error.toString()
+      }, 
       { status: 500 }
     );
   }
@@ -115,13 +142,27 @@ export async function PUT(request: NextRequest) {
       );
     }
 
+    // Format update data
+    const postData = {
+      title: updateData.title || "",
+      slug: updateData.slug || "",
+      excerpt: updateData.excerpt || "",
+      content: updateData.content || "",
+      featuredImage: updateData.featuredImage || "",
+      published: updateData.published === true || updateData.published === "true" || updateData.published === 1,
+      readTime: parseInt(updateData.readTime) || 5,
+      authorId: updateData.authorId || updateData.author?.id || "1",
+      categoryId: updateData.categoryId || updateData.category?.id || "1",
+      tags: updateData.tagIds || updateData.tags || []
+    };
+
     // Update post via API bridge
     const response = await fetch(`${API_BASE_URL}?endpoint=posts&id=${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(updateData)
+      body: JSON.stringify(postData)
     });
 
     if (!response.ok) {
