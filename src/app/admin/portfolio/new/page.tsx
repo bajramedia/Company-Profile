@@ -1,35 +1,65 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from '@/components';
 import { PortfolioForm } from '@/components';
 
+interface PortfolioCategory {
+    id: string;
+    name: string;
+    slug: string;
+    icon?: string;
+    color?: string;
+}
+
+interface PortfolioTag {
+    id: string;
+    name: string;
+    slug: string;
+    color?: string;
+}
+
 export default function NewPortfolioPage() {
     const router = useRouter();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string>('');
+    const [isLoading, setIsLoading] = useState(true);
+    const [categories, setCategories] = useState<PortfolioCategory[]>([]);
+    const [tags, setTags] = useState<PortfolioTag[]>([]);
 
-    // Updated categories dengan ID yang benar dari database
-    const categories = [
-        { id: 'cmcaw04wy0o0wh9phekq4k3b', name: 'Web Development', slug: 'web-development', icon: '🌐', color: '#3B82F6' },
-        { id: 'cmcaw04wc0o0xh9p6qzku6jdg', name: 'Mobile Apps', slug: 'mobile-apps', icon: '📱', color: '#10B981' },
-        { id: 'cmcaw04wy0o0yh9p81ku6jdg', name: 'UI/UX Design', slug: 'uiux-design', icon: '🎨', color: '#8B5CF6' },
-        { id: 'cmcaw04wy0o0zh9p6lmxny7h', name: 'Digital Marketing', slug: 'digital-marketing', icon: '📈', color: '#F59E0B' },
-        { id: '5', name: 'Game Development', slug: 'game-development', icon: '🎮', color: '#EF4444' }
-    ];
+    // Fetch categories dan tags dari database
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                setIsLoading(true);
 
-    const tags = [
-        { id: 'cmcaw04yq0013h9pgun9kwasq', name: 'React', slug: 'react', color: '#61DAFB' },
-        { id: 'cmcaw04ym0010h9pgm9pg6gs7', name: 'Next.js', slug: 'nextjs', color: '#000000' },
-        { id: 'cmcaw04ys0011h9pgy277svo', name: 'TypeScript', slug: 'typescript', color: '#3178C6' },
-        { id: 'cmcaw04ya0012h9pgvs0pstyq', name: 'Tailwind CSS', slug: 'tailwindcss', color: '#06B6D4' },
-        { id: 'cmcaw04yw0014h9pgcz5a83zs', name: 'React Native', slug: 'react-native', color: '#61DAFB' },
-        { id: 'cmcaw04z60015h9pg75unmmr', name: 'Figma', slug: 'figma', color: '#F24E1E' },
-        { id: 'cmcaw04zb0016h9pgpfaa9c', name: 'Prisma', slug: 'prisma', color: '#2D3748' },
-        { id: 'cmcaw050k0017h9pg5bz9yIuj', name: 'Framer Motion', slug: 'framer-motion', color: '#0055FF' }
-    ];
+                // Fetch categories dan tags secara bersamaan
+                const [categoriesResponse, tagsResponse] = await Promise.all([
+                    fetch('/api/portfolio/categories'),
+                    fetch('/api/portfolio/tags')
+                ]);
+
+                if (!categoriesResponse.ok || !tagsResponse.ok) {
+                    throw new Error('Failed to fetch categories or tags');
+                }
+
+                const categoriesData = await categoriesResponse.json();
+                const tagsData = await tagsResponse.json();
+
+                setCategories(categoriesData);
+                setTags(tagsData);
+            } catch (error) {
+                console.error('❌ Error fetching data:', error);
+                setError('Gagal memuat data kategori dan tag. Silakan refresh halaman.');
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchData();
+    }, []);
 
     const handleSubmit = async (portfolioData: any) => {
         setIsSubmitting(true);
@@ -68,6 +98,39 @@ export default function NewPortfolioPage() {
     const handleCancel = () => {
         router.push('/admin/portfolio');
     };
+
+    // Loading state
+    if (isLoading) {
+        return (
+            <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                    <div>
+                        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+                            Tambah Portfolio Baru
+                        </h1>
+                        <p className="text-gray-600 dark:text-gray-400 mt-1">
+                            Memuat data...
+                        </p>
+                    </div>
+                    <Link href="/admin/portfolio">
+                        <Button variant="outline" size="md">
+                            <span className="mr-2">←</span>
+                            Kembali
+                        </Button>
+                    </Link>
+                </div>
+
+                <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
+                    <div className="flex items-center justify-center py-12">
+                        <div className="flex items-center space-x-3">
+                            <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+                            <span className="text-gray-600 dark:text-gray-400">Memuat data kategori dan tag...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="space-y-6">
@@ -111,4 +174,4 @@ export default function NewPortfolioPage() {
             </div>
         </div>
     );
-} 
+}

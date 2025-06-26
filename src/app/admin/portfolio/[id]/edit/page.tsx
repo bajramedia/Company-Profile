@@ -6,72 +6,149 @@ import Link from 'next/link';
 import { Button } from '@/components';
 import { PortfolioForm } from '@/components';
 
+interface PortfolioCategory {
+    id: string;
+    name: string;
+    slug: string;
+    icon?: string;
+    color?: string;
+}
+
+interface PortfolioTag {
+    id: string;
+    name: string;
+    slug: string;
+    color?: string;
+}
+
+interface PortfolioData {
+    id: string;
+    title: string;
+    slug: string;
+    description: string;
+    content: string;
+    featuredImage: string;
+    images: string[];
+    clientName: string;
+    projectUrl: string;
+    githubUrl: string;
+    featured: boolean;
+    published: boolean;
+    startDate: string;
+    endDate: string;
+    categoryId: string;
+    tagIds: string[];
+}
+
 export default function EditPortfolioPage() {
     const router = useRouter();
     const params = useParams();
     const portfolioId = params?.id as string;
 
-    const [portfolioData, setPortfolioData] = useState<any>(null);
-    const [isLoading, setIsLoading] = useState(true);
+    const [portfolioData, setPortfolioData] = useState<PortfolioData | null>(null);
+    const [categories, setCategories] = useState<PortfolioCategory[]>([]);
+    const [tags, setTags] = useState<PortfolioTag[]>([]);
+    const [isLoadingData, setIsLoadingData] = useState(true);
     const [isSubmitting, setIsSubmitting] = useState(false);
-
-    // Updated categories dengan ID yang benar dari database portfoliocategory
-    const categories = [
-        { id: 'cmcaw04wy0o0wh9phekq4k3b', name: 'Web Development', slug: 'web-development', icon: '🌐', color: '#3B82F6' },
-        { id: 'cmcaw04wc0o0xh9p6qzku6jdg', name: 'Mobile Apps', slug: 'mobile-apps', icon: '📱', color: '#10B981' },
-        { id: 'cmcaw04wy0o0yh9p81ku6jdg', name: 'UI/UX Design', slug: 'uiux-design', icon: '🎨', color: '#8B5CF6' },
-        { id: 'cmcaw04wy0o0zh9p6lmxny7h', name: 'Digital Marketing', slug: 'digital-marketing', icon: '📈', color: '#F59E0B' },
-        { id: '5', name: 'Game Development', slug: 'game-development', icon: '🎮', color: '#EF4444' }
-    ];
-
-    // Updated tags dengan ID yang benar dari database portfoliotag
-    const tags = [
-        { id: 'cmcaw04yq0013h9pgun9kwasq', name: 'React', slug: 'react', color: '#61DAFB' },
-        { id: 'cmcaw04ym0010h9pgm9pg6gs7', name: 'Next.js', slug: 'nextjs', color: '#000000' },
-        { id: 'cmcaw04ys0011h9pgy277svo', name: 'TypeScript', slug: 'typescript', color: '#3178C6' },
-        { id: 'cmcaw04ya0012h9pgvs0pstyq', name: 'Tailwind CSS', slug: 'tailwindcss', color: '#06B6D4' },
-        { id: 'cmcaw04yw0014h9pgcz5a83zs', name: 'React Native', slug: 'react-native', color: '#61DAFB' },
-        { id: 'cmcaw04z60015h9pg75unmmr', name: 'Figma', slug: 'figma', color: '#F24E1E' },
-        { id: 'cmcaw04zb0016h9pgpfaa9c', name: 'Prisma', slug: 'prisma', color: '#2D3748' },
-        { id: 'cmcaw050k0017h9pg5bz9yIuj', name: 'Framer Motion', slug: 'framer-motion', color: '#0055FF' }
-    ];
+    const [error, setError] = useState<string>('');
 
     useEffect(() => {
-        const loadPortfolioData = async () => {
+        const loadData = async () => {
             try {
-                // API call akan ditambahkan di sini
-                await new Promise(resolve => setTimeout(resolve, 500));
+                setIsLoadingData(true);
+                setError('');
 
-                const mockData = {
-                    id: portfolioId,
-                    title: 'Sample Portfolio',
-                    description: 'Sample description',
-                    clientName: 'Sample Client',
-                    category: 'Web Development'
-                };
+                // Fetch portfolio data, categories, dan tags secara bersamaan
+                const [portfolioResponse, categoriesResponse, tagsResponse] = await Promise.all([
+                    fetch(`/api/admin/portfolio/${portfolioId}`),
+                    fetch('/api/portfolio/categories'),
+                    fetch('/api/portfolio/tags')
+                ]);
 
-                setPortfolioData(mockData);
+                // Check responses
+                if (!portfolioResponse.ok) {
+                    throw new Error(`Failed to fetch portfolio: ${portfolioResponse.status}`);
+                }
+                if (!categoriesResponse.ok) {
+                    throw new Error(`Failed to fetch categories: ${categoriesResponse.status}`);
+                }
+                if (!tagsResponse.ok) {
+                    throw new Error(`Failed to fetch tags: ${tagsResponse.status}`);
+                }
+
+                const [portfolioResult, categoriesData, tagsData] = await Promise.all([
+                    portfolioResponse.json(),
+                    categoriesResponse.json(),
+                    tagsResponse.json()
+                ]);
+
+                // Process portfolio data
+                if (portfolioResult.portfolio) {
+                    const portfolio = portfolioResult.portfolio;
+                    setPortfolioData({
+                        id: portfolio.id,
+                        title: portfolio.title || '',
+                        slug: portfolio.slug || '',
+                        description: portfolio.description || '',
+                        content: portfolio.content || '',
+                        featuredImage: portfolio.featuredImage || '',
+                        images: portfolio.images || [],
+                        clientName: portfolio.clientName || '',
+                        projectUrl: portfolio.projectUrl || '',
+                        githubUrl: portfolio.githubUrl || '',
+                        featured: portfolio.featured || false,
+                        published: portfolio.published || false,
+                        startDate: portfolio.startDate ? portfolio.startDate.split('T')[0] : '',
+                        endDate: portfolio.endDate ? portfolio.endDate.split('T')[0] : '',
+                        categoryId: portfolio.categoryId || portfolio.category?.id || '',
+                        tagIds: portfolio.tags?.map((tag: any) => tag.id) || []
+                    });
+                } else {
+                    throw new Error('Portfolio not found');
+                }
+
+                setCategories(categoriesData);
+                setTags(tagsData);
+
             } catch (error) {
-                console.error('Error loading portfolio:', error);
+                console.error('❌ Error loading data:', error);
+                setError(error instanceof Error ? error.message : 'Failed to load data');
             } finally {
-                setIsLoading(false);
+                setIsLoadingData(false);
             }
         };
 
         if (portfolioId) {
-            loadPortfolioData();
+            loadData();
         }
     }, [portfolioId]);
 
     const handleSubmit = async (updatedData: any) => {
         setIsSubmitting(true);
+        setError('');
 
         try {
-            console.log('Updating portfolio:', { id: portfolioId, ...updatedData });
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            console.log('📝 Updating portfolio:', { id: portfolioId, ...updatedData });
+
+            const response = await fetch(`/api/admin/portfolio/${portfolioId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(updatedData)
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(result.error || 'Failed to update portfolio');
+            }
+
+            console.log('✅ Portfolio updated successfully:', result);
             router.push('/admin/portfolio');
         } catch (error) {
-            console.error('Error updating portfolio:', error);
+            console.error('❌ Error updating portfolio:', error);
+            setError(error instanceof Error ? error.message : 'Failed to update portfolio');
         } finally {
             setIsSubmitting(false);
         }
@@ -81,12 +158,71 @@ export default function EditPortfolioPage() {
         router.push('/admin/portfolio');
     };
 
-    if (isLoading) {
+    // Loading state
+    if (isLoadingData) {
         return (
             <div className="space-y-6">
-                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-                    Loading...
-                </h1>
+                <div className="flex items-center justify-between">
+                    <div>
+                        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+                            Edit Portfolio
+                        </h1>
+                        <p className="text-gray-600 dark:text-gray-400 mt-1">
+                            Memuat data...
+                        </p>
+                    </div>
+                    <Link href="/admin/portfolio">
+                        <Button variant="outline" size="md">
+                            <span className="mr-2">←</span>
+                            Kembali
+                        </Button>
+                    </Link>
+                </div>
+
+                <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
+                    <div className="flex items-center justify-center py-12">
+                        <div className="flex items-center space-x-3">
+                            <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+                            <span className="text-gray-600 dark:text-gray-400">Memuat data portfolio...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    // Error state
+    if (error && !portfolioData) {
+        return (
+            <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                    <div>
+                        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+                            Edit Portfolio
+                        </h1>
+                    </div>
+                    <Link href="/admin/portfolio">
+                        <Button variant="outline" size="md">
+                            <span className="mr-2">←</span>
+                            Kembali
+                        </Button>
+                    </Link>
+                </div>
+
+                <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-6">
+                    <div className="text-center">
+                        <p className="text-red-600 dark:text-red-400 text-lg mb-4">
+                            ❌ {error}
+                        </p>
+                        <Button
+                            variant="outline"
+                            size="md"
+                            onClick={() => window.location.reload()}
+                        >
+                            🔄 Coba Lagi
+                        </Button>
+                    </div>
+                </div>
             </div>
         );
     }
@@ -98,17 +234,30 @@ export default function EditPortfolioPage() {
                     <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
                         Edit Portfolio
                     </h1>
+                    <p className="text-gray-600 dark:text-gray-400 mt-1">
+                        Edit portfolio: {portfolioData?.title}
+                    </p>
                 </div>
                 <Link href="/admin/portfolio">
                     <Button variant="outline" size="md">
+                        <span className="mr-2">←</span>
                         Kembali
                     </Button>
                 </Link>
             </div>
 
+            {/* Error Message */}
+            {error && (
+                <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
+                    <p className="text-red-600 dark:text-red-400 text-sm">
+                        ❌ {error}
+                    </p>
+                </div>
+            )}
+
             <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
                 <PortfolioForm
-                    initialData={portfolioData}
+                    initialData={portfolioData || undefined}
                     categories={categories}
                     tags={tags}
                     onSubmit={handleSubmit}
@@ -119,4 +268,4 @@ export default function EditPortfolioPage() {
             </div>
         </div>
     );
-} 
+}
