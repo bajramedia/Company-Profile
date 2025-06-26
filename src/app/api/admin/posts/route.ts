@@ -41,13 +41,13 @@ export async function GET(request: NextRequest) {
       readTime: post.readTime || 5,
       published: post.published === "1" || post.published === 1 || post.published === true,
       author: {
-        id: post.authorId || "1",
+        id: post.authorId || "cmbf4aq8s0000tsa4kiz9m58q", // Valid author ID from database
         name: post.authorName || "Admin User",
         avatar: post.authorAvatar || "",
         bio: post.authorBio || ""
       },
       category: {
-        id: post.categoryId || "1",
+        id: post.categoryId || "cmbf4aq900001tsa4kx7e1sgo", // Valid category ID from database
         name: post.categoryName || "Uncategorized",
         slug: post.categorySlug || "uncategorized"
       },
@@ -84,8 +84,8 @@ export async function POST(request: NextRequest) {
       featuredImage: body.featuredImage || "",
       published: body.published === true || body.published === "true" || body.published === 1,
       readTime: parseInt(body.readTime) || 5,
-      authorId: body.authorId || body.author?.id || "1",
-      categoryId: body.categoryId || body.category?.id || "1",
+      authorId: body.authorId || body.author?.id || "cmbf4aq8s0000tsa4kiz9m58q", // Valid author ID from database
+      categoryId: body.categoryId || body.category?.id || "cmbf4aq900001tsa4kx7e1sgo", // Valid category ID from database
       tags: body.tagIds || body.tags || []
     };
 
@@ -153,8 +153,8 @@ export async function PUT(request: NextRequest) {
       featuredImage: updateData.featuredImage || "",
       published: updateData.published === true || updateData.published === "true" || updateData.published === 1,
       readTime: parseInt(updateData.readTime) || 5,
-      authorId: updateData.authorId || updateData.author?.id || "1",
-      categoryId: updateData.categoryId || updateData.category?.id || "1",
+      authorId: updateData.authorId || updateData.author?.id || "cmbf4aq8s0000tsa4kiz9m58q", // Valid author ID from database
+      categoryId: updateData.categoryId || updateData.category?.id || "cmbf4aq900001tsa4kx7e1sgo", // Valid category ID from database
       tags: updateData.tagIds || updateData.tags || []
     };
 
