@@ -65,7 +65,7 @@ class BlogServiceAPI {
       return posts.map((post: any) => ({
         ...post,
         date: post.createdAt,
-        featured: post.featured === true || post.featured === 1 || post.featured === '1', // Handle different featured field types
+        featured: post.featured === true || post.featured === 1 || post.featured === '1' || false, // Handle different featured field types, default to false
         readTime: parseInt(post.readTime) || calculateReadTime(post.content || ''),
         author: {
           id: post.authorId?.toString() || '1',
@@ -123,20 +123,32 @@ class BlogServiceAPI {
 
   async getFeaturedPosts(limit: number = 3): Promise<BlogPost[]> {
     try {
+      console.log('🔍 Fetching featured posts...');
       const allPosts = await this.getAllPosts(1, 100);
+      console.log('📊 Total posts fetched:', allPosts.length);
+      
+      // Debug: Check featured field in posts
+      console.log('🏷️ Featured status check:', allPosts.map(post => ({ 
+        title: post.title.substring(0, 30) + '...', 
+        featured: post.featured 
+      })));
       
       // Try to get featured posts first
       const featuredPosts = allPosts.filter(post => post.featured === true);
+      console.log('⭐ Featured posts found:', featuredPosts.length);
       
       // If no featured posts found, return the most recent posts instead
       if (featuredPosts.length === 0) {
-        console.log('No featured posts found, returning recent posts instead');
-        return allPosts.slice(0, limit);
+        console.log('🔄 No featured posts found, returning recent posts instead');
+        const recentPosts = allPosts.slice(0, limit);
+        console.log('📈 Returning recent posts:', recentPosts.length);
+        return recentPosts;
       }
       
+      console.log('✅ Returning featured posts:', featuredPosts.length);
       return featuredPosts.slice(0, limit);
     } catch (error) {
-      console.error('Error fetching featured posts:', error);
+      console.error('❌ Error fetching featured posts:', error);
       return [];
     }
   }
