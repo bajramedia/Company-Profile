@@ -1,84 +1,108 @@
-import { NextRequest, NextResponse } from "next/server";
-import prisma from "@/lib/prisma";
+import { NextRequest, NextResponse } from 'next/server';
 
-interface Params {
-  params: Promise<{
-    slug: string;
-  }>
-}
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://bajramedia.com/api_bridge.php';
 
 export async function POST(
   request: NextRequest,
-  { params }: Params
+  context: { params: Promise<{ slug: string }> }
 ) {
   try {
-    const { slug } = await params;
-    
-    // Get client IP and user agent for basic tracking
-    const forwarded = request.headers.get("x-forwarded-for");
-    const ip = forwarded ? forwarded.split(",")[0] : request.headers.get("x-real-ip") || "unknown";
-    const userAgent = request.headers.get("user-agent") || "unknown";
+    const params = await context.params;
+    const slug = params.slug;
 
-    // Find the post by slug
-    const post = await prisma.post.findUnique({
-      where: { slug },
-      select: { id: true }
-    });
-
-    if (!post) {
+    if (!slug) {
       return NextResponse.json(
-        { error: "Post not found" },
+        { error: 'Post slug is required' },
+        { status: 400 }
+      );
+    }
+
+    // Get IP address and user agent for tracking
+    const forwarded = request.headers.get('x-forwarded-for');
+    const ip = forwarded ? forwarded.split(',')[0] : request.headers.get('x-real-ip') || '127.0.0.1';
+    const userAgent = request.headers.get('user-agent') || 'Unknown';
+
+    // First, get the post to verify it exists and get the ID
+    const postResponse = await fetch(`${API_BASE_URL}?endpoint=posts&slug=${slug}`);
+    
+    if (!postResponse.ok) {
+      return NextResponse.json(
+        { error: 'Post not found' },
         { status: 404 }
       );
     }
 
-    // Check if this IP has viewed this post in the last hour to prevent spam
-    const recentView = await prisma.postView.findFirst({
-      where: {
-        postId: post.id,
-        ipAddress: ip,
-        viewedAt: {
-          gte: new Date(Date.now() - 60 * 60 * 1000) // 1 hour ago
-        }
-      }
-    });
-
-    // Only count if no recent view from same IP
-    if (!recentView) {
-      // Create view record
-      await prisma.postView.create({
-        data: {
-          postId: post.id,
-          ipAddress: ip,
-          userAgent: userAgent
-        }
-      });
-
-      // Increment post view counter
-      await prisma.post.update({
-        where: { id: post.id },
-        data: {
-          views: {
-            increment: 1
-          }
-        }
-      });
+    const postData = await postResponse.json();
+    const post = Array.isArray(postData) ? postData[0] : postData;
+    
+    if (!post || !post.id) {
+      return NextResponse.json(
+        { error: 'Post not found' },
+        { status: 404 }
+      );
     }
 
-    // Get updated view count
-    const updatedPost = await prisma.post.findUnique({
-      where: { slug },
-      select: { views: true }
+    // Check if this IP already viewed this post recently (within last hour)
+    const recentViewResponse = await fetch(
+      `${API_BASE_URL}?endpoint=post_views&postId=${post.id}&ipAddress=${ip}&since=${new Date(Date.now() - 60 * 60 * 1000).toISOString()}`
+    );
+
+    if (recentViewResponse.ok) {
+      const recentViews = await recentViewResponse.json();
+      if (Array.isArray(recentViews) && recentViews.length > 0) {
+        // User already viewed this post recently, don't count it again
+        return NextResponse.json({ 
+          success: true, 
+          message: 'View already counted recently',
+          views: post.views || 0
+        });
+      }
+    }
+
+    // Track the view
+    const viewData = {
+      postId: post.id,
+      ipAddress: ip,
+      userAgent: userAgent,
+      viewedAt: new Date().toISOString()
+    };
+
+    const trackResponse = await fetch(`${API_BASE_URL}?endpoint=post_views`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(viewData)
     });
 
-    return NextResponse.json({
-      success: true,
-      views: updatedPost?.views || 0
+    // Update post view count
+    let updatedViews = (post.views || 0) + 1;
+    
+    const updateResponse = await fetch(`${API_BASE_URL}?endpoint=posts&id=${post.id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ views: updatedViews })
     });
+
+    if (updateResponse.ok) {
+      const updateResult = await updateResponse.json();
+      if (updateResult.success) {
+        updatedViews = updateResult.data?.views || updatedViews;
+      }
+    }
+
+    return NextResponse.json({ 
+      success: true, 
+      views: updatedViews,
+      message: 'View tracked successfully'
+    });
+
   } catch (error) {
-    console.error("Error tracking post view:", error);
+    console.error('Error tracking post view:', error);
     return NextResponse.json(
-      { error: "Failed to track view" },
+      { error: 'Failed to track view' },
       { status: 500 }
     );
   }

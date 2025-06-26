@@ -1,82 +1,66 @@
-import { NextRequest, NextResponse } from "next/server";
-import prisma from "@/lib/prisma";
+import { NextRequest, NextResponse } from 'next/server';
 
-interface Params {
-  params: Promise<{
-    slug: string;
-  }>
-}
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://bajramedia.com/api_bridge.php';
 
 export async function GET(
   request: NextRequest,
-  { params }: Params
+  context: { params: Promise<{ slug: string }> }
 ) {
   try {
-    const { slug } = await params;
+    const params = await context.params;
+    const slug = params.slug;
 
     if (!slug) {
       return NextResponse.json(
-        { error: 'Slug parameter is required' },
+        { error: 'Post slug is required' },
         { status: 400 }
       );
     }
 
-    // Try to find the post
-    const post = await prisma.post.findFirst({
-      where: { 
-        slug: slug,
-        published: true
-      },
-      include: {
-        author: {
-          select: {
-            id: true,
-            name: true,
-            avatar: true,
-            bio: true
-          }
-        },
-        category: true,
-        tags: {
-          include: {
-            tag: true
-          }
-        }
-      }
-    });
-
-    if (!post) {
+    const response = await fetch(`${API_BASE_URL}?endpoint=posts&slug=${slug}&published=true`);
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    
+    if (!data || (Array.isArray(data) && data.length === 0)) {
       return NextResponse.json(
         { error: 'Post not found' },
         { status: 404 }
       );
     }
 
-    // Format the post to match your frontend model
+    const post = Array.isArray(data) ? data[0] : data;
+    
+    // Format the post to match expected structure
     const formattedPost = {
-      id: post.id,
-      title: post.title,
-      slug: post.slug,
-      excerpt: post.excerpt,
-      content: post.content,
-      featuredImage: post.featuredImage,
-      date: post.date.toISOString(),
-      readTime: post.readTime,
-      author: {
-        id: post.author.id,
-        name: post.author.name,
-        avatar: post.author.avatar,
-        bio: post.author.bio
+      ...post,
+      published: post.published === "1" || post.published === 1 || post.published === true,
+      featured: post.featured === "1" || post.featured === 1 || post.featured === true,
+      tags: post.tags || [],
+      author: post.author || { 
+        id: post.authorId, 
+        name: post.authorName || 'Unknown',
+        avatar: post.authorAvatar || null,
+        bio: post.authorBio || null
       },
-      category: post.category,
-      tags: post.tags.map(pt => pt.tag.name)
+      category: post.category || { 
+        id: post.categoryId, 
+        name: post.categoryName || 'Uncategorized',
+        slug: post.categorySlug || 'uncategorized'
+      },
+      views: post.views || 0,
+      readTime: post.readTime || 5
     };
 
     return NextResponse.json(formattedPost);
+
   } catch (error) {
     console.error('Error fetching post:', error);
     return NextResponse.json(
-      { error: 'Failed to fetch post' }, 
+      { error: 'Failed to fetch post' },
       { status: 500 }
     );
   }

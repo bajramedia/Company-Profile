@@ -1,27 +1,41 @@
-import { NextRequest, NextResponse } from "next/server";
-import prisma from "@/lib/prisma";
+import { NextRequest, NextResponse } from 'next/server';
 
-interface Params {
-  params: Promise<{
-    category: string;
-  }>
-}
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://bajramedia.com/api_bridge.php';
 
+// GET /api/posts/category/[category] - Get posts by category
 export async function GET(
   request: NextRequest,
-  { params }: Params
+  context: { params: Promise<{ category: string }> }
 ) {
   try {
-    const { category } = await params;
+    const params = await context.params;
+    const categorySlug = params.category;
+
+    if (!categorySlug) {
+      return NextResponse.json(
+        { error: 'Category slug is required' },
+        { status: 400 }
+      );
+    }
+
     const searchParams = request.nextUrl.searchParams;
+    const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '10');
 
-    // Find the category by slug
-    const categoryEntity = await prisma.category.findUnique({
-      where: { slug: category }
-    });
+    // First, verify the category exists and get its details
+    const categoryResponse = await fetch(`${API_BASE_URL}?endpoint=categories&slug=${categorySlug}`);
+    
+    if (!categoryResponse.ok) {
+      return NextResponse.json(
+        { error: 'Category not found' },
+        { status: 404 }
+      );
+    }
 
-    if (!categoryEntity) {
+    const categoryData = await categoryResponse.json();
+    const category = Array.isArray(categoryData) ? categoryData[0] : categoryData;
+
+    if (!category) {
       return NextResponse.json(
         { error: 'Category not found' },
         { status: 404 }
@@ -29,56 +43,83 @@ export async function GET(
     }
 
     // Get posts for this category
-    const posts = await prisma.post.findMany({
-      where: { 
-        categoryId: categoryEntity.id,
-        published: true 
-      },
-      take: limit,
-      orderBy: { date: 'desc' },
-      include: {
-        author: {
-          select: {
-            id: true,
-            name: true,
-            avatar: true,
-            bio: true
-          }
-        },
-        category: true,
-        tags: {
-          include: {
-            tag: true
-          }
-        }
-      }
+    const queryParams = new URLSearchParams({
+      endpoint: 'posts',
+      categoryId: category.id,
+      categorySlug: categorySlug,
+      page: page.toString(),
+      limit: limit.toString(),
+      published: 'true' // Only get published posts
     });
 
-    // Format the posts to match your frontend model
-    const formattedPosts = posts.map(post => ({
-      id: post.id,
-      title: post.title,
-      slug: post.slug,
-      excerpt: post.excerpt,
-      content: post.content,
-      featuredImage: post.featuredImage,
-      date: post.date.toISOString(),
-      readTime: post.readTime,
-      author: {
-        id: post.author.id,
-        name: post.author.name,
-        avatar: post.author.avatar,
-        bio: post.author.bio
+    const postsResponse = await fetch(`${API_BASE_URL}?${queryParams}`);
+    
+    if (!postsResponse.ok) {
+      throw new Error(`HTTP error! status: ${postsResponse.status}`);
+    }
+    
+    const postsData = await postsResponse.json();
+    
+    // Handle different response formats
+    const posts = Array.isArray(postsData) ? postsData : postsData.posts || [];
+    
+    // Format posts to match expected structure
+    const formattedPosts = posts.map((post: any) => ({
+      ...post,
+      published: post.published === "1" || post.published === 1 || post.published === true,
+      featured: post.featured === "1" || post.featured === 1 || post.featured === true,
+      tags: post.tags || [],
+      author: post.author || { 
+        id: post.authorId, 
+        name: post.authorName || 'Unknown',
+        avatar: post.authorAvatar || null
       },
-      category: post.category,
-      tags: post.tags.map(pt => pt.tag.name)
+      category: {
+        id: category.id,
+        name: category.name,
+        slug: category.slug
+      },
+      views: post.views || 0,
+      readTime: post.readTime || Math.ceil((post.content?.length || 0) / 200) || 5
     }));
 
-    return NextResponse.json(formattedPosts);
+    // Sort by date (newest first) and featured status
+    formattedPosts.sort((a: any, b: any) => {
+      // Featured posts first
+      if (a.featured && !b.featured) return -1;
+      if (!a.featured && b.featured) return 1;
+      
+      // Then by date
+      return new Date(b.date || b.createdAt).getTime() - new Date(a.date || a.createdAt).getTime();
+    });
+
+    const responseData = {
+      posts: formattedPosts,
+      category: {
+        id: category.id,
+        name: category.name,
+        slug: category.slug,
+        description: category.description || null
+      },
+      pagination: {
+        page,
+        limit,
+        total: formattedPosts.length,
+        pages: Math.ceil(formattedPosts.length / limit)
+      }
+    };
+
+    return NextResponse.json(responseData);
+
   } catch (error) {
     console.error('Error fetching posts by category:', error);
     return NextResponse.json(
-      { error: 'Failed to fetch posts by category' }, 
+      { 
+        error: 'Failed to fetch posts',
+        posts: [],
+        category: null,
+        pagination: { page: 1, limit: 10, total: 0, pages: 0 }
+      },
       { status: 500 }
     );
   }
