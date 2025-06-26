@@ -1,116 +1,174 @@
 import { NextRequest, NextResponse } from 'next/server';
-import prisma from '@/lib/prisma';
 
-// GET - Ambil semua settings
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://bajramedia.com/api_bridge.php';
+
+// GET /api/admin/settings - Get all settings
 export async function GET() {
   try {
-    const settings = await prisma.setting.findMany();
+    const response = await fetch(`${API_BASE_URL}?endpoint=settings`);
     
-    // Transform array ke object untuk kemudahan penggunaan
-    const settingsObject = settings.reduce((acc, setting) => {
-      let value: any = setting.value;
-      
-      // Parse nilai berdasarkan tipe
-      switch (setting.type) {
-        case 'number':
-          value = parseFloat(setting.value);
-          break;
-        case 'boolean':
-          value = setting.value === 'true';
-          break;
-        case 'json':
-          try {
-            value = JSON.parse(setting.value);
-          } catch {
-            value = setting.value;
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const settings = await response.json();
+    
+    // Format settings into key-value pairs
+    const formattedSettings: Record<string, any> = {};
+    
+    if (Array.isArray(settings)) {
+      settings.forEach((setting: any) => {
+        if (setting.key && setting.value !== undefined) {
+          // Parse value based on type
+          let value = setting.value;
+          if (setting.type === 'number') {
+            value = parseFloat(setting.value);
+          } else if (setting.type === 'boolean') {
+            value = setting.value === 'true' || setting.value === '1';
+          } else if (setting.type === 'json') {
+            try {
+              value = JSON.parse(setting.value);
+            } catch (e) {
+              value = setting.value;
+            }
           }
-          break;
-        default:
-          value = setting.value;
-      }
-      
-      acc[setting.key] = value;
-      return acc;
-    }, {} as Record<string, any>);
+          formattedSettings[setting.key] = value;
+        }
+      });
+    }
 
-    return NextResponse.json(settingsObject);
+    return NextResponse.json(formattedSettings);
+
   } catch (error) {
     console.error('Error fetching settings:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch settings' },
-      { status: 500 }
-    );
+    
+    // Return default settings
+    return NextResponse.json({
+      site_title: 'Bajramedia',
+      site_description: 'Creative Digital Agency',
+      contact_email: 'hello@bajramedia.com',
+      contact_phone: '+62 123 456 789',
+      social_facebook: '',
+      social_instagram: '',
+      social_twitter: '',
+      social_linkedin: '',
+      seo_keywords: 'digital agency, web development, UI/UX design',
+      error: 'Unable to fetch live settings'
+    });
   }
 }
 
-// POST - Simpan atau update settings
+// POST /api/admin/settings - Update settings
 export async function POST(request: NextRequest) {
   try {
-    const settings = await request.json();
+    const updates = await request.json();
     
-    // Simpan setiap setting secara individual
-    const updatePromises = Object.entries(settings).map(async ([key, value]) => {
-      let stringValue = String(value);
+    // Convert settings object to individual setting records
+    const settingsArray = Object.entries(updates).map(([key, value]) => {
       let type = 'string';
+      let stringValue = String(value);
       
-      // Tentukan tipe data
       if (typeof value === 'number') {
         type = 'number';
       } else if (typeof value === 'boolean') {
         type = 'boolean';
+        stringValue = value ? 'true' : 'false';
       } else if (typeof value === 'object' && value !== null) {
         type = 'json';
         stringValue = JSON.stringify(value);
       }
       
-      return prisma.setting.upsert({
-        where: { key },
-        update: { 
-          value: stringValue,
-          type 
-        },
-        create: { 
-          key,
-          value: stringValue,
-          type 
-        }
-      });
+      return {
+        key,
+        value: stringValue,
+        type
+      };
     });
-    
-    await Promise.all(updatePromises);
-    
-    return NextResponse.json({ success: true });
+
+    // Send batch update to API bridge
+    const response = await fetch(`${API_BASE_URL}?endpoint=settings`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        action: 'batch_update',
+        settings: settingsArray
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const result = await response.json();
+
+    if (!result.success) {
+      throw new Error(result.message || 'Failed to update settings');
+    }
+
+    return NextResponse.json({ 
+      success: true, 
+      message: 'Settings updated successfully',
+      updated: Object.keys(updates).length
+    });
+
   } catch (error) {
-    console.error('Error saving settings:', error);
+    console.error('Error updating settings:', error);
     return NextResponse.json(
-      { error: 'Failed to save settings' },
+      { 
+        success: false, 
+        error: 'Failed to update settings',
+        message: error instanceof Error ? error.message : 'Unknown error'
+      },
       { status: 500 }
     );
   }
 }
 
-// DELETE - Hapus setting tertentu
+// DELETE /api/admin/settings - Delete specific setting
 export async function DELETE(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const key = searchParams.get('key');
-    
+
     if (!key) {
       return NextResponse.json(
-        { error: 'Key parameter is required' },
+        { error: 'Setting key is required' },
         { status: 400 }
       );
     }
-    
-    await prisma.setting.delete({
-      where: { key }
+
+    const response = await fetch(`${API_BASE_URL}?endpoint=settings&key=${key}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      }
     });
-    
-    return NextResponse.json({ success: true });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const result = await response.json();
+
+    if (!result.success) {
+      throw new Error(result.message || 'Failed to delete setting');
+    }
+
+    return NextResponse.json({ 
+      success: true, 
+      message: `Setting '${key}' deleted successfully` 
+    });
+
   } catch (error) {
     console.error('Error deleting setting:', error);
     return NextResponse.json(
-      { error: 'Failed to delete setting' },
+      { 
+        success: false, 
+        error: 'Failed to delete setting',
+        message: error instanceof Error ? error.message : 'Unknown error'
+      },
       { status: 500 }
     );
   }
