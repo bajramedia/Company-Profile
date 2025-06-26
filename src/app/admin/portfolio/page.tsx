@@ -16,21 +16,63 @@ interface PortfolioItem {
     featured: boolean;
     views: number;
     createdAt: Date;
-        category: {
+    category: {
         name: string;
         icon: string;
     };
 }
 
-// Portfolio data - akan dimuat dari database
-// Saat ini kosong untuk testing
-const portfolioItems: PortfolioItem[] = [];
-
 export default function AdminPortfolioPage() {
-    const [portfolios, setPortfolios] = useState(portfolioItems);
+    const [portfolios, setPortfolios] = useState<PortfolioItem[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('all');
     const [selectedStatus, setSelectedStatus] = useState('all');
+
+    // Fetch portfolio data dari API
+    useEffect(() => {
+        fetchPortfolios();
+    }, []);
+
+    const fetchPortfolios = async () => {
+        try {
+            setLoading(true);
+            setError(null);
+
+            const response = await fetch('/api/admin/portfolio');
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            // Transform data untuk match interface
+            const transformedPortfolios = data.portfolio.map((item: any) => ({
+                id: item.id,
+                title: item.title,
+                description: item.description,
+                clientName: item.clientName || 'Unknown Client',
+                featuredImage: item.featuredImage || '/images/placeholder.jpg',
+                published: item.published === true || item.published === 1 || item.published === "1",
+                featured: item.featured === true || item.featured === 1 || item.featured === "1",
+                views: parseInt(item.views) || 0,
+                createdAt: new Date(item.createdAt || item.date),
+                category: {
+                    name: item.category?.name || 'Uncategorized',
+                    icon: item.category?.icon || '📁'
+                }
+            }));
+
+            setPortfolios(transformedPortfolios);
+        } catch (error) {
+            console.error('Error fetching portfolios:', error);
+            setError('Gagal memuat data portfolio. Silakan refresh halaman.');
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const categories = [
         { value: 'all', label: 'Semua Kategori' },
@@ -58,27 +100,115 @@ export default function AdminPortfolioPage() {
         return matchesSearch && matchesCategory && matchesStatus;
     });
 
-    const handleTogglePublished = (id: string) => {
-        setPortfolios(prev => prev.map(portfolio =>
-            portfolio.id === id
-                ? { ...portfolio, published: !portfolio.published }
-                : portfolio
-        ));
-    };
+    const handleTogglePublished = async (id: string) => {
+        const portfolio = portfolios.find(p => p.id === id);
+        if (!portfolio) return;
 
-    const handleToggleFeatured = (id: string) => {
-        setPortfolios(prev => prev.map(portfolio =>
-            portfolio.id === id
-                ? { ...portfolio, featured: !portfolio.featured }
-                : portfolio
-        ));
-    };
+        try {
+            const response = await fetch(`/api/admin/portfolio/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    ...portfolio,
+                    published: !portfolio.published
+                })
+            });
 
-    const handleDelete = (id: string) => {
-        if (confirm('Yakin ingin menghapus portfolio ini?')) {
-            setPortfolios(prev => prev.filter(portfolio => portfolio.id !== id));
+            if (response.ok) {
+                setPortfolios(prev => prev.map(p =>
+                    p.id === id ? { ...p, published: !p.published } : p
+                ));
+            }
+        } catch (error) {
+            console.error('Error updating portfolio:', error);
         }
     };
+
+    const handleToggleFeatured = async (id: string) => {
+        const portfolio = portfolios.find(p => p.id === id);
+        if (!portfolio) return;
+
+        try {
+            const response = await fetch(`/api/admin/portfolio/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    ...portfolio,
+                    featured: !portfolio.featured
+                })
+            });
+
+            if (response.ok) {
+                setPortfolios(prev => prev.map(p =>
+                    p.id === id ? { ...p, featured: !p.featured } : p
+                ));
+            }
+        } catch (error) {
+            console.error('Error updating portfolio:', error);
+        }
+    };
+
+    const handleDelete = async (id: string) => {
+        if (!confirm('Yakin ingin menghapus portfolio ini?')) return;
+
+        try {
+            const response = await fetch(`/api/admin/portfolio/${id}`, {
+                method: 'DELETE'
+            });
+
+            if (response.ok) {
+                setPortfolios(prev => prev.filter(p => p.id !== id));
+            }
+        } catch (error) {
+            console.error('Error deleting portfolio:', error);
+        }
+    };
+
+    // Loading state
+    if (loading) {
+        return (
+            <div className="space-y-6">
+                <div className="animate-pulse">
+                    <div className="h-8 bg-gray-300 rounded w-1/3 mb-2"></div>
+                    <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    {[...Array(4)].map((_, i) => (
+                        <div key={i} className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700 animate-pulse">
+                            <div className="h-16 bg-gray-300 rounded"></div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        );
+    }
+
+    // Error state
+    if (error) {
+        return (
+            <div className="space-y-6">
+                <div className="text-center py-12">
+                    <div className="text-red-500 text-6xl mb-4">⚠️</div>
+                    <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                        Error Loading Portfolio
+                    </h3>
+                    <p className="text-gray-600 dark:text-gray-400 mb-6">
+                        {error}
+                    </p>
+                    <Button
+                        variant="primary"
+                        onClick={fetchPortfolios}
+                    >
+                        Coba Lagi
+                    </Button>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="space-y-6">
@@ -310,8 +440,8 @@ export default function AdminPortfolioPage() {
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
                                             <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${portfolio.published
-                                                    ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400'
-                                                    : 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-400'
+                                                ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400'
+                                                : 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-400'
                                                 }`}>
                                                 {portfolio.published ? '✅ Published' : '📝 Draft'}
                                             </span>
@@ -335,8 +465,8 @@ export default function AdminPortfolioPage() {
                                                 <button
                                                     onClick={() => handleTogglePublished(portfolio.id)}
                                                     className={`px-2 py-1 rounded text-xs font-medium transition-colors ${portfolio.published
-                                                            ? 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-900/50'
-                                                            : 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400 hover:bg-green-200 dark:hover:bg-green-900/50'
+                                                        ? 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-900/50'
+                                                        : 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400 hover:bg-green-200 dark:hover:bg-green-900/50'
                                                         }`}
                                                 >
                                                     {portfolio.published ? 'Unpublish' : 'Publish'}
@@ -344,8 +474,8 @@ export default function AdminPortfolioPage() {
                                                 <button
                                                     onClick={() => handleToggleFeatured(portfolio.id)}
                                                     className={`px-2 py-1 rounded text-xs font-medium transition-colors ${portfolio.featured
-                                                            ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-400 hover:bg-yellow-200 dark:hover:bg-yellow-900/50'
-                                                            : 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
+                                                        ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-400 hover:bg-yellow-200 dark:hover:bg-yellow-900/50'
+                                                        : 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
                                                         }`}
                                                 >
                                                     {portfolio.featured ? 'Unfeature' : 'Feature'}
