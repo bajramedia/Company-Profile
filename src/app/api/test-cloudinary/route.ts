@@ -26,7 +26,7 @@ export async function GET() {
     const result = await cloudinary.uploader.upload(testImageBase64, {
       folder: 'bajramedia/test',
       resource_type: 'image',
-      public_id: \	est_\\,
+      public_id: `test_${Date.now()}`,
       overwrite: true
     });
     
@@ -43,6 +43,12 @@ export async function GET() {
         format: result.format,
         resource_type: result.resource_type,
         created_at: result.created_at
+      },
+      config_check: {
+        cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+        api_key_present: !!process.env.CLOUDINARY_API_KEY,
+        api_secret_present: !!process.env.CLOUDINARY_API_SECRET,
+        api_secret_length: process.env.CLOUDINARY_API_SECRET?.length
       }
     });
     
@@ -54,7 +60,14 @@ export async function GET() {
       error: error instanceof Error ? error.message : 'Unknown error',
       error_details: {
         name: error instanceof Error ? error.name : 'Unknown',
-        message: error instanceof Error ? error.message : 'Unknown error'
+        message: error instanceof Error ? error.message : 'Unknown error',
+        stack: error instanceof Error ? error.stack : undefined
+      },
+      config_check: {
+        cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+        api_key_present: !!process.env.CLOUDINARY_API_KEY,
+        api_secret_present: !!process.env.CLOUDINARY_API_SECRET,
+        api_secret_length: process.env.CLOUDINARY_API_SECRET?.length
       }
     }, { status: 500 });
   }
