@@ -15,23 +15,25 @@ export default function EditPortfolioPage() {
     const [isLoading, setIsLoading] = useState(true);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    // Mock data untuk categories dan tags - nanti akan dimuat dari API
+    // Updated categories dengan ID yang benar dari database portfoliocategory
     const categories = [
-        { id: '1', name: 'Web Development', slug: 'web-development', icon: '🌐', color: '#3B82F6' },
-        { id: '2', name: 'Mobile Apps', slug: 'mobile-apps', icon: '📱', color: '#10B981' },
-        { id: '3', name: 'UI/UX Design', slug: 'uiux-design', icon: '🎨', color: '#8B5CF6' },
-        { id: '4', name: 'Digital Marketing', slug: 'digital-marketing', icon: '📈', color: '#F59E0B' }
+        { id: 'cmcaw04wy0o0wh9phekq4k3b', name: 'Web Development', slug: 'web-development', icon: '🌐', color: '#3B82F6' },
+        { id: 'cmcaw04wc0o0xh9p6qzku6jdg', name: 'Mobile Apps', slug: 'mobile-apps', icon: '📱', color: '#10B981' },
+        { id: 'cmcaw04wy0o0yh9p81ku6jdg', name: 'UI/UX Design', slug: 'uiux-design', icon: '🎨', color: '#8B5CF6' },
+        { id: 'cmcaw04wy0o0zh9p6lmxny7h', name: 'Digital Marketing', slug: 'digital-marketing', icon: '📈', color: '#F59E0B' },
+        { id: '5', name: 'Game Development', slug: 'game-development', icon: '🎮', color: '#EF4444' }
     ];
 
+    // Updated tags dengan ID yang benar dari database portfoliotag
     const tags = [
-        { id: '1', name: 'React', slug: 'react', color: '#61DAFB' },
-        { id: '2', name: 'Next.js', slug: 'nextjs', color: '#000000' },
-        { id: '3', name: 'TypeScript', slug: 'typescript', color: '#3178C6' },
-        { id: '4', name: 'Tailwind CSS', slug: 'tailwindcss', color: '#06B6D4' },
-        { id: '5', name: 'Node.js', slug: 'nodejs', color: '#339933' },
-        { id: '6', name: 'React Native', slug: 'react-native', color: '#61DAFB' },
-        { id: '7', name: 'Figma', slug: 'figma', color: '#F24E1E' },
-        { id: '8', name: 'Adobe XD', slug: 'adobe-xd', color: '#FF61F6' }
+        { id: 'cmcaw04yq0013h9pgun9kwasq', name: 'React', slug: 'react', color: '#61DAFB' },
+        { id: 'cmcaw04ym0010h9pgm9pg6gs7', name: 'Next.js', slug: 'nextjs', color: '#000000' },
+        { id: 'cmcaw04ys0011h9pgy277svo', name: 'TypeScript', slug: 'typescript', color: '#3178C6' },
+        { id: 'cmcaw04ya0012h9pgvs0pstyq', name: 'Tailwind CSS', slug: 'tailwindcss', color: '#06B6D4' },
+        { id: 'cmcaw04yw0014h9pgcz5a83zs', name: 'React Native', slug: 'react-native', color: '#61DAFB' },
+        { id: 'cmcaw04z60015h9pg75unmmr', name: 'Figma', slug: 'figma', color: '#F24E1E' },
+        { id: 'cmcaw04zb0016h9pgpfaa9c', name: 'Prisma', slug: 'prisma', color: '#2D3748' },
+        { id: 'cmcaw050k0017h9pg5bz9yIuj', name: 'Framer Motion', slug: 'framer-motion', color: '#0055FF' }
     ];
 
     useEffect(() => {
