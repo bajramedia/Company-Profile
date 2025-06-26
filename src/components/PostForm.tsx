@@ -131,25 +131,74 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('🚀 Form submission started');
+    console.log('📝 Form data:', formData);
+
     setLoading(true);
     setError(null);
 
     try {
-      const result = isEditing
-        ? await updatePost(postId!, formData)
-        : await createPost(formData);
+      // Validate required fields
+      const requiredFields = {
+        title: formData.title?.trim(),
+        excerpt: formData.excerpt?.trim(),
+        content: formData.content?.trim(),
+        authorId: formData.authorId,
+        categoryId: formData.categoryId
+      };
+
+      const missingFields = Object.entries(requiredFields)
+        .filter(([key, value]) => !value || value === '')
+        .map(([key]) => key);
+
+      if (missingFields.length > 0) {
+        console.error('❌ Missing required fields:', missingFields);
+        setError(`Please fill in required fields: ${missingFields.join(', ')}`);
+        setLoading(false);
+        return;
+      }
+
+      console.log('🔄 Calling internal API...');
+
+      // Call internal API route instead of server action
+      const apiEndpoint = isEditing ? `/api/admin/posts/${postId}` : '/api/admin/posts';
+      const method = isEditing ? 'PUT' : 'POST';
+
+      const response = await fetch(apiEndpoint, {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+      });
+
+      console.log('📊 API Response status:', response.status);
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('❌ API Error response:', errorData);
+        throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      console.log('📊 API Result:', result);
 
       if (result.success) {
+        console.log('✅ Post saved successfully, redirecting...');
         router.push('/admin/posts');
       } else {
+        console.error('❌ Post save failed:', result.error);
         setError(result.error || 'Failed to save post');
       }
     } catch (err: any) {
+      console.error('💥 Exception during form submission:', err);
       setError(err.message || 'An unexpected error occurred');
     } finally {
       setLoading(false);
+      console.log('🏁 Form submission completed');
     }
   };
+
   // Calculate estimated read time based on content length
   const calculateReadTime = () => {
     const words = formData.content.replace(/<[^>]*>/g, '').trim().split(/\s+/).filter((word: string) => word.length > 0);
