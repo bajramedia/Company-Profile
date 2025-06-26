@@ -98,6 +98,13 @@ function getDateColumn($columns) {
     return 'id'; // fallback to id if no date column found
 }
 
+function generateUniqueId() {
+    // Generate a unique ID similar to Prisma's format
+    $timestamp = base_convert(time(), 10, 36);
+    $random = base_convert(mt_rand(0, 2176782335), 10, 36); // 5 chars max
+    return 'cm' . $timestamp . str_pad($random, 5, '0', STR_PAD_LEFT) . mt_rand(100, 999);
+}
+
 function generateSlug($title) {
     // Convert to lowercase and replace non-alphanumeric characters with hyphens
     $slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $title)));
@@ -310,7 +317,9 @@ function handlePost($pdo, $endpoint) {
     try {
         switch ($endpoint) {
             case 'posts':
-                // Create new post
+                // Check if post table has id as auto increment or string
+                $postColumns = getTableColumns($pdo, 'post');
+                
                 $title = $data['title'] ?? '';
                 $slug = $data['slug'] ?? generateSlug($title);
                 $excerpt = $data['excerpt'] ?? '';
@@ -324,6 +333,7 @@ function handlePost($pdo, $endpoint) {
                 // Convert boolean to int for MySQL
                 $publishedInt = $published ? 1 : 0;
                 
+                // Use auto-increment ID instead of custom generated ID
                 $stmt = $pdo->prepare("
                     INSERT INTO post (title, slug, excerpt, content, featuredImage, published, readTime, authorId, categoryId, date) 
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
