@@ -121,9 +121,8 @@ export async function PUT(
       );
     }
 
-    // Update portfolio via API bridge
+    // Update portfolio via API bridge (no need to include id in payload)
     const portfolioData = {
-      id: portfolioId,
       title,
       slug: slug || title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''),
       description,
@@ -164,10 +163,22 @@ export async function PUT(
       success: true, 
       portfolio: { 
         id: portfolioId,
-        ...portfolioData,
+        title: portfolioData.title,
+        slug: portfolioData.slug,
+        description: portfolioData.description,
+        content: portfolioData.content,
+        featuredImage: portfolioData.featuredImage,
+        images: portfolioData.images ? JSON.parse(portfolioData.images) : [],
+        clientName: portfolioData.clientName,
+        projectUrl: portfolioData.projectUrl,
+        githubUrl: portfolioData.githubUrl,
         featured: portfolioData.featured === 1,
         published: portfolioData.published === 1,
-        images: portfolioData.images ? JSON.parse(portfolioData.images) : []
+        startDate: portfolioData.startDate,
+        endDate: portfolioData.endDate,
+        categoryId: portfolioData.categoryId,
+        tags: portfolioData.tags,
+        updatedAt: portfolioData.updatedAt
       }
     });
 
