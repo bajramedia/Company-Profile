@@ -8,24 +8,133 @@ import { useLanguage } from '@/context/LanguageContext';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
-// Mock data untuk development - nanti akan diganti dengan data dari API
-const portfolioItems: any[] = [
-    // Portfolio akan dimuat dari database - saat ini kosong untuk testing
-];
+// Portfolio interface
+interface PortfolioItem {
+    id: string;
+    title: string;
+    slug: string;
+    description: string;
+    content: string;
+    featuredImage: string;
+    images: string[];
+    clientName: string;
+    projectUrl: string;
+    githubUrl: string;
+    featured: boolean;
+    published: boolean;
+    viewCount: number;
+    category: {
+        id: string;
+        name: string;
+        slug: string;
+        icon: string;
+        color?: string;
+    };
+    tags: Array<{
+        name: string;
+        color: string;
+    }>;
+}
 
 export default function PortfolioPage() {
     const { t } = useLanguage();
     const [isDarkMode, setIsDarkMode] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState('all');
-    const [filteredItems, setFilteredItems] = useState(portfolioItems);
+    const [portfolioItems, setPortfolioItems] = useState<PortfolioItem[]>([]);
+    const [filteredItems, setFilteredItems] = useState<PortfolioItem[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
-    // Categories with translations
-    const categories = [
-        { name: t('portfolio.categories.all'), slug: 'all', icon: '📂', count: portfolioItems.length },
-        { name: t('portfolio.categories.webDevelopment'), slug: 'web-development', icon: '🌐', count: 0 },
-        { name: t('portfolio.categories.gameAssets'), slug: 'aset-game-development', icon: '🎮', count: 0 },
-        { name: t('portfolio.categories.uiuxDesign'), slug: 'uiux-design', icon: '🎨', count: 0 }
-    ];
+    // Fetch portfolio data from API
+    useEffect(() => {
+        fetchPortfolioData();
+    }, []);
+
+    const fetchPortfolioData = async () => {
+        try {
+            setLoading(true);
+            setError(null);
+
+            const response = await fetch('/api/portfolio?published=true');
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            // Transform data to match interface
+            const transformedPortfolios = data.portfolios.map((item: any) => ({
+                id: item.id,
+                title: item.title,
+                slug: item.slug,
+                description: item.description,
+                content: item.content,
+                featuredImage: item.featuredImage || '/images/placeholder.jpg',
+                images: item.images || [],
+                clientName: item.clientName || 'Unknown Client',
+                projectUrl: item.projectUrl || '',
+                githubUrl: item.githubUrl || '',
+                featured: Boolean(item.featured),
+                published: Boolean(item.published),
+                viewCount: parseInt(item.viewCount) || 0,
+                category: {
+                    id: item.category?.id || 'uncategorized',
+                    name: item.category?.name || 'Uncategorized',
+                    slug: item.category?.slug || 'uncategorized',
+                    icon: item.category?.icon || '📁',
+                    color: item.category?.color || '#6B7280'
+                },
+                tags: item.tags || []
+            }));
+
+            setPortfolioItems(transformedPortfolios);
+        } catch (error) {
+            console.error('Error fetching portfolio:', error);
+            setError('Gagal memuat portfolio. Silakan refresh halaman.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // Update categories based on actual data
+    const getCategoriesWithCounts = () => {
+        const categoryCounts: { [key: string]: number } = {};
+
+        portfolioItems.forEach(item => {
+            const categorySlug = item.category.slug;
+            categoryCounts[categorySlug] = (categoryCounts[categorySlug] || 0) + 1;
+        });
+
+        return [
+            {
+                name: t('portfolio.categories.all') || 'All',
+                slug: 'all',
+                icon: '📂',
+                count: portfolioItems.length
+            },
+            {
+                name: t('portfolio.categories.webDevelopment') || 'Web Development',
+                slug: 'web-development',
+                icon: '🌐',
+                count: categoryCounts['web-development'] || 0
+            },
+            {
+                name: t('portfolio.categories.gameAssets') || 'Game Development',
+                slug: 'game-development',
+                icon: '🎮',
+                count: categoryCounts['game-development'] || 0
+            },
+            {
+                name: t('portfolio.categories.uiuxDesign') || 'UI/UX Design',
+                slug: 'uiux-design',
+                icon: '🎨',
+                count: categoryCounts['uiux-design'] || 0
+            }
+        ];
+    };
+
+    const categories = getCategoriesWithCounts();
 
     // Initialize dark mode
     useEffect(() => {
@@ -75,7 +184,7 @@ export default function PortfolioPage() {
         } else {
             setFilteredItems(portfolioItems.filter(item => item.category.slug === selectedCategory));
         }
-    }, [selectedCategory]);
+    }, [selectedCategory, portfolioItems]);
 
     const toggleDarkMode = () => {
         setIsDarkMode(prev => {
@@ -89,6 +198,74 @@ export default function PortfolioPage() {
             return newMode;
         });
     };
+
+    // Loading state
+    if (loading) {
+        return (
+            <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
+                <Navbar variant="solid" activeTab="portfolio" />
+                <div className="pt-20 pb-6 bg-gray-50 dark:bg-gray-800 transition-colors duration-300">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+                        <div className="animate-pulse">
+                            <div className="h-4 bg-gray-300 rounded w-1/4"></div>
+                        </div>
+                    </div>
+                </div>
+                <main className="py-16">
+                    <section className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 mb-20">
+                        <div className="text-center animate-pulse">
+                            <div className="h-12 bg-gray-300 rounded w-3/4 mx-auto mb-6"></div>
+                            <div className="h-6 bg-gray-200 rounded w-1/2 mx-auto"></div>
+                        </div>
+                    </section>
+                    <section className="py-16">
+                        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                                {[...Array(6)].map((_, i) => (
+                                    <div key={i} className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-sm border border-gray-100 dark:border-gray-700 animate-pulse">
+                                        <div className="h-48 bg-gray-300"></div>
+                                        <div className="p-6">
+                                            <div className="h-6 bg-gray-300 rounded mb-3"></div>
+                                            <div className="h-4 bg-gray-200 rounded mb-4"></div>
+                                            <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+                </main>
+                <Footer />
+            </div>
+        );
+    }
+
+    // Error state  
+    if (error) {
+        return (
+            <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
+                <Navbar variant="solid" activeTab="portfolio" />
+                <main className="py-16">
+                    <div className="text-center py-20">
+                        <div className="text-red-500 text-6xl mb-4">⚠️</div>
+                        <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                            Error Loading Portfolio
+                        </h3>
+                        <p className="text-gray-600 dark:text-gray-400 mb-6">
+                            {error}
+                        </p>
+                        <Button
+                            variant="primary"
+                            onClick={fetchPortfolioData}
+                        >
+                            Coba Lagi
+                        </Button>
+                    </div>
+                </main>
+                <Footer />
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
@@ -121,9 +298,9 @@ export default function PortfolioPage() {
                             className="mb-6 text-[32px] md:text-[40px] lg:text-[48px] font-bold"
                             data-aos="fade-up"
                         >
-                            {t('portfolio.page.title.main')} {' '}
+                            {t('portfolio.page.title.main') || 'Our Amazing'} {' '}
                             <span className="text-primary relative">
-                                <span className="relative z-10">{t('portfolio.page.title.highlight')}</span>
+                                <span className="relative z-10">{t('portfolio.page.title.highlight') || 'Portfolio'}</span>
                                 <span className="absolute bottom-1 left-0 w-full h-3 bg-primary/10 -z-0"></span>
                             </span>
                         </Heading>
@@ -133,7 +310,7 @@ export default function PortfolioPage() {
                             data-aos="fade-up"
                             data-aos-delay="200"
                         >
-                            {t('portfolio.page.subtitle')}
+                            {t('portfolio.page.subtitle') || 'Showcasing our best work and creative solutions'}
                         </p>
                     </div>
                 </section>
