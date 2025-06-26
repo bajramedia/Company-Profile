@@ -1,143 +1,167 @@
-import { NextResponse } from "next/server";
-import prisma from "@/lib/prisma";
+import { NextRequest, NextResponse } from "next/server";
 
-interface Params {
-  params: Promise<{
-    id: string;
-  }>
-}
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://bajramedia.com/api_bridge.php';
 
-// Get a single tag
-export async function GET(request: Request, { params }: Params) {
+// GET /api/admin/tags/[id] - Get single tag by ID
+export async function GET(
+  request: NextRequest,
+  context: { params: Promise<{ id: string }> }
+) {
   try {
-    const { id } = await params;
-    const tag = await prisma.tag.findUnique({
-      where: { id },
-      include: {
-        _count: {
-          select: { posts: true }
-        }
-      }
-    });
-    
-    if (!tag) {
+    const params = await context.params;
+    const tagId = params.id;
+
+    if (!tagId) {
       return NextResponse.json(
-        { error: 'Tag not found' }, 
+        { error: 'Tag ID is required' },
+        { status: 400 }
+      );
+    }
+
+    const response = await fetch(`${API_BASE_URL}?endpoint=tags&id=${tagId}`);
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    
+    if (!data || (Array.isArray(data) && data.length === 0)) {
+      return NextResponse.json(
+        { error: 'Tag not found' },
         { status: 404 }
       );
     }
+
+    const tag = Array.isArray(data) ? data[0] : data;
     
-    // Format response to include post count
-    const formattedTag = {
-      ...tag,
-      postCount: tag._count.posts
-    };
-    
-    return NextResponse.json(formattedTag);
+    return NextResponse.json({
+      success: true,
+      tag
+    });
+
   } catch (error) {
     console.error('Error fetching tag:', error);
     return NextResponse.json(
-      { error: 'Failed to fetch tag' }, 
+      { error: 'Failed to fetch tag' },
       { status: 500 }
     );
   }
 }
 
-// Update a tag
-export async function PUT(request: Request, { params }: Params) {
+// PUT /api/admin/tags/[id] - Update tag by ID
+export async function PUT(
+  request: NextRequest,
+  context: { params: Promise<{ id: string }> }
+) {
   try {
-    const { id } = await params;
+    const params = await context.params;
+    const tagId = params.id;
     const body = await request.json();
-    const { name } = body;
-    
-    if (!name || !name.trim()) {
+
+    if (!tagId) {
       return NextResponse.json(
-        { error: 'Tag name is required' }, 
+        { error: 'Tag ID is required' },
         { status: 400 }
       );
     }
-    
-    // Check if the tag exists
-    const existingTag = await prisma.tag.findUnique({
-      where: { id }
-    });
-    
-    if (!existingTag) {
+
+    const { name, slug } = body;
+
+    // Validate required fields
+    if (!name || !slug) {
       return NextResponse.json(
-        { error: 'Tag not found' }, 
-        { status: 404 }
+        { error: 'Name and slug are required' },
+        { status: 400 }
       );
     }
-      // Check if another tag with the same name exists (case insensitive)
-    if (name.trim().toLowerCase() !== existingTag.name.toLowerCase()) {
-      const nameExists = await prisma.tag.findFirst({
-        where: {
-          name: name.trim(),
-          NOT: {
-            id
-          }
-        }
-      });
-      
-      if (nameExists) {
+
+    // Check if tag with new slug already exists (if slug changed)
+    const existingResponse = await fetch(`${API_BASE_URL}?endpoint=tags&slug=${slug}`);
+    if (existingResponse.ok) {
+      const existing = await existingResponse.json();
+      if (Array.isArray(existing) && existing.length > 0 && existing[0].id !== tagId) {
         return NextResponse.json(
-          { error: 'A tag with this name already exists' }, 
-          { status: 409 }
+          { error: 'A tag with this slug already exists' },
+          { status: 400 }
         );
-      }    }
-    
-    const updatedTag = await prisma.tag.update({
-      where: { id },
-      data: { name: name.trim() }
+      }
+    }
+
+    const response = await fetch(`${API_BASE_URL}?endpoint=tags&id=${tagId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name, slug })
     });
-    
-    return NextResponse.json(updatedTag);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const result = await response.json();
+
+    if (!result.success) {
+      throw new Error(result.message || 'Failed to update tag');
+    }
+
+    return NextResponse.json({ 
+      success: true, 
+      tag: result.data || { id: tagId, name, slug }
+    });
+
   } catch (error) {
     console.error('Error updating tag:', error);
     return NextResponse.json(
-      { error: 'Failed to update tag' }, 
+      { error: 'Failed to update tag' },
       { status: 500 }
     );
   }
 }
 
-// Delete a tag
-export async function DELETE(request: Request, { params }: Params) {
+// DELETE /api/admin/tags/[id] - Delete tag by ID
+export async function DELETE(
+  request: NextRequest,
+  context: { params: Promise<{ id: string }> }
+) {
   try {
-    const { id } = await params;
-    // Check if the tag exists
-    const existingTag = await prisma.tag.findUnique({
-      where: { id },
-      include: {
-        _count: {
-          select: { posts: true }
-        }
-      }
-    });
-    
-    if (!existingTag) {
+    const params = await context.params;
+    const tagId = params.id;
+
+    if (!tagId) {
       return NextResponse.json(
-        { error: 'Tag not found' }, 
-        { status: 404 }
+        { error: 'Tag ID is required' },
+        { status: 400 }
       );
     }
-    
-    // Don't allow deletion if posts are associated with this tag
-    if (existingTag._count.posts > 0) {
-      return NextResponse.json(
-        { error: 'Cannot delete tag with associated posts. Remove the tag from posts first.' }, 
-        { status: 400 }
-      );    }
-    
-    await prisma.tag.delete({
-      where: { id }
+
+    const response = await fetch(`${API_BASE_URL}?endpoint=tags&id=${tagId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      }
     });
-    
-    return NextResponse.json({ success: true });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const result = await response.json();
+
+    if (!result.success) {
+      throw new Error(result.message || 'Failed to delete tag');
+    }
+
+    return NextResponse.json({ 
+      success: true, 
+      message: 'Tag deleted successfully'
+    });
+
   } catch (error) {
     console.error('Error deleting tag:', error);
     return NextResponse.json(
-      { error: 'Failed to delete tag' }, 
+      { error: 'Failed to delete tag' },
       { status: 500 }
     );
   }
