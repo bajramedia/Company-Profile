@@ -105,6 +105,7 @@ interface LanguageContextType {
   language: Language;
   setLanguage: (language: Language) => void;
   t: (key: string) => string;
+  isChanging: boolean;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
@@ -120,6 +121,7 @@ export const useLanguage = () => {
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   // Default to English
   const [language, setLanguage] = useState<Language>("en");
+  const [isChanging, setIsChanging] = useState(false);
 
   // Load language preference on mount
   useEffect(() => {
@@ -129,10 +131,16 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     }
   }, []);
 
-  // Save language preference
+  // Save language preference with animation
   const handleSetLanguage = (newLanguage: Language) => {
-    setLanguage(newLanguage);
-    localStorage.setItem('bajramedia-language', newLanguage);
+    if (newLanguage !== language) {
+      setIsChanging(true);
+      setTimeout(() => {
+        setLanguage(newLanguage);
+        localStorage.setItem('bajramedia-language', newLanguage);
+        setTimeout(() => setIsChanging(false), 100);
+      }, 150);
+    }
   };
 
   // Simple translation function
@@ -146,7 +154,7 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   };
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage: handleSetLanguage, t }}>
+    <LanguageContext.Provider value={{ language, setLanguage: handleSetLanguage, t, isChanging }}>
       {children}
     </LanguageContext.Provider>
   );
