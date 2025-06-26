@@ -32,23 +32,40 @@ function LoginForm() {
     }
   }, []);
 
-  // This is a simple hardcoded authentication
-  // In a real application, you would verify against a database or external service
+  // Updated authentication logic using secure API endpoint
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setError(null);
 
-    // Simple hardcoded admin credentials for demo purposes
-    // In a real application, you would check against a database
-    if (username === 'admin' && password === 'admin') {
-      // Set a cookie for authentication
-      document.cookie = 'admin_auth=1; path=/; max-age=86400'; // 24 hours
-      
-      // Redirect to admin dashboard or return URL
-      router.push(returnUrl);
-    } else {
-      setError('Invalid username or password');
+    try {
+      // Call authentication API
+      const response = await fetch('/api/admin/auth', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username,
+          password,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        // Set a cookie for authentication
+        document.cookie = 'admin_auth=1; path=/; max-age=86400'; // 24 hours
+
+        // Redirect to admin dashboard or return URL
+        router.push(returnUrl);
+      } else {
+        setError(result.message || 'Invalid username or password');
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      setError('Login failed. Please try again.');
+    } finally {
       setIsLoading(false);
     }
   };
@@ -80,7 +97,7 @@ function LoginForm() {
               Masuk ke panel administrasi
             </p>
           </div>
-          
+
           {error && (
             <div className="mb-6 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 p-4 text-sm text-red-600 dark:text-red-400">
               <div className="flex items-center space-x-2">
@@ -89,11 +106,11 @@ function LoginForm() {
               </div>
             </div>
           )}
-          
+
           <form onSubmit={handleLogin} className="space-y-6">
             <div>
-              <label 
-                htmlFor="username" 
+              <label
+                htmlFor="username"
                 className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
               >
                 Username
@@ -104,14 +121,14 @@ function LoginForm() {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 className="block w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-4 py-3 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 shadow-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all duration-200"
-                placeholder="Masukkan username"
+                placeholder="admin@bajramedia.com"
                 required
               />
             </div>
-            
+
             <div>
-              <label 
-                htmlFor="password" 
+              <label
+                htmlFor="password"
                 className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
               >
                 Password
@@ -126,10 +143,10 @@ function LoginForm() {
                 required
               />
             </div>
-            
+
             <div className="pt-2">
-              <Button 
-                type="submit" 
+              <Button
+                type="submit"
                 variant="primary"
                 size="lg"
                 className="w-full shadow-lg hover:shadow-xl transition-all duration-300"
@@ -156,10 +173,10 @@ function LoginForm() {
                 🔑 Demo Credentials
               </p>
               <p className="text-xs text-blue-600 dark:text-blue-400">
-                Username: <span className="font-mono bg-blue-100 dark:bg-blue-800 px-1 rounded">admin</span>
+                Username: <span className="font-mono bg-blue-100 dark:bg-blue-800 px-1 rounded">admin@bajramedia.com</span>
               </p>
               <p className="text-xs text-blue-600 dark:text-blue-400">
-                Password: <span className="font-mono bg-blue-100 dark:bg-blue-800 px-1 rounded">admin</span>
+                Password: <span className="font-mono bg-blue-100 dark:bg-blue-800 px-1 rounded">admin123</span>
               </p>
             </div>
           </div>
