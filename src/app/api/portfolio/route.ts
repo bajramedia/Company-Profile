@@ -119,51 +119,81 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check if slug already exists
-    const existingPortfolio = await prisma.portfolio.findUnique({
-      where: { slug }
-    });
-
-    if (existingPortfolio) {
-      return NextResponse.json(
-        { error: 'Portfolio with this slug already exists' },
-        { status: 400 }
-      );
+    // Check if slug already exists via API bridge
+    const checkResponse = await fetch(`${API_BASE_URL}?endpoint=portfolio`);
+    if (checkResponse.ok) {
+      const existingPortfolios = await checkResponse.json();
+      const existingPortfolio = existingPortfolios.find((p: any) => p.slug === slug);
+      
+      if (existingPortfolio) {
+        return NextResponse.json(
+          { error: 'Portfolio with this slug already exists' },
+          { status: 400 }
+        );
+      }
     }
 
-    const portfolio = await prisma.portfolio.create({
-      data: {
-        title,
-        slug,
-        description,
-        content,
-        featuredImage,
-        images: images ? JSON.stringify(images) : null,
-        clientName,
-        projectUrl,
-        githubUrl,
-        featured,
-        published,
-        startDate: startDate ? new Date(startDate) : null,
-        endDate: endDate ? new Date(endDate) : null,
-        categoryId,
-        tags: {
-          create: tagIds.map((tagId: string) => ({
-            tagId
-          }))
-        }
+    // Create portfolio via API bridge
+    const portfolioData = {
+      title,
+      slug,
+      description,
+      content,
+      featuredImage,
+      images: images ? JSON.stringify(images) : null,
+      clientName,
+      projectUrl,
+      githubUrl,
+      featured: featured ? 1 : 0,
+      published: published ? 1 : 0,
+      startDate: startDate ? new Date(startDate).toISOString().slice(0, 19).replace('T', ' ') : null,
+      endDate: endDate ? new Date(endDate).toISOString().slice(0, 19).replace('T', ' ') : null,
+      categoryId,
+      tagIds: JSON.stringify(tagIds),
+      createdAt: new Date().toISOString().slice(0, 19).replace('T', ' ')
+    };
+
+    const createResponse = await fetch(API_BASE_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
       },
-      include: {
-        category: true,
-        tags: {
-          include: {
-            tag: true
-          }
-        }
-      }
+      body: JSON.stringify({
+        endpoint: 'portfolio',
+        data: portfolioData
+      })
     });
 
-    return NextResponse.json(portfolio, { status: 201 });
+    if (!createResponse.ok) {
+      throw new Error(`HTTP error! status: ${createResponse.status}`);
+    }
+
+    const result = await createResponse.json();
+    
+    if (!result.success) {
+      throw new Error(result.message || 'Failed to create portfolio');
+    }
+
+    // Return formatted response similar to Prisma format
+    const newPortfolio = {
+      id: result.data.id,
+      ...portfolioData,
+      images: portfolioData.images ? JSON.parse(portfolioData.images) : [],
+      featured: portfolioData.featured === 1,
+      published: portfolioData.published === 1,
+      category: {
+        id: categoryId,
+        name: 'Unknown', // API bridge doesn't return category details
+        slug: 'unknown'
+      },
+      tags: tagIds.map((tagId: string) => ({
+        id: tagId,
+        name: 'Unknown', // API bridge doesn't return tag details
+        slug: 'unknown'
+      }))
+    };
+
+    return NextResponse.json(newPortfolio, { status: 201 });
 
   } catch (error) {
     console.error('Error creating portfolio:', error);
