@@ -9,6 +9,7 @@ import { PortfolioForm } from '@/components';
 export default function NewPortfolioPage() {
     const router = useRouter();
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [error, setError] = useState<string>('');
 
     // Mock data untuk categories dan tags - nanti akan dimuat dari API
     const categories = [
@@ -31,18 +32,33 @@ export default function NewPortfolioPage() {
 
     const handleSubmit = async (portfolioData: any) => {
         setIsSubmitting(true);
+        setError('');
 
         try {
-            // Di sini akan ditambahkan API call untuk menyimpan portfolio
-            console.log('Portfolio data to save:', portfolioData);
+            console.log('📝 Sending portfolio data:', portfolioData);
 
-            // Simulasi API call
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            // Real API call ke admin portfolio endpoint
+            const response = await fetch('/api/admin/portfolio', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(portfolioData)
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(result.error || 'Failed to create portfolio');
+            }
+
+            console.log('✅ Portfolio created successfully:', result);
 
             // Redirect ke halaman admin portfolio setelah berhasil
             router.push('/admin/portfolio');
         } catch (error) {
-            console.error('Error saving portfolio:', error);
+            console.error('❌ Error saving portfolio:', error);
+            setError(error instanceof Error ? error.message : 'Failed to save portfolio');
         } finally {
             setIsSubmitting(false);
         }
@@ -71,6 +87,15 @@ export default function NewPortfolioPage() {
                     </Button>
                 </Link>
             </div>
+
+            {/* Error Message */}
+            {error && (
+                <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
+                    <p className="text-red-600 dark:text-red-400 text-sm">
+                        ❌ {error}
+                    </p>
+                </div>
+            )}
 
             {/* Form */}
             <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">

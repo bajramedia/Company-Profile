@@ -670,6 +670,42 @@ function handleDelete($pdo, $endpoint, $id) {
                 echo json_encode(['success' => true]);
                 break;
 
+            case 'portfolio':
+                if (!$id) {
+                    http_response_code(400);
+                    echo json_encode(['error' => 'ID required for delete']);
+                    return;
+                }
+                
+                // Delete portfolio (check for related data first if needed)
+                try {
+                    // Delete portfolio tags if exists
+                    $stmt = $pdo->prepare("DELETE FROM portfoliotags WHERE portfolioId = ?");
+                    $stmt->execute([$id]);
+                } catch (Exception $e) {
+                    // Portfolio tags table might not exist, continue
+                }
+                
+                // Delete the portfolio
+                $stmt = $pdo->prepare("DELETE FROM portfolio WHERE id = ?");
+                $stmt->execute([$id]);
+                
+                echo json_encode(['success' => true]);
+                break;
+
+            case 'portfolio-categories':
+                if (!$id) {
+                    http_response_code(400);
+                    echo json_encode(['error' => 'ID required for delete']);
+                    return;
+                }
+                
+                $stmt = $pdo->prepare("DELETE FROM portfoliocategory WHERE id = ?");
+                $stmt->execute([$id]);
+                
+                echo json_encode(['success' => true]);
+                break;
+
             default:
                 http_response_code(404);
                 echo json_encode(['error' => 'Endpoint not found']);
