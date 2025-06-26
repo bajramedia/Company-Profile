@@ -99,6 +99,15 @@ const translations = {
   "autoTranslate.previewTranslation": { en: "Preview Translation", id: "Preview Terjemahan" },
   "autoTranslate.applyTranslation": { en: "Apply Translation", id: "Terapkan Terjemahan" },
   "autoTranslate.cancelTranslation": { en: "Cancel Translation", id: "Batal Terjemahan" },
+
+  // Portfolio keys
+  "portfolio.title.main": { en: "Our", id: "Portfolio" },
+  "portfolio.title.highlight": { en: "Portfolio", id: "Kami" },
+  "portfolio.subtitle": { en: "Explore our latest projects and see how we bring ideas to life with cutting-edge technology and creative solutions.", id: "Jelajahi proyek-proyek terbaru kami dan lihat bagaimana kami mewujudkan ide dengan teknologi terdepan dan solusi kreatif." },
+  "portfolio.filter.all": { en: "All", id: "Semua" },
+  "portfolio.filter.website": { en: "Website", id: "Website" },
+  "portfolio.filter.mobileApp": { en: "Mobile App", id: "Aplikasi Mobile" },
+  "portfolio.viewAll": { en: "View All Projects", id: "Lihat Semua Proyek" },
 };
 
 interface LanguageContextType {

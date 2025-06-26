@@ -77,20 +77,20 @@ const Portfolio: React.FC = () => {
               <div className="relative aspect-[4/3] overflow-hidden">
                 <Image
                   src={item.image}
-                  alt={t('portfolio.item.alt', { number: item.id })}
+                  alt={`Portfolio Project ${item.id}`}
                   fill
                   style={{ objectFit: 'cover' }}
                   className="group-hover:scale-105 transition-transform duration-300"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>                <div className="absolute bottom-4 left-4 right-4 transform translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
                   <h3 className="text-white dark:text-gray-100 font-semibold text-lg mb-1 transition-colors duration-300">
-                    {t('portfolio.item.titleOverlay', { number: item.id })}
+                    Project {item.id}
                   </h3>
                   <p className="text-white/80 dark:text-gray-300 text-sm transition-colors duration-300">{item.category}</p>
                 </div>
               </div>              <div className="p-4 bg-white dark:bg-gray-800 transition-colors duration-300">
                 <h3 className="font-semibold text-lg mb-2 text-gray-900 dark:text-gray-100 transition-colors duration-300">
-                  {t('portfolio.item.title', { number: item.id })}
+                  Project {item.id}
                 </h3>
                 <p className="text-secondary dark:text-gray-400 text-sm transition-colors duration-300">{item.category}</p>
               </div>
