@@ -4,7 +4,8 @@ header('Content-Type: application/json');
 $allowedOrigins = [
     'https://company-profile-git-main-bajra-media.vercel.app',
     'https://company-profile-c0emzkquv-bajra-media.vercel.app', 
-    'https://bajramedia.vercel.app'
+    'https://bajramedia.vercel.app',
+    'https://company-profile-mu-nine.vercel.app'
 ];
 
 $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
