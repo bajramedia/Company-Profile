@@ -14,6 +14,11 @@ export async function uploadImage(formData: FormData): Promise<{
 }> {
   try {
     console.log('🔄 Image upload started...');
+    console.log('🌍 Environment:', process.env.NODE_ENV);
+    console.log('☁️ Cloudinary Cloud Name:', process.env.CLOUDINARY_CLOUD_NAME ? 'SET' : 'NOT_SET');
+    console.log('🔑 Cloudinary API Key:', process.env.CLOUDINARY_API_KEY ? 'SET' : 'NOT_SET');
+    console.log('🔐 Cloudinary API Secret:', process.env.CLOUDINARY_API_SECRET ? 'SET' : 'NOT_SET');
+    
     const file = formData.get('file') as File;
     
     if (!file) {
@@ -28,10 +33,10 @@ export async function uploadImage(formData: FormData): Promise<{
     });
     
     // Check file type
-    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/jpg'];
     if (!allowedTypes.includes(file.type)) {
       console.error('❌ Invalid file type:', file.type);
-      return { success: false, error: 'File type not allowed. Please upload a JPEG, PNG, GIF, or WEBP image.' };
+      return { success: false, error: `File type ${file.type} not allowed. Please upload a JPEG, PNG, GIF, or WEBP image.` };
     }
     
     // Check file size (limit to 10MB)
@@ -40,10 +45,29 @@ export async function uploadImage(formData: FormData): Promise<{
       return { success: false, error: 'File is too large. Maximum size is 10MB.' };
     }
     
+    // Check if Cloudinary is configured
+    const cloudinaryConfigured = !!(
+      process.env.CLOUDINARY_CLOUD_NAME && 
+      process.env.CLOUDINARY_API_KEY && 
+      process.env.CLOUDINARY_API_SECRET
+    );
+    
+    console.log('☁️ Cloudinary configured:', cloudinaryConfigured);
+    
     // Try Cloudinary first if configured
-    if (process.env.CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_API_KEY && process.env.CLOUDINARY_API_SECRET) {
-      console.log('☁️ Using Cloudinary upload...');
-      return await uploadImageToCloudinary(formData);
+    if (cloudinaryConfigured) {
+      console.log('☁️ Attempting Cloudinary upload...');
+      try {
+        const result = await uploadImageToCloudinary(formData);
+        console.log('☁️ Cloudinary result:', result);
+        return result;
+      } catch (cloudinaryError) {
+        console.error('💥 Cloudinary upload failed:', cloudinaryError);
+        return { 
+          success: false, 
+          error: `Cloudinary upload failed: ${cloudinaryError instanceof Error ? cloudinaryError.message : 'Unknown error'}` 
+        };
+      }
     }
     
     // Fallback to local upload for development
@@ -53,7 +77,7 @@ export async function uploadImage(formData: FormData): Promise<{
       try {
         // Create a unique filename
         const buffer = Buffer.from(await file.arrayBuffer());
-        const ext = file.type.split('/')[1];
+        const ext = file.type.split('/')[1] || 'jpg';
         const filename = `${uuidv4()}.${ext}`;
         
         console.log('📝 Generated filename:', filename);
@@ -86,15 +110,18 @@ export async function uploadImage(formData: FormData): Promise<{
         };
       } catch (fsError) {
         console.error('💥 Local upload failed:', fsError);
-        // Fall through to production error handling
+        return { 
+          success: false, 
+          error: `Local upload failed: ${fsError instanceof Error ? fsError.message : 'Unknown error'}` 
+        };
       }
     }
     
     // For production or when local/Cloudinary upload fails
-    console.log('🚧 Upload failed - falling back to URL input');
+    console.log('🚧 No upload method available');
     return { 
       success: false, 
-      error: 'Upload failed. Please use the URL input option or choose from available images.' 
+      error: 'Upload not available. Cloudinary not configured and not in development mode. Please use the URL input option.' 
     };
     
   } catch (error) {
