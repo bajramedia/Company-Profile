@@ -11,12 +11,13 @@ export default function NewPortfolioPage() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string>('');
 
-    // Mock data untuk categories dan tags - nanti akan dimuat dari API
+    // Updated categories dengan ID yang benar dari database
     const categories = [
-        { id: '1', name: 'Web Development', slug: 'web-development', icon: '🌐', color: '#3B82F6' },
-        { id: '2', name: 'Mobile Apps', slug: 'mobile-apps', icon: '📱', color: '#10B981' },
-        { id: '3', name: 'UI/UX Design', slug: 'uiux-design', icon: '🎨', color: '#8B5CF6' },
-        { id: '4', name: 'Digital Marketing', slug: 'digital-marketing', icon: '📈', color: '#F59E0B' }
+        { id: 'cmcaw04wy0o0wh9phekq4k3b', name: 'Web Development', slug: 'web-development', icon: '🌐', color: '#3B82F6' },
+        { id: 'cmcaw04wc0o0xh9p6qzku6jdg', name: 'Mobile Apps', slug: 'mobile-apps', icon: '📱', color: '#10B981' },
+        { id: 'cmcaw04wy0o0yh9p81ku6jdg', name: 'UI/UX Design', slug: 'uiux-design', icon: '🎨', color: '#8B5CF6' },
+        { id: 'cmcaw04wy0o0zh9p6lmxny7h', name: 'Digital Marketing', slug: 'digital-marketing', icon: '📈', color: '#F59E0B' },
+        { id: '5', name: 'Game Development', slug: 'game-development', icon: '🎮', color: '#EF4444' }
     ];
 
     const tags = [
