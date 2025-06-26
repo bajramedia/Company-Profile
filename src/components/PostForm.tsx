@@ -291,12 +291,10 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
                   <FiClock size={16} />
                   {formData.readTime} min read
                 </span>
-                <div className={`flex items-center gap-1 ${saveStatus === 'saved' ? 'text-green-600' :
-                  saveStatus === 'saving' ? 'text-yellow-600' : 'text-red-600'
-                  }`}>
-                  {saveStatus === 'saved' && '✓ Saved'}
-                  {saveStatus === 'saving' && '⏳ Saving...'}
-                  {saveStatus === 'unsaved' && '⚠ Unsaved'}
+                <div className="flex items-center text-sm text-gray-600">
+                  {saveStatus === 'saved' && <span className="text-green-600">✓ Saved</span>}
+                  {saveStatus === 'saving' && <span className="text-yellow-600">⏳ Saving...</span>}
+                  {saveStatus === 'unsaved' && <span className="text-red-600">⚠ Unsaved</span>}
                 </div>
               </div>
             </div>
@@ -318,17 +316,6 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
               >
                 <FiX className="mr-2" size={16} />
                 Cancel
-              </button>
-
-              <button
-                type="submit"
-                disabled={loading}
-                onClick={handleSubmit}
-                className={`${loading ? 'opacity-75 cursor-wait' : 'hover:bg-green-700'
-                  } bg-green-600 text-white px-6 py-2 rounded-lg flex items-center transition-colors`}
-              >
-                <FiSave className="mr-2" size={16} />
-                {loading ? 'Saving...' : (isEditing ? 'Update Post' : 'Publish Post')}
               </button>
             </div>
           </div>

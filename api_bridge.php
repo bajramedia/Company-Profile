@@ -89,7 +89,7 @@ function getTableColumns($pdo, $tableName) {
 
 function getDateColumn($columns) {
     // Check for common date column names
-    $dateColumns = ['createdAt', 'created_at', 'date_created', 'published_at', 'date', 'created'];
+    $dateColumns = ['date', 'created_at', 'date_created', 'published_at', 'date', 'created'];
     foreach ($dateColumns as $col) {
         if (in_array($col, $columns)) {
             return $col;
@@ -133,9 +133,9 @@ function handleGet($pdo, $endpoint, $id) {
                     $stmt->execute([$id, $id]);
                     $result = $stmt->fetch();
                     
-                    // Add createdAt field for compatibility
-                    if ($result && $dateCol !== 'createdAt') {
-                        $result['createdAt'] = $result[$dateCol] ?? date('Y-m-d H:i:s');
+                    // Add date field for compatibility
+                    if ($result && $dateCol !== 'date') {
+                        $result['date'] = $result[$dateCol] ?? date('Y-m-d H:i:s');
                     }
                     
                     echo json_encode($result);
@@ -161,10 +161,10 @@ function handleGet($pdo, $endpoint, $id) {
                     $stmt = $pdo->query($sql);
                     $results = $stmt->fetchAll();
                     
-                    // Add createdAt field for compatibility
+                    // Add date field for compatibility
                     foreach ($results as &$result) {
-                        if ($dateCol !== 'createdAt') {
-                            $result['createdAt'] = $result[$dateCol] ?? date('Y-m-d H:i:s');
+                        if ($dateCol !== 'date') {
+                            $result['date'] = $result[$dateCol] ?? date('Y-m-d H:i:s');
                         }
                     }
                     
@@ -191,8 +191,8 @@ function handleGet($pdo, $endpoint, $id) {
                     $stmt->execute([$id, $id]);
                     $result = $stmt->fetch();
                     
-                    if ($result && $dateCol !== 'createdAt') {
-                        $result['createdAt'] = $result[$dateCol] ?? date('Y-m-d H:i:s');
+                    if ($result && $dateCol !== 'date') {
+                        $result['date'] = $result[$dateCol] ?? date('Y-m-d H:i:s');
                     }
                     
                     echo json_encode($result);
@@ -209,8 +209,8 @@ function handleGet($pdo, $endpoint, $id) {
                     $results = $stmt->fetchAll();
                     
                     foreach ($results as &$result) {
-                        if ($dateCol !== 'createdAt') {
-                            $result['createdAt'] = $result[$dateCol] ?? date('Y-m-d H:i:s');
+                        if ($dateCol !== 'date') {
+                            $result['date'] = $result[$dateCol] ?? date('Y-m-d H:i:s');
                         }
                     }
                     
@@ -325,7 +325,7 @@ function handlePost($pdo, $endpoint) {
                 $publishedInt = $published ? 1 : 0;
                 
                 $stmt = $pdo->prepare("
-                    INSERT INTO post (title, slug, excerpt, content, featuredImage, published, readTime, authorId, categoryId, createdAt) 
+                    INSERT INTO post (title, slug, excerpt, content, featuredImage, published, readTime, authorId, categoryId, date) 
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
                 ");
                 $stmt->execute([$title, $slug, $excerpt, $content, $featuredImage, $publishedInt, $readTime, $authorId, $categoryId]);
@@ -400,18 +400,18 @@ function handlePost($pdo, $endpoint) {
                 $featuredInt = $featured ? 1 : 0;
                 $publishedInt = $published ? 1 : 0;
                 
-                // Check if portfolio table has date column or createdAt
+                // Check if portfolio table has date column or date
                 $portfolioColumns = getTableColumns($pdo, 'portfolio');
-                $hasCreatedAt = in_array('createdAt', $portfolioColumns);
+                $hasdate = in_array('date', $portfolioColumns);
                 
-                if ($hasCreatedAt) {
+                if ($hasdate) {
                     $stmt = $pdo->prepare("
-                        INSERT INTO portfolio (title, slug, description, content, featuredImage, images, clientName, projectUrl, githubUrl, featured, published, startDate, endDate, categoryId, createdAt) 
+                        INSERT INTO portfolio (title, slug, description, content, featuredImage, images, clientName, projectUrl, githubUrl, featured, published, startDate, endDate, categoryId, date) 
                         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
                     ");
                     $stmt->execute([$title, $slug, $description, $content, $featuredImage, $images, $clientName, $projectUrl, $githubUrl, $featuredInt, $publishedInt, $startDate, $endDate, $categoryId]);
                 } else {
-                    // Use without createdAt if column doesn't exist
+                    // Use without date if column doesn't exist
                     $stmt = $pdo->prepare("
                         INSERT INTO portfolio (title, slug, description, content, featuredImage, images, clientName, projectUrl, githubUrl, featured, published, startDate, endDate, categoryId) 
                         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -424,7 +424,7 @@ function handlePost($pdo, $endpoint) {
 
             case 'post-view':
                 try {
-                    $stmt = $pdo->prepare("INSERT INTO postview (postId, ipAddress, createdAt) VALUES (?, ?, NOW())");
+                    $stmt = $pdo->prepare("INSERT INTO postview (postId, ipAddress, date) VALUES (?, ?, NOW())");
                     $stmt->execute([$data['postId'], $_SERVER['REMOTE_ADDR'] ?? 'unknown']);
                     echo json_encode(['success' => true]);
                 } catch (Exception $e) {
