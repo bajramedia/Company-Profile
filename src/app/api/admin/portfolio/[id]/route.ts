@@ -5,9 +5,10 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://bajramedia
 // GET /api/admin/portfolio/[id] - Get single portfolio by ID
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
+    const params = await context.params;
     const portfolioId = params.id;
 
     if (!portfolioId) {
@@ -80,9 +81,10 @@ export async function GET(
 // PUT /api/admin/portfolio/[id] - Update portfolio by ID
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
+    const params = await context.params;
     const portfolioId = params.id;
     const body = await request.json();
 
@@ -181,9 +183,10 @@ export async function PUT(
 // DELETE /api/admin/portfolio/[id] - Delete portfolio by ID  
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
+    const params = await context.params;
     const portfolioId = params.id;
 
     if (!portfolioId) {
