@@ -267,6 +267,7 @@ function handleGet($pdo, $endpoint, $id) {
             case 'stats':
                 $stats = [];
                 
+                // Original stats
                 try {
                     $stmt = $pdo->query("SELECT COUNT(*) as count FROM post WHERE published = 1");
                     $stats['totalPosts'] = $stmt->fetch()['count'];
@@ -288,12 +289,279 @@ function handleGet($pdo, $endpoint, $id) {
                     $stats['totalViews'] = 0;
                 }
                 
+                // New stats for new tables
+                try {
+                    $stmt = $pdo->query("SELECT COUNT(*) as count FROM blog_posts WHERE is_published = 1");
+                    $stats['totalBlogPosts'] = $stmt->fetch()['count'];
+                } catch (Exception $e) {
+                    $stats['totalBlogPosts'] = 0;
+                }
+                
+                try {
+                    $stmt = $pdo->query("SELECT COUNT(*) as count FROM portfolio_items WHERE is_published = 1");
+                    $stats['totalPortfolioItems'] = $stmt->fetch()['count'];
+                } catch (Exception $e) {
+                    $stats['totalPortfolioItems'] = 0;
+                }
+                
+                try {
+                    $stmt = $pdo->query("SELECT COUNT(*) as count FROM team_members WHERE is_active = 1");
+                    $stats['totalTeamMembers'] = $stmt->fetch()['count'];
+                } catch (Exception $e) {
+                    $stats['totalTeamMembers'] = 0;
+                }
+                
+                try {
+                    $stmt = $pdo->query("SELECT COUNT(*) as count FROM partners WHERE is_active = 1");
+                    $stats['totalPartners'] = $stmt->fetch()['count'];
+                } catch (Exception $e) {
+                    $stats['totalPartners'] = 0;
+                }
+                
+                try {
+                    $stmt = $pdo->query("SELECT SUM(view_count) as total FROM blog_posts");
+                    $stats['totalBlogViews'] = $stmt->fetch()['total'] ?: 0;
+                } catch (Exception $e) {
+                    $stats['totalBlogViews'] = 0;
+                }
+                
                 echo json_encode($stats);
+                break;
+
+            // ====================================
+            // NEW ENDPOINTS FOR NEW TABLES
+            // ====================================
+            
+            case 'team':
+            case 'team-members':
+                $stmt = $pdo->query("
+                    SELECT * FROM team_members 
+                    WHERE is_active = 1 
+                    ORDER BY sort_order ASC
+                ");
+                $results = $stmt->fetchAll();
+                
+                // Format for frontend compatibility
+                foreach ($results as &$result) {
+                    $result['imageUrl'] = $result['image_url'];
+                    $result['linkedinUrl'] = $result['linkedin_url'];
+                    $result['githubUrl'] = $result['github_url'];
+                    $result['instagramUrl'] = $result['instagram_url'];
+                    $result['behanceUrl'] = $result['behance_url'];
+                    $result['roleEn'] = $result['role_en'];
+                    $result['roleId'] = $result['role_id'];
+                    $result['bioEn'] = $result['bio_en'];
+                    $result['bioId'] = $result['bio_id'];
+                }
+                
+                echo json_encode($results);
+                break;
+
+            case 'partners':
+                $stmt = $pdo->query("
+                    SELECT * FROM partners 
+                    WHERE is_active = 1 
+                    ORDER BY sort_order ASC
+                ");
+                $results = $stmt->fetchAll();
+                
+                // Format for frontend compatibility
+                foreach ($results as &$result) {
+                    $result['nameEn'] = $result['name_en'];
+                    $result['nameId'] = $result['name_id'];
+                    $result['descriptionEn'] = $result['description_en'];
+                    $result['descriptionId'] = $result['description_id'];
+                    $result['logoUrl'] = $result['logo_url'];
+                    $result['websiteUrl'] = $result['website_url'];
+                    $result['partnerType'] = $result['partner_type'];
+                }
+                
+                echo json_encode($results);
+                break;
+
+            case 'about':
+            case 'about-content':
+                $stmt = $pdo->query("
+                    SELECT * FROM about_content 
+                    WHERE is_active = 1 
+                    ORDER BY id ASC
+                ");
+                $results = $stmt->fetchAll();
+                
+                // Format as key-value pairs for easier use
+                $about = [];
+                foreach ($results as $row) {
+                    $about[$row['section_key']] = [
+                        'titleEn' => $row['title_en'],
+                        'titleId' => $row['title_id'],
+                        'contentEn' => $row['content_en'],
+                        'contentId' => $row['content_id']
+                    ];
+                }
+                
+                echo json_encode($about);
+                break;
+
+            case 'new-settings':
+                // New settings table (relational structure)
+                $stmt = $pdo->query("SELECT * FROM settings LIMIT 1");
+                $result = $stmt->fetch();
+                
+                if ($result) {
+                    // Format for frontend compatibility
+                    $result['siteName'] = $result['site_name'];
+                    $result['siteDescriptionEn'] = $result['site_description_en'];
+                    $result['siteDescriptionId'] = $result['site_description_id'];
+                    $result['contactEmail'] = $result['contact_email'];
+                    $result['contactPhone'] = $result['contact_phone'];
+                    $result['contactAddressEn'] = $result['contact_address_en'];
+                    $result['contactAddressId'] = $result['contact_address_id'];
+                    $result['socialInstagram'] = $result['social_instagram'];
+                    $result['socialLinkedin'] = $result['social_linkedin'];
+                    $result['socialGithub'] = $result['social_github'];
+                }
+                
+                echo json_encode($result ?: []);
+                break;
+
+            case 'blog-posts':
+                // New blog posts table
+                if ($id) {
+                    // Get single blog post by slug or id
+                    $stmt = $pdo->prepare("
+                        SELECT * FROM blog_posts 
+                        WHERE (slug = ? OR id = ?) AND is_published = 1
+                    ");
+                    $stmt->execute([$id, $id]);
+                    $result = $stmt->fetch();
+                    
+                    if ($result) {
+                        // Format for frontend compatibility
+                        $result['authorName'] = $result['author_name'];
+                        $result['featuredImage'] = $result['featured_image'];
+                        $result['readTime'] = $result['reading_time'];
+                        $result['date'] = $result['published_at'] ?? $result['created_at'];
+                        $result['published'] = $result['is_published'];
+                        $result['featured'] = $result['is_featured'];
+                    }
+                    
+                    echo json_encode($result);
+                } else {
+                    // Get all published blog posts
+                    $page = max(1, intval($_GET['page'] ?? 1));
+                    $limit = max(1, min(100, intval($_GET['limit'] ?? 10)));
+                    $offset = ($page - 1) * $limit;
+                    
+                    $stmt = $pdo->prepare("
+                        SELECT * FROM blog_posts 
+                        WHERE is_published = 1 
+                        ORDER BY published_at DESC, created_at DESC 
+                        LIMIT ? OFFSET ?
+                    ");
+                    $stmt->execute([$limit, $offset]);
+                    $results = $stmt->fetchAll();
+                    
+                    // Format for frontend compatibility
+                    foreach ($results as &$result) {
+                        $result['authorName'] = $result['author_name'];
+                        $result['featuredImage'] = $result['featured_image'];
+                        $result['readTime'] = $result['reading_time'];
+                        $result['date'] = $result['published_at'] ?? $result['created_at'];
+                        $result['published'] = $result['is_published'];
+                        $result['featured'] = $result['is_featured'];
+                    }
+                    
+                    echo json_encode($results);
+                }
+                break;
+
+            case 'portfolio-items':
+                // New portfolio items table with images and tags
+                if ($id) {
+                    // Get single portfolio by slug with images and tags
+                    $stmt = $pdo->prepare("
+                        SELECT p.*,
+                               GROUP_CONCAT(DISTINCT CONCAT(pi.image_url, '|', COALESCE(pi.alt_text, '')) ORDER BY pi.sort_order) as images,
+                               GROUP_CONCAT(DISTINCT CONCAT(pt.tag_name, '|', COALESCE(pt.tag_color, '#000000'))) as tags
+                        FROM portfolio_items p
+                        LEFT JOIN portfolio_images pi ON p.id = pi.portfolio_id
+                        LEFT JOIN portfolio_tags pt ON p.id = pt.portfolio_id
+                        WHERE (p.slug = ? OR p.id = ?) AND p.is_published = 1
+                        GROUP BY p.id
+                    ");
+                    $stmt->execute([$id, $id]);
+                    $result = $stmt->fetch();
+                    
+                    if ($result) {
+                        // Format for frontend compatibility
+                        $result['featuredImage'] = $result['featured_image'];
+                        $result['clientName'] = $result['client_name'];
+                        $result['projectUrl'] = $result['project_url'];
+                        $result['githubUrl'] = $result['github_url'];
+                        $result['categoryName'] = $result['category_en'];
+                        $result['categoryIcon'] = $result['category_icon'];
+                        $result['categoryColor'] = $result['category_color'];
+                        $result['featured'] = $result['is_featured'];
+                        $result['published'] = $result['is_published'];
+                        $result['startDate'] = $result['start_date'];
+                        $result['endDate'] = $result['end_date'];
+                        $result['date'] = $result['created_at'];
+                        
+                        // Parse images and tags
+                        if ($result['images']) {
+                            $imagesList = explode(',', $result['images']);
+                            $result['imageGallery'] = array_map(function($img) {
+                                $parts = explode('|', $img);
+                                return ['url' => $parts[0], 'alt' => $parts[1] ?? ''];
+                            }, $imagesList);
+                        } else {
+                            $result['imageGallery'] = [];
+                        }
+                        
+                        if ($result['tags']) {
+                            $tagsList = explode(',', $result['tags']);
+                            $result['technologies'] = array_map(function($tag) {
+                                $parts = explode('|', $tag);
+                                return ['name' => $parts[0], 'color' => $parts[1] ?? '#000000'];
+                            }, $tagsList);
+                        } else {
+                            $result['technologies'] = [];
+                        }
+                        
+                        unset($result['images'], $result['tags']);
+                    }
+                    
+                    echo json_encode($result);
+                } else {
+                    // Get all published portfolio items
+                    $stmt = $pdo->query("
+                        SELECT * FROM portfolio_items 
+                        WHERE is_published = 1 
+                        ORDER BY is_featured DESC, sort_order ASC, created_at DESC
+                    ");
+                    $results = $stmt->fetchAll();
+                    
+                    // Format for frontend compatibility
+                    foreach ($results as &$result) {
+                        $result['featuredImage'] = $result['featured_image'];
+                        $result['clientName'] = $result['client_name'];
+                        $result['projectUrl'] = $result['project_url'];
+                        $result['githubUrl'] = $result['github_url'];
+                        $result['categoryName'] = $result['category_en'];
+                        $result['categoryIcon'] = $result['category_icon'];
+                        $result['categoryColor'] = $result['category_color'];
+                        $result['featured'] = $result['is_featured'];
+                        $result['published'] = $result['is_published'];
+                        $result['date'] = $result['created_at'];
+                    }
+                    
+                    echo json_encode($results);
+                }
                 break;
 
             case 'debug':
                 // Debug endpoint to check table structure
-                $tables = ['post', 'author', 'category', 'portfolio', 'portfoliocategory'];
+                $tables = ['post', 'author', 'category', 'portfolio', 'portfoliocategory', 'team_members', 'partners', 'about_content', 'settings', 'blog_posts', 'portfolio_items'];
                 $debug = [];
                 foreach ($tables as $table) {
                     $debug[$table] = getTableColumns($pdo, $table);
@@ -357,10 +625,20 @@ function handlePost($pdo, $endpoint) {
                 // Create new category
                 $name = $data['name'] ?? '';
                 $slug = $data['slug'] ?? generateSlug($name);
-                $description = $data['description'] ?? '';
                 
-                $stmt = $pdo->prepare("INSERT INTO category (name, slug, description) VALUES (?, ?, ?)");
-                $stmt->execute([$name, $slug, $description]);
+                // Check if category table has description column
+                $categoryColumns = getTableColumns($pdo, 'category');
+                $hasDescription = in_array('description', $categoryColumns);
+                
+                if ($hasDescription) {
+                    $description = $data['description'] ?? '';
+                    $stmt = $pdo->prepare("INSERT INTO category (name, slug, description) VALUES (?, ?, ?)");
+                    $stmt->execute([$name, $slug, $description]);
+                } else {
+                    // Only insert name and slug if description column doesn't exist
+                    $stmt = $pdo->prepare("INSERT INTO category (name, slug) VALUES (?, ?)");
+                    $stmt->execute([$name, $slug]);
+                }
                 
                 echo json_encode(['success' => true, 'id' => $pdo->lastInsertId()]);
                 break;

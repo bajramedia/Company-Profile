@@ -26,6 +26,7 @@ export default function Navbar({
     // Determine active tab based on current path or prop
     const currentTab = activeTab || (() => {
         if (pathname === '/') return 'home';
+        if (pathname.startsWith('/about')) return 'about';
         if (pathname.startsWith('/services')) return 'services';
         if (pathname.startsWith('/portfolio')) return 'portfolio';
         if (pathname.startsWith('/blog')) return 'blog';
@@ -43,14 +44,9 @@ export default function Navbar({
     };
 
     // Get text color classes for navigation links
-    const getLinkStyles = (isActive: boolean, isServices?: boolean) => {
-        // If we're on homepage and it's services link, don't make it green unless it's actually active
-        if (isServices && pathname === '/' && !isActive) {
-            return 'text-white-700 dark:text-white-300 hover:text-green-500';
-        }
-
+    const getLinkStyles = (isActive: boolean) => {
         return isActive
-            ? 'text-primary'
+            ? 'text-green-500'
             : 'text-white-700 dark:text-white-300 hover:text-green-500';
     };
 
@@ -74,19 +70,19 @@ export default function Navbar({
                         </AnimatedText>
 
                         <AnimatedText as="span">
-                            <a
-                                href="#about"
-                                className={`transition-colors duration-300 text-[15px] font-medium ${getLinkStyles(false)}`}
+                            <Link
+                                href="/about"
+                                className={`transition-colors duration-300 text-[15px] font-medium ${getLinkStyles(currentTab === 'about')}`}
                             >
                                 {t('nav.about')}
-                            </a>
+                            </Link>
                         </AnimatedText>
 
                         <AnimatedText as="span">
                             <div className="relative group">
                                 <Link
                                     href="/services"
-                                    className={`transition-colors duration-300 text-[15px] font-medium relative group flex items-center ${getLinkStyles(currentTab === 'services', true)}`}
+                                    className={`transition-colors duration-300 text-[15px] font-medium relative group flex items-center ${getLinkStyles(currentTab === 'services')}`}
                                 >
                                     {t('nav.services')}
                                     {showDropdown && (
@@ -240,13 +236,13 @@ export default function Navbar({
                     >
                         {t('nav.home')}
                     </Link>
-                    <a
-                        href="#about"
-                        className={`block py-2 text-base font-medium transition-colors ${getLinkStyles(false)}`}
+                    <Link
+                        href="/about"
+                        className={`block py-2 text-base font-medium transition-colors ${getLinkStyles(currentTab === 'about')}`}
                         onClick={() => setIsMobileMenuOpen(false)}
                     >
                         {t('nav.about')}
-                    </a>
+                    </Link>
                     <Link
                         href="/services"
                         className={`block py-2 text-base font-medium transition-colors ${getLinkStyles(currentTab === 'services')}`}

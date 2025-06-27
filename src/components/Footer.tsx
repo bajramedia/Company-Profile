@@ -1,5 +1,6 @@
 "use client";
 
+import Link from 'next/link';
 import { Logo } from "@/components";
 import { useLanguage } from "@/context/LanguageContext";
 import { usePublicSettings } from "@/hooks/useSettings";
@@ -58,7 +59,7 @@ export default function Footer() {
                             <h4 className="font-semibold text-white mb-6">{t('Quick Links') || 'Quick Links'}</h4>
                             <ul className="space-y-3">
                                 <li><a href="/" className="text-gray-400 hover:text-white transition-colors duration-300">{t('nav.home') || 'Home'}</a></li>
-                                <li><a href="/#about" className="text-gray-400 hover:text-white transition-colors duration-300">{t('nav.about') || 'About Us'}</a></li>
+                                <li><Link href="/about" className="text-gray-400 hover:text-white transition-colors duration-300">{t('nav.about') || 'About Us'}</Link></li>
                                 <li><a href="/services" className="text-gray-400 hover:text-white transition-colors duration-300">{t('nav.services') || 'Services'}</a></li>
                                 <li><a href="/portfolio" className="text-gray-400 hover:text-white transition-colors duration-300">{t('nav.portfolio') || 'Portfolio'}</a></li>
                                 <li><a href="/blog" className="text-gray-400 hover:text-white transition-colors duration-300">{t('nav.blog') || 'Blog'}</a></li>

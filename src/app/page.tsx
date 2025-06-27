@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useState, useEffect } from 'react';
-import { Button, Heading, Text, Logo, LanguageSwitcher, AnimatedText, SupportedBy, CTA, Blog, Team, WhatsAppChat } from "@/components";
+import { Button, Heading, Text, Logo, LanguageSwitcher, AnimatedText, SupportedBy, CTA, Blog, Team, WhatsAppChat, Navbar } from "@/components";
 import { useLanguage } from "@/context/LanguageContext";
 import { usePublicSettings } from "@/hooks/useSettings";
 
@@ -51,117 +51,8 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
-      {/* Header */}
-      <header className="fixed top-0 left-0 right-0 bg-[var(--navbar-background)] dark:bg-gray-800/95 shadow-sm z-50 py-3 md:py-4 backdrop-blur-sm transition-colors duration-300 border-b border-gray-100/50 dark:border-gray-700/50">
-        <div className="max-w-7xl mx-auto flex justify-between items-center px-4 sm:px-6 md:px-8">
-          <div className="flex items-center">
-            <Logo size="md" />
-          </div>
-          <div className="hidden md:flex items-center space-x-7">
-            <nav className="flex space-x-6 md:space-x-8">
-              <AnimatedText as="span">
-                <a href="#" className="text-white-700 dark:text-white-300 hover:text-green-500 transition-colors duration-300 text-[15px] font-medium">{t('nav.home')}</a>
-              </AnimatedText>
-              <AnimatedText as="span">
-                <a href="#about" className="text-white-700 dark:text-white-300 hover:text-green-500 transition-colors duration-300 text-[15px] font-medium">{t('nav.about')}</a>
-              </AnimatedText>
-              <AnimatedText as="span">
-                <div className="relative group">
-                  <a href="/services" className="text-green-500 hover:text-green-600 transition-colors duration-300 text-[15px] font-medium relative group flex items-center">
-                    {t('nav.services')}
-                    <span className="inline-block ml-1 transform group-hover:rotate-180 transition-transform duration-200">
-                      <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                    </span>
-                  </a>
-
-                  {/* Dropdown Menu */}
-                  <div className="absolute top-full left-0 mt-2 w-64 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                    <div className="p-2">
-                      <a href="/services/web-development" className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
-                        <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center text-white text-sm">
-                          🌐
-                        </div>
-                        <div>
-                          <div className="font-medium text-gray-900 dark:text-white text-sm">Web Development</div>
-                          <div className="text-gray-500 dark:text-gray-400 text-xs">Website modern & responsif</div>
-                        </div>
-                      </a>
-
-                      <a href="/services/aset-game-development" className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
-                        <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-purple-500 to-purple-600 flex items-center justify-center text-white text-sm">
-                          🎮
-                        </div>
-                        <div>
-                          <div className="font-medium text-gray-900 dark:text-white text-sm">Aset Game Development</div>
-                          <div className="text-gray-500 dark:text-gray-400 text-xs">Assets & character untuk game</div>
-                        </div>
-                      </a>
-
-                      <a href="/services/uiux-design" className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
-                        <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-purple-500 to-purple-600 flex items-center justify-center text-white text-sm">
-                          🎨
-                        </div>
-                        <div>
-                          <div className="font-medium text-gray-900 dark:text-white text-sm">UI/UX Design</div>
-                          <div className="text-gray-500 dark:text-gray-400 text-xs">Interface yang memukau</div>
-                        </div>
-                      </a>
-
-                      <a href="/services/sistem-development" className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
-                        <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-green-500 to-green-600 flex items-center justify-center text-white text-sm">
-                          ⚙️
-                        </div>
-                        <div>
-                          <div className="font-medium text-gray-900 dark:text-white text-sm">Sistem Development</div>
-                          <div className="text-gray-500 dark:text-gray-400 text-xs">Enterprise & custom system</div>
-                        </div>
-                      </a>
-
-                      <a href="/services/sosial-media-management" className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
-                        <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-orange-500 to-orange-600 flex items-center justify-center text-white text-sm">
-                          📱
-                        </div>
-                        <div>
-                          <div className="font-medium text-gray-900 dark:text-white text-sm">Social Media Management</div>
-                          <div className="text-gray-500 dark:text-gray-400 text-xs">Kelola media sosial bisnis</div>
-                        </div>
-                      </a>
-
-                      <div className="border-t border-gray-100 dark:border-gray-700 mt-2 pt-2">
-                        <a href="/services" className="flex items-center justify-center px-3 py-2 rounded-lg bg-green-50 dark:bg-green-900/20 hover:bg-green-100 dark:hover:bg-green-900/30 transition-colors duration-200">
-                          <span className="text-green-600 dark:text-green-400 font-medium text-sm">Lihat Semua Layanan</span>
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </AnimatedText>
-              <AnimatedText as="span">
-                <a href="/portfolio" className="textwhite-700 dark:textwhite-300 hover:text-green-500 transition-colors duration-300 text-[15px] font-medium">{t('nav.portfolio')}</a>
-              </AnimatedText>
-              <AnimatedText as="span">
-                <a href="/blog" className="textwhite-700 dark:textwhite-300 hover:text-green-500 transition-colors duration-300 text-[15px] font-medium">{t('nav.blog')}</a>
-              </AnimatedText>
-            </nav>
-            <LanguageSwitcher className="mr-4 text-white-700 dark:text-white-300" />
-            <AnimatedText as="span">
-              <Button variant="primary" size="sm" className="px-5 py-2 rounded-md font-medium shadow-sm hover:shadow-lg hover:bg-green-600 transition-all duration-300">
-                {t('nav.contact')}
-              </Button>
-            </AnimatedText>
-          </div>
-          <div className="flex items-center space-x-4 md:hidden">
-            <LanguageSwitcher className="text-foreground" />
-            <button className="text-foreground p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </button>
-          </div>
-        </div>
-      </header>
+      {/* Header - Use Navbar component instead of hardcoded */}
+      <Navbar activeTab="home" showDropdown={true} />
 
       {/* Main Content */}
       <main>
@@ -295,7 +186,7 @@ export default function Home() {
                 <h4 className="font-semibold text-white mb-6">{t('Quick Links') || 'Quick Links'}</h4>
                 <ul className="space-y-3">
                   <li><a href="#" className="text-gray-400 hover:text-white transition-colors duration-300">{t('nav.home') || 'Home'}</a></li>
-                  <li><a href="#about" className="text-gray-400 hover:text-white transition-colors duration-300">{t('nav.about') || 'About Us'}</a></li>
+                  <li><a href="/about" className="text-gray-400 hover:text-white transition-colors duration-300">{t('nav.about') || 'About Us'}</a></li>
                   <li><a href="#services" className="text-gray-400 hover:text-white transition-colors duration-300">{t('nav.services') || 'Services'}</a></li>
                   <li><a href="/portfolio" className="text-gray-400 hover:text-white transition-colors duration-300">{t('nav.portfolio') || 'Portfolio'}</a></li>
                   <li><a href="/blog" className="text-gray-400 hover:text-white transition-colors duration-300">{t('nav.blog') || 'Blog'}</a></li>

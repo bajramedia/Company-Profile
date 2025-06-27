@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useLanguage } from '@/context/LanguageContext';
 import AnimatedText from './AnimatedText';
 import { usePublicSettings } from '@/hooks/useSettings';
@@ -13,6 +14,7 @@ import LanguageSwitcher from './LanguageSwitcher';
 import Blog from './Blog';
 import CTA from './CTA';
 import Team from './Team';
+import Navbar from './Navbar';
 import Script from 'next/script';
 import { generateWebsiteSchema, generateLocalBusinessSchema } from '@/lib/jsonld';
 
@@ -112,59 +114,11 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
       />
 
-      <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300"> {/* Added dark mode support */}
-        <header className="fixed top-0 left-0 right-0 bg-[var(--navbar-background)] dark:bg-gray-800/95 shadow-sm z-50 py-3 md:py-4 backdrop-blur-sm transition-colors duration-300">
-          <div className="max-w-7xl mx-auto flex justify-between items-center px-4 sm:px-6 md:px-8">
-            <div className="flex items-center">
-              <Logo size="md" />
-            </div>
-            <div className="hidden md:flex items-center space-x-7">
-              <nav className="flex space-x-6 md:space-x-8">
-                <AnimatedText as="span">
-                  <a href="#" className="text-gray-700 dark:text-gray-300 hover:text-green-500 transition-colors duration-300 text-[15px]">{t('nav.home')}</a>
-                </AnimatedText>
-                <AnimatedText as="span">
-                  <a href="#about" className="text-gray-700 dark:text-gray-300 hover:text-green-500 transition-colors duration-300 text-[15px]">{t('nav.about')}</a>
-                </AnimatedText>
-                <AnimatedText as="span">
-                  <a href="#services" className="text-gray-700 dark:text-gray-300 hover:text-green-500 transition-colors duration-300 text-[15px] relative group">
-                    {t('nav.services')}
-                    <span className="inline-block ml-1 transform group-hover:rotate-180 transition-transform duration-200">
-                      <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                    </span>
-                  </a>
-                </AnimatedText>
-                <AnimatedText as="span">
-                  <a href="#portfolio" className="text-gray-700 dark:text-gray-300 hover:text-green-500 transition-colors duration-300 text-[15px]">{t('nav.portfolio')}</a>
-                </AnimatedText>
-                <AnimatedText as="span">
-                  <a href="/blog" className="text-gray-700 dark:text-gray-300 hover:text-green-500 transition-colors duration-300 text-[15px]">{t('nav.blog')}</a>
-                </AnimatedText>
-              </nav>
-              <LanguageSwitcher className="mr-4 text-foreground" />
-              <AnimatedText as="span">
-                <Button variant="primary" size="sm" className="px-5 py-2 rounded-md font-medium">
-                  {t('nav.contact')}
-                </Button>
-              </AnimatedText>
-            </div>
-            <div className="flex items-center space-x-4 md:hidden">
-              <LanguageSwitcher className="text-foreground" />
-              <button className="text-foreground">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-              </button>
-            </div>
-          </div>
-        </header>
+      <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
+        {/* Use Navbar component instead of hardcoded header */}
+        <Navbar activeTab="home" showDropdown={true} />
 
-        {/* Rest of your component ... */}
-        {/* Copy the content from your original page.tsx here */}
-        {/* ... */}
-
+        {/* Rest of your component content... */}
         {/* Blog Section */}
         <Blog />
 
