@@ -95,7 +95,7 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
-
+    
     const postData = {
       title: body.title,
       slug: body.slug,

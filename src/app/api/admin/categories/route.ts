@@ -67,7 +67,7 @@ export async function POST(request: Request) {
     // Return the actual result from database without fallback
     return NextResponse.json({ 
       success: true, 
-      category: {
+      category: { 
         id: result.id,
         name: categoryData.name,
         slug: categoryData.slug,

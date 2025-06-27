@@ -669,8 +669,8 @@ function handlePost($pdo, $endpoint) {
                 if (isset($data['tags']) && is_array($data['tags'])) {
                     foreach ($data['tags'] as $tagId) {
                         if (!empty($tagId)) {
-                            $stmt = $pdo->prepare("INSERT INTO posttags (postId, tagId) VALUES (?, ?)");
-                            $stmt->execute([$postId, $tagId]);
+                        $stmt = $pdo->prepare("INSERT INTO posttags (postId, tagId) VALUES (?, ?)");
+                        $stmt->execute([$postId, $tagId]);
                         }
                     }
                 }
@@ -704,13 +704,13 @@ function handlePost($pdo, $endpoint) {
                 
                 if ($isAutoIncrement) {
                     // Use auto-increment
-                    if ($hasDescription) {
-                        $stmt = $pdo->prepare("INSERT INTO category (name, slug, description) VALUES (?, ?, ?)");
-                        $stmt->execute([$name, $slug, $description]);
-                    } else {
-                        $stmt = $pdo->prepare("INSERT INTO category (name, slug) VALUES (?, ?)");
-                        $stmt->execute([$name, $slug]);
-                    }
+                if ($hasDescription) {
+                $stmt = $pdo->prepare("INSERT INTO category (name, slug, description) VALUES (?, ?, ?)");
+                $stmt->execute([$name, $slug, $description]);
+                } else {
+                    $stmt = $pdo->prepare("INSERT INTO category (name, slug) VALUES (?, ?)");
+                    $stmt->execute([$name, $slug]);
+                }
                     $categoryId = $pdo->lastInsertId();
                 } else {
                     // Generate unique string ID
@@ -757,8 +757,8 @@ function handlePost($pdo, $endpoint) {
                 
                 if ($isAutoIncrement) {
                     // Use auto-increment
-                    $stmt = $pdo->prepare("INSERT INTO author (name, email, bio, avatar) VALUES (?, ?, ?, ?)");
-                    $stmt->execute([$name, $email, $bio, $avatar]);
+                $stmt = $pdo->prepare("INSERT INTO author (name, email, bio, avatar) VALUES (?, ?, ?, ?)");
+                $stmt->execute([$name, $email, $bio, $avatar]);
                     $authorId = $pdo->lastInsertId();
                 } else {
                     // Generate unique string ID
@@ -800,8 +800,8 @@ function handlePost($pdo, $endpoint) {
                         $stmt = $pdo->prepare("INSERT INTO tag (name, slug, description) VALUES (?, ?, ?)");
                         $stmt->execute([$name, $slug, $description]);
                     } else {
-                        $stmt = $pdo->prepare("INSERT INTO tag (name, slug) VALUES (?, ?)");
-                        $stmt->execute([$name, $slug]);
+                $stmt = $pdo->prepare("INSERT INTO tag (name, slug) VALUES (?, ?)");
+                $stmt->execute([$name, $slug]);
                     }
                     $tagId = $pdo->lastInsertId();
                 } else {

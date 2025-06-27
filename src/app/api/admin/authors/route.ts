@@ -75,11 +75,11 @@ export async function POST(request: Request) {
 
     const result = await response.json();
     console.log('Authors API: Database entry created successfully');
-    
+
     // Return proper response with database ID
-    return NextResponse.json({
-      success: true,
-      author: {
+    return NextResponse.json({ 
+      success: true, 
+      author: { 
         id: result.id,
         name: name,
         email: email,
