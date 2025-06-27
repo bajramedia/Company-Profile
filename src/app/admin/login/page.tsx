@@ -121,7 +121,7 @@ function LoginForm() {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 className="block w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-4 py-3 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 shadow-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all duration-200"
-                placeholder="admin@bajramedia.com"
+                placeholder="Masukkan email admin"
                 required
               />
             </div>
@@ -167,19 +167,7 @@ function LoginForm() {
             </div>
           </form>
 
-          <div className="mt-8 text-center">
-            <div className="rounded-lg bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 p-4">
-              <p className="text-sm font-medium text-blue-800 dark:text-blue-300 mb-1">
-                🔑 Demo Credentials
-              </p>
-              <p className="text-xs text-blue-600 dark:text-blue-400">
-                Username: <span className="font-mono bg-blue-100 dark:bg-blue-800 px-1 rounded">admin@bajramedia.com</span>
-              </p>
-              <p className="text-xs text-blue-600 dark:text-blue-400">
-                Password: <span className="font-mono bg-blue-100 dark:bg-blue-800 px-1 rounded">admin123</span>
-              </p>
-            </div>
-          </div>
+          {/* Demo credentials hidden for security in production */}
         </div>
 
         {/* Footer */}

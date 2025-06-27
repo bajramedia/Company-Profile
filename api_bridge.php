@@ -112,6 +112,23 @@ function generateSlug($title) {
 }
 
 function handleGet($pdo, $endpoint, $id) {
+    // Security check for production - hide sensitive endpoints
+    $hiddenEndpoints = ['debug', 'test', 'stats-full', 'database-info', 'server-info'];
+    
+    // Check if it's production environment (you can also use $_SERVER['HTTP_HOST'])
+    $isProduction = isset($_SERVER['HTTP_HOST']) && (
+        $_SERVER['HTTP_HOST'] === 'bajramedia.com' || 
+        strpos($_SERVER['HTTP_HOST'], 'vercel.app') !== false ||
+        strpos($_SERVER['HTTP_HOST'], 'bajramedia.com') !== false
+    );
+    
+    // Block access to sensitive endpoints in production
+    if ($isProduction && in_array($endpoint, $hiddenEndpoints)) {
+        http_response_code(404);
+        echo json_encode(['error' => 'Endpoint not found']);
+        return;
+    }
+    
     try {
         switch ($endpoint) {
             case 'posts':
