@@ -1,11 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://bajramedia.com/api_bridge.php';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://company-profile-mu-nine.vercel.app';
 
 // GET /api/admin/settings - Get all settings
 export async function GET() {
   try {
-    const response = await fetch(`${API_BASE_URL}?endpoint=settings`);
+    const response = await fetch(`${API_BASE_URL}/api_bridge.php?endpoint=settings&method=GET`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      cache: 'no-cache',
+    });
     
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -86,7 +92,7 @@ export async function POST(request: NextRequest) {
     });
 
     // Send batch update to API bridge
-    const response = await fetch(`${API_BASE_URL}?endpoint=settings`, {
+    const response = await fetch(`${API_BASE_URL}/api_bridge.php?endpoint=settings&method=POST`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -139,8 +145,8 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
-    const response = await fetch(`${API_BASE_URL}?endpoint=settings&key=${key}`, {
-      method: 'DELETE',
+    const response = await fetch(`${API_BASE_URL}/api_bridge.php?endpoint=settings&method=DELETE&key=${key}`, {
+      method: 'POST', // api_bridge menggunakan POST untuk semua
       headers: {
         'Content-Type': 'application/json',
       }

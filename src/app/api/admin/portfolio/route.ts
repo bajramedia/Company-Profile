@@ -10,47 +10,47 @@ export async function GET(request: NextRequest) {
 
     console.log('Portfolio API: Fetching from production database...'); 
     const response = await fetch(`${API_BASE_URL}?endpoint=portfolio&page=${page}&limit=${limit}`);
-
+    
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    const portfolio = await response.json();
+      const portfolio = await response.json();
 
     // Format portfolio items with proper structure
     const formattedPortfolio = portfolio.map((item: any) => ({
-      id: item.id,
-      title: item.title,
-      slug: item.slug,
-      description: item.description,
-      content: item.content,
-      featuredImage: item.featuredImage,
+          id: item.id,
+          title: item.title,
+          slug: item.slug,
+          description: item.description,
+          content: item.content,
+          featuredImage: item.featuredImage,
       projectUrl: item.projectUrl || item.project_url,
       githubUrl: item.githubUrl || item.github_url,
       technologies: item.technologies || [],
       client: item.client,
       duration: item.duration,
       published: item.published === "1" || item.published === 1 || item.published === true,
-      featured: item.featured === "1" || item.featured === 1 || item.featured === true,
-      category: {
+          featured: item.featured === "1" || item.featured === 1 || item.featured === true,
+          category: {
         id: item.categoryId,
-        name: item.categoryName || "Uncategorized",
-        slug: item.categorySlug || "uncategorized"
-      },
+            name: item.categoryName || "Uncategorized",
+            slug: item.categorySlug || "uncategorized"
+          },
       tags: item.tags || [],
       createdAt: item.createdAt || item.date,
       updatedAt: item.updatedAt
-    }));
+        }));
 
-    console.log('Portfolio API: Database success');
-    return NextResponse.json({
-      portfolio: formattedPortfolio,
-      total: formattedPortfolio.length,
-      page,
+        console.log('Portfolio API: Database success');
+        return NextResponse.json({
+          portfolio: formattedPortfolio,
+          total: formattedPortfolio.length,
+          page,
       limit,
       totalPages: Math.ceil(formattedPortfolio.length / limit)
     });
-
+    
   } catch (error) {
     console.error('Portfolio API: Database connection failed:', error);
     return NextResponse.json(
@@ -86,11 +86,11 @@ export async function POST(request: NextRequest) {
       tags: body.tagIds || body.tags || []
     };
 
-    const response = await fetch(`${API_BASE_URL}?endpoint=portfolio`, {
+      const response = await fetch(`${API_BASE_URL}?endpoint=portfolio`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(portfolioData)
-    });
+        body: JSON.stringify(portfolioData)
+      });
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -98,8 +98,8 @@ export async function POST(request: NextRequest) {
 
     const result = await response.json();
     console.log('Portfolio API: Database entry created successfully');
-    return NextResponse.json({
-      success: true,
+    return NextResponse.json({ 
+      success: true, 
       id: result.id,
       message: "Portfolio created successfully"
     });
