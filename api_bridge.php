@@ -112,21 +112,30 @@ function generateSlug($title) {
 }
 
 function handleGet($pdo, $endpoint, $id) {
-    // Security check for production - hide sensitive endpoints
-    $hiddenEndpoints = ['debug', 'test', 'stats-full', 'database-info', 'server-info'];
+    // ENHANCED SECURITY - Hide all sensitive endpoints in production
+    $hiddenEndpoints = [
+        'debug', 'test', 'stats', 'stats-full', 'database-info', 'server-info',
+        'team', 'team-members', 'partners', 'about', 'about-content', 
+        'new-settings', 'blog-posts', 'portfolio-items'
+    ];
     
-    // Check if it's production environment (you can also use $_SERVER['HTTP_HOST'])
+    // Only allow essential endpoints for public access
+    $allowedPublicEndpoints = ['posts', 'portfolio', 'categories', 'portfolio-categories'];
+    
+    // Check if it's production environment
     $isProduction = isset($_SERVER['HTTP_HOST']) && (
         $_SERVER['HTTP_HOST'] === 'bajramedia.com' || 
         strpos($_SERVER['HTTP_HOST'], 'vercel.app') !== false ||
-        strpos($_SERVER['HTTP_HOST'], 'bajramedia.com') !== false
+        $_SERVER['HTTP_HOST'] === 'www.bajramedia.com'
     );
     
-    // Block access to sensitive endpoints in production
-    if ($isProduction && in_array($endpoint, $hiddenEndpoints)) {
-        http_response_code(404);
-        echo json_encode(['error' => 'Endpoint not found']);
-        return;
+    // In production, block access to hidden endpoints and only allow public ones
+    if ($isProduction) {
+        if (in_array($endpoint, $hiddenEndpoints) || !in_array($endpoint, $allowedPublicEndpoints)) {
+            http_response_code(404);
+            echo json_encode(['error' => 'Not Found']);
+            return;
+        }
     }
     
     try {
@@ -398,25 +407,22 @@ function handleGet($pdo, $endpoint, $id) {
 
             case 'about':
             case 'about-content':
-                $stmt = $pdo->query("
-                    SELECT * FROM about_content 
-                    WHERE is_active = 1 
-                    ORDER BY id ASC
-                ");
-                $results = $stmt->fetchAll();
-                
-                // Format as key-value pairs for easier use
-                $about = [];
-                foreach ($results as $row) {
-                    $about[$row['section_key']] = [
-                        'titleEn' => $row['title_en'],
-                        'titleId' => $row['title_id'],
-                        'contentEn' => $row['content_en'],
-                        'contentId' => $row['content_id']
-                    ];
+                if ($id) {
+                    // Get single about content by ID
+                    $stmt = $pdo->prepare("SELECT * FROM about_content WHERE id = ?");
+                    $stmt->execute([$id]);
+                    $result = $stmt->fetch();
+                    echo json_encode($result);
+                } else {
+                    // Get all about content
+                    $stmt = $pdo->query("
+                        SELECT * FROM about_content 
+                        WHERE is_active = 1 
+                        ORDER BY id ASC
+                    ");
+                    $results = $stmt->fetchAll();
+                    echo json_encode($results);
                 }
-                
-                echo json_encode($about);
                 break;
 
             case 'new-settings':
@@ -735,6 +741,65 @@ function handlePost($pdo, $endpoint) {
                 } catch (Exception $e) {
                     echo json_encode(['success' => true, 'note' => 'View tracking not available']);
                 }
+                break;
+                
+            case 'about-content':
+                // Create new about content
+                $section_key = $data['section_key'] ?? '';
+                $title_en = $data['title_en'] ?? '';
+                $title_id = $data['title_id'] ?? '';
+                $content_en = $data['content_en'] ?? '';
+                $content_id = $data['content_id'] ?? '';
+                
+                $stmt = $pdo->prepare("
+                    INSERT INTO about_content (section_key, title_en, title_id, content_en, content_id) 
+                    VALUES (?, ?, ?, ?, ?)
+                ");
+                $stmt->execute([$section_key, $title_en, $title_id, $content_en, $content_id]);
+                
+                echo json_encode(['success' => true, 'id' => $pdo->lastInsertId()]);
+                break;
+                
+            case 'team-members':
+                // Create new team member
+                $name = $data['name'] ?? '';
+                $role_en = $data['role_en'] ?? '';
+                $role_id = $data['role_id'] ?? '';
+                $bio_en = $data['bio_en'] ?? '';
+                $bio_id = $data['bio_id'] ?? '';
+                $image_url = $data['image_url'] ?? '';
+                $linkedin_url = $data['linkedin_url'] ?? '';
+                $github_url = $data['github_url'] ?? '';
+                $instagram_url = $data['instagram_url'] ?? '';
+                $sort_order = $data['sort_order'] ?? 0;
+                
+                $stmt = $pdo->prepare("
+                    INSERT INTO team_members (name, role_en, role_id, bio_en, bio_id, image_url, linkedin_url, github_url, instagram_url, sort_order) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ");
+                $stmt->execute([$name, $role_en, $role_id, $bio_en, $bio_id, $image_url, $linkedin_url, $github_url, $instagram_url, $sort_order]);
+                
+                echo json_encode(['success' => true, 'id' => $pdo->lastInsertId()]);
+                break;
+                
+            case 'partners':
+                // Create new partner
+                $name_en = $data['name_en'] ?? '';
+                $name_id = $data['name_id'] ?? '';
+                $description_en = $data['description_en'] ?? '';
+                $description_id = $data['description_id'] ?? '';
+                $logo_url = $data['logo_url'] ?? '';
+                $website_url = $data['website_url'] ?? '';
+                $partner_type = $data['partner_type'] ?? 'company';
+                $sort_order = $data['sort_order'] ?? 0;
+                
+                $stmt = $pdo->prepare("
+                    INSERT INTO partners (name_en, name_id, description_en, description_id, logo_url, website_url, partner_type, sort_order) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                ");
+                $stmt->execute([$name_en, $name_id, $description_en, $description_id, $logo_url, $website_url, $partner_type, $sort_order]);
+                
+                echo json_encode(['success' => true, 'id' => $pdo->lastInsertId()]);
                 break;
 
             default:
