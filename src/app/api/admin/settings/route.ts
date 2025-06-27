@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://company-profile-mu-nine.vercel.app';
+const API_BASE_URL = 'https://bajramedia.com/api_bridge.php';
 
 // GET /api/admin/settings - Get all settings
 export async function GET() {
   try {
-    const response = await fetch(`${API_BASE_URL}/api_bridge.php?endpoint=settings&method=GET`, {
+    const response = await fetch(`${API_BASE_URL}?endpoint=settings`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -69,54 +69,27 @@ export async function POST(request: NextRequest) {
   try {
     const updates = await request.json();
     
-    // Convert settings object to individual setting records
-    const settingsArray = Object.entries(updates).map(([key, value]) => {
-      let type = 'string';
-      let stringValue = String(value);
-      
-      if (typeof value === 'number') {
-        type = 'number';
-      } else if (typeof value === 'boolean') {
-        type = 'boolean';
-        stringValue = value ? 'true' : 'false';
-      } else if (typeof value === 'object' && value !== null) {
-        type = 'json';
-        stringValue = JSON.stringify(value);
-      }
-      
-      return {
-        key,
-        value: stringValue,
-        type
-      };
-    });
-
-    // Send batch update to API bridge
-    const response = await fetch(`${API_BASE_URL}/api_bridge.php?endpoint=settings&method=POST`, {
+    // Send settings directly as they are (simplified approach)
+    const response = await fetch(`${API_BASE_URL}?endpoint=settings`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        action: 'batch_update',
-        settings: settingsArray
-      })
+      body: JSON.stringify(updates)
     });
 
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      const errorText = await response.text();
+      throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
     }
 
     const result = await response.json();
 
-    if (!result.success) {
-      throw new Error(result.message || 'Failed to update settings');
-    }
-
     return NextResponse.json({ 
       success: true, 
       message: 'Settings updated successfully',
-      updated: Object.keys(updates).length
+      updated: Object.keys(updates).length,
+      data: result
     });
 
   } catch (error) {
@@ -145,8 +118,8 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
-    const response = await fetch(`${API_BASE_URL}/api_bridge.php?endpoint=settings&method=DELETE&key=${key}`, {
-      method: 'POST', // api_bridge menggunakan POST untuk semua
+    const response = await fetch(`${API_BASE_URL}?endpoint=settings&key=${key}`, {
+      method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
       }
