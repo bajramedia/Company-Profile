@@ -2,9 +2,12 @@ import { NextRequest, NextResponse } from 'next/server';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://company-profile-mu-nine.vercel.app';
 
-export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(
+  request: NextRequest,
+  context: { params: { id: string } }
+) {
   try {
-    const { id } = params;
+    const { id } = context.params;
     
     const response = await fetch(`${API_BASE_URL}/api_bridge.php?endpoint=partners&method=GET&id=${id}`, {
       method: 'GET',
@@ -29,9 +32,12 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
   }
 }
 
-export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(
+  request: NextRequest,
+  context: { params: { id: string } }
+) {
   try {
-    const { id } = params;
+    const { id } = context.params;
     const body = await request.json();
 
     const response = await fetch(`${API_BASE_URL}/api_bridge.php?endpoint=partners&method=PUT&id=${id}`, {
@@ -58,9 +64,12 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
   }
 }
 
-export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(
+  request: NextRequest,
+  context: { params: { id: string } }
+) {
   try {
-    const { id } = params;
+    const { id } = context.params;
 
     const response = await fetch(`${API_BASE_URL}/api_bridge.php?endpoint=partners&method=DELETE&id=${id}`, {
       method: 'POST', // api_bridge menggunakan POST untuk semua
