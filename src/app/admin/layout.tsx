@@ -4,6 +4,7 @@ import React, { ReactNode, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useLanguage } from '@/context/LanguageContext';
+import { Logo } from '@/components';
 import {
   FiHome,
   FiFileText,
@@ -86,9 +87,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           <div className="flex justify-between h-16">
             <div className="flex items-center">
               <div className="flex-shrink-0 flex items-center">
-                <Link href="/">
-                  <div className="text-xl font-bold text-primary">Bajramedia</div>
-                </Link>
+                <Logo size="md" variant="dark" />
               </div>
             </div>
             <div className="flex items-center space-x-2 sm:space-x-4">

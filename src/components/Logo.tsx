@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { usePublicSettings } from '@/hooks/useSettings';
 
 interface LogoProps {
   variant?: 'light' | 'dark';
@@ -17,6 +18,8 @@ const Logo: React.FC<LogoProps> = ({
   className = '',
   showImage = true,
 }) => {
+  const { settings: publicSettings, loading } = usePublicSettings();
+
   const baseClasses = 'font-poppins font-bold transition-all duration-200';
 
   const variantClasses = {
@@ -42,18 +45,35 @@ const Logo: React.FC<LogoProps> = ({
     size === 'md' ? 'h-[24px] md:h-[30px]' :
       'h-[30px] md:h-[36px]';
 
+  // Get site name from settings atau fallback ke default
+  const siteName = loading ? 'Loading...' : (publicSettings?.siteName || 'Bajramedia');
+
+  // Render site name dengan styling khusus untuk Bajramedia
+  const renderSiteName = () => {
+    if (siteName.toLowerCase().includes('bajramedia')) {
+      return (
+        <>
+          Bajra<span className="text-green-500">media</span>
+        </>
+      );
+    } else {
+      // Jika site name custom, tampilkan apa adanya
+      return siteName;
+    }
+  };
+
   return (
     <Link href="/" className={`flex items-center gap-1 md:gap-2 ${finalClasses}`}>
       {showImage && (
         <Image
           src="/images/Bajra.png"
-          alt="Bajramedia Logo"
+          alt={`${siteName} Logo`}
           width={imageSizes[size].desktop}
           height={imageSizes[size].desktop}
           className={`object-contain w-auto ${imageHeight}`}
         />
       )}
-      Bajra<span className="text-green-500">media</span>
+      {renderSiteName()}
     </Link>
   );
 };
