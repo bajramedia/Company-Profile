@@ -5,10 +5,15 @@ const API_BASE_URL = 'https://bajramedia.com/api_bridge.php';
 // GET - Ambil public settings (tanpa admin settings)
 export async function GET() {
   try {
-    const response = await fetch(`${API_BASE_URL}?endpoint=settings`, {
+    // Add timestamp to prevent cache
+    const timestamp = Date.now();
+    const response = await fetch(`${API_BASE_URL}?endpoint=settings&_t=${timestamp}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0'
       },
       cache: 'no-store',
     });
@@ -18,6 +23,14 @@ export async function GET() {
     }
     
     const settings = await response.json();
+    
+    // DEBUG: Log untuk memastikan data fresh
+    console.log('🔄 PUBLIC SETTINGS API: Fresh data from database at', new Date().toISOString());
+    console.log('🔄 PUBLIC SETTINGS API: Settings count:', Object.keys(settings).length);
+    console.log('🔄 PUBLIC SETTINGS API: Sample data:', {
+      siteName: settings.siteName,
+      contactEmail: settings.contactEmail
+    });
     
     // Format settings untuk public use
     const publicSettings = {
@@ -45,12 +58,16 @@ export async function GET() {
       }
     };
 
-    // Return dengan headers no-cache
+    // Return dengan headers no-cache yang aggressive
     return NextResponse.json(publicSettings, {
       headers: {
-        'Cache-Control': 'no-store, no-cache, must-revalidate',
+        'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0',
         'Pragma': 'no-cache',
-        'Expires': '0'
+        'Expires': '0',
+        'Last-Modified': new Date().toUTCString(),
+        'ETag': `"${timestamp}"`,
+        'Vary': 'Origin',
+        'X-Fresh-Data': 'true'
       }
     });
 
@@ -83,7 +100,7 @@ export async function GET() {
       }
     }, {
       headers: {
-        'Cache-Control': 'no-store, no-cache, must-revalidate',
+        'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0',
         'Pragma': 'no-cache',
         'Expires': '0'
       }
