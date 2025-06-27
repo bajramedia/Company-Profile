@@ -37,6 +37,11 @@ export default function SettingsPageClient() {
     setError(null);
 
     try {
+      // DEBUG: Alert untuk memastikan function terpanggil
+      if (process.env.NODE_ENV === 'development') {
+        alert('🔥 DEBUG: Save function called!');
+      }
+
       // DEBUG: Log data yang akan dikirim
       console.log('🔥 CLIENT DEBUG: Settings to save:', settings);
       console.log('🔥 CLIENT DEBUG: Settings keys:', Object.keys(settings));
@@ -50,6 +55,11 @@ export default function SettingsPageClient() {
 
       console.log('🔥 CLIENT DEBUG: Save result:', success);
 
+      // DEBUG: Alert hasil save
+      if (process.env.NODE_ENV === 'development') {
+        alert(`🔥 DEBUG: Save result: ${success}`);
+      }
+
       if (success) {
         setSaved(true);
         setTimeout(() => setSaved(false), 3000);
@@ -58,7 +68,13 @@ export default function SettingsPageClient() {
       }
     } catch (error) {
       console.error('🔥 CLIENT DEBUG: Error saving settings:', error);
-      setError('Failed to save settings. Please try again.');
+
+      // DEBUG: Alert error
+      if (process.env.NODE_ENV === 'development') {
+        alert(`🔥 DEBUG: Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      }
+
+      setError(`Failed to save settings: ${error instanceof Error ? error.message : 'Unknown error'}`);
     } finally {
       setLoading(false);
     }
@@ -148,8 +164,8 @@ export default function SettingsPageClient() {
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
                   className={`w-full text-left px-4 py-3 rounded-lg mb-2 transition-colors flex items-center gap-3 ${activeTab === tab.id
-                      ? 'bg-blue-50 text-blue-700 border border-blue-200'
-                      : 'text-gray-600 hover:bg-gray-50'
+                    ? 'bg-blue-50 text-blue-700 border border-blue-200'
+                    : 'text-gray-600 hover:bg-gray-50'
                     }`}
                 >
                   <span>{tab.icon}</span>
