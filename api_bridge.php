@@ -119,8 +119,8 @@ function handleGet($pdo, $endpoint, $id) {
         'new-settings', 'blog-posts', 'portfolio-items'
     ];
     
-    // Only allow essential endpoints for public access
-    $allowedPublicEndpoints = ['posts', 'portfolio', 'categories', 'portfolio-categories'];
+    // Allow essential endpoints for public access AND admin endpoints
+    $allowedPublicEndpoints = ['posts', 'portfolio', 'categories', 'portfolio-categories', 'authors', 'tags', 'stats', 'settings'];
     
     // Check if it's production environment
     $isProduction = isset($_SERVER['HTTP_HOST']) && (

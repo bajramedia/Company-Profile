@@ -175,7 +175,7 @@ export default function AdminAboutPage() {
             {error && (
                 <div className="bg-red-100 dark:bg-red-900/20 border-l-4 border-red-500 text-red-700 dark:text-red-400 p-4 rounded-r-lg">
                     <p>{error}</p>
-                    <button 
+                    <button
                         onClick={() => setError(null)}
                         className="mt-2 text-sm underline hover:no-underline"
                     >
@@ -235,13 +235,12 @@ export default function AdminAboutPage() {
                                 </p>
                             </div>
                         </div>
-                        
+
                         <div className="mt-4 flex items-center">
-                            <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                                content.is_active 
+                            <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${content.is_active
                                     ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400'
                                     : 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400'
-                            }`}>
+                                }`}>
                                 {content.is_active ? 'Active' : 'Inactive'}
                             </span>
                         </div>
