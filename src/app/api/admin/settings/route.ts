@@ -68,7 +68,16 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const updates = await request.json();
-    console.log('Settings API: Saving to database:', updates);
+    
+    // DEBUG: Log what we're sending
+    console.log('🔧 DEBUG: Original data from frontend:', updates);
+    console.log('🔧 DEBUG: Data keys:', Object.keys(updates));
+    console.log('🔧 DEBUG: Sample values:', {
+      siteName: updates.siteName,
+      contactEmail: updates.contactEmail,
+      social_facebook: updates.social_facebook,
+      'socialLinks.facebook': updates.socialLinks?.facebook
+    });
     
     const response = await fetch(`${API_BASE_URL}?endpoint=settings`, {
       method: 'POST',
@@ -78,28 +87,46 @@ export async function POST(request: NextRequest) {
       body: JSON.stringify(updates)
     });
 
+    const responseText = await response.text();
+    console.log('🔧 DEBUG: Raw response from api_bridge:', responseText);
+
     if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+      throw new Error(`HTTP error! status: ${response.status}, response: ${responseText}`);
     }
 
-    const result = await response.json();
-    console.log('Settings API: Database save successful');
+    let result;
+    try {
+      result = JSON.parse(responseText);
+    } catch (e) {
+      console.error('Failed to parse response as JSON:', responseText);
+      throw new Error('Invalid JSON response from database');
+    }
+
+    console.log('🔧 DEBUG: Parsed response:', result);
     
     return NextResponse.json({ 
       success: true, 
       message: 'Settings updated successfully in database',
       updated: Object.keys(updates).length,
-      data: result
+      data: result,
+      debug: {
+        sentKeys: Object.keys(updates),
+        responseStatus: response.status,
+        responseData: result
+      }
     });
 
   } catch (error) {
-    console.error('Settings API: Database save failed:', error);
+    console.error('🔧 DEBUG: Error in settings save:', error);
     return NextResponse.json(
       { 
         success: false, 
         error: 'Failed to update settings',
-        message: error instanceof Error ? error.message : 'Unknown error'
+        message: error instanceof Error ? error.message : 'Unknown error',
+        debug: {
+          errorType: error instanceof Error ? error.constructor.name : typeof error,
+          errorMessage: error instanceof Error ? error.message : String(error)
+        }
       },
       { status: 500 }
     );
