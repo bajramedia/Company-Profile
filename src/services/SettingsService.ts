@@ -57,7 +57,7 @@ export const defaultSettings: SiteSettings = {
 class SettingsService {
   private baseUrl = '/api/admin/settings';
 
-  // Helper method to flatten nested objects for API compatibility
+  // Helper method untuk flatten nested objects untuk API compatibility
   private flattenSettings(settings: SiteSettings): Record<string, any> {
     const flattened: Record<string, any> = {};
     
@@ -82,7 +82,7 @@ class SettingsService {
     return flattened;
   }
 
-  // Helper method to unflatten API response back to nested structure
+  // Helper method untuk unflatten API response kembali ke nested structure
   private unflattenSettings(flatSettings: Record<string, any>): SiteSettings {
     const settings = { ...defaultSettings };
     
@@ -126,11 +126,9 @@ class SettingsService {
       }
       
       const flatSettings = await response.json();
-      console.log('Raw settings from API:', flatSettings);
       
       // Convert flat structure back to nested
       const settings = this.unflattenSettings(flatSettings);
-      console.log('Converted settings:', settings);
       
       return settings;
     } catch (error) {
@@ -141,11 +139,8 @@ class SettingsService {
 
   async saveSettings(settings: SiteSettings): Promise<boolean> {
     try {
-      console.log('Original settings to save:', settings);
-      
-      // Flatten settings structure for API compatibility
+      // Flatten settings structure untuk API compatibility
       const flatSettings = this.flattenSettings(settings);
-      console.log('Flattened settings for API:', flatSettings);
 
       const response = await fetch(this.baseUrl, {
         method: 'POST',
@@ -161,8 +156,6 @@ class SettingsService {
         throw new Error(`Failed to save settings: ${response.status}`);
       }
 
-      const result = await response.json();
-      console.log('Settings save success:', result);
       return true;
     } catch (error) {
       console.error('Error saving settings:', error);
@@ -190,25 +183,51 @@ class SettingsService {
     }, obj);
   }
 
-  // Helper method untuk mendapatkan settings yang sering digunakan
+  // Method untuk mendapatkan public settings dari database
   async getPublicSettings() {
     try {
-      console.log('Fetching public settings from /api/settings');
       const response = await fetch('/api/settings', {
         method: 'GET',
-        cache: 'no-cache', // Always get fresh data
+        cache: 'no-cache',
+        headers: {
+          'Cache-Control': 'no-cache, no-store, must-revalidate'
+        }
       });
       
       if (!response.ok) {
-        throw new Error(`Failed to fetch public settings: ${response.status}`);
+        throw new Error(`HTTP ${response.status}`);
       }
       
-      const settings = await response.json();
-      console.log('Public settings received:', settings);
-      return settings;
+      const data = await response.json();
+      
+      // Pastikan data dalam format yang benar untuk frontend
+      return {
+        siteName: data.siteName || defaultSettings.siteName,
+        siteDescription: data.siteDescription || defaultSettings.siteDescription,
+        siteUrl: data.siteUrl || defaultSettings.siteUrl,
+        contactEmail: data.contactEmail || defaultSettings.contactEmail,
+        contactPhone: data.contactPhone || defaultSettings.contactPhone,
+        contactAddress: data.contactAddress || defaultSettings.contactAddress,
+        socialLinks: {
+          facebook: data.socialLinks?.facebook || data.social_facebook || '',
+          twitter: data.socialLinks?.twitter || data.social_twitter || '',
+          instagram: data.socialLinks?.instagram || data.social_instagram || '',
+          linkedin: data.socialLinks?.linkedin || data.social_linkedin || '',
+          youtube: data.socialLinks?.youtube || data.social_youtube || ''
+        },
+        footerText: data.footerText || defaultSettings.footerText,
+        enableComments: data.enableComments ?? defaultSettings.enableComments,
+        enableSocialShare: data.enableSocialShare ?? defaultSettings.enableSocialShare,
+        seoSettings: {
+          metaTitle: data.seoSettings?.metaTitle || data.seo_metaTitle || defaultSettings.seoSettings.metaTitle,
+          metaDescription: data.seoSettings?.metaDescription || data.seo_metaDescription || defaultSettings.seoSettings.metaDescription,
+          metaKeywords: data.seoSettings?.metaKeywords || data.seo_metaKeywords || defaultSettings.seoSettings.metaKeywords,
+          ogImage: data.seoSettings?.ogImage || data.seo_ogImage || defaultSettings.seoSettings.ogImage
+        }
+      };
     } catch (error) {
       console.error('Error fetching public settings:', error);
-      // Fallback ke subset dari default settings
+      // Fallback ke default settings
       return {
         siteName: defaultSettings.siteName,
         siteDescription: defaultSettings.siteDescription,

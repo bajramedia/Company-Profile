@@ -80,8 +80,7 @@ export function usePublicSettings() {
       const publicSettings = await settingsService.getPublicSettings();
       setSettings(publicSettings);
     } catch (err) {
-      console.error('Error loading public settings:', err);
-      // Fallback ke default settings publik
+      // Fallback ke default settings publik tanpa spam console
       setSettings({
         siteName: defaultSettings.siteName,
         siteDescription: defaultSettings.siteDescription,

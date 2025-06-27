@@ -10,7 +10,7 @@ export async function GET() {
       headers: {
         'Content-Type': 'application/json',
       },
-      cache: 'no-cache',
+      cache: 'no-store',
     });
     
     if (!response.ok) {
@@ -18,9 +18,8 @@ export async function GET() {
     }
     
     const settings = await response.json();
-    console.log('Public settings from database:', settings);
     
-    // Format settings for public use
+    // Format settings untuk public use
     const publicSettings = {
       siteName: settings.siteName || 'Bajramedia',
       siteDescription: settings.siteDescription || 'Creative Digital Agency & Blog Platform',
@@ -46,12 +45,19 @@ export async function GET() {
       }
     };
 
-    return NextResponse.json(publicSettings);
+    // Return dengan headers no-cache
+    return NextResponse.json(publicSettings, {
+      headers: {
+        'Cache-Control': 'no-store, no-cache, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0'
+      }
+    });
 
   } catch (error) {
     console.error('Error fetching public settings:', error);
     
-    // Return default settings as fallback
+    // Return default settings sebagai fallback
     return NextResponse.json({
       siteName: 'Bajramedia',
       siteDescription: 'Creative Digital Agency & Blog Platform',
@@ -75,6 +81,16 @@ export async function GET() {
         metaKeywords: 'digital agency, creative, design, development, bali',
         ogImage: ''
       }
+    }, {
+      headers: {
+        'Cache-Control': 'no-store, no-cache, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0'
+      }
     });
   }
 }
+
+// Disable static generation untuk endpoint ini
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
