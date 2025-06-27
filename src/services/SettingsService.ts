@@ -142,6 +142,9 @@ class SettingsService {
       // Flatten settings structure untuk API compatibility
       const flatSettings = this.flattenSettings(settings);
 
+      console.log('🚀 SettingsService: Sending to API:', flatSettings);
+      console.log('🚀 SettingsService: API URL:', this.baseUrl);
+
       const response = await fetch(this.baseUrl, {
         method: 'POST',
         headers: {
@@ -150,15 +153,44 @@ class SettingsService {
         body: JSON.stringify(flatSettings),
       });
 
+      console.log('🚀 SettingsService: Response status:', response.status);
+      console.log('🚀 SettingsService: Response headers:', Object.fromEntries(response.headers.entries()));
+
+      const responseText = await response.text();
+      console.log('🚀 SettingsService: Raw response text:', responseText);
+
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error('Settings save error:', errorText);
-        throw new Error(`Failed to save settings: ${response.status}`);
+        console.error('🚀 SettingsService: Response not OK:', response.status, responseText);
+        throw new Error(`Failed to save settings: ${response.status} - ${responseText}`);
       }
 
+      let result;
+      try {
+        result = JSON.parse(responseText);
+        console.log('🚀 SettingsService: Parsed response:', result);
+      } catch (parseError) {
+        console.error('🚀 SettingsService: Failed to parse response:', parseError);
+        console.error('🚀 SettingsService: Raw response was:', responseText);
+        throw new Error('Invalid JSON response from server');
+      }
+
+      // Check if the response indicates success
+      if (result && result.success !== undefined) {
+        console.log('🚀 SettingsService: API success status:', result.success);
+        if (result.debug) {
+          console.log('🚀 SettingsService: API debug info:', result.debug);
+        }
+        if (result.message) {
+          console.log('🚀 SettingsService: API message:', result.message);
+        }
+        return result.success;
+      }
+
+      // Legacy support - if no success field, assume true if no error
+      console.log('🚀 SettingsService: Legacy response format, assuming success');
       return true;
     } catch (error) {
-      console.error('Error saving settings:', error);
+      console.error('🚀 SettingsService: Error in saveSettings:', error);
       return false;
     }
   }
