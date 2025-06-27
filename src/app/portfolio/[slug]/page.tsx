@@ -8,45 +8,24 @@ import { useLanguage } from '@/context/LanguageContext';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
-// Mock data untuk development
-const portfolioItem = {
+// Mock data untuk development - This should come from API/database in production
+const getPortfolioItem = (t: (key: string) => string) => ({
     id: '1',
     slug: 'bajra-media-website',
-    title: 'Bajra Media Corporate Website',
-    description: 'Website perusahaan modern dengan design responsif dan fitur blog CMS yang powerful untuk mengelola konten dengan mudah.',
-    content: `
-    <p>Bajra Media Corporate Website adalah project ambisius yang kami kerjakan untuk membangun platform digital yang komprehensif. Website ini tidak hanya berfungsi sebagai company profile, tetapi juga sebagai pusat informasi dan blog yang dinamis.</p>
-    
-    <h3>Challenge & Solution</h3>
-    <p>Klien membutuhkan website yang tidak hanya terlihat profesional, tapi juga mudah dikelola oleh tim internal mereka. Kami mengembangkan CMS custom yang user-friendly namun powerful.</p>
-    
-    <h3>Technology Stack</h3>
-    <p>Kami menggunakan Next.js 14 untuk performa optimal, TypeScript untuk type safety, Tailwind CSS untuk styling yang konsisten, dan Prisma sebagai ORM untuk database management yang efisien.</p>
-    
-    <h3>Key Features</h3>
-    <ul>
-      <li>Responsive design yang sempurna di semua device</li>
-      <li>Blog CMS dengan rich text editor</li>
-      <li>SEO optimization untuk ranking Google yang baik</li>
-      <li>Dark mode support</li>
-      <li>Page load speed yang sangat cepat</li>
-      <li>Admin dashboard yang intuitive</li>
-    </ul>
-    
-    <h3>Results</h3>
-    <p>Website berhasil meningkatkan traffic organic sebesar 300% dalam 3 bulan pertama. Loading speed mencapai 95+ di Google PageSpeed Insights, dan bounce rate turun signifikan menjadi 15%.</p>
-  `,
+    title: t('portfolio.demo.title'),
+    description: t('portfolio.demo.description'),
+    content: t('portfolio.demo.content'),
     featuredImage: '/images/team-meeting.jpg',
     images: [
         '/images/team-meeting-alt.jpg',
         '/images/team-meeting-2.jpg',
         '/images/team.jpg'
     ],
-    clientName: 'Bajra Media',
+    clientName: t('portfolio.demo.client'),
     projectUrl: 'https://bajramedia.com',
     githubUrl: 'https://github.com/bajramedia',
     category: {
-        name: 'Web Development',
+        name: t('portfolio.demo.category'),
         slug: 'web-development',
         icon: '🌐',
         color: '#3B82F6'
@@ -55,7 +34,6 @@ const portfolioItem = {
         { name: 'Next.js', color: '#000000' },
         { name: 'TypeScript', color: '#3178C6' },
         { name: 'Tailwind CSS', color: '#06B6D4' },
-        { name: 'Prisma', color: '#2D3748' },
         { name: 'MySQL', color: '#4479A1' },
         { name: 'Vercel', color: '#000000' }
     ],
@@ -64,7 +42,7 @@ const portfolioItem = {
     endDate: new Date('2024-03-20'),
     createdAt: new Date('2024-01-15'),
     viewCount: 150
-};
+});
 
 interface PortfolioDetailPageProps {
     params: Promise<{
@@ -74,7 +52,7 @@ interface PortfolioDetailPageProps {
 
 export default async function PortfolioDetailPage({ params }: PortfolioDetailPageProps) {
     const { slug } = await params;
-    
+
     return <PortfolioDetailPageContent slug={slug} />;
 }
 
@@ -82,6 +60,9 @@ function PortfolioDetailPageContent({ slug }: { slug: string }) {
     const { t } = useLanguage();
     const [isDarkMode, setIsDarkMode] = useState(false);
     const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+
+    // Get portfolio item with translations
+    const portfolioItem = getPortfolioItem(t);
 
     // Initialize dark mode
     useEffect(() => {

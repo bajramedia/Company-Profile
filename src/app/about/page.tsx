@@ -8,7 +8,7 @@ import { useLanguage } from '@/context/LanguageContext';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
-// Team members data
+// Team members data - no hardcode, these should be manageable from admin
 const teamMembers = [
   {
     id: 1,
@@ -93,7 +93,7 @@ const teamMembers = [
   }
 ];
 
-// Partners data
+// Partners data - should be manageable from admin
 const partners = [
   {
     id: 1,
@@ -111,7 +111,7 @@ const partners = [
     nameId: 'Recevdov',
     description: 'Technology partner for advanced development solutions',
     descriptionId: 'Mitra teknologi untuk solusi pengembangan lanjutan',
-    logo: '/images/logo.png', // Placeholder
+    logo: '/images/logo.png',
     website: 'https://recevdov.com',
     type: 'Technology Partner'
   }
@@ -227,7 +227,7 @@ export default function AboutPage() {
             <div className="relative h-64 md:h-96 rounded-2xl overflow-hidden mb-16" data-aos="fade-up" data-aos-delay="200">
               <Image
                 src="/images/team-meeting.jpg"
-                alt="Bajramedia Team"
+                alt={t('about.hero.imageCaption')}
                 fill
                 className="object-cover"
               />
