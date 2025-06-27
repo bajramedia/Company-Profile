@@ -939,15 +939,17 @@ function handlePost($pdo, $endpoint) {
                     $tableExists = $stmt->fetch();
                     
                     if (!$tableExists) {
-                        // Create settings table if it doesn't exist
+                        // Create settings table if it doesn't exist (minimal structure)
                         $pdo->exec("CREATE TABLE setting (
                             id INT AUTO_INCREMENT PRIMARY KEY,
                             `key` VARCHAR(255) UNIQUE NOT NULL,
-                            `value` TEXT,
-                            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+                            `value` TEXT
                         )");
                     }
+                    
+                    // Check if table has updated_at column
+                    $columns = getTableColumns($pdo, 'setting');
+                    $hasUpdatedAt = in_array('updated_at', $columns);
                     
                     // Update or insert settings
                     $updatedCount = 0;
@@ -955,12 +957,23 @@ function handlePost($pdo, $endpoint) {
                         // Convert value to string for storage
                         $valueStr = is_array($value) || is_object($value) ? json_encode($value) : (string)$value;
                         
-                        $stmt = $pdo->prepare("
-                            INSERT INTO setting (`key`, `value`) 
-                            VALUES (?, ?) 
-                            ON DUPLICATE KEY UPDATE 
-                            `value` = VALUES(`value`), updated_at = NOW()
-                        ");
+                        if ($hasUpdatedAt) {
+                            // Use updated_at if column exists
+                            $stmt = $pdo->prepare("
+                                INSERT INTO setting (`key`, `value`) 
+                                VALUES (?, ?) 
+                                ON DUPLICATE KEY UPDATE 
+                                `value` = VALUES(`value`), updated_at = NOW()
+                            ");
+                        } else {
+                            // Don't use updated_at if column doesn't exist
+                            $stmt = $pdo->prepare("
+                                INSERT INTO setting (`key`, `value`) 
+                                VALUES (?, ?) 
+                                ON DUPLICATE KEY UPDATE 
+                                `value` = VALUES(`value`)
+                            ");
+                        }
                         $stmt->execute([$key, $valueStr]);
                         $updatedCount++;
                     }
@@ -1218,12 +1231,27 @@ function handlePut($pdo, $endpoint, $id) {
                 $value = $data['value'] ?? '';
                 $valueStr = is_array($value) || is_object($value) ? json_encode($value) : (string)$value;
                 
-                $stmt = $pdo->prepare("
-                    INSERT INTO setting (`key`, `value`) 
-                    VALUES (?, ?) 
-                    ON DUPLICATE KEY UPDATE 
-                    `value` = VALUES(`value`), updated_at = NOW()
-                ");
+                // Check if table has updated_at column
+                $columns = getTableColumns($pdo, 'setting');
+                $hasUpdatedAt = in_array('updated_at', $columns);
+                
+                if ($hasUpdatedAt) {
+                    // Use updated_at if column exists
+                    $stmt = $pdo->prepare("
+                        INSERT INTO setting (`key`, `value`) 
+                        VALUES (?, ?) 
+                        ON DUPLICATE KEY UPDATE 
+                        `value` = VALUES(`value`), updated_at = NOW()
+                    ");
+                } else {
+                    // Don't use updated_at if column doesn't exist
+                    $stmt = $pdo->prepare("
+                        INSERT INTO setting (`key`, `value`) 
+                        VALUES (?, ?) 
+                        ON DUPLICATE KEY UPDATE 
+                        `value` = VALUES(`value`)
+                    ");
+                }
                 $stmt->execute([$key, $valueStr]);
                 
                 echo json_encode(['success' => true]);
