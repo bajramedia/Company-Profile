@@ -69,7 +69,7 @@ export async function GET(request: NextRequest) {
       { 
         error: 'Failed to fetch posts from database',
         message: 'Please check if post table exists in bajx7634_bajra database',
-        details: error.message 
+        details: error instanceof Error ? error.message : 'Unknown error occurred'
       },
       { status: 500 }
     );
@@ -132,7 +132,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Posts API: Database creation failed:', error);
     return NextResponse.json(
-      { error: "Failed to create post in database", details: error.message }, 
+      { error: "Failed to create post in database", details: error instanceof Error ? error.message : 'Unknown error occurred' }, 
       { status: 500 }
     );
   }
