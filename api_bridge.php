@@ -931,6 +931,47 @@ function handlePost($pdo, $endpoint) {
                 echo json_encode(['success' => true, 'id' => $pdo->lastInsertId()]);
                 break;
 
+            case 'settings':
+                // Update settings - bulk update approach
+                try {
+                    // Check if setting table exists
+                    $stmt = $pdo->query("SHOW TABLES LIKE 'setting'");
+                    $tableExists = $stmt->fetch();
+                    
+                    if (!$tableExists) {
+                        // Create settings table if it doesn't exist
+                        $pdo->exec("CREATE TABLE setting (
+                            id INT AUTO_INCREMENT PRIMARY KEY,
+                            `key` VARCHAR(255) UNIQUE NOT NULL,
+                            `value` TEXT,
+                            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+                        )");
+                    }
+                    
+                    // Update or insert settings
+                    $updatedCount = 0;
+                    foreach ($data as $key => $value) {
+                        // Convert value to string for storage
+                        $valueStr = is_array($value) || is_object($value) ? json_encode($value) : (string)$value;
+                        
+                        $stmt = $pdo->prepare("
+                            INSERT INTO setting (`key`, `value`) 
+                            VALUES (?, ?) 
+                            ON DUPLICATE KEY UPDATE 
+                            `value` = VALUES(`value`), updated_at = NOW()
+                        ");
+                        $stmt->execute([$key, $valueStr]);
+                        $updatedCount++;
+                    }
+                    
+                    echo json_encode(['success' => true, 'updated' => $updatedCount]);
+                } catch (Exception $e) {
+                    http_response_code(500);
+                    echo json_encode(['error' => 'Settings error: ' . $e->getMessage()]);
+                }
+                break;
+
             default:
                 http_response_code(404);
                 echo json_encode(['error' => 'Endpoint not found']);
@@ -1079,6 +1120,115 @@ function handlePut($pdo, $endpoint, $id) {
                 echo json_encode(['success' => true]);
                 break;
 
+            case 'about-content':
+                if (!$id) {
+                    http_response_code(400);
+                    echo json_encode(['error' => 'ID required for update']);
+                    return;
+                }
+                
+                $section_key = $data['section_key'] ?? '';
+                $title_en = $data['title_en'] ?? '';
+                $title_id = $data['title_id'] ?? '';
+                $content_en = $data['content_en'] ?? '';
+                $content_id = $data['content_id'] ?? '';
+                $is_active = isset($data['is_active']) ? ($data['is_active'] ? 1 : 0) : 1;
+                
+                $stmt = $pdo->prepare("
+                    UPDATE about_content 
+                    SET section_key = ?, title_en = ?, title_id = ?, content_en = ?, content_id = ?, is_active = ?, updated_at = NOW()
+                    WHERE id = ?
+                ");
+                $stmt->execute([$section_key, $title_en, $title_id, $content_en, $content_id, $is_active, $id]);
+                
+                echo json_encode(['success' => true]);
+                break;
+
+            case 'team-members':
+                if (!$id) {
+                    http_response_code(400);
+                    echo json_encode(['error' => 'ID required for update']);
+                    return;
+                }
+                
+                $name = $data['name'] ?? '';
+                $role_en = $data['role_en'] ?? '';
+                $role_id = $data['role_id'] ?? '';
+                $bio_en = $data['bio_en'] ?? '';
+                $bio_id = $data['bio_id'] ?? '';
+                $image_url = $data['image_url'] ?? '';
+                $linkedin_url = $data['linkedin_url'] ?? '';
+                $github_url = $data['github_url'] ?? '';
+                $instagram_url = $data['instagram_url'] ?? '';
+                $behance_url = $data['behance_url'] ?? '';
+                $tiktok_url = $data['tiktok_url'] ?? '';
+                $youtube_url = $data['youtube_url'] ?? '';
+                $sort_order = $data['sort_order'] ?? 0;
+                $is_active = isset($data['is_active']) ? ($data['is_active'] ? 1 : 0) : 1;
+                
+                $stmt = $pdo->prepare("
+                    UPDATE team_members 
+                    SET name = ?, role_en = ?, role_id = ?, bio_en = ?, bio_id = ?, image_url = ?, 
+                        linkedin_url = ?, github_url = ?, instagram_url = ?, behance_url = ?, 
+                        tiktok_url = ?, youtube_url = ?, sort_order = ?, is_active = ?, updated_at = NOW()
+                    WHERE id = ?
+                ");
+                $stmt->execute([$name, $role_en, $role_id, $bio_en, $bio_id, $image_url, $linkedin_url, $github_url, $instagram_url, $behance_url, $tiktok_url, $youtube_url, $sort_order, $is_active, $id]);
+                
+                echo json_encode(['success' => true]);
+                break;
+
+            case 'partners':
+                if (!$id) {
+                    http_response_code(400);
+                    echo json_encode(['error' => 'ID required for update']);
+                    return;
+                }
+                
+                $name_en = $data['name_en'] ?? '';
+                $name_id = $data['name_id'] ?? '';
+                $description_en = $data['description_en'] ?? '';
+                $description_id = $data['description_id'] ?? '';
+                $logo_url = $data['logo_url'] ?? '';
+                $website_url = $data['website_url'] ?? '';
+                $partner_type = $data['partner_type'] ?? 'company';
+                $sort_order = $data['sort_order'] ?? 0;
+                $is_active = isset($data['is_active']) ? ($data['is_active'] ? 1 : 0) : 1;
+                
+                $stmt = $pdo->prepare("
+                    UPDATE partners 
+                    SET name_en = ?, name_id = ?, description_en = ?, description_id = ?, 
+                        logo_url = ?, website_url = ?, partner_type = ?, sort_order = ?, is_active = ?, updated_at = NOW()
+                    WHERE id = ?
+                ");
+                $stmt->execute([$name_en, $name_id, $description_en, $description_id, $logo_url, $website_url, $partner_type, $sort_order, $is_active, $id]);
+                
+                echo json_encode(['success' => true]);
+                break;
+
+            case 'settings':
+                // Update single setting by key
+                $key = $_GET['key'] ?? $id; // Support both ?key= and /key format
+                if (!$key) {
+                    http_response_code(400);
+                    echo json_encode(['error' => 'Setting key required for update']);
+                    return;
+                }
+                
+                $value = $data['value'] ?? '';
+                $valueStr = is_array($value) || is_object($value) ? json_encode($value) : (string)$value;
+                
+                $stmt = $pdo->prepare("
+                    INSERT INTO setting (`key`, `value`) 
+                    VALUES (?, ?) 
+                    ON DUPLICATE KEY UPDATE 
+                    `value` = VALUES(`value`), updated_at = NOW()
+                ");
+                $stmt->execute([$key, $valueStr]);
+                
+                echo json_encode(['success' => true]);
+                break;
+
             default:
                 http_response_code(404);
                 echo json_encode(['error' => 'Endpoint not found']);
@@ -1191,6 +1341,59 @@ function handleDelete($pdo, $endpoint, $id) {
                 
                 $stmt = $pdo->prepare("DELETE FROM portfoliocategory WHERE id = ?");
                 $stmt->execute([$id]);
+                
+                echo json_encode(['success' => true]);
+                break;
+
+            case 'about-content':
+                if (!$id) {
+                    http_response_code(400);
+                    echo json_encode(['error' => 'ID required for delete']);
+                    return;
+                }
+                
+                $stmt = $pdo->prepare("DELETE FROM about_content WHERE id = ?");
+                $stmt->execute([$id]);
+                
+                echo json_encode(['success' => true]);
+                break;
+
+            case 'team-members':
+                if (!$id) {
+                    http_response_code(400);
+                    echo json_encode(['error' => 'ID required for delete']);
+                    return;
+                }
+                
+                $stmt = $pdo->prepare("DELETE FROM team_members WHERE id = ?");
+                $stmt->execute([$id]);
+                
+                echo json_encode(['success' => true]);
+                break;
+
+            case 'partners':
+                if (!$id) {
+                    http_response_code(400);
+                    echo json_encode(['error' => 'ID required for delete']);
+                    return;
+                }
+                
+                $stmt = $pdo->prepare("DELETE FROM partners WHERE id = ?");
+                $stmt->execute([$id]);
+                
+                echo json_encode(['success' => true]);
+                break;
+
+            case 'settings':
+                $key = $_GET['key'] ?? $id; // Support both ?key= and /key format
+                if (!$key) {
+                    http_response_code(400);
+                    echo json_encode(['error' => 'Setting key required for delete']);
+                    return;
+                }
+                
+                $stmt = $pdo->prepare("DELETE FROM setting WHERE `key` = ?");
+                $stmt->execute([$key]);
                 
                 echo json_encode(['success' => true]);
                 break;

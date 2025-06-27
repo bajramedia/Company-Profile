@@ -68,8 +68,8 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const updates = await request.json();
+    console.log('Settings API: Saving to database:', updates);
     
-    // Send settings directly as they are (simplified approach)
     const response = await fetch(`${API_BASE_URL}?endpoint=settings`, {
       method: 'POST',
       headers: {
@@ -84,16 +84,17 @@ export async function POST(request: NextRequest) {
     }
 
     const result = await response.json();
-
+    console.log('Settings API: Database save successful');
+    
     return NextResponse.json({ 
       success: true, 
-      message: 'Settings updated successfully',
+      message: 'Settings updated successfully in database',
       updated: Object.keys(updates).length,
       data: result
     });
 
   } catch (error) {
-    console.error('Error updating settings:', error);
+    console.error('Settings API: Database save failed:', error);
     return NextResponse.json(
       { 
         success: false, 
