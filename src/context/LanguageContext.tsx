@@ -329,6 +329,10 @@ const translations = {
   "about.team.title": { en: "Meet Our", id: "Kenali Tim" },
   "about.team.titleHighlight": { en: "Expert Team", id: "Ahli Kami" },
   "about.team.subtitle": { en: "Our diverse team of professionals brings together expertise in technology, design, and digital strategy to deliver exceptional results.", id: "Tim profesional kami yang beragam menggabungkan keahlian dalam teknologi, desain, dan strategi digital untuk memberikan hasil yang luar biasa." },
+  "about.team.error.title": { en: "Failed to Load Team", id: "Gagal Memuat Tim" },
+  "about.team.error.message": { en: "Unable to load team members. Please try again later.", id: "Tidak dapat memuat anggota tim. Silakan coba lagi nanti." },
+  "about.team.empty.title": { en: "No Team Members", id: "Belum Ada Tim" },
+  "about.team.empty.message": { en: "Team members will appear here once they are added.", id: "Anggota tim akan muncul di sini setelah ditambahkan." },
 
   // Partners section
   "about.partners.title": { en: "Our", id: "Mitra" },
