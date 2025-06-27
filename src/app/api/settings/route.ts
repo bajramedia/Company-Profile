@@ -1,67 +1,30 @@
 import { NextResponse } from 'next/server';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "https://bajramedia.com/api_bridge.php";
+const API_BASE_URL = 'https://bajramedia.com/api_bridge.php';
 
 // GET - Ambil public settings (tanpa admin settings)
 export async function GET() {
   try {
-    // Get settings from external API
+    console.log('Settings API: Fetching from production database...');
     const response = await fetch(`${API_BASE_URL}?endpoint=settings`);
     
     if (!response.ok) {
-      console.error(`API Bridge settings error: ${response.status}`);
-      // Return default settings if API fails
-      return NextResponse.json({
-        siteName: 'Bajramedia',
-        siteDescription: 'Professional Web Development & Digital Solutions',
-        siteUrl: 'https://bajramedia.com',
-        contactEmail: 'info@bajramedia.com',
-        contactPhone: '+62 123 456 789',
-        contactAddress: 'Bali, Indonesia',
-        socialLinks: {},
-        footerText: '© 2024 Bajramedia. All rights reserved.',
-        seoSettings: {},
-        enableComments: false,
-        enableSocialShare: true
-      });
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
     
     const settings = await response.json();
-    
-    // If API returns empty object, use defaults
-    if (!settings || Object.keys(settings).length === 0) {
-      return NextResponse.json({
-        siteName: 'Bajramedia',
-        siteDescription: 'Professional Web Development & Digital Solutions',
-        siteUrl: 'https://bajramedia.com',
-        contactEmail: 'info@bajramedia.com',
-        contactPhone: '+62 123 456 789',
-        contactAddress: 'Bali, Indonesia',
-        socialLinks: {},
-        footerText: '© 2024 Bajramedia. All rights reserved.',
-        seoSettings: {},
-        enableComments: false,
-        enableSocialShare: true
-      });
-    }
-
+    console.log('Settings API: Database success');
     return NextResponse.json(settings);
-  } catch (error) {
-    console.error('Error fetching public settings:', error);
     
-    // Return default settings as fallback
-    return NextResponse.json({
-      siteName: 'Bajramedia',
-      siteDescription: 'Professional Web Development & Digital Solutions',
-      siteUrl: 'https://bajramedia.com',
-      contactEmail: 'info@bajramedia.com',
-      contactPhone: '+62 123 456 789',
-      contactAddress: 'Bali, Indonesia',
-      socialLinks: {},
-      footerText: '© 2024 Bajramedia. All rights reserved.',
-      seoSettings: {},
-      enableComments: false,
-      enableSocialShare: true
-    });
+  } catch (error) {
+    console.error('Settings API: Database connection failed:', error);
+    return NextResponse.json(
+      { 
+        error: 'Failed to fetch settings from database',
+        message: 'Please check if setting table exists in bajx7634_bajra database',
+        details: error.message 
+      },
+      { status: 500 }
+    );
   }
 }

@@ -63,8 +63,9 @@ export default function PortfolioPage() {
 
             const data = await response.json();
 
-            // Transform data to match interface
-            const transformedPortfolios = data.portfolios.map((item: any) => ({
+            // Transform data to match interface - API returns portfolios array
+            const portfolios = data.portfolios || data; // Handle both possible response structures
+            const transformedPortfolios = portfolios.map((item: any) => ({
                 id: item.id,
                 title: item.title,
                 slug: item.slug,

@@ -114,13 +114,11 @@ function generateSlug($title) {
 function handleGet($pdo, $endpoint, $id) {
     // ENHANCED SECURITY - Hide all sensitive endpoints in production
     $hiddenEndpoints = [
-        'debug', 'test', 'stats', 'stats-full', 'database-info', 'server-info',
-        'team', 'team-members', 'partners', 'about', 'about-content', 
-        'new-settings', 'blog-posts', 'portfolio-items'
+        'debug', 'test', 'stats-full', 'database-info', 'server-info'
     ];
     
     // Allow essential endpoints for public access AND admin endpoints
-    $allowedPublicEndpoints = ['posts', 'portfolio', 'categories', 'portfolio-categories', 'authors', 'tags', 'stats', 'settings'];
+    $allowedPublicEndpoints = ['posts', 'portfolio', 'categories', 'portfolio-categories', 'authors', 'tags', 'stats', 'settings', 'team-members', 'about-content', 'team', 'about', 'partners', 'new-settings', 'blog-posts', 'portfolio-items'];
     
     // Check if it's production environment
     $isProduction = isset($_SERVER['HTTP_HOST']) && (
@@ -129,9 +127,9 @@ function handleGet($pdo, $endpoint, $id) {
         $_SERVER['HTTP_HOST'] === 'www.bajramedia.com'
     );
     
-    // In production, block access to hidden endpoints and only allow public ones
+    // In production, block access ONLY to hidden endpoints, allow all others
     if ($isProduction) {
-        if (in_array($endpoint, $hiddenEndpoints) || !in_array($endpoint, $allowedPublicEndpoints)) {
+        if (in_array($endpoint, $hiddenEndpoints)) {
             http_response_code(404);
             echo json_encode(['error' => 'Not Found']);
             return;
@@ -602,29 +600,63 @@ function handleGet($pdo, $endpoint, $id) {
     }
 }
 
+function fixEmptyIds($pdo, $tableName) {
+    try {
+        // Find records with empty ID
+        $stmt = $pdo->prepare("SELECT COUNT(*) FROM $tableName WHERE id = ''");
+        $stmt->execute();
+        $count = $stmt->fetchColumn();
+        
+        if ($count > 0) {
+            // Update empty IDs with unique generated IDs
+            $stmt = $pdo->prepare("SELECT * FROM $tableName WHERE id = ''");
+            $stmt->execute();
+            $emptyRecords = $stmt->fetchAll();
+            
+            foreach ($emptyRecords as $record) {
+                $newId = generateUniqueId();
+                $updateStmt = $pdo->prepare("UPDATE $tableName SET id = ? WHERE id = '' LIMIT 1");
+                $updateStmt->execute([$newId]);
+            }
+        }
+    } catch (Exception $e) {
+        // Ignore errors - table might not have the issue
+    }
+}
+
 function handlePost($pdo, $endpoint) {
     $data = json_decode(file_get_contents('php://input'), true);
     
     try {
         switch ($endpoint) {
             case 'posts':
-                // Check if post table has id as auto increment or string
-                $postColumns = getTableColumns($pdo, 'post');
+                // Validate required fields - NO FALLBACK DATA
+                if (empty($data['title']) || empty($data['slug']) || empty($data['content'])) {
+                    http_response_code(400);
+                    echo json_encode(['error' => 'Title, slug, and content are required']);
+                    return;
+                }
                 
-                $title = $data['title'] ?? '';
-                $slug = $data['slug'] ?? generateSlug($title);
+                if (empty($data['authorId']) || empty($data['categoryId'])) {
+                    http_response_code(400);
+                    echo json_encode(['error' => 'Author and category are required']);
+                    return;
+                }
+                
+                $title = $data['title'];
+                $slug = $data['slug'];
                 $excerpt = $data['excerpt'] ?? '';
-                $content = $data['content'] ?? '';
+                $content = $data['content'];
                 $featuredImage = $data['featuredImage'] ?? '';
                 $published = $data['published'] ?? false;
                 $readTime = $data['readTime'] ?? 5;
-                $authorId = $data['authorId'] ?? 'cmbf4aq8s0000tsa4kiz9m58q'; // Valid author ID
-                $categoryId = $data['categoryId'] ?? 'cmbf4aq900001tsa4kx7e1sgo'; // Valid category ID
+                $authorId = $data['authorId'];
+                $categoryId = $data['categoryId'];
                 
                 // Convert boolean to int for MySQL
                 $publishedInt = $published ? 1 : 0;
                 
-                // Use auto-increment ID instead of custom generated ID
+                // Use auto-increment ID - let database generate ID
                 $stmt = $pdo->prepare("
                     INSERT INTO post (title, slug, excerpt, content, featuredImage, published, readTime, authorId, categoryId, date) 
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
@@ -636,8 +668,10 @@ function handlePost($pdo, $endpoint) {
                 // Handle tags if provided
                 if (isset($data['tags']) && is_array($data['tags'])) {
                     foreach ($data['tags'] as $tagId) {
-                        $stmt = $pdo->prepare("INSERT INTO posttags (postId, tagId) VALUES (?, ?)");
-                        $stmt->execute([$postId, $tagId]);
+                        if (!empty($tagId)) {
+                            $stmt = $pdo->prepare("INSERT INTO posttags (postId, tagId) VALUES (?, ?)");
+                            $stmt->execute([$postId, $tagId]);
+                        }
                     }
                 }
                 
@@ -645,49 +679,144 @@ function handlePost($pdo, $endpoint) {
                 break;
 
             case 'categories':
-                // Create new category
-                $name = $data['name'] ?? '';
-                $slug = $data['slug'] ?? generateSlug($name);
+                // Fix any existing empty IDs first
+                fixEmptyIds($pdo, 'category');
                 
-                // Check if category table has description column
+                // Validate required fields
+                if (empty($data['name'])) {
+                    http_response_code(400);
+                    echo json_encode(['error' => 'Name is required']);
+                    return;
+                }
+                
+                $name = trim($data['name']);
+                $slug = $data['slug'] ?? generateSlug($name);
+                $description = $data['description'] ?? '';
+                
+                // Check table structure first
                 $categoryColumns = getTableColumns($pdo, 'category');
                 $hasDescription = in_array('description', $categoryColumns);
                 
-                if ($hasDescription) {
-                    $description = $data['description'] ?? '';
-                    $stmt = $pdo->prepare("INSERT INTO category (name, slug, description) VALUES (?, ?, ?)");
-                    $stmt->execute([$name, $slug, $description]);
+                // Check if ID column is auto-increment by trying to get column info
+                $stmt = $pdo->query("SHOW COLUMNS FROM category WHERE Field = 'id'");
+                $idColumn = $stmt->fetch();
+                $isAutoIncrement = strpos(strtolower($idColumn['Extra'] ?? ''), 'auto_increment') !== false;
+                
+                if ($isAutoIncrement) {
+                    // Use auto-increment
+                    if ($hasDescription) {
+                        $stmt = $pdo->prepare("INSERT INTO category (name, slug, description) VALUES (?, ?, ?)");
+                        $stmt->execute([$name, $slug, $description]);
+                    } else {
+                        $stmt = $pdo->prepare("INSERT INTO category (name, slug) VALUES (?, ?)");
+                        $stmt->execute([$name, $slug]);
+                    }
+                    $categoryId = $pdo->lastInsertId();
                 } else {
-                    // Only insert name and slug if description column doesn't exist
-                    $stmt = $pdo->prepare("INSERT INTO category (name, slug) VALUES (?, ?)");
-                    $stmt->execute([$name, $slug]);
+                    // Generate unique string ID
+                    $categoryId = generateUniqueId();
+                    if ($hasDescription) {
+                        $stmt = $pdo->prepare("INSERT INTO category (id, name, slug, description) VALUES (?, ?, ?, ?)");
+                        $stmt->execute([$categoryId, $name, $slug, $description]);
+                    } else {
+                        $stmt = $pdo->prepare("INSERT INTO category (id, name, slug) VALUES (?, ?, ?)");
+                        $stmt->execute([$categoryId, $name, $slug]);
+                    }
                 }
                 
-                echo json_encode(['success' => true, 'id' => $pdo->lastInsertId()]);
+                echo json_encode(['success' => true, 'id' => $categoryId]);
                 break;
 
             case 'authors':
-                // Create new author
-                $name = $data['name'] ?? '';
-                $email = $data['email'] ?? '';
+                // Fix any existing empty IDs first
+                fixEmptyIds($pdo, 'author');
+                
+                // Validate required fields
+                if (empty($data['name']) || empty($data['email'])) {
+                    http_response_code(400);
+                    echo json_encode(['error' => 'Name and email are required']);
+                    return;
+                }
+                
+                $name = trim($data['name']);
+                $email = trim($data['email']);
                 $bio = $data['bio'] ?? '';
                 $avatar = $data['avatar'] ?? '';
                 
-                $stmt = $pdo->prepare("INSERT INTO author (name, email, bio, avatar) VALUES (?, ?, ?, ?)");
-                $stmt->execute([$name, $email, $bio, $avatar]);
+                // Validate email format
+                if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                    http_response_code(400);
+                    echo json_encode(['error' => 'Invalid email format']);
+                    return;
+                }
                 
-                echo json_encode(['success' => true, 'id' => $pdo->lastInsertId()]);
+                // Check if ID column is auto-increment
+                $stmt = $pdo->query("SHOW COLUMNS FROM author WHERE Field = 'id'");
+                $idColumn = $stmt->fetch();
+                $isAutoIncrement = strpos(strtolower($idColumn['Extra'] ?? ''), 'auto_increment') !== false;
+                
+                if ($isAutoIncrement) {
+                    // Use auto-increment
+                    $stmt = $pdo->prepare("INSERT INTO author (name, email, bio, avatar) VALUES (?, ?, ?, ?)");
+                    $stmt->execute([$name, $email, $bio, $avatar]);
+                    $authorId = $pdo->lastInsertId();
+                } else {
+                    // Generate unique string ID
+                    $authorId = generateUniqueId();
+                    $stmt = $pdo->prepare("INSERT INTO author (id, name, email, bio, avatar) VALUES (?, ?, ?, ?, ?)");
+                    $stmt->execute([$authorId, $name, $email, $bio, $avatar]);
+                }
+                
+                echo json_encode(['success' => true, 'id' => $authorId]);
                 break;
 
             case 'tags':
-                // Create new tag
-                $name = $data['name'] ?? '';
+                // Fix any existing empty IDs first
+                fixEmptyIds($pdo, 'tag');
+                
+                // Validate required fields
+                if (empty($data['name'])) {
+                    http_response_code(400);
+                    echo json_encode(['error' => 'Name is required']);
+                    return;
+                }
+                
+                $name = trim($data['name']);
                 $slug = $data['slug'] ?? generateSlug($name);
+                $description = $data['description'] ?? '';
                 
-                $stmt = $pdo->prepare("INSERT INTO tag (name, slug) VALUES (?, ?)");
-                $stmt->execute([$name, $slug]);
+                // Check table structure
+                $tagColumns = getTableColumns($pdo, 'tag');
+                $hasDescription = in_array('description', $tagColumns);
                 
-                echo json_encode(['success' => true, 'id' => $pdo->lastInsertId()]);
+                // Check if ID column is auto-increment
+                $stmt = $pdo->query("SHOW COLUMNS FROM tag WHERE Field = 'id'");
+                $idColumn = $stmt->fetch();
+                $isAutoIncrement = strpos(strtolower($idColumn['Extra'] ?? ''), 'auto_increment') !== false;
+                
+                if ($isAutoIncrement) {
+                    // Use auto-increment
+                    if ($hasDescription) {
+                        $stmt = $pdo->prepare("INSERT INTO tag (name, slug, description) VALUES (?, ?, ?)");
+                        $stmt->execute([$name, $slug, $description]);
+                    } else {
+                        $stmt = $pdo->prepare("INSERT INTO tag (name, slug) VALUES (?, ?)");
+                        $stmt->execute([$name, $slug]);
+                    }
+                    $tagId = $pdo->lastInsertId();
+                } else {
+                    // Generate unique string ID
+                    $tagId = generateUniqueId();
+                    if ($hasDescription) {
+                        $stmt = $pdo->prepare("INSERT INTO tag (id, name, slug, description) VALUES (?, ?, ?, ?)");
+                        $stmt->execute([$tagId, $name, $slug, $description]);
+                    } else {
+                        $stmt = $pdo->prepare("INSERT INTO tag (id, name, slug) VALUES (?, ?, ?)");
+                        $stmt->execute([$tagId, $name, $slug]);
+                    }
+                }
+                
+                echo json_encode(['success' => true, 'id' => $tagId]);
                 break;
 
             case 'portfolio':

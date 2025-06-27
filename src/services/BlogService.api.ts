@@ -53,7 +53,8 @@ class BlogServiceAPI {
 
   async getAllPosts(page: number = 1, limit: number = 10): Promise<BlogPost[]> {
     try {
-      const response = await fetch(`${this.apiBaseUrl}?endpoint=posts&page=${page}&limit=${limit}`);
+      // Use our API route instead of direct API bridge
+      const response = await fetch(`/api/posts?page=${page}&limit=${limit}`);
       
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -61,23 +62,25 @@ class BlogServiceAPI {
       
       const posts = await response.json();
       
-      // Transform API response to match expected format
+      // Posts are already formatted by our API route
       return posts.map((post: any) => ({
         ...post,
-        date: post.createdAt,
-        featured: post.featured === true || post.featured === 1 || post.featured === '1' || false, // Handle different featured field types, default to false
+        date: post.date || post.createdAt,
+        featured: post.featured || false,
         readTime: parseInt(post.readTime) || calculateReadTime(post.content || ''),
         author: {
-          id: post.authorId?.toString() || '1',
-          name: post.authorName || 'Unknown Author',
-          email: post.authorEmail || '',
-          avatar: post.authorAvatar || '',
+          id: post.author?.id || '1',
+          name: post.author?.name || 'Unknown Author',
+          email: post.author?.email || '',
+          avatar: post.author?.avatar || '',
+          bio: post.author?.bio || ''
         },
         category: {
-          id: post.categoryId?.toString() || '1',
-          name: post.categoryName || 'Uncategorized',
-          slug: post.categorySlug || 'uncategorized',
-        }
+          id: post.category?.id || '1',
+          name: post.category?.name || 'Uncategorized',
+          slug: post.category?.slug || 'uncategorized',
+        },
+        views: post.views || 0
       }));
     } catch (error) {
       console.error('Error fetching posts:', error);
@@ -87,7 +90,8 @@ class BlogServiceAPI {
 
   async getPostBySlug(slug: string): Promise<BlogPost | null> {
     try {
-      const response = await fetch(`${this.apiBaseUrl}?endpoint=posts&id=${slug}`);
+      // Use our API route instead of direct API bridge
+      const response = await fetch(`/api/posts/${slug}`);
       
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -97,23 +101,25 @@ class BlogServiceAPI {
       
       if (!post) return null;
       
-      // Transform API response to match expected format
+      // Post is already formatted by our API route
       return {
         ...post,
-        date: post.createdAt,
-        featured: post.featured === true || post.featured === 1 || post.featured === '1',
+        date: post.date || post.createdAt,
+        featured: post.featured || false,
         readTime: parseInt(post.readTime) || calculateReadTime(post.content || ''),
         author: {
-          id: post.authorId?.toString() || '1',
-          name: post.authorName || 'Unknown Author',
-          email: post.authorEmail || '',
-          avatar: post.authorAvatar || '',
+          id: post.author?.id || '1',
+          name: post.author?.name || 'Unknown Author',
+          email: post.author?.email || '',
+          avatar: post.author?.avatar || '',
+          bio: post.author?.bio || ''
         },
         category: {
-          id: post.categoryId?.toString() || '1',
-          name: post.categoryName || 'Uncategorized',
-          slug: post.categorySlug || 'uncategorized',
-        }
+          id: post.category?.id || '1',
+          name: post.category?.name || 'Uncategorized',
+          slug: post.category?.slug || 'uncategorized',
+        },
+        views: post.views || 0
       };
     } catch (error) {
       console.error('Error fetching post:', error);

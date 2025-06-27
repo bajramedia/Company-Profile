@@ -8,41 +8,31 @@ import { useLanguage } from '@/context/LanguageContext';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
-// Mock data untuk development - This should come from API/database in production
-const getPortfolioItem = (t: (key: string) => string) => ({
-    id: '1',
-    slug: 'bajra-media-website',
-    title: t('portfolio.demo.title'),
-    description: t('portfolio.demo.description'),
-    content: t('portfolio.demo.content'),
-    featuredImage: '/images/team-meeting.jpg',
-    images: [
-        '/images/team-meeting-alt.jpg',
-        '/images/team-meeting-2.jpg',
-        '/images/team.jpg'
-    ],
-    clientName: t('portfolio.demo.client'),
-    projectUrl: 'https://bajramedia.com',
-    githubUrl: 'https://github.com/bajramedia',
+interface PortfolioItem {
+    id: string;
+    slug: string;
+    title: string;
+    description: string;
+    content: string;
+    featuredImage: string;
+    images?: string[];
+    clientName?: string;
+    client?: string;
+    projectUrl?: string;
+    githubUrl?: string;
     category: {
-        name: t('portfolio.demo.category'),
-        slug: 'web-development',
-        icon: '🌐',
-        color: '#3B82F6'
-    },
-    tags: [
-        { name: 'Next.js', color: '#000000' },
-        { name: 'TypeScript', color: '#3178C6' },
-        { name: 'Tailwind CSS', color: '#06B6D4' },
-        { name: 'MySQL', color: '#4479A1' },
-        { name: 'Vercel', color: '#000000' }
-    ],
-    featured: true,
-    startDate: new Date('2024-01-15'),
-    endDate: new Date('2024-03-20'),
-    createdAt: new Date('2024-01-15'),
-    viewCount: 150
-});
+        name: string;
+        slug: string;
+        icon?: string;
+        color?: string;
+    };
+    tags: Array<{ name: string; color: string }>;
+    featured: boolean;
+    startDate?: string;
+    endDate?: string;
+    createdAt: string;
+    viewCount?: number;
+}
 
 interface PortfolioDetailPageProps {
     params: Promise<{
@@ -52,7 +42,6 @@ interface PortfolioDetailPageProps {
 
 export default async function PortfolioDetailPage({ params }: PortfolioDetailPageProps) {
     const { slug } = await params;
-
     return <PortfolioDetailPageContent slug={slug} />;
 }
 
@@ -60,9 +49,60 @@ function PortfolioDetailPageContent({ slug }: { slug: string }) {
     const { t } = useLanguage();
     const [isDarkMode, setIsDarkMode] = useState(false);
     const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+    const [portfolioItem, setPortfolioItem] = useState<PortfolioItem | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
-    // Get portfolio item with translations
-    const portfolioItem = getPortfolioItem(t);
+    // Fetch portfolio item dari database
+    useEffect(() => {
+        const fetchPortfolioItem = async () => {
+            try {
+                setLoading(true);
+                const response = await fetch(`/api/portfolio/${slug}`);
+
+                if (!response.ok) {
+                    throw new Error('Portfolio item not found');
+                }
+
+                const data = await response.json();
+
+                // Format data untuk komponen
+                const formattedItem: PortfolioItem = {
+                    id: data.id,
+                    slug: data.slug,
+                    title: data.title,
+                    description: data.description,
+                    content: data.content,
+                    featuredImage: data.featuredImage || '/images/placeholder.jpg',
+                    images: data.images || [],
+                    clientName: data.client || data.clientName,
+                    client: data.client,
+                    projectUrl: data.projectUrl,
+                    githubUrl: data.githubUrl,
+                    category: {
+                        name: data.categoryName || 'Uncategorized',
+                        slug: data.categorySlug || 'uncategorized',
+                        icon: data.categoryIcon || '🌐',
+                        color: data.categoryColor || '#3B82F6'
+                    },
+                    tags: data.tags || [],
+                    featured: data.featured || false,
+                    startDate: data.startDate,
+                    endDate: data.endDate,
+                    createdAt: data.createdAt || data.date,
+                    viewCount: data.viewCount || 0
+                };
+
+                setPortfolioItem(formattedItem);
+            } catch (err) {
+                setError(err instanceof Error ? err.message : 'Failed to load portfolio item');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchPortfolioItem();
+    }, [slug]);
 
     // Initialize dark mode
     useEffect(() => {
@@ -118,7 +158,41 @@ function PortfolioDetailPageContent({ slug }: { slug: string }) {
         });
     };
 
-    const allImages = [portfolioItem.featuredImage, ...portfolioItem.images];
+    // Loading state
+    if (loading) {
+        return (
+            <div className="min-h-screen bg-white dark:bg-gray-900 flex items-center justify-center">
+                <div className="text-center">
+                    <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-primary mx-auto mb-4"></div>
+                    <p className="text-gray-600 dark:text-gray-400">{t('common.loading')}</p>
+                </div>
+            </div>
+        );
+    }
+
+    // Error state
+    if (error || !portfolioItem) {
+        return (
+            <div className="min-h-screen bg-white dark:bg-gray-900 flex items-center justify-center">
+                <div className="text-center">
+                    <div className="text-6xl mb-4">😔</div>
+                    <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                        Portfolio Not Found
+                    </h1>
+                    <p className="text-gray-600 dark:text-gray-400 mb-6">
+                        {error || 'The portfolio item you are looking for does not exist.'}
+                    </p>
+                    <Link href="/portfolio">
+                        <Button variant="primary">Back to Portfolio</Button>
+                    </Link>
+                </div>
+            </div>
+        );
+    }
+
+    const allImages = portfolioItem.images && portfolioItem.images.length > 0
+        ? [portfolioItem.featuredImage, ...portfolioItem.images]
+        : [portfolioItem.featuredImage];
 
     return (
         <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
@@ -189,16 +263,20 @@ function PortfolioDetailPageContent({ slug }: { slug: string }) {
 
                             {/* Project Details */}
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                                <div>
-                                    <h4 className="font-semibold text-gray-900 dark:text-white mb-2">{t('portfolio.detail.client')}</h4>
-                                    <p className="text-gray-600 dark:text-gray-400">{portfolioItem.clientName}</p>
-                                </div>
-                                <div>
-                                    <h4 className="font-semibold text-gray-900 dark:text-white mb-2">{t('portfolio.detail.duration')}</h4>
-                                    <p className="text-gray-600 dark:text-gray-400">
-                                        {portfolioItem.startDate.toLocaleDateString()} - {portfolioItem.endDate.toLocaleDateString()}
-                                    </p>
-                                </div>
+                                {portfolioItem.clientName && (
+                                    <div>
+                                        <h4 className="font-semibold text-gray-900 dark:text-white mb-2">{t('portfolio.detail.client')}</h4>
+                                        <p className="text-gray-600 dark:text-gray-400">{portfolioItem.clientName}</p>
+                                    </div>
+                                )}
+                                {portfolioItem.startDate && portfolioItem.endDate && (
+                                    <div>
+                                        <h4 className="font-semibold text-gray-900 dark:text-white mb-2">{t('portfolio.detail.duration')}</h4>
+                                        <p className="text-gray-600 dark:text-gray-400">
+                                            {new Date(portfolioItem.startDate).toLocaleDateString()} - {new Date(portfolioItem.endDate).toLocaleDateString()}
+                                        </p>
+                                    </div>
+                                )}
                             </div>
 
                             {/* Action Buttons */}
@@ -243,63 +321,71 @@ function PortfolioDetailPageContent({ slug }: { slug: string }) {
                                     alt={portfolioItem.title}
                                     fill
                                     className="object-cover"
+                                    onError={(e) => (e.currentTarget.src = '/images/placeholder.jpg')}
                                 />
                             </div>
 
-                            {/* Image Thumbnails */}
-                            <div className="flex space-x-4 overflow-x-auto">
-                                {allImages.map((image, index) => (
-                                    <button
-                                        key={index}
-                                        onClick={() => setSelectedImageIndex(index)}
-                                        className={`relative flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-all duration-300 ${selectedImageIndex === index
-                                            ? 'border-primary shadow-lg shadow-primary/25'
-                                            : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
-                                            }`}
-                                    >
-                                        <Image
-                                            src={image}
-                                            alt={`${portfolioItem.title} ${index + 1}`}
-                                            fill
-                                            className="object-cover"
-                                        />
-                                    </button>
-                                ))}
-                            </div>
+                            {/* Image Thumbnails - hanya tampil jika ada lebih dari 1 gambar */}
+                            {allImages.length > 1 && (
+                                <div className="flex space-x-4 overflow-x-auto">
+                                    {allImages.map((image, index) => (
+                                        <button
+                                            key={index}
+                                            onClick={() => setSelectedImageIndex(index)}
+                                            className={`relative flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-all duration-300 ${selectedImageIndex === index
+                                                ? 'border-primary shadow-lg shadow-primary/25'
+                                                : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
+                                                }`}
+                                        >
+                                            <Image
+                                                src={image}
+                                                alt={`${portfolioItem.title} ${index + 1}`}
+                                                fill
+                                                className="object-cover"
+                                                onError={(e) => (e.currentTarget.src = '/images/placeholder.jpg')}
+                                            />
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
                         </div>
                     </div>
                 </section>
 
                 {/* Technologies Used */}
-                <section className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 mb-16">
-                    <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-8" data-aos="fade-up">
-                        {t('portfolio.detail.technologies')}
-                    </h2>
-                    <div className="flex flex-wrap gap-3" data-aos="fade-up" data-aos-delay="200">
-                        {portfolioItem.tags.map((tag, index) => (
-                            <span
-                                key={index}
-                                className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium border transition-all duration-300 hover:scale-105"
-                                style={{
-                                    backgroundColor: `${tag.color}15`,
-                                    color: tag.color,
-                                    borderColor: `${tag.color}30`
-                                }}
-                            >
-                                {tag.name}
-                            </span>
-                        ))}
-                    </div>
-                </section>
+                {portfolioItem.tags && portfolioItem.tags.length > 0 && (
+                    <section className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 mb-16">
+                        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-8" data-aos="fade-up">
+                            {t('portfolio.detail.technologies')}
+                        </h2>
+                        <div className="flex flex-wrap gap-3" data-aos="fade-up" data-aos-delay="200">
+                            {portfolioItem.tags.map((tag, index) => (
+                                <span
+                                    key={index}
+                                    className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium border transition-all duration-300 hover:scale-105"
+                                    style={{
+                                        backgroundColor: `${tag.color || '#6B7280'}15`,
+                                        color: tag.color || '#6B7280',
+                                        borderColor: `${tag.color || '#6B7280'}30`
+                                    }}
+                                >
+                                    {tag.name}
+                                </span>
+                            ))}
+                        </div>
+                    </section>
+                )}
 
                 {/* Project Content */}
-                <section className="max-w-4xl mx-auto px-4 sm:px-6 md:px-8 mb-16">
-                    <div
-                        className="prose prose-lg dark:prose-invert max-w-none"
-                        data-aos="fade-up"
-                        dangerouslySetInnerHTML={{ __html: portfolioItem.content }}
-                    />
-                </section>
+                {portfolioItem.content && (
+                    <section className="max-w-4xl mx-auto px-4 sm:px-6 md:px-8 mb-16">
+                        <div
+                            className="prose prose-lg dark:prose-invert max-w-none"
+                            data-aos="fade-up"
+                            dangerouslySetInnerHTML={{ __html: portfolioItem.content }}
+                        />
+                    </section>
+                )}
 
                 {/* Related Projects */}
                 <section className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">

@@ -1,29 +1,10 @@
 import { NextResponse } from "next/server";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://bajramedia.com/api_bridge.php';
-
-// Fallback data when API fails
-const FALLBACK_AUTHORS = [
-  {
-    id: 'cm4abcd123456789',
-    name: 'Admin User',
-    email: 'admin@bajramedia.com',
-    bio: 'Default admin user for content management',
-    avatar: '/images/team/admin-avatar.jpg',
-    postCount: 0
-  },
-  {
-    id: 'cm4efgh123456789',
-    name: 'Content Writer',
-    email: 'writer@bajramedia.com',
-    bio: 'Professional content writer and blog contributor',
-    avatar: '/images/team/writer-avatar.jpg',
-    postCount: 0
-  }
-];
+const API_BASE_URL = 'https://bajramedia.com/api_bridge.php';
 
 export async function GET() {
   try {
+    console.log('Authors API: Fetching from production database...');
     const response = await fetch(`${API_BASE_URL}?endpoint=authors`, {
       method: 'GET',
       headers: {
@@ -31,12 +12,11 @@ export async function GET() {
         'Content-Type': 'application/json',
       },
       // Add timeout to prevent hanging
-      signal: AbortSignal.timeout(5000)
+      signal: AbortSignal.timeout(10000)
     });
     
     if (!response.ok) {
-      console.warn(`Authors API returned ${response.status}, using fallback data`);
-      return NextResponse.json(FALLBACK_AUTHORS);
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
     
     const authors = await response.json();
@@ -45,13 +25,21 @@ export async function GET() {
     const formattedAuthors = authors.map((author: any) => ({
       ...author,
       postCount: author.postCount || 0,
-      avatar: author.avatar || '/images/team/default-avatar.jpg'
+      avatar: author.avatar || '/images/team/admin-avatar.jpg'
     }));
     
+    console.log('Authors API: Database success');
     return NextResponse.json(formattedAuthors);
   } catch (error) {
-    console.error('Error fetching authors, using fallback:', error);
-    return NextResponse.json(FALLBACK_AUTHORS);
+    console.error('Authors API: Database connection failed:', error);
+    return NextResponse.json(
+      { 
+        error: 'Failed to fetch authors from database',
+        message: 'Please check if author table exists in bajx7634_bajra database',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      },
+      { status: 500 }
+    );
   }
 }
 
@@ -68,48 +56,44 @@ export async function POST(request: Request) {
       );
     }
 
-    // Try to create via external API
+    console.log('Authors API: Creating new entry in database...');
+    
     const response = await fetch(`${API_BASE_URL}?endpoint=authors`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ name, email, bio, avatar }),
-      signal: AbortSignal.timeout(5000)
+      signal: AbortSignal.timeout(10000)
     });
 
     if (!response.ok) {
-      // Return mock success when API fails
-      return NextResponse.json({ 
-        success: true, 
-        author: { 
-          id: `cm4${Date.now()}${Math.random().toString(36).substr(2, 9)}`,
-          name,
-          email,
-          bio: bio || '',
-          avatar: avatar || '/images/team/default-avatar.jpg'
-        },
-        message: 'Author created successfully (demo mode)'
-      }, { status: 201 });
+      const errorData = await response.text();
+      console.error('Authors API: Server error:', errorData);
+      throw new Error(`Server error: ${response.status} - ${errorData}`);
     }
 
     const result = await response.json();
-    return NextResponse.json(result);
+    console.log('Authors API: Database entry created successfully');
+    
+    // Return proper response with database ID
+    return NextResponse.json({
+      success: true,
+      author: {
+        id: result.id,
+        name: name,
+        email: email,
+        bio: bio || '',
+        avatar: avatar || '/images/team/admin-avatar.jpg',
+        postCount: 0
+      }
+    }, { status: 201 });
 
   } catch (error) {
-    console.error('Error creating author:', error);
-    // Return mock success on error
-    const body = await request.json();
-    return NextResponse.json({ 
-      success: true, 
-      author: { 
-        id: `cm4${Date.now()}${Math.random().toString(36).substr(2, 9)}`,
-        name: body.name,
-        email: body.email,
-        bio: body.bio || '',
-        avatar: body.avatar || '/images/team/default-avatar.jpg'
-      },
-      message: 'Author created successfully (demo mode)'
-    }, { status: 201 });
+    console.error('Authors API: Database creation failed:', error);
+    return NextResponse.json(
+      { error: 'Failed to create author in database', details: error instanceof Error ? error.message : 'Unknown error' },
+      { status: 500 }
+    );
   }
 }

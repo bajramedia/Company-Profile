@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://bajramedia.com/api_bridge.php';
+const API_BASE_URL = 'https://bajramedia.com/api_bridge.php';
 
 export async function GET(request: NextRequest) {
   try {
@@ -8,16 +8,16 @@ export async function GET(request: NextRequest) {
     const page = parseInt(searchParams.get("page") || "1");
     const limit = parseInt(searchParams.get("limit") || "10");
 
-    // Get portfolio from external API
+    console.log('Portfolio API: Fetching from production database...'); 
     const response = await fetch(`${API_BASE_URL}?endpoint=portfolio&page=${page}&limit=${limit}`);
-    
+
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-    
+
     const portfolio = await response.json();
-    
-    // Format the portfolio to match admin panel expectations
+
+    // Format portfolio items with proper structure
     const formattedPortfolio = portfolio.map((item: any) => ({
       id: item.id,
       title: item.title,
@@ -25,34 +25,40 @@ export async function GET(request: NextRequest) {
       description: item.description,
       content: item.content,
       featuredImage: item.featuredImage,
-      images: item.images ? JSON.parse(item.images) : [],
-      clientName: item.clientName,
-      projectUrl: item.projectUrl,
-      githubUrl: item.githubUrl,
-      featured: item.featured === "1" || item.featured === 1 || item.featured === true,
+      projectUrl: item.projectUrl || item.project_url,
+      githubUrl: item.githubUrl || item.github_url,
+      technologies: item.technologies || [],
+      client: item.client,
+      duration: item.duration,
       published: item.published === "1" || item.published === 1 || item.published === true,
-      startDate: item.startDate,
-      endDate: item.endDate,
-      createdAt: item.createdAt || item.date,
+      featured: item.featured === "1" || item.featured === 1 || item.featured === true,
       category: {
-        id: item.categoryId || "1",
+        id: item.categoryId,
         name: item.categoryName || "Uncategorized",
         slug: item.categorySlug || "uncategorized"
       },
-      tags: item.tags || []
+      tags: item.tags || [],
+      createdAt: item.createdAt || item.date,
+      updatedAt: item.updatedAt
     }));
 
+    console.log('Portfolio API: Database success');
     return NextResponse.json({
       portfolio: formattedPortfolio,
       total: formattedPortfolio.length,
       page,
-      limit
+      limit,
+      totalPages: Math.ceil(formattedPortfolio.length / limit)
     });
 
   } catch (error) {
-    console.error('Error fetching portfolio:', error);
+    console.error('Portfolio API: Database connection failed:', error);
     return NextResponse.json(
-      { error: 'Failed to fetch portfolio' },
+      {
+        error: 'Failed to fetch portfolio from database',
+        message: 'Please check if portfolio table exists in bajx7634_bajra database',
+        details: error.message
+      },
       { status: 500 }
     );
   }
@@ -61,56 +67,28 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { 
-      title, 
-      slug, 
-      description, 
-      content, 
-      featuredImage, 
-      images,
-      clientName,
-      projectUrl,
-      githubUrl,
-      featured = false,
-      published = false,
-      startDate,
-      endDate,
-      categoryId,
-      tagIds = []
-    } = body;
+    console.log('Portfolio API: Creating new entry in database...');
 
-    // Validate required fields
-    if (!title || !description || !content) {
-      return NextResponse.json(
-        { error: 'Title, description, and content are required' },
-        { status: 400 }
-      );
-    }
-
-    // Create portfolio via external API bridge
     const portfolioData = {
-      title,
-      slug: slug || title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''),
-      description,
-      content,
-      featuredImage: featuredImage || '',
-      images: images ? JSON.stringify(images) : null,
-      clientName: clientName || '',
-      projectUrl: projectUrl || '',
-      githubUrl: githubUrl || '',
-      featured: featured ? 1 : 0,
-      published: published ? 1 : 0,
-      startDate: startDate || null,
-      endDate: endDate || null,
-      categoryId: categoryId || '1',
-      tags: tagIds || []
+      title: body.title || "",
+      slug: body.slug || "",
+      description: body.description || "",
+      content: body.content || "",
+      featuredImage: body.featuredImage || "",
+      projectUrl: body.projectUrl || "",
+      githubUrl: body.githubUrl || "",
+      technologies: body.technologies || [],
+      client: body.client || "",
+      duration: body.duration || "",
+      published: body.published === true || body.published === "true" || body.published === 1,
+      featured: body.featured === true || body.featured === "true" || body.featured === 1,
+      categoryId: body.categoryId || body.category?.id,
+      tags: body.tagIds || body.tags || []
     };
 
     const response = await fetch(`${API_BASE_URL}?endpoint=portfolio`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(portfolioData)
     });
 
@@ -119,23 +97,17 @@ export async function POST(request: NextRequest) {
     }
 
     const result = await response.json();
-
-    if (!result.success) {
-      throw new Error('Failed to create portfolio');
-    }
-
-    return NextResponse.json({ 
-      success: true, 
-      portfolio: { 
-        id: result.id,
-        ...portfolioData
-      }
-    }, { status: 201 });
+    console.log('Portfolio API: Database entry created successfully');
+    return NextResponse.json({
+      success: true,
+      id: result.id,
+      message: "Portfolio created successfully"
+    });
 
   } catch (error) {
-    console.error('Error creating portfolio:', error);
+    console.error('Portfolio API: Database creation failed:', error);
     return NextResponse.json(
-      { error: 'Failed to create portfolio' },
+      { error: "Failed to create portfolio in database" },
       { status: 500 }
     );
   }

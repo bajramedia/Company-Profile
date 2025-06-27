@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://bajramedia.com/api_bridge.php';
+const API_BASE_URL = 'https://bajramedia.com/api_bridge.php';
 
 // GET /api/portfolio - Get all portfolios with filters
 export async function GET(request: NextRequest) {
@@ -14,6 +14,7 @@ export async function GET(request: NextRequest) {
     const search = searchParams.get('search');
 
     // Get portfolio from external API
+    console.log('Portfolio API: Fetching from production database...');
     const response = await fetch(`${API_BASE_URL}?endpoint=portfolio&page=${page}&limit=${limit}`);
     
     if (!response.ok) {
@@ -21,6 +22,7 @@ export async function GET(request: NextRequest) {
     }
     
     const portfolios = await response.json();
+    console.log('Portfolio API: Database success, items:', portfolios.length);
     
     // Apply filters on frontend since API bridge doesn't support all filtering yet
     let filteredPortfolios = portfolios;
@@ -81,9 +83,13 @@ export async function GET(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('Error fetching portfolios:', error);
+    console.error('Portfolio API: Database connection failed:', error);
     return NextResponse.json(
-      { error: 'Failed to fetch portfolios' },
+      { 
+        error: 'Failed to fetch portfolios from database',
+        message: 'Please check if portfolio table exists in bajx7634_bajra database',
+        details: error.message 
+      },
       { status: 500 }
     );
   }

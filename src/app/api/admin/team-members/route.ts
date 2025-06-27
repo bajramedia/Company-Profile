@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://bajramedia.com/api_bridge.php';
+const API_BASE_URL = 'https://bajramedia.com/api_bridge.php';
 
 export async function GET() {
   try {
+    console.log('Team Members API: Fetching from production database...');
     const response = await fetch(`${API_BASE_URL}?endpoint=team-members`);
     
     if (!response.ok) {
@@ -11,11 +12,17 @@ export async function GET() {
     }
     
     const data = await response.json();
+    console.log('Team Members API: Database success');
     return NextResponse.json(data);
+    
   } catch (error) {
-    console.error('Error fetching team members:', error);
+    console.error('Team Members API: Database connection failed:', error);
     return NextResponse.json(
-      { error: 'Failed to fetch team members' },
+      { 
+        error: 'Failed to fetch team members from database',
+        message: 'Please check if team_members table exists in bajx7634_bajra database',
+        details: error.message 
+      },
       { status: 500 }
     );
   }
@@ -24,12 +31,11 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
+    console.log('Team Members API: Creating new entry in database...');
     
     const response = await fetch(`${API_BASE_URL}?endpoint=team-members`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
     });
     
@@ -38,12 +44,14 @@ export async function POST(request: Request) {
     }
     
     const data = await response.json();
+    console.log('Team Members API: Database entry created successfully');
     return NextResponse.json(data);
+    
   } catch (error) {
-    console.error('Error creating team member:', error);
+    console.error('Team Members API: Database creation failed:', error);
     return NextResponse.json(
-      { error: 'Failed to create team member' },
+      { error: 'Failed to create team member in database' },
       { status: 500 }
     );
   }
-} 
+}
