@@ -441,25 +441,7 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* CTA Section */}
-        <section className="py-16 bg-primary text-white">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 md:px-8 text-center" data-aos="fade-up">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              {t('about.cta.title')}
-            </h2>
-            <p className="text-white/90 mb-8 text-lg">
-              {t('about.cta.subtitle')}
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button variant="outline" size="lg" className="bg-white text-primary border-white hover:bg-gray-50">
-                {t('about.cta.contact')}
-              </Button>
-              <Button variant="outline" size="lg" className="border-white text-white hover:bg-white/10">
-                {t('about.cta.portfolio')}
-              </Button>
-            </div>
-          </div>
-        </section>
+
       </main>
 
       {/* Dark Mode Toggle */}
