@@ -78,7 +78,19 @@ export async function POST(request: NextRequest) {
       social_facebook: updates.social_facebook,
       'socialLinks.facebook': updates.socialLinks?.facebook
     });
+
+    // DEBUG: Test database connection first
+    console.log('🔧 DEBUG: Testing database connection...');
+    const testResponse = await fetch(`${API_BASE_URL}?endpoint=settings`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+    const currentSettings = await testResponse.json();
+    console.log('🔧 DEBUG: Current settings from database:', currentSettings);
     
+    console.log('🔧 DEBUG: Sending POST request to api_bridge...');
     const response = await fetch(`${API_BASE_URL}?endpoint=settings`, {
       method: 'POST',
       headers: {
@@ -89,6 +101,8 @@ export async function POST(request: NextRequest) {
 
     const responseText = await response.text();
     console.log('🔧 DEBUG: Raw response from api_bridge:', responseText);
+    console.log('🔧 DEBUG: Response status:', response.status);
+    console.log('🔧 DEBUG: Response headers:', Object.fromEntries(response.headers.entries()));
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}, response: ${responseText}`);
@@ -103,6 +117,21 @@ export async function POST(request: NextRequest) {
     }
 
     console.log('🔧 DEBUG: Parsed response:', result);
+
+    // DEBUG: Verify the save by fetching settings again
+    console.log('🔧 DEBUG: Verifying save by fetching settings again...');
+    const verifyResponse = await fetch(`${API_BASE_URL}?endpoint=settings`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+    const verifySettings = await verifyResponse.json();
+    console.log('🔧 DEBUG: Settings after save attempt:', verifySettings);
+    
+    // Compare before and after
+    const settingsChanged = JSON.stringify(currentSettings) !== JSON.stringify(verifySettings);
+    console.log('🔧 DEBUG: Settings actually changed in database:', settingsChanged);
     
     return NextResponse.json({ 
       success: true, 
@@ -112,7 +141,10 @@ export async function POST(request: NextRequest) {
       debug: {
         sentKeys: Object.keys(updates),
         responseStatus: response.status,
-        responseData: result
+        responseData: result,
+        settingsChanged: settingsChanged,
+        beforeSave: Object.keys(currentSettings).length,
+        afterSave: Object.keys(verifySettings).length
       }
     });
 

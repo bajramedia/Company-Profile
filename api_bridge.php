@@ -932,54 +932,129 @@ function handlePost($pdo, $endpoint) {
                 break;
 
             case 'settings':
-                // Update settings - bulk update approach
+                // Update settings - bulk update approach with proper transaction
                 try {
+                    // Start transaction for atomicity
+                    $pdo->beginTransaction();
+                    
+                    // Debug: Log incoming data
+                    error_log("🔧 API BRIDGE DEBUG: Settings data received: " . json_encode($data));
+                    
                     // Check if setting table exists
                     $stmt = $pdo->query("SHOW TABLES LIKE 'setting'");
                     $tableExists = $stmt->fetch();
                     
                     if (!$tableExists) {
                         // Create settings table if it doesn't exist (minimal structure)
-                        $pdo->exec("CREATE TABLE setting (
+                        $createTableSQL = "CREATE TABLE setting (
                             id INT AUTO_INCREMENT PRIMARY KEY,
                             `key` VARCHAR(255) UNIQUE NOT NULL,
-                            `value` TEXT
-                        )");
+                            `value` TEXT,
+                            `type` VARCHAR(50) DEFAULT 'string',
+                            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+                        )";
+                        $pdo->exec($createTableSQL);
+                        error_log("🔧 API BRIDGE DEBUG: Created setting table");
                     }
                     
-                    // Check if table has updated_at column
+                    // Check current table structure
                     $columns = getTableColumns($pdo, 'setting');
                     $hasUpdatedAt = in_array('updated_at', $columns);
+                    $hasType = in_array('type', $columns);
+                    
+                    error_log("🔧 API BRIDGE DEBUG: Table columns: " . implode(', ', $columns));
                     
                     // Update or insert settings
                     $updatedCount = 0;
+                    $errors = [];
+                    
                     foreach ($data as $key => $value) {
-                        // Convert value to string for storage
-                        $valueStr = is_array($value) || is_object($value) ? json_encode($value) : (string)$value;
-                        
-                        if ($hasUpdatedAt) {
-                            // Use updated_at if column exists
-                            $stmt = $pdo->prepare("
-                                INSERT INTO setting (`key`, `value`) 
-                                VALUES (?, ?) 
-                                ON DUPLICATE KEY UPDATE 
-                                `value` = VALUES(`value`), updated_at = NOW()
-                            ");
-                        } else {
-                            // Don't use updated_at if column doesn't exist
-                            $stmt = $pdo->prepare("
-                                INSERT INTO setting (`key`, `value`) 
-                                VALUES (?, ?) 
-                                ON DUPLICATE KEY UPDATE 
-                                `value` = VALUES(`value`)
-                            ");
+                        try {
+                            // Skip empty keys
+                            if (empty($key)) {
+                                continue;
+                            }
+                            
+                            // Convert value to string for storage
+                            $valueStr = is_array($value) || is_object($value) ? json_encode($value) : (string)$value;
+                            $type = is_array($value) || is_object($value) ? 'json' : (is_bool($value) ? 'boolean' : (is_numeric($value) ? 'number' : 'string'));
+                            
+                            error_log("🔧 API BRIDGE DEBUG: Saving key='$key', value='$valueStr', type='$type'");
+                            
+                            if ($hasUpdatedAt && $hasType) {
+                                // Full table with type and updated_at
+                                $sql = "INSERT INTO setting (`key`, `value`, `type`) 
+                                       VALUES (?, ?, ?) 
+                                       ON DUPLICATE KEY UPDATE 
+                                       `value` = VALUES(`value`), 
+                                       `type` = VALUES(`type`), 
+                                       updated_at = NOW()";
+                                $stmt = $pdo->prepare($sql);
+                                $result = $stmt->execute([$key, $valueStr, $type]);
+                            } elseif ($hasUpdatedAt) {
+                                // Table with updated_at but no type
+                                $sql = "INSERT INTO setting (`key`, `value`) 
+                                       VALUES (?, ?) 
+                                       ON DUPLICATE KEY UPDATE 
+                                       `value` = VALUES(`value`), 
+                                       updated_at = NOW()";
+                                $stmt = $pdo->prepare($sql);
+                                $result = $stmt->execute([$key, $valueStr]);
+                            } else {
+                                // Minimal table structure
+                                $sql = "INSERT INTO setting (`key`, `value`) 
+                                       VALUES (?, ?) 
+                                       ON DUPLICATE KEY UPDATE 
+                                       `value` = VALUES(`value`)";
+                                $stmt = $pdo->prepare($sql);
+                                $result = $stmt->execute([$key, $valueStr]);
+                            }
+                            
+                            if ($result) {
+                                $affectedRows = $stmt->rowCount();
+                                error_log("🔧 API BRIDGE DEBUG: Key '$key' - affected rows: $affectedRows");
+                                $updatedCount++;
+                            } else {
+                                $error = $stmt->errorInfo();
+                                $errors[] = "Failed to save key '$key': " . $error[2];
+                                error_log("🔧 API BRIDGE ERROR: Failed to save key '$key': " . $error[2]);
+                            }
+                            
+                        } catch (Exception $keyError) {
+                            $errors[] = "Error saving key '$key': " . $keyError->getMessage();
+                            error_log("🔧 API BRIDGE ERROR: Exception for key '$key': " . $keyError->getMessage());
                         }
-                        $stmt->execute([$key, $valueStr]);
-                        $updatedCount++;
                     }
                     
-                    echo json_encode(['success' => true, 'updated' => $updatedCount]);
+                    // Commit transaction if no errors
+                    if (empty($errors)) {
+                        $pdo->commit();
+                        error_log("🔧 API BRIDGE DEBUG: Transaction committed successfully. Updated: $updatedCount");
+                        
+                        // Verify data was actually saved
+                        $stmt = $pdo->query("SELECT COUNT(*) as count FROM setting");
+                        $totalSettings = $stmt->fetch()['count'];
+                        error_log("🔧 API BRIDGE DEBUG: Total settings in database: $totalSettings");
+                        
+                        echo json_encode([
+                            'success' => true, 
+                            'updated' => $updatedCount,
+                            'total_in_db' => $totalSettings,
+                            'debug' => 'Data committed to database successfully'
+                        ]);
+                    } else {
+                        $pdo->rollBack();
+                        error_log("🔧 API BRIDGE ERROR: Transaction rolled back due to errors: " . implode(', ', $errors));
+                        throw new Exception('Some settings failed to save: ' . implode(', ', $errors));
+                    }
+                    
                 } catch (Exception $e) {
+                    // Rollback transaction on any error
+                    if ($pdo->inTransaction()) {
+                        $pdo->rollBack();
+                    }
+                    error_log("🔧 API BRIDGE ERROR: Settings save failed: " . $e->getMessage());
                     http_response_code(500);
                     echo json_encode(['error' => 'Settings error: ' . $e->getMessage()]);
                 }
