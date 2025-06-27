@@ -22,7 +22,7 @@ export async function GET() {
       { 
         error: 'Failed to fetch stats from database',
         message: 'Please check database connection and stats tables',
-        details: error.message 
+        details: error instanceof Error ? error.message : 'Unknown error occurred'
       },
       { status: 500 }
     );
