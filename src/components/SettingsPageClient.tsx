@@ -35,9 +35,21 @@ export default function SettingsPageClient() {
     setLoading(true);
     setSaved(false);
     setError(null);
-    
+
     try {
+      // DEBUG: Log data yang akan dikirim
+      console.log('🔥 CLIENT DEBUG: Settings to save:', settings);
+      console.log('🔥 CLIENT DEBUG: Settings keys:', Object.keys(settings));
+      console.log('🔥 CLIENT DEBUG: Sample nested data:', {
+        siteName: settings.siteName,
+        socialLinks: settings.socialLinks,
+        seoSettings: settings.seoSettings
+      });
+
       const success = await settingsService.saveSettings(settings);
+
+      console.log('🔥 CLIENT DEBUG: Save result:', success);
+
       if (success) {
         setSaved(true);
         setTimeout(() => setSaved(false), 3000);
@@ -45,7 +57,7 @@ export default function SettingsPageClient() {
         setError('Failed to save settings. Please try again.');
       }
     } catch (error) {
-      console.error('Error saving settings:', error);
+      console.error('🔥 CLIENT DEBUG: Error saving settings:', error);
       setError('Failed to save settings. Please try again.');
     } finally {
       setLoading(false);
@@ -118,7 +130,7 @@ export default function SettingsPageClient() {
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">Settings</h1>
         <p className="text-gray-600">Configure your site settings and preferences</p>
-        
+
         {error && (
           <div className="mt-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md">
             {error}
@@ -135,11 +147,10 @@ export default function SettingsPageClient() {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`w-full text-left px-4 py-3 rounded-lg mb-2 transition-colors flex items-center gap-3 ${
-                    activeTab === tab.id
+                  className={`w-full text-left px-4 py-3 rounded-lg mb-2 transition-colors flex items-center gap-3 ${activeTab === tab.id
                       ? 'bg-blue-50 text-blue-700 border border-blue-200'
                       : 'text-gray-600 hover:bg-gray-50'
-                  }`}
+                    }`}
                 >
                   <span>{tab.icon}</span>
                   {tab.label}
@@ -168,7 +179,7 @@ export default function SettingsPageClient() {
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                   </div>
-                  
+
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Site Description
@@ -420,7 +431,7 @@ export default function SettingsPageClient() {
                   <div className="bg-blue-50 border border-blue-200 rounded-md p-4">
                     <h4 className="font-medium text-blue-800 mb-2">Cache Settings</h4>
                     <div className="space-y-2">
-                      <button 
+                      <button
                         className="px-4 py-2 border border-blue-300 text-blue-700 bg-blue-50 rounded-md hover:bg-blue-100 transition-colors"
                         onClick={() => {
                           alert('Cache cleared successfully!');
