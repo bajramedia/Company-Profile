@@ -10,29 +10,7 @@ import 'aos/dist/aos.css';
 
 // Team members will be fetched from API
 
-// Partners data - should be manageable from admin
-const partners = [
-  {
-    id: 1,
-    name: 'Primakara University',
-    nameId: 'Universitas Primakara',
-    description: 'Leading technology university partnership for innovation and research',
-    descriptionId: 'Kemitraan universitas teknologi terdepan untuk inovasi dan penelitian',
-    logo: '/images/inbis-primakara-logo.svg',
-    website: 'https://primakara.ac.id',
-    type: 'Education Partner'
-  },
-  {
-    id: 2,
-    name: 'Recevdov',
-    nameId: 'Recevdov',
-    description: 'Technology partner for advanced development solutions',
-    descriptionId: 'Mitra teknologi untuk solusi pengembangan lanjutan',
-    logo: '/images/logo.png',
-    website: 'https://recevdov.com',
-    type: 'Technology Partner'
-  }
-];
+// Partners data will be fetched from API
 
 interface TeamMember {
   id: string | number;
@@ -52,12 +30,26 @@ interface TeamMember {
   };
 }
 
+interface Partner {
+  id: string | number;
+  name: string;
+  nameId: string;
+  description: string;
+  descriptionId: string;
+  logo: string;
+  website: string;
+  type: string;
+}
+
 export default function AboutPage() {
   const { t, language } = useLanguage();
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
   const [teamLoading, setTeamLoading] = useState(true);
   const [teamError, setTeamError] = useState<string | null>(null);
+  const [partners, setPartners] = useState<Partner[]>([]);
+  const [partnersLoading, setPartnersLoading] = useState(true);
+  const [partnersError, setPartnersError] = useState<string | null>(null);
 
   // Initialize dark mode
   useEffect(() => {
@@ -113,6 +105,31 @@ export default function AboutPage() {
     };
 
     fetchTeamMembers();
+  }, []);
+
+  // Fetch partners from API
+  useEffect(() => {
+    const fetchPartners = async () => {
+      try {
+        setPartnersLoading(true);
+        setPartnersError(null);
+
+        const response = await fetch('/api/partners');
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        setPartners(data);
+      } catch (error) {
+        console.error('Failed to fetch partners:', error);
+        setPartnersError(error instanceof Error ? error.message : 'Failed to load partners');
+      } finally {
+        setPartnersLoading(false);
+      }
+    };
+
+    fetchPartners();
   }, []);
 
   // Initialize AOS
@@ -471,45 +488,95 @@ export default function AboutPage() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {partners.map((partner, index) => (
-                <div
-                  key={partner.id}
-                  className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 text-center"
-                  data-aos="fade-up"
-                  data-aos-delay={index * 200}
-                >
-                  <div className="relative w-24 h-24 mx-auto mb-6">
-                    <Image
-                      src={partner.logo}
-                      alt={partner.name}
-                      fill
-                      className="object-contain"
-                    />
-                  </div>
-                  <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
-                    {language === 'id' ? partner.nameId : partner.name}
-                  </h4>
-                  <p className="text-primary font-medium mb-4">
-                    {partner.type}
-                  </p>
-                  <p className="text-gray-600 dark:text-gray-400 mb-6">
-                    {language === 'id' ? partner.descriptionId : partner.description}
-                  </p>
-                  <a
-                    href={partner.website}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center text-primary hover:text-primary/80 transition-colors"
+            {/* Partners Grid */}
+            {partnersLoading ? (
+              // Loading State
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {[...Array(2)].map((_, index) => (
+                  <div
+                    key={index}
+                    className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg animate-pulse text-center"
                   >
-                    {t('about.partners.visitWebsite')}
-                    <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                    </svg>
-                  </a>
+                    <div className="w-24 h-24 bg-gray-300 dark:bg-gray-600 rounded mx-auto mb-6"></div>
+                    <div className="h-6 bg-gray-300 dark:bg-gray-600 rounded mb-2"></div>
+                    <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded mb-4"></div>
+                    <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded mb-6"></div>
+                    <div className="h-4 bg-gray-300 dark:bg-gray-600 rounded w-24 mx-auto"></div>
+                  </div>
+                ))}
+              </div>
+            ) : partnersError ? (
+              // Error State
+              <div className="text-center py-12">
+                <div className="text-red-500 dark:text-red-400 mb-4">
+                  <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
                 </div>
-              ))}
-            </div>
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+                  {t('about.partners.error.title') || 'Failed to Load Partners'}
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  {t('about.partners.error.message') || 'Unable to load partners. Please try again later.'}
+                </p>
+              </div>
+            ) : partners.length === 0 ? (
+              // Empty State
+              <div className="text-center py-12">
+                <div className="text-gray-400 mb-4">
+                  <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0V6a2 2 0 012 2v6a2 2 0 01-2 2H6a2 2 0 01-2-2V8a2 2 0 012-2V6z" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+                  {t('about.partners.empty.title') || 'No Partners'}
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  {t('about.partners.empty.message') || 'Partners will appear here once they are added.'}
+                </p>
+              </div>
+            ) : (
+              // Data Loaded Successfully
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {partners.map((partner, index) => (
+                  <div
+                    key={partner.id}
+                    className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 text-center"
+                    data-aos="fade-up"
+                    data-aos-delay={index * 200}
+                  >
+                    <div className="relative w-24 h-24 mx-auto mb-6">
+                      <Image
+                        src={partner.logo}
+                        alt={partner.name}
+                        fill
+                        className="object-contain"
+                      />
+                    </div>
+                    <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                      {language === 'id' ? partner.nameId : partner.name}
+                    </h4>
+                    <p className="text-primary font-medium mb-4">
+                      {partner.type}
+                    </p>
+                    <p className="text-gray-600 dark:text-gray-400 mb-6">
+                      {language === 'id' ? partner.descriptionId : partner.description}
+                    </p>
+                    <a
+                      href={partner.website}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center text-primary hover:text-primary/80 transition-colors"
+                    >
+                      {t('about.partners.visitWebsite')}
+                      <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                      </svg>
+                    </a>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </section>
 

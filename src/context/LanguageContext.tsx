@@ -339,6 +339,10 @@ const translations = {
   "about.partners.titleHighlight": { en: "Partners", id: "Kami" },
   "about.partners.subtitle": { en: "We collaborate with leading institutions and technology partners to deliver the best solutions for our clients.", id: "Kami berkolaborasi dengan institusi terkemuka dan mitra teknologi untuk memberikan solusi terbaik bagi klien kami." },
   "about.partners.visitWebsite": { en: "Visit Website", id: "Kunjungi Website" },
+  "about.partners.error.title": { en: "Failed to Load Partners", id: "Gagal Memuat Partner" },
+  "about.partners.error.message": { en: "Unable to load partners. Please try again later.", id: "Tidak dapat memuat partner. Silakan coba lagi nanti." },
+  "about.partners.empty.title": { en: "No Partners", id: "Belum Ada Partner" },
+  "about.partners.empty.message": { en: "Partners will appear here once they are added.", id: "Partner akan muncul di sini setelah ditambahkan." },
 
   // CTA section
   "about.cta.title": { en: "Ready to Transform Your Business?", id: "Siap Transformasi Bisnis Anda?" },
