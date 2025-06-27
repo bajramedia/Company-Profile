@@ -69,18 +69,7 @@ export async function POST(request: NextRequest) {
   try {
     const updates = await request.json();
     
-    // DEBUG: Log what we're sending
-    console.log('🔧 DEBUG: Original data from frontend:', updates);
-    console.log('🔧 DEBUG: Data keys:', Object.keys(updates));
-    console.log('🔧 DEBUG: Sample values:', {
-      siteName: updates.siteName,
-      contactEmail: updates.contactEmail,
-      social_facebook: updates.social_facebook,
-      'socialLinks.facebook': updates.socialLinks?.facebook
-    });
-
-    // DEBUG: Test database connection first
-    console.log('🔧 DEBUG: Testing database connection...');
+    // Test database connection first
     const testResponse = await fetch(`${API_BASE_URL}?endpoint=settings`, {
       method: 'GET',
       headers: {
@@ -88,9 +77,7 @@ export async function POST(request: NextRequest) {
       }
     });
     const currentSettings = await testResponse.json();
-    console.log('🔧 DEBUG: Current settings from database:', currentSettings);
     
-    console.log('🔧 DEBUG: Sending POST request to api_bridge...');
     const response = await fetch(`${API_BASE_URL}?endpoint=settings`, {
       method: 'POST',
       headers: {
@@ -100,9 +87,6 @@ export async function POST(request: NextRequest) {
     });
 
     const responseText = await response.text();
-    console.log('🔧 DEBUG: Raw response from api_bridge:', responseText);
-    console.log('🔧 DEBUG: Response status:', response.status);
-    console.log('🔧 DEBUG: Response headers:', Object.fromEntries(response.headers.entries()));
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}, response: ${responseText}`);
@@ -116,10 +100,7 @@ export async function POST(request: NextRequest) {
       throw new Error('Invalid JSON response from database');
     }
 
-    console.log('🔧 DEBUG: Parsed response:', result);
-
-    // DEBUG: Verify the save by fetching settings again
-    console.log('🔧 DEBUG: Verifying save by fetching settings again...');
+    // Verify the save by fetching settings again
     const verifyResponse = await fetch(`${API_BASE_URL}?endpoint=settings`, {
       method: 'GET',
       headers: {
@@ -127,11 +108,9 @@ export async function POST(request: NextRequest) {
       }
     });
     const verifySettings = await verifyResponse.json();
-    console.log('🔧 DEBUG: Settings after save attempt:', verifySettings);
     
     // Compare before and after
     const settingsChanged = JSON.stringify(currentSettings) !== JSON.stringify(verifySettings);
-    console.log('🔧 DEBUG: Settings actually changed in database:', settingsChanged);
     
     return NextResponse.json({ 
       success: true, 
@@ -149,16 +128,11 @@ export async function POST(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('🔧 DEBUG: Error in settings save:', error);
     return NextResponse.json(
       { 
         success: false, 
         error: 'Failed to update settings',
-        message: error instanceof Error ? error.message : 'Unknown error',
-        debug: {
-          errorType: error instanceof Error ? error.constructor.name : typeof error,
-          errorMessage: error instanceof Error ? error.message : String(error)
-        }
+        message: error instanceof Error ? error.message : 'Unknown error'
       },
       { status: 500 }
     );

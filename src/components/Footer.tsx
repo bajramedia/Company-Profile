@@ -9,15 +9,6 @@ export default function Footer() {
     const { t } = useLanguage();
     const { settings: publicSettings, loading } = usePublicSettings();
 
-    // Debug: Cek apakah settings sudah diload (untuk sementara)
-    if (process.env.NODE_ENV === 'development' && publicSettings) {
-        console.log('🚀 Footer using settings:', {
-            siteName: publicSettings.siteName,
-            contactEmail: publicSettings.contactEmail,
-            hasInstagram: !!publicSettings.socialLinks?.instagram
-        });
-    }
-
     return (
         <footer className="bg-gray-900 dark:bg-gray-950 text-white relative overflow-hidden transition-colors duration-300">
             {/* Background Pattern */}

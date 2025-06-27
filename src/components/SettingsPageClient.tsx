@@ -37,28 +37,7 @@ export default function SettingsPageClient() {
     setError(null);
 
     try {
-      // DEBUG: Alert untuk memastikan function terpanggil
-      if (process.env.NODE_ENV === 'development') {
-        alert('🔥 DEBUG: Save function called!');
-      }
-
-      // DEBUG: Log data yang akan dikirim
-      console.log('🔥 CLIENT DEBUG: Settings to save:', settings);
-      console.log('🔥 CLIENT DEBUG: Settings keys:', Object.keys(settings));
-      console.log('🔥 CLIENT DEBUG: Sample nested data:', {
-        siteName: settings.siteName,
-        socialLinks: settings.socialLinks,
-        seoSettings: settings.seoSettings
-      });
-
       const success = await settingsService.saveSettings(settings);
-
-      console.log('🔥 CLIENT DEBUG: Save result:', success);
-
-      // DEBUG: Alert hasil save
-      if (process.env.NODE_ENV === 'development') {
-        alert(`🔥 DEBUG: Save result: ${success}`);
-      }
 
       if (success) {
         setSaved(true);
@@ -67,13 +46,7 @@ export default function SettingsPageClient() {
         setError('Failed to save settings. Please try again.');
       }
     } catch (error) {
-      console.error('🔥 CLIENT DEBUG: Error saving settings:', error);
-
-      // DEBUG: Alert error
-      if (process.env.NODE_ENV === 'development') {
-        alert(`🔥 DEBUG: Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
-      }
-
+      console.error('Error saving settings:', error);
       setError(`Failed to save settings: ${error instanceof Error ? error.message : 'Unknown error'}`);
     } finally {
       setLoading(false);

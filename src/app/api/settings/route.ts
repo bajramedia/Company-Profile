@@ -24,14 +24,6 @@ export async function GET() {
     
     const settings = await response.json();
     
-    // DEBUG: Log untuk memastikan data fresh
-    console.log('🔄 PUBLIC SETTINGS API: Fresh data from database at', new Date().toISOString());
-    console.log('🔄 PUBLIC SETTINGS API: Settings count:', Object.keys(settings).length);
-    console.log('🔄 PUBLIC SETTINGS API: Sample data:', {
-      siteName: settings.siteName,
-      contactEmail: settings.contactEmail
-    });
-    
     // Format settings untuk public use
     const publicSettings = {
       siteName: settings.siteName || 'Bajramedia',
