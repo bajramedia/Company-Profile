@@ -2,9 +2,10 @@ import { NextResponse } from "next/server";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://bajramedia.com/api_bridge.php';
 
-export async function GET(request: Request, { params }: { params: { id: string } }) {
+export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const response = await fetch(`${API_BASE_URL}?endpoint=about-content&id=${params.id}`);
+    const { id } = await params;
+    const response = await fetch(`${API_BASE_URL}?endpoint=about-content&id=${id}`);
     
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -21,11 +22,12 @@ export async function GET(request: Request, { params }: { params: { id: string }
   }
 }
 
-export async function PUT(request: Request, { params }: { params: { id: string } }) {
+export async function PUT(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
     const body = await request.json();
+    const { id } = await params;
     
-    const response = await fetch(`${API_BASE_URL}?endpoint=about-content&id=${params.id}`, {
+    const response = await fetch(`${API_BASE_URL}?endpoint=about-content&id=${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -48,9 +50,10 @@ export async function PUT(request: Request, { params }: { params: { id: string }
   }
 }
 
-export async function DELETE(request: Request, { params }: { params: { id: string } }) {
+export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const response = await fetch(`${API_BASE_URL}?endpoint=about-content&id=${params.id}`, {
+    const { id } = await params;
+    const response = await fetch(`${API_BASE_URL}?endpoint=about-content&id=${id}`, {
       method: 'DELETE',
     });
     
