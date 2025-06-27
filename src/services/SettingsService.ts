@@ -193,12 +193,18 @@ class SettingsService {
   // Helper method untuk mendapatkan settings yang sering digunakan
   async getPublicSettings() {
     try {
-      const response = await fetch('/api/settings');
+      console.log('Fetching public settings from /api/settings');
+      const response = await fetch('/api/settings', {
+        method: 'GET',
+        cache: 'no-cache', // Always get fresh data
+      });
+      
       if (!response.ok) {
-        throw new Error('Failed to fetch public settings');
+        throw new Error(`Failed to fetch public settings: ${response.status}`);
       }
       
       const settings = await response.json();
+      console.log('Public settings received:', settings);
       return settings;
     } catch (error) {
       console.error('Error fetching public settings:', error);
