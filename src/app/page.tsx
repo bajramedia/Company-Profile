@@ -206,12 +206,12 @@ export default function Home() {
               <div className="max-w-lg w-full">
                 <AnimatedText as="div">
                   <Heading variant="h1" color="foreground" className="mb-6 mt-8 text-[28px] md:text-[34px] lg:text-[40px] xl:text-[44px] font-bold leading-[1.3] tracking-wide">
-                    {t('hero.title.part1')}
+                    {t('hero.title.part1')}{' '}
                     <span className="text-green-500 relative">
-                      <span className="relative z-10"> {t('hero.title.highlight')}</span>
+                      <span className="relative z-10">{t('hero.title.highlight')}</span>
                       <span className="absolute bottom-0.5 left-0 w-full h-2.5 bg-green-500/10 -z-0"></span>
                     </span>
-                    {t('hero.title.part2')}
+                    {' '}{t('hero.title.part2')}
                   </Heading>
                 </AnimatedText>
 

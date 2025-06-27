@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useLanguage } from '@/context/LanguageContext';
 import Heading from './Heading';
 import Text from './Text';
@@ -14,35 +15,54 @@ const Portfolio: React.FC = () => {
   const portfolioItems = [
     {
       id: 1,
+      slug: 'bajra-media-website',
       image: '/images/team-meeting.jpg',
-      category: 'Website, E-commerce'
+      title: 'Bajra Media Corporate Website',
+      category: 'Website, E-commerce',
+      excerpt: 'Modern corporate website with responsive design and powerful CMS features for easy content management.'
     },
     {
       id: 2,
+      slug: 'mobile-app-project',
       image: '/images/team-meeting-alt.jpg',
-      category: 'Mobile App, iOS'
+      title: 'E-Learning Mobile App',
+      category: 'Mobile App, iOS',
+      excerpt: 'Interactive learning platform with gamification features and real-time progress tracking.'
     },
     {
       id: 3,
+      slug: 'ecommerce-platform',
       image: '/images/team-meeting-2.jpg',
-      category: 'Website, Digital Marketing'
+      title: 'E-Commerce Platform',
+      category: 'Website, Digital Marketing',
+      excerpt: 'Full-featured e-commerce solution with inventory management and payment integration.'
     },
     {
       id: 4,
+      slug: 'game-character-assets',
       image: '/images/team.jpg',
-      category: 'Mobile App, Android'
+      title: 'Fantasy Game Assets',
+      category: 'Mobile App, Android',
+      excerpt: '2D and 3D character designs with complete animation sets for mobile gaming.'
     },
     {
       id: 5,
+      slug: 'ui-design-system',
       image: '/images/team-meeting.jpg',
-      category: 'Website, UI/UX'
+      title: 'Design System UI Kit',
+      category: 'Website, UI/UX',
+      excerpt: 'Comprehensive design system with reusable components and style guidelines.'
     },
     {
       id: 6,
+      slug: 'social-media-campaign',
       image: '/images/team-meeting-alt.jpg',
-      category: 'Digital Marketing, SEO'
+      title: 'Brand Social Campaign',
+      category: 'Digital Marketing, SEO',
+      excerpt: 'Multi-platform social media strategy that increased brand engagement by 300%.'
     }
   ];
+
   return (
     <section className="py-16 md:py-24 bg-white dark:bg-gray-900 relative overflow-hidden transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
@@ -57,7 +77,9 @@ const Portfolio: React.FC = () => {
               {t('portfolio.subtitle')}
             </Text>
           </AnimatedText>
-        </div>        <AnimatedText as="div">
+        </div>
+
+        <AnimatedText as="div">
           <div className="flex justify-center mb-8">
             <div className="inline-flex border border-gray-200 dark:border-gray-700 rounded-md overflow-hidden transition-colors duration-300">
               <button className="px-4 py-2 text-sm font-medium bg-primary text-white dark:bg-green-600 transition-colors duration-300">
@@ -71,35 +93,54 @@ const Portfolio: React.FC = () => {
               </button>
             </div>
           </div>
-        </AnimatedText>        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        </AnimatedText>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {portfolioItems.map((item) => (
-            <div key={item.id} className="group relative overflow-hidden rounded-lg shadow-md dark:shadow-lg hover:shadow-xl dark:hover:shadow-2xl transition-all duration-300 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700">
+            <Link
+              key={item.id}
+              href={`/portfolio/${item.slug}`}
+              className="group relative overflow-hidden rounded-lg shadow-md dark:shadow-lg hover:shadow-xl dark:hover:shadow-2xl transition-all duration-300 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 block"
+            >
               <div className="relative aspect-[4/3] overflow-hidden">
                 <Image
                   src={item.image}
-                  alt={`Portfolio Project ${item.id}`}
+                  alt={item.title}
                   fill
                   style={{ objectFit: 'cover' }}
                   className="group-hover:scale-105 transition-transform duration-300"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>                <div className="absolute bottom-4 left-4 right-4 transform translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+                <div className="absolute bottom-4 left-4 right-4 transform translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
                   <h3 className="text-white dark:text-gray-100 font-semibold text-lg mb-1 transition-colors duration-300">
-                    Project {item.id}
+                    {item.title}
                   </h3>
                   <p className="text-white/80 dark:text-gray-300 text-sm transition-colors duration-300">{item.category}</p>
                 </div>
-              </div>              <div className="p-4 bg-white dark:bg-gray-800 transition-colors duration-300">
-                <h3 className="font-semibold text-lg mb-2 text-gray-900 dark:text-gray-100 transition-colors duration-300">
-                  Project {item.id}
-                </h3>
-                <p className="text-secondary dark:text-gray-400 text-sm transition-colors duration-300">{item.category}</p>
               </div>
-            </div>
+
+              <div className="p-4 bg-white dark:bg-gray-800 transition-colors duration-300">
+                <h3 className="font-semibold text-lg mb-2 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+                  {item.title}
+                </h3>
+                <p className="text-secondary dark:text-gray-400 text-sm mb-3 transition-colors duration-300">
+                  {item.excerpt}
+                </p>
+                <p className="text-primary dark:text-green-400 text-xs font-medium transition-colors duration-300">
+                  {item.category}
+                </p>
+              </div>
+            </Link>
           ))}
-        </div>        <div className="text-center mt-10">
-          <Button variant="outline" size="md" className="px-6 py-3 border-primary text-primary hover:bg-primary/5 dark:border-green-600 dark:text-green-400 dark:hover:bg-green-600/10 transition-colors duration-300">
-            {t('portfolio.viewAll')}
-          </Button>
+        </div>
+
+        <div className="text-center mt-10">
+          <Link href="/portfolio">
+            <Button variant="outline" size="md" className="px-6 py-3 border-primary text-primary hover:bg-primary/5 dark:border-green-600 dark:text-green-400 dark:hover:bg-green-600/10 transition-colors duration-300">
+              {t('portfolio.viewAll')}
+            </Button>
+          </Link>
         </div>
       </div>
 

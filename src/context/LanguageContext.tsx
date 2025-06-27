@@ -235,6 +235,58 @@ const translations = {
   "service.consulting.subtitle": { en: "Get strategic guidance for your business digital transformation. From strategy to targeted implementation.", id: "Dapatkan panduan strategis untuk transformasi digital bisnis kamu. Dari strategi hingga implementasi yang tepat sasaran." },
   "service.consulting.cta.consultation": { en: "Free Consultation", id: "Konsultasi Gratis" },
   "service.consulting.cta.assessment": { en: "Business Assessment", id: "Assessment Bisnis" },
+
+  // Portfolio Detail Page
+  "portfolio.detail.viewWebsite": { en: "View Website", id: "Lihat Website" },
+  "portfolio.detail.viewCode": { en: "View Code", id: "Lihat Kode" },
+  "portfolio.detail.client": { en: "Client", id: "Klien" },
+  "portfolio.detail.duration": { en: "Duration", id: "Durasi" },
+  "portfolio.detail.technologies": { en: "Technologies Used", id: "Teknologi yang Digunakan" },
+  "portfolio.detail.relatedProjects": { en: "Related Projects", id: "Project Lainnya" },
+  "portfolio.detail.comingSoon": { en: "Coming Soon", id: "Segera Hadir" },
+  "portfolio.detail.comingSoonDesc": { en: "We're adding more awesome projects", id: "Kami sedang menambahkan project-project keren lainnya" },
+  "portfolio.detail.viewAll": { en: "View All Portfolio", id: "Lihat Semua Portfolio" },
+  "portfolio.detail.featured": { en: "Featured", id: "Unggulan" },
+
+  // About Us Page
+  "about.title.main": { en: "About", id: "Tentang" },
+  "about.title.highlight": { en: "Bajramedia", id: "Bajramedia" },
+  "about.subtitle": { en: "We are a creative digital agency dedicated to helping businesses grow through innovative technology solutions and cutting-edge design.", id: "Kami adalah agensi digital kreatif yang berdedikasi membantu bisnis berkembang melalui solusi teknologi inovatif dan desain terdepan." },
+
+  "about.hero.imageCaption": { en: "Our Creative Team at Work", id: "Tim Kreatif Kami Bekerja" },
+  "about.hero.imageDescription": { en: "Collaborating to build amazing digital solutions", id: "Berkolaborasi membangun solusi digital yang luar biasa" },
+
+  // Background section
+  "about.background.title": { en: "Our Story", id: "Cerita Kami" },
+  "about.background.content1": { en: "Bajramedia was founded with a vision to bridge the gap between traditional businesses and the digital world. We recognized the growing need for UMKM (Micro, Small, and Medium Enterprises) and institutions to embrace digital transformation in this modern era.", id: "Bajramedia didirikan dengan visi untuk menjembatani kesenjangan antara bisnis tradisional dan dunia digital. Kami menyadari kebutuhan yang berkembang bagi UMKM dan institusi untuk merangkul transformasi digital di era modern ini." },
+  "about.background.content2": { en: "Starting as a small team of passionate developers and designers, we have grown into a comprehensive digital agency that understands the unique challenges faced by businesses in Indonesia. Our journey began with simple websites, but we quickly evolved to offer complete digital solutions.", id: "Dimulai sebagai tim kecil developer dan desainer yang bersemangat, kami telah berkembang menjadi agensi digital komprehensif yang memahami tantangan unik yang dihadapi bisnis di Indonesia. Perjalanan kami dimulai dengan website sederhana, namun kami dengan cepat berkembang untuk menawarkan solusi digital lengkap." },
+  "about.background.content3": { en: "Today, we specialize in web development, mobile applications, UI/UX design, game asset development, and digital marketing strategies. Every project we undertake is driven by our commitment to quality, innovation, and client success.", id: "Hari ini, kami mengkhususkan diri dalam pengembangan web, aplikasi mobile, desain UI/UX, pengembangan aset game, dan strategi pemasaran digital. Setiap proyek yang kami kerjakan didorong oleh komitmen kami terhadap kualitas, inovasi, dan kesuksesan klien." },
+
+  // Vision & Mission
+  "about.vision.title": { en: "Our Vision", id: "Visi Kami" },
+  "about.vision.content": { en: "To be the leading digital transformation partner for businesses across Indonesia, empowering them to thrive in the digital age through innovative technology solutions and exceptional user experiences.", id: "Menjadi mitra transformasi digital terdepan untuk bisnis di seluruh Indonesia, memberdayakan mereka untuk berkembang di era digital melalui solusi teknologi inovatif dan pengalaman pengguna yang luar biasa." },
+
+  "about.mission.title": { en: "Our Mission", id: "Misi Kami" },
+  "about.mission.point1": { en: "Deliver cutting-edge digital solutions that drive business growth and success", id: "Memberikan solusi digital terdepan yang mendorong pertumbuhan dan kesuksesan bisnis" },
+  "about.mission.point2": { en: "Foster innovation and creativity in every project we undertake", id: "Memupuk inovasi dan kreativitas dalam setiap proyek yang kami kerjakan" },
+  "about.mission.point3": { en: "Build long-lasting partnerships with our clients based on trust and excellence", id: "Membangun kemitraan jangka panjang dengan klien berdasarkan kepercayaan dan keunggulan" },
+
+  // Team section
+  "about.team.title": { en: "Meet Our", id: "Kenali Tim" },
+  "about.team.titleHighlight": { en: "Expert Team", id: "Ahli Kami" },
+  "about.team.subtitle": { en: "Our diverse team of professionals brings together expertise in technology, design, and digital strategy to deliver exceptional results.", id: "Tim profesional kami yang beragam menggabungkan keahlian dalam teknologi, desain, dan strategi digital untuk memberikan hasil yang luar biasa." },
+
+  // Partners section
+  "about.partners.title": { en: "Our", id: "Mitra" },
+  "about.partners.titleHighlight": { en: "Partners", id: "Kami" },
+  "about.partners.subtitle": { en: "We collaborate with leading institutions and technology partners to deliver the best solutions for our clients.", id: "Kami berkolaborasi dengan institusi terkemuka dan mitra teknologi untuk memberikan solusi terbaik bagi klien kami." },
+  "about.partners.visitWebsite": { en: "Visit Website", id: "Kunjungi Website" },
+
+  // CTA section
+  "about.cta.title": { en: "Ready to Transform Your Business?", id: "Siap Transformasi Bisnis Anda?" },
+  "about.cta.subtitle": { en: "Let's discuss how we can help you achieve your digital goals and take your business to the next level.", id: "Mari diskusikan bagaimana kami dapat membantu Anda mencapai tujuan digital dan membawa bisnis ke level selanjutnya." },
+  "about.cta.contact": { en: "Get in Touch", id: "Hubungi Kami" },
+  "about.cta.portfolio": { en: "View Our Work", id: "Lihat Karya Kami" },
 };
 
 interface LanguageContextType {
