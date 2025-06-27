@@ -50,6 +50,7 @@ export default function AboutPage() {
   const [partners, setPartners] = useState<Partner[]>([]);
   const [partnersLoading, setPartnersLoading] = useState(true);
   const [partnersError, setPartnersError] = useState<string | null>(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Initialize dark mode
   useEffect(() => {
