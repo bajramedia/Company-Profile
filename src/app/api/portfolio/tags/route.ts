@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
       { 
         error: 'Failed to fetch portfolio tags from database',
         message: 'Please check if portfoliotag table exists in bajx7634_bajra database',
-        details: error.message 
+        details: error instanceof Error ? error.message : 'Unknown error occurred' 
       },
       { status: 500 }
     );

@@ -88,7 +88,7 @@ export async function GET(request: NextRequest) {
       { 
         error: 'Failed to fetch portfolios from database',
         message: 'Please check if portfolio table exists in bajx7634_bajra database',
-        details: error.message 
+        details: error instanceof Error ? error.message : 'Unknown error occurred' 
       },
       { status: 500 }
     );
