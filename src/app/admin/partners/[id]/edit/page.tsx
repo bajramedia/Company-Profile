@@ -49,16 +49,37 @@ export default function EditPartnerPage() {
     const fetchPartner = async () => {
         try {
             setFetching(true);
+            console.log('🔍 Fetching partner with ID:', partnerId);
+
             const response = await fetch(`/api/admin/partners/${partnerId}`);
 
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                const errorText = await response.text();
+                console.error('❌ Fetch error:', response.status, errorText);
+                throw new Error(`HTTP error! status: ${response.status} - ${errorText}`);
             }
 
             const partner = await response.json();
-            setFormData(partner);
+            console.log('✅ Partner data received:', partner);
+
+            // Ensure all required fields are present and handle different API response formats
+            const formattedPartner = {
+                id: partner.id || '',
+                name_en: partner.name_en || partner.nameEn || '',
+                name_id: partner.name_id || partner.nameId || '',
+                description_en: partner.description_en || partner.descriptionEn || '',
+                description_id: partner.description_id || partner.descriptionId || '',
+                logo_url: partner.logo_url || partner.logoUrl || '',
+                website_url: partner.website_url || partner.websiteUrl || '',
+                partner_type: partner.partner_type || partner.partnerType || 'Strategic Partner',
+                sort_order: partner.sort_order || 0,
+                is_active: partner.is_active !== undefined ? partner.is_active : true,
+            };
+
+            console.log('📝 Formatted partner data:', formattedPartner);
+            setFormData(formattedPartner);
         } catch (error) {
-            console.error('Error fetching partner:', error);
+            console.error('💥 Error fetching partner:', error);
             setError(error instanceof Error ? error.message : 'Failed to fetch partner');
         } finally {
             setFetching(false);

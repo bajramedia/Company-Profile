@@ -93,11 +93,11 @@ export default function ImageUpload({
 
   return (
     <div className={className}>
-      {label && <label className="block mb-2 text-sm font-medium text-gray-700">{label}</label>}
+      {label && <label className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">{label}</label>}
 
       {value ? (
         <div className="relative">
-          <div className="relative aspect-video w-full overflow-hidden rounded-lg border border-gray-300">
+          <div className="relative aspect-video w-full overflow-hidden rounded-lg border border-gray-300 dark:border-gray-600">
             <Image
               src={value}
               alt="Uploaded image"
@@ -109,10 +109,10 @@ export default function ImageUpload({
           <button
             type="button"
             onClick={handleRemove}
-            className="absolute right-2 top-2 rounded-full bg-white p-1 shadow-md hover:bg-gray-100 transition-colors"
+            className="absolute right-2 top-2 rounded-full bg-white dark:bg-gray-800 p-1 shadow-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors border border-gray-200 dark:border-gray-600"
             title="Remove image"
           >
-            <FiX className="h-5 w-5 text-gray-700" />
+            <FiX className="h-5 w-5 text-gray-700 dark:text-gray-300" />
           </button>
         </div>
       ) : (
@@ -122,14 +122,14 @@ export default function ImageUpload({
               type="button"
               onClick={handleUploadClick}
               disabled={isUploading}
-              className="w-full flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 p-6 hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 p-6 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <div className="flex flex-col items-center justify-center">
-                <FiUpload className="mb-3 h-10 w-10 text-gray-400" />
-                <p className="mb-2 text-sm text-gray-500">
+                <FiUpload className="mb-3 h-10 w-10 text-gray-400 dark:text-gray-500" />
+                <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
                   <span className="font-semibold">Click to upload</span> or drag and drop
                 </p>
-                <p className="text-xs text-gray-500">PNG, JPG, GIF or WEBP (Max 5MB)</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">PNG, JPG, GIF or WEBP (Max 5MB)</p>
               </div>
             </button>
             <input
@@ -146,7 +146,7 @@ export default function ImageUpload({
             <button
               type="button"
               onClick={() => setShowUrlInput(!showUrlInput)}
-              className="text-sm text-blue-600 hover:text-blue-800 flex items-center justify-center space-x-1"
+              className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 flex items-center justify-center space-x-1"
             >
               <FiLink size={14} />
               <span>Or paste image URL</span>
@@ -161,27 +161,27 @@ export default function ImageUpload({
                   value={urlInput}
                   onChange={(e) => setUrlInput(e.target.value)}
                   placeholder="https://example.com/image.jpg"
-                  className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
                 />
                 <button
                   type="button"
                   onClick={handleUrlSubmit}
                   disabled={!urlInput.trim()}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-4 py-2 bg-blue-600 dark:bg-blue-500 text-white rounded-lg text-sm hover:bg-blue-700 dark:hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Use URL
                 </button>
               </div>
 
               <div>
-                <p className="text-xs text-gray-600 mb-2">Or choose from available images:</p>
+                <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">Or choose from available images:</p>
                 <div className="grid grid-cols-4 gap-2">
                   {suggestedImages.map((imageUrl, index) => (
                     <button
                       key={index}
                       type="button"
                       onClick={() => handleSuggestedImage(imageUrl)}
-                      className="relative aspect-video overflow-hidden rounded border-2 border-transparent hover:border-blue-500 transition-colors"
+                      className="relative aspect-video overflow-hidden rounded border-2 border-transparent hover:border-blue-500 dark:hover:border-blue-400 transition-colors"
                     >
                       <Image
                         src={imageUrl}
@@ -202,7 +202,7 @@ export default function ImageUpload({
 
       {isUploading && (
         <div className="mt-2 text-center">
-          <div className="inline-flex items-center px-4 py-2 text-sm text-blue-600 bg-blue-50 rounded-lg">
+          <div className="inline-flex items-center px-4 py-2 text-sm text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
             <svg className="animate-spin -ml-1 mr-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -213,7 +213,7 @@ export default function ImageUpload({
       )}
 
       {error && (
-        <div className="mt-2 p-3 text-sm text-amber-700 bg-amber-50 border border-amber-200 rounded-lg">
+        <div className="mt-2 p-3 text-sm text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg">
           <div className="flex items-start space-x-2">
             <FiImage className="mt-0.5 flex-shrink-0" size={16} />
             <div>
