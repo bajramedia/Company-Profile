@@ -140,7 +140,7 @@ export default function About() {
             <Link href="/" className="flex items-center space-x-2">
               <Logo />
             </Link>
-            
+
             <div className="flex items-center space-x-4">
               <LanguageSwitcher />
               <div className="hidden md:flex items-center space-x-8">
@@ -170,13 +170,10 @@ export default function About() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center" data-aos="fade-up">
             <Heading
-              level={1}
-              className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6"
+              variant="h1"
+              className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
             >
-              <AnimatedText
-                text={t('about.hero.title')}
-                className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
-              />
+              {t('about.hero.title')}
             </Heading>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
               {t('about.hero.subtitle')}
@@ -191,7 +188,7 @@ export default function About() {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div data-aos="fade-right">
               <Heading
-                level={2}
+                variant="h1"
                 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-6"
               >
                 {t('about.story.title')}
@@ -230,7 +227,7 @@ export default function About() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16" data-aos="fade-up">
             <Heading
-              level={2}
+              variant="h1"
               className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-6"
             >
               {t('about.values.title')}
@@ -239,7 +236,7 @@ export default function About() {
               {t('about.values.subtitle')}
             </p>
           </div>
-          
+
           <div className="grid md:grid-cols-3 gap-8">
             {[
               {
@@ -258,14 +255,14 @@ export default function About() {
                 description: t('about.values.excellence.description')
               }
             ].map((value, index) => (
-              <div 
+              <div
                 key={index}
                 className="bg-white dark:bg-gray-900 p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow"
                 data-aos="fade-up"
                 data-aos-delay={index * 100}
               >
                 <div className="text-4xl mb-4">{value.icon}</div>
-                <Heading level={3} className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+                <Heading variant="h4" className="text-xl font-bold text-gray-900 dark:text-white mb-4">
                   {value.title}
                 </Heading>
                 <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
@@ -283,7 +280,7 @@ export default function About() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16" data-aos="fade-up">
               <Heading
-                level={2}
+                variant="h1"
                 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-6"
               >
                 {t('about.team.title')}
@@ -292,10 +289,10 @@ export default function About() {
                 {t('about.team.subtitle')}
               </p>
             </div>
-            
+
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {teamMembers.map((member, index) => (
-                <div 
+                <div
                   key={member.id}
                   className="bg-white dark:bg-gray-900 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
                   data-aos="fade-up"
@@ -310,7 +307,7 @@ export default function About() {
                     />
                   </div>
                   <div className="p-6">
-                    <Heading level={3} className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                    <Heading variant="h4" className="text-xl font-bold text-gray-900 dark:text-white mb-2">
                       {member.name}
                     </Heading>
                     <p className="text-blue-600 dark:text-blue-400 font-medium mb-3">
@@ -356,7 +353,7 @@ export default function About() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16" data-aos="fade-up">
               <Heading
-                level={2}
+                variant="h1"
                 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-6"
               >
                 {t('about.partners.title')}
@@ -365,7 +362,7 @@ export default function About() {
                 {t('about.partners.subtitle')}
               </p>
             </div>
-            
+
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
               {partners.map((partner, index) => (
                 <a
@@ -412,7 +409,7 @@ export default function About() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div data-aos="fade-up">
             <Heading
-              level={2}
+              variant="h1"
               className="text-3xl md:text-4xl font-bold text-white mb-6"
             >
               {t('about.cta.title')}
@@ -421,19 +418,21 @@ export default function About() {
               {t('about.cta.subtitle')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button
-                href="/services"
-                className="bg-white text-blue-600 hover:bg-gray-100"
-              >
-                {t('about.cta.services')}
-              </Button>
-              <Button
-                href="/portfolio"
-                variant="outline"
-                className="border-white text-white hover:bg-white hover:text-blue-600"
-              >
-                {t('about.cta.portfolio')}
-              </Button>
+              <Link href="/services">
+                <Button
+                  className="bg-white text-blue-600 hover:bg-gray-100"
+                >
+                  {t('about.cta.services')}
+                </Button>
+              </Link>
+              <Link href="/portfolio">
+                <Button
+                  variant="outline"
+                  className="border-white text-white hover:bg-white hover:text-blue-600"
+                >
+                  {t('about.cta.portfolio')}
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
