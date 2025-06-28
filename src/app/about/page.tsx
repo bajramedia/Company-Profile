@@ -52,22 +52,62 @@ export default function AboutPage() {
   const [partnersError, setPartnersError] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // Initialize dark mode
+  // Initialize dark mode with system preference detection
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const savedMode = localStorage.getItem('darkMode');
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      const shouldEnableDarkMode = savedMode === 'true' || (savedMode === null && prefersDark);
+      const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+      // Priority: User saved preference > System preference > Default (light)
+      let shouldEnableDarkMode = false;
+
+      if (savedMode !== null) {
+        // User has manually set preference
+        shouldEnableDarkMode = savedMode === 'true';
+        console.log('🎨 Using user preference:', shouldEnableDarkMode ? 'dark' : 'light');
+      } else {
+        // No user preference, use system setting
+        shouldEnableDarkMode = systemPrefersDark;
+        console.log('🖥️ Using system preference:', shouldEnableDarkMode ? 'dark' : 'light');
+      }
 
       setIsDarkMode(shouldEnableDarkMode);
 
       if (shouldEnableDarkMode) {
         document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
       }
 
+      // Listen for system theme changes
+      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+      const handleSystemThemeChange = (e: MediaQueryListEvent) => {
+        // Only auto-update if user hasn't manually set preference
+        const userPreference = localStorage.getItem('darkMode');
+        if (userPreference === null) {
+          console.log('🔄 System theme changed:', e.matches ? 'dark' : 'light');
+          setIsDarkMode(e.matches);
+          if (e.matches) {
+            document.documentElement.classList.add('dark');
+          } else {
+            document.documentElement.classList.remove('dark');
+          }
+        }
+      };
+
+      // Add listener for system theme changes
+      if (mediaQuery.addEventListener) {
+        mediaQuery.addEventListener('change', handleSystemThemeChange);
+      } else {
+        // Fallback for older browsers
+        mediaQuery.addListener(handleSystemThemeChange);
+      }
+
+      // Listen for localStorage changes (for sync across tabs)
       const handleStorageChange = (e: StorageEvent) => {
         if (e.key === 'darkMode') {
           const newMode = e.newValue === 'true';
+          console.log('📱 Theme synced across tabs:', newMode ? 'dark' : 'light');
           setIsDarkMode(newMode);
 
           if (newMode) {
@@ -79,7 +119,16 @@ export default function AboutPage() {
       };
 
       window.addEventListener('storage', handleStorageChange);
-      return () => window.removeEventListener('storage', handleStorageChange);
+
+      // Cleanup
+      return () => {
+        if (mediaQuery.removeEventListener) {
+          mediaQuery.removeEventListener('change', handleSystemThemeChange);
+        } else {
+          mediaQuery.removeListener(handleSystemThemeChange);
+        }
+        window.removeEventListener('storage', handleStorageChange);
+      };
     }
   }, []);
 
@@ -146,11 +195,15 @@ export default function AboutPage() {
   const toggleDarkMode = () => {
     setIsDarkMode(prev => {
       const newMode = !prev;
+      console.log('🎛️ Manual toggle:', newMode ? 'dark' : 'light');
+
       if (newMode) {
         document.documentElement.classList.add('dark');
       } else {
         document.documentElement.classList.remove('dark');
       }
+
+      // Save user preference (overrides system preference)
       localStorage.setItem('darkMode', newMode ? 'true' : 'false');
       return newMode;
     });
@@ -172,8 +225,31 @@ export default function AboutPage() {
               <Link href="/portfolio" className="text-gray-700 dark:text-gray-300 hover:text-primary transition-colors">{t('nav.portfolio')}</Link>
               <Link href="/blog" className="text-gray-700 dark:text-gray-300 hover:text-primary transition-colors">{t('nav.blog')}</Link>
             </nav>
-            <LanguageSwitcher className="mr-4" />
-            <Button variant="primary" size="sm">{t('nav.contact')}</Button>
+            <div className="flex items-center space-x-3">
+              <LanguageSwitcher className="" />
+
+              {/* Dark Mode Toggle */}
+              <button
+                onClick={toggleDarkMode}
+                className="p-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+                title={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+              >
+                {isDarkMode ? (
+                  // Sun icon for light mode
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                  </svg>
+                ) : (
+                  // Moon icon for dark mode
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                  </svg>
+                )}
+              </button>
+
+              <Button variant="primary" size="sm">{t('nav.contact')}</Button>
+            </div>
           </div>
 
           {/* Mobile Menu Button */}
@@ -233,6 +309,33 @@ export default function AboutPage() {
               </Link>
               <div className="pt-3 border-t border-gray-200 dark:border-gray-700 flex flex-col space-y-3">
                 <LanguageSwitcher />
+
+                {/* Dark Mode Toggle for Mobile */}
+                <button
+                  onClick={() => {
+                    toggleDarkMode();
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className="flex items-center justify-center space-x-2 px-3 py-2 text-gray-700 dark:text-gray-300 hover:text-primary hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                  aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+                >
+                  {isDarkMode ? (
+                    <>
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                      </svg>
+                      <span>Light Mode</span>
+                    </>
+                  ) : (
+                    <>
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                      </svg>
+                      <span>Dark Mode</span>
+                    </>
+                  )}
+                </button>
+
                 <Button variant="primary" size="sm" className="w-full">{t('nav.contact')}</Button>
               </div>
             </nav>
