@@ -31,7 +31,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // Try to get blog posts from API bridge
   try {
-    const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "https://bajramedia.com/api_bridge.php";
+    const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "https://www.bajramedia.com/api_bridge.php";
     const response = await fetch(`${API_BASE_URL}?endpoint=posts&limit=100`, {
       // Add timeout to prevent hanging during build
       next: { revalidate: 3600 }, // Cache for 1 hour

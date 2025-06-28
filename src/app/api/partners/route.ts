@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-const API_BASE_URL = 'https://bajramedia.com/api_bridge.php';
+const API_BASE_URL = 'https://www.bajramedia.com/api_bridge.php';
 
 // GET /api/partners - Get all partners for public display
 export async function GET() {
@@ -35,13 +35,10 @@ export async function GET() {
     
   } catch (error) {
     console.error('Public Partners API: Database connection failed:', error);
-    return NextResponse.json(
-      { 
-        error: 'Failed to fetch partners from database',
-        message: 'Please check if partners table exists in bajx7634_bajra database',
-        details: error instanceof Error ? error.message : 'Unknown error occurred'
-      },
-      { status: 500 }
-    );
+    
+    // Return empty array instead of 500 error to prevent page crash
+    const fallbackPartners: any[] = [];
+    
+    return NextResponse.json(fallbackPartners);
   }
 } 

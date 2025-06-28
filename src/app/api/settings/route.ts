@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-const API_BASE_URL = 'https://bajramedia.com/api_bridge.php';
+const API_BASE_URL = 'https://www.bajramedia.com/api_bridge.php';
 
 // GET - Ambil public settings (tanpa admin settings)
 export async function GET() {

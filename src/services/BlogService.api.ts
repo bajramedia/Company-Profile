@@ -48,7 +48,7 @@ class BlogServiceAPI {
 
   constructor() {
     // Use environment variable or fallback
-    this.apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://bajramedia.com/api_bridge.php';
+    this.apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://www.bajramedia.com/api_bridge.php';
   }
 
   async getAllPosts(page: number = 1, limit: number = 10): Promise<BlogPost[]> {

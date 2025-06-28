@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const API_BASE_URL = 'https://bajramedia.com/api_bridge.php';
+const API_BASE_URL = 'https://www.bajramedia.com/api_bridge.php';
 
 // GET /api/admin/stats - Get admin dashboard statistics
 export async function GET() {
