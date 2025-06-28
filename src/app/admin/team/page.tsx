@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '@/context/LanguageContext';
+import { ImageUpload } from '@/components';
 import Image from 'next/image';
 import { FiUsers, FiPlus, FiEdit2, FiTrash2, FiSearch, FiEye, FiX, FiSave, FiLoader } from 'react-icons/fi';
 
@@ -80,6 +81,11 @@ export default function AdminTeamPage() {
             ...prev,
             [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value
         }));
+    };
+
+    // Handle image upload
+    const handleImageChange = (url: string) => {
+        setFormData(prev => ({ ...prev, image_url: url }));
     };
 
     // Handle save
@@ -513,19 +519,35 @@ export default function AdminTeamPage() {
                                 </div>
                             </div>
 
-                            {/* Image URL */}
+                            {/* Profile Image Upload */}
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                    Profile Image URL
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Profile Picture
                                 </label>
-                                <input
-                                    type="url"
-                                    name="image_url"
-                                    value={formData.image_url}
-                                    onChange={handleInputChange}
-                                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-                                    placeholder="https://example.com/image.jpg"
-                                />
+                                <div className="space-y-4">
+                                    <ImageUpload
+                                        value={formData.image_url || ''}
+                                        onChange={handleImageChange}
+                                        folder="team"
+                                    />
+                                    {formData.image_url && (
+                                        <div className="flex items-center space-x-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                                            <div className="relative h-12 w-12 rounded-full overflow-hidden border-2 border-gray-200 dark:border-gray-600">
+                                                <Image
+                                                    src={formData.image_url}
+                                                    alt="Profile preview"
+                                                    fill
+                                                    className="object-cover"
+                                                    onError={(e) => (e.currentTarget.src = '/images/placeholder.jpg')}
+                                                />
+                                            </div>
+                                            <div className="flex-1">
+                                                <p className="text-sm font-medium text-gray-900 dark:text-white">Profile Picture</p>
+                                                <p className="text-xs text-gray-500 dark:text-gray-400">Image uploaded successfully</p>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
 
                             {/* Social Links */}
