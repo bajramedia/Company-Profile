@@ -104,49 +104,11 @@ INSERT IGNORE INTO about_content (section_key, title_en, title_id, content_en, c
 '• Provide accessible and affordable digital solutions for SMEs\n• Foster innovation through cutting-edge technology implementation\n• Build long-term partnerships based on trust and measurable results',
 '• Menyediakan solusi digital yang mudah diakses dan terjangkau untuk UKM\n• Mendorong inovasi melalui implementasi teknologi terdepan\n• Membangun kemitraan jangka panjang berdasarkan kepercayaan dan hasil yang terukur');
 
--- Insert Team Members (Safe INSERT)
-INSERT IGNORE INTO team_members (name, role_en, role_id, bio_en, bio_id, image_url, linkedin_url, github_url, sort_order) VALUES
-('Muhammad Bajra', 'CEO & Founder', 'CEO & Pendiri', 
-'Visionary leader with 8+ years of experience in digital transformation and business strategy. Passionate about empowering SMEs through technology.',
-'Pemimpin visioner dengan pengalaman 8+ tahun dalam transformasi digital dan strategi bisnis. Bersemangat memberdayakan UKM melalui teknologi.',
-'/images/team/bajra.jpg', 'https://linkedin.com/in/muhammadbajra', 'https://github.com/bajra', 1),
+-- Team Members table ready for real data (no dummy data)
+-- Add your real team members through the admin panel
 
-('Sarah Chen', 'CFO & Co-Founder', 'CFO & Co-Founder', 
-'Financial strategist and operations expert ensuring sustainable growth and efficient resource management for all our projects.',
-'Ahli strategi keuangan dan operasi yang memastikan pertumbuhan berkelanjutan dan manajemen sumber daya yang efisien untuk semua proyek kami.',
-'/images/team/sarah.jpg', 'https://linkedin.com/in/sarahchen', NULL, 2),
-
-('Alex Rodriguez', 'Lead UI/UX Designer', 'Lead UI/UX Designer', 
-'Creative designer with expertise in user-centered design, creating intuitive and beautiful digital experiences that users love.',
-'Desainer kreatif dengan keahlian dalam desain yang berpusat pada pengguna, menciptakan pengalaman digital yang intuitif dan indah yang disukai pengguna.',
-'/images/team/alex.jpg', 'https://linkedin.com/in/alexrodriguez', 'https://github.com/alexdesign', 3),
-
-('Priya Sharma', 'Social Media Manager', 'Manajer Media Sosial', 
-'Digital marketing specialist focused on building engaging online communities and driving brand awareness through strategic content.',
-'Spesialis pemasaran digital yang fokus membangun komunitas online yang menarik dan meningkatkan kesadaran merek melalui konten strategis.',
-'/images/team/priya.jpg', 'https://linkedin.com/in/priyasharma', NULL, 4),
-
-('David Kim', 'Frontend Developer', 'Frontend Developer', 
-'Experienced frontend developer specializing in React, Next.js, and modern web technologies to create fast and responsive applications.',
-'Pengembang frontend berpengalaman yang mengkhususkan diri dalam React, Next.js, dan teknologi web modern untuk menciptakan aplikasi yang cepat dan responsif.',
-'/images/team/david.jpg', 'https://linkedin.com/in/davidkim', 'https://github.com/davidkim', 5),
-
-('Lisa Wang', 'Backend Developer', 'Backend Developer', 
-'Backend specialist with expertise in Node.js, Python, and database design, ensuring scalable and secure server-side solutions.',
-'Spesialis backend dengan keahlian dalam Node.js, Python, dan desain database, memastikan solusi server-side yang dapat diskalakan dan aman.',
-'/images/team/lisa.jpg', 'https://linkedin.com/in/lisawang', 'https://github.com/lisawang', 6);
-
--- Insert Partners (Safe INSERT)
-INSERT IGNORE INTO partners (name_en, name_id, description_en, description_id, logo_url, website_url, partner_type, sort_order) VALUES
-('Primakara University', 'Universitas Primakara', 
-'Strategic academic partnership providing access to top talent and cutting-edge research in technology and business innovation.',
-'Kemitraan akademik strategis yang memberikan akses ke talenta terbaik dan penelitian terdepan dalam teknologi dan inovasi bisnis.',
-'/images/partners/primakara.png', 'https://primakara.ac.id', 'university', 1),
-
-('Recevdov', 'Recevdov', 
-'Technology partner specializing in enterprise solutions and digital infrastructure, helping us deliver robust and scalable platforms.',
-'Partner teknologi yang mengkhususkan diri dalam solusi enterprise dan infrastruktur digital, membantu kami memberikan platform yang kuat dan dapat diskalakan.',
-'/images/partners/recevdov.png', 'https://recevdov.com', 'company', 2);
+-- Partners table ready for real data (no dummy data)
+-- Add your real partners through the admin panel with image upload
 
 -- Insert Footer Content (Safe INSERT)
 INSERT IGNORE INTO footer_content (section_key, title_en, title_id, content_en, content_id, sort_order) VALUES

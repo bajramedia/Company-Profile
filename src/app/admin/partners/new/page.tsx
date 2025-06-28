@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from 'react';
-import { Button } from '@/components';
+import { Button, ImageUpload } from '@/components';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
@@ -26,6 +26,13 @@ export default function NewPartnerPage() {
         e.preventDefault();
         setLoading(true);
         setError(null);
+
+        // Validasi logo wajib ada
+        if (!formData.logo_url) {
+            setError('Partner logo is required. Please upload an image or provide an image URL.');
+            setLoading(false);
+            return;
+        }
 
         try {
             const response = await fetch('/api/admin/partners', {
@@ -167,17 +174,14 @@ export default function NewPartnerPage() {
                         {/* Logo dan Website */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
-                                <label htmlFor="logo_url" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Logo URL
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Partner Logo *
                                 </label>
-                                <input
-                                    type="url"
-                                    id="logo_url"
-                                    name="logo_url"
+                                <ImageUpload
                                     value={formData.logo_url}
-                                    onChange={handleChange}
-                                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
-                                    placeholder="https://example.com/logo.png"
+                                    onChange={(url) => setFormData(prev => ({ ...prev, logo_url: url }))}
+                                    label="Upload partner logo"
+                                    className="w-full"
                                 />
                             </div>
                             <div>
