@@ -138,106 +138,115 @@ export default function PartnersAdminPage() {
                             </Link>
                         </div>
                     ) : (
-                        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                            <thead className="bg-gray-50 dark:bg-gray-700">
-                                <tr>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                        Partner
-                                    </th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                        Type
-                                    </th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                        Website
-                                    </th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                        Status
-                                    </th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                        Order
-                                    </th>
-                                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                                        Actions
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                                {partners.map((partner) => (
-                                    <tr key={partner.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <div className="flex items-center">
-                                                <div className="flex-shrink-0 h-12 w-12">
-                                                    <img
-                                                        className="h-12 w-12 rounded-lg object-contain bg-gray-100 dark:bg-gray-600"
-                                                        src={partner.logo_url || '/images/logo.png'}
-                                                        alt={partner.name_en}
-                                                        onError={(e) => {
-                                                            const target = e.target as HTMLImageElement;
-                                                            target.src = '/images/logo.png';
-                                                        }}
-                                                    />
-                                                </div>
-                                                <div className="ml-4">
-                                                    <div className="text-sm font-medium text-gray-900 dark:text-white">
-                                                        {partner.name_en}
+                        <div className="overflow-x-auto">
+                            <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                                <thead className="bg-gray-50 dark:bg-gray-700">
+                                    <tr>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                            Partner
+                                        </th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                            Type
+                                        </th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                            Website
+                                        </th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                            Status
+                                        </th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                            Order
+                                        </th>
+                                        <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                            Actions
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                                    {partners.map((partner) => (
+                                        <tr key={partner.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                                            <td className="px-6 py-4 whitespace-nowrap">
+                                                <div className="flex items-center">
+                                                    <div className="flex-shrink-0 h-12 w-12">
+                                                        <img
+                                                            className="h-12 w-12 rounded-lg object-contain bg-gray-100 dark:bg-gray-600"
+                                                            src={partner.logo_url || '/images/logo.png'}
+                                                            alt={partner.name_en}
+                                                            onError={(e) => {
+                                                                const target = e.target as HTMLImageElement;
+                                                                target.src = '/images/logo.png';
+                                                            }}
+                                                        />
                                                     </div>
-                                                    <div className="text-sm text-gray-500 dark:text-gray-400">
-                                                        {partner.name_id}
+                                                    <div className="ml-4">
+                                                        <div className="text-sm font-medium text-gray-900 dark:text-white">
+                                                            {partner.name_en}
+                                                        </div>
+                                                        <div className="text-sm text-gray-500 dark:text-gray-400">
+                                                            {partner.name_id}
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
-                                                {partner.partner_type}
-                                            </span>
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                                            {partner.website_url ? (
-                                                <a
-                                                    href={partner.website_url}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="text-primary hover:text-primary/80"
-                                                >
-                                                    Visit Website
-                                                </a>
-                                            ) : (
-                                                <span className="text-gray-400">No website</span>
-                                            )}
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <button
-                                                onClick={() => toggleStatus(partner.id, partner.is_active)}
-                                                className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${partner.is_active
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap">
+                                                <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                                                    {partner.partner_type}
+                                                </span>
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                                                {partner.website_url ? (
+                                                    <a
+                                                        href={partner.website_url}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="text-primary hover:text-primary/80"
+                                                    >
+                                                        Visit Website
+                                                    </a>
+                                                ) : (
+                                                    <span className="text-gray-400">No website</span>
+                                                )}
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap">
+                                                <button
+                                                    onClick={() => toggleStatus(partner.id, partner.is_active)}
+                                                    className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${partner.is_active
                                                         ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
                                                         : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
-                                                    }`}
-                                            >
-                                                {partner.is_active ? 'Active' : 'Inactive'}
-                                            </button>
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                                            {partner.sort_order}
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
-                                            <Link
-                                                href={`/admin/partners/${partner.id}/edit`}
-                                                className="text-primary hover:text-primary/80"
-                                            >
-                                                Edit
-                                            </Link>
-                                            <button
-                                                onClick={() => deletePartner(partner.id)}
-                                                className="text-red-600 hover:text-red-500 dark:text-red-400 dark:hover:text-red-300"
-                                            >
-                                                Delete
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                                                        }`}
+                                                >
+                                                    {partner.is_active ? 'Active' : 'Inactive'}
+                                                </button>
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                                                {partner.sort_order}
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                <div className="flex justify-end space-x-3">
+                                                    <Link
+                                                        href={`/admin/partners/${partner.id}/edit`}
+                                                        className="text-primary hover:text-primary/80 transition-colors"
+                                                    >
+                                                        Edit
+                                                    </Link>
+                                                    <button
+                                                        type="button"
+                                                        onClick={(e) => {
+                                                            e.preventDefault();
+                                                            e.stopPropagation();
+                                                            deletePartner(partner.id);
+                                                        }}
+                                                        className="text-red-600 hover:text-red-500 dark:text-red-400 dark:hover:text-red-300 transition-colors"
+                                                    >
+                                                        Delete
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
                     )}
                 </div>
             </div>

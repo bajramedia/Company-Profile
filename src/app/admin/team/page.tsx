@@ -86,11 +86,20 @@ export default function AdminTeamPage() {
     const handleSave = async () => {
         try {
             setSaving(true);
+            setError(null);
+
+            // Validasi form
+            if (!formData.name || !formData.role_en || !formData.role_id || !formData.bio_en || !formData.bio_id) {
+                throw new Error('Mohon lengkapi semua field yang wajib diisi');
+            }
+
             const url = editingMember
                 ? `/api/admin/team-members/${editingMember.id}`
                 : '/api/admin/team-members';
 
             const method = editingMember ? 'PUT' : 'POST';
+
+            console.log('Sending team member data:', formData);
 
             const response = await fetch(url, {
                 method,
@@ -99,8 +108,12 @@ export default function AdminTeamPage() {
             });
 
             if (!response.ok) {
-                throw new Error('Failed to save team member');
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
             }
+
+            const result = await response.json();
+            console.log('Team member saved successfully:', result);
 
             await fetchTeamMembers();
             setShowModal(false);
@@ -121,7 +134,7 @@ export default function AdminTeamPage() {
             });
         } catch (error) {
             console.error('Error saving team member:', error);
-            setError('Failed to save team member');
+            setError(error instanceof Error ? error.message : 'Failed to save team member');
         } finally {
             setSaving(false);
         }
@@ -208,22 +221,22 @@ export default function AdminTeamPage() {
     return (
         <div className="space-y-6">
             {/* Header */}
-            <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-4 sm:p-6 border border-gray-200 dark:border-gray-700">
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0">
-                    <div className="flex items-center space-x-3">
-                        <FiUsers className="text-green-500 h-8 w-8" />
+                    <div className="flex items-start sm:items-center space-x-3">
+                        <FiUsers className="text-green-500 h-6 w-6 sm:h-8 sm:w-8 mt-1 sm:mt-0" />
                         <div>
-                            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+                            <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
                                 Team Members Management
                             </h1>
-                            <p className="text-gray-600 dark:text-gray-400">
+                            <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-1">
                                 Manage your team members and their information
                             </p>
                         </div>
                     </div>
                     <button
                         onClick={handleNew}
-                        className="flex items-center space-x-2 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors"
+                        className="flex items-center space-x-2 bg-green-500 hover:bg-green-600 text-white px-3 sm:px-4 py-2 rounded-lg transition-colors text-sm sm:text-base w-full sm:w-auto justify-center"
                     >
                         <FiPlus className="h-4 w-4" />
                         <span>Add Team Member</span>
@@ -290,7 +303,7 @@ export default function AdminTeamPage() {
             {/* Team Members List */}
             <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
                 {filteredMembers.length === 0 ? (
-                    <div className="text-center py-12">
+                    <div className="text-center py-12 px-4">
                         <FiUsers className="mx-auto h-12 w-12 text-gray-400 mb-4" />
                         <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
                             No team members found
@@ -361,8 +374,8 @@ export default function AdminTeamPage() {
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
                                             <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${member.is_active
-                                                    ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400'
-                                                    : 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400'
+                                                ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400'
+                                                : 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400'
                                                 }`}>
                                                 {member.is_active ? 'Active' : 'Inactive'}
                                             </span>
@@ -396,21 +409,21 @@ export default function AdminTeamPage() {
 
             {/* Modal */}
             {showModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-                    <div className="bg-white dark:bg-gray-800 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-                        <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
-                            <h3 className="text-lg font-medium text-gray-900 dark:text-white">
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-2 sm:p-4 z-50">
+                    <div className="bg-white dark:bg-gray-800 rounded-lg max-w-2xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-y-auto">
+                        <div className="flex items-center justify-between p-4 sm:p-6 border-b border-gray-200 dark:border-gray-700">
+                            <h3 className="text-base sm:text-lg font-medium text-gray-900 dark:text-white">
                                 {editingMember ? 'Edit Team Member' : 'Add New Team Member'}
                             </h3>
                             <button
                                 onClick={() => setShowModal(false)}
-                                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 p-1"
                             >
-                                <FiX className="h-6 w-6" />
+                                <FiX className="h-5 w-5 sm:h-6 sm:w-6" />
                             </button>
                         </div>
 
-                        <div className="p-6 space-y-4">
+                        <div className="p-4 sm:p-6 space-y-4">
                             {/* Basic Info */}
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
@@ -589,17 +602,17 @@ export default function AdminTeamPage() {
                             </div>
                         </div>
 
-                        <div className="flex justify-end space-x-3 p-6 border-t border-gray-200 dark:border-gray-700">
+                        <div className="flex flex-col sm:flex-row justify-end space-y-2 sm:space-y-0 sm:space-x-3 p-4 sm:p-6 border-t border-gray-200 dark:border-gray-700">
                             <button
                                 onClick={() => setShowModal(false)}
-                                className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-md transition-colors"
+                                className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-md transition-colors w-full sm:w-auto"
                             >
                                 Cancel
                             </button>
                             <button
                                 onClick={handleSave}
                                 disabled={saving}
-                                className="px-4 py-2 text-sm font-medium text-white bg-green-500 hover:bg-green-600 rounded-md transition-colors disabled:opacity-50 flex items-center space-x-2"
+                                className="px-4 py-2 text-sm font-medium text-white bg-green-500 hover:bg-green-600 rounded-md transition-colors disabled:opacity-50 flex items-center justify-center space-x-2 w-full sm:w-auto"
                             >
                                 {saving ? <FiLoader className="h-4 w-4 animate-spin" /> : <FiSave className="h-4 w-4" />}
                                 <span>{saving ? 'Saving...' : 'Save Member'}</span>

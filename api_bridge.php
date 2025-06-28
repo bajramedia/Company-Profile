@@ -900,13 +900,17 @@ function handlePost($pdo, $endpoint) {
                 $linkedin_url = $data['linkedin_url'] ?? '';
                 $github_url = $data['github_url'] ?? '';
                 $instagram_url = $data['instagram_url'] ?? '';
+                $behance_url = $data['behance_url'] ?? '';
+                $tiktok_url = $data['tiktok_url'] ?? '';
+                $youtube_url = $data['youtube_url'] ?? '';
                 $sort_order = $data['sort_order'] ?? 0;
+                $is_active = isset($data['is_active']) ? ($data['is_active'] ? 1 : 0) : 1;
                 
                 $stmt = $pdo->prepare("
-                    INSERT INTO team_members (name, role_en, role_id, bio_en, bio_id, image_url, linkedin_url, github_url, instagram_url, sort_order) 
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    INSERT INTO team_members (name, role_en, role_id, bio_en, bio_id, image_url, linkedin_url, github_url, instagram_url, behance_url, tiktok_url, youtube_url, sort_order, is_active) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 ");
-                $stmt->execute([$name, $role_en, $role_id, $bio_en, $bio_id, $image_url, $linkedin_url, $github_url, $instagram_url, $sort_order]);
+                $stmt->execute([$name, $role_en, $role_id, $bio_en, $bio_id, $image_url, $linkedin_url, $github_url, $instagram_url, $behance_url, $tiktok_url, $youtube_url, $sort_order, $is_active]);
                 
                 echo json_encode(['success' => true, 'id' => $pdo->lastInsertId()]);
                 break;
