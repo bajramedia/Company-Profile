@@ -1,6 +1,6 @@
 // API Client utility with backup URL fallback
-const PRIMARY_API_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://www.bajramedia.com/api_bridge.php';
-const BACKUP_API_URL = process.env.NEXT_PUBLIC_API_BACKUP_URL || 'https://bajramedia.com/api_bridge.php';
+const PRIMARY_API_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://bajramedia.com/api_bridge.php';
+const BACKUP_API_URL = process.env.NEXT_PUBLIC_API_BACKUP_URL || 'https://www.bajramedia.com/api_bridge.php';
 
 interface ApiRequestOptions extends RequestInit {
   timeout?: number;
