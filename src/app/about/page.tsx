@@ -88,7 +88,7 @@ export default function AboutPage() {
   const languageContext = useLanguage();
   const t = languageContext?.t || ((key: string) => key);
   const language = languageContext?.language || 'en';
-  
+
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
   const [teamLoading, setTeamLoading] = useState(true);
@@ -97,19 +97,19 @@ export default function AboutPage() {
   const [partnersLoading, setPartnersLoading] = useState(true);
   const [partnersError, setPartnersError] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  
+
   // DEBUG: Enhanced error tracking
   const [debugLogs, setDebugLogs] = useState<string[]>([]);
   const [consoleVisible, setConsoleVisible] = useState(false);
-  
+
   const addDebugLog = (message: string, type: 'log' | 'error' | 'warn' = 'log') => {
     if (DEBUG_MODE) {
       const timestamp = new Date().toLocaleTimeString();
       const logEntry = `[${timestamp}] ${message}`;
-      
+
       // Add to state for UI display
       setDebugLogs(prev => [...prev.slice(-20), logEntry]);
-      
+
       // Also log to console
       switch (type) {
         case 'error':
@@ -234,7 +234,7 @@ export default function AboutPage() {
 
         const response = await fetch('/api/team-members');
         addDebugLog(`📡 Team API response status: ${response.status}`);
-        
+
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -265,7 +265,7 @@ export default function AboutPage() {
 
         const response = await fetch('/api/partners');
         addDebugLog(`📡 Partners API response status: ${response.status}`);
-        
+
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -291,12 +291,12 @@ export default function AboutPage() {
     const initAOS = async () => {
       try {
         addDebugLog('🎨 Initializing AOS...');
-        
+
         if (typeof window !== 'undefined') {
           // Import AOS dynamically
           const aosModule = await import('aos');
           AOS = aosModule.default;
-          
+
           if (AOS && typeof AOS.init === 'function') {
             AOS.init({
               duration: 800,
@@ -354,7 +354,7 @@ export default function AboutPage() {
               🔍 {consoleVisible ? 'Hide' : 'Show'} Debug Console
             </button>
           </div>
-          
+
           {/* Console Panel */}
           {consoleVisible && (
             <div className="fixed top-16 right-4 w-96 h-80 bg-black/95 text-green-400 text-xs p-3 z-50 overflow-auto font-mono border border-green-500 rounded">
