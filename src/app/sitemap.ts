@@ -1,6 +1,23 @@
 import { MetadataRoute } from 'next';
 import { fetchWithFallback } from '@/utils/api-client';
 
+// Helper function to safely parse dates
+function safeDate(dateString: any): Date {
+  if (!dateString) return new Date();
+  
+  try {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) {
+      console.warn('Invalid date found:', dateString, 'using current date instead');
+      return new Date();
+    }
+    return date;
+  } catch (error) {
+    console.warn('Error parsing date:', dateString, 'using current date instead');
+    return new Date();
+  }
+}
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://bajramedia.com';
 
@@ -39,7 +56,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       },
     ];
 
-    // Fetch dynamic posts
+    // Fetch dynamic posts with better error handling
     try {
       const response = await fetchWithFallback("?endpoint=posts&limit=100", {
         next: { revalidate: 3600 } // Revalidate every hour
@@ -47,19 +64,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       
       if (response.ok) {
         const posts = await response.json();
-        const postRoutes = posts.map((post: any) => ({
-          url: `${baseUrl}/blog/${post.slug}`,
-          lastModified: new Date(post.updatedAt || post.createdAt || new Date()),
-          changeFrequency: 'weekly' as const,
-          priority: 0.6,
-        }));
-        routes.push(...postRoutes);
+        
+        if (Array.isArray(posts)) {
+          const postRoutes = posts
+            .filter((post: any) => post && post.slug) // Filter out invalid posts
+            .map((post: any) => ({
+              url: `${baseUrl}/blog/${post.slug}`,
+              lastModified: safeDate(post.updatedAt || post.createdAt),
+              changeFrequency: 'weekly' as const,
+              priority: 0.6,
+            }));
+          routes.push(...postRoutes);
+        }
       }
     } catch (error) {
       console.error('Error fetching posts for sitemap:', error);
     }
 
-    // Fetch portfolio items
+    // Fetch portfolio items with better error handling
     try {
       const portfolioResponse = await fetchWithFallback("?endpoint=portfolio&limit=100", {
         next: { revalidate: 3600 }
@@ -67,13 +89,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       
       if (portfolioResponse.ok) {
         const portfolioItems = await portfolioResponse.json();
-        const portfolioRoutes = portfolioItems.map((item: any) => ({
-          url: `${baseUrl}/portfolio/${item.slug}`,
-          lastModified: new Date(item.updatedAt || item.createdAt || new Date()),
-          changeFrequency: 'monthly' as const,
-          priority: 0.7,
-        }));
-        routes.push(...portfolioRoutes);
+        
+        if (Array.isArray(portfolioItems)) {
+          const portfolioRoutes = portfolioItems
+            .filter((item: any) => item && item.slug) // Filter out invalid items
+            .map((item: any) => ({
+              url: `${baseUrl}/portfolio/${item.slug}`,
+              lastModified: safeDate(item.updatedAt || item.createdAt),
+              changeFrequency: 'weekly' as const,
+              priority: 0.7,
+            }));
+          routes.push(...portfolioRoutes);
+        }
       }
     } catch (error) {
       console.error('Error fetching portfolio for sitemap:', error);

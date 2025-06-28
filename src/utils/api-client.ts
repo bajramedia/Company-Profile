@@ -34,10 +34,34 @@ export async function fetchWithFallback(
     }
   };
 
+  // Build complete URLs
+  const buildUrl = (baseUrl: string, endpoint: string) => {
+    if (endpoint.startsWith('http')) {
+      return endpoint; // Already a complete URL
+    }
+    
+    // Handle query string endpoints like "?endpoint=posts&page=1"
+    if (endpoint.startsWith('?')) {
+      return `${baseUrl}${endpoint}`;
+    }
+    
+    // Handle relative paths like "/api/posts"
+    if (endpoint.startsWith('/')) {
+      // For internal API routes, use relative URL
+      return endpoint;
+    }
+    
+    // Default: assume it's a query parameter
+    return `${baseUrl}?${endpoint}`;
+  };
+
+  const primaryUrl = buildUrl(PRIMARY_API_URL, endpoint);
+  const backupUrl = buildUrl(BACKUP_API_URL, endpoint);
+
   // Try primary URL first
   try {
-    console.log(`🔄 Trying primary API: ${PRIMARY_API_URL}`);
-    const response = await fetchWithTimeout(endpoint.startsWith('http') ? endpoint : `${PRIMARY_API_URL}${endpoint.startsWith('?') ? endpoint : `?${endpoint}`}`, fetchOptions);
+    console.log(`🔄 Trying primary API: ${primaryUrl}`);
+    const response = await fetchWithTimeout(primaryUrl, fetchOptions);
     
     if (response.ok) {
       console.log(`✅ Primary API success: ${response.status}`);
@@ -49,26 +73,26 @@ export async function fetchWithFallback(
   } catch (primaryError) {
     console.warn(`❌ Primary API failed:`, primaryError);
     
-    // Try backup URL
-    try {
-      console.log(`🔄 Trying backup API: ${BACKUP_API_URL}`);
-      const backupEndpoint = endpoint.replace(PRIMARY_API_URL, '').replace(/^\?/, '');
-      const backupUrl = endpoint.startsWith('http') 
-        ? endpoint.replace(PRIMARY_API_URL, BACKUP_API_URL)
-        : `${BACKUP_API_URL}${backupEndpoint.startsWith('?') ? backupEndpoint : `?${backupEndpoint}`}`;
+    // Only try backup if it's not the same as primary and not an internal route
+    if (backupUrl !== primaryUrl && !endpoint.startsWith('/api/')) {
+      try {
+        console.log(`🔄 Trying backup API: ${backupUrl}`);
+        const response = await fetchWithTimeout(backupUrl, fetchOptions);
         
-      const response = await fetchWithTimeout(backupUrl, fetchOptions);
-      
-      if (response.ok) {
-        console.log(`✅ Backup API success: ${response.status}`);
-        return response;
-      } else {
-        console.error(`❌ Backup API also failed: ${response.status}`);
-        throw new Error(`Both primary and backup APIs failed. Backup status: ${response.status}`);
+        if (response.ok) {
+          console.log(`✅ Backup API success: ${response.status}`);
+          return response;
+        } else {
+          console.error(`❌ Backup API also failed: ${response.status}`);
+          throw new Error(`Both primary and backup APIs failed. Backup status: ${response.status}`);
+        }
+      } catch (backupError) {
+        console.error(`❌ Backup API failed:`, backupError);
+        throw new Error(`Both APIs failed. Primary: ${primaryError}. Backup: ${backupError}`);
       }
-    } catch (backupError) {
-      console.error(`❌ Backup API failed:`, backupError);
-      throw new Error(`Both APIs failed. Primary: ${primaryError}. Backup: ${backupError}`);
+    } else {
+      // For internal routes or when backup is same as primary, just throw the original error
+      throw primaryError;
     }
   }
 }
