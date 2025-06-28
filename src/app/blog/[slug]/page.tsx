@@ -64,12 +64,25 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 // Pre-render specific blog posts at build time (Static Generation)
 export async function generateStaticParams() {
   try {
+    console.log('🔄 Generating static params for blog posts...');
+    
+    // During build time, we'll return empty array to avoid API calls
+    // Posts will be generated on-demand instead
+    console.log('⚡ Skipping static generation to avoid build-time API calls');
+    return [];
+    
+    // Alternative: If you want static generation, uncomment below and ensure API is available during build
+    /*
     const posts = await blogService.getAllPosts();
-    return posts.slice(0, 100).map((post: BlogPost) => ({
+    const staticParams = posts.slice(0, 10).map((post: BlogPost) => ({
       slug: post.slug,
     }));
+    console.log(`✅ Generated ${staticParams.length} static params`);
+    return staticParams;
+    */
   } catch (error) {
-    console.error('Error generating static params:', error);
+    console.error('❌ Error generating static params:', error);
+    // Return empty array so build doesn't fail
     return [];
   }
 }

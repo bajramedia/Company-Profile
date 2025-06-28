@@ -45,16 +45,39 @@ function calculateReadTime(content: string): number {
 
 class BlogServiceAPI {
   private apiBaseUrl: string;
+  private isServer: boolean;
+  private baseUrl: string;
 
   constructor() {
+    // Check if we're on server or client
+    this.isServer = typeof window === 'undefined';
+    
     // Use environment variable or fallback
     this.apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://www.bajramedia.com/api_bridge.php';
+    
+    // For build time and server-side, use full URL
+    if (this.isServer) {
+      this.baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://bajramedia.com';
+    } else {
+      // For client-side, use relative URLs
+      this.baseUrl = '';
+    }
+  }
+
+  private getApiUrl(endpoint: string): string {
+    // For server-side (build time), use full URL
+    if (this.isServer) {
+      return `${this.baseUrl}${endpoint}`;
+    }
+    // For client-side, use relative URL
+    return endpoint;
   }
 
   async getAllPosts(page: number = 1, limit: number = 10): Promise<BlogPost[]> {
     try {
-      // Use our API route instead of direct API bridge
-      const response = await fetch(`/api/posts?page=${page}&limit=${limit}`);
+      // Use our API route with proper URL handling
+      const url = this.getApiUrl(`/api/posts?page=${page}&limit=${limit}`);
+      const response = await fetch(url);
       
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -90,8 +113,9 @@ class BlogServiceAPI {
 
   async getPostBySlug(slug: string): Promise<BlogPost | null> {
     try {
-      // Use our API route instead of direct API bridge
-      const response = await fetch(`/api/posts/${slug}`);
+      // Use our API route with proper URL handling
+      const url = this.getApiUrl(`/api/posts/${slug}`);
+      const response = await fetch(url);
       
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
