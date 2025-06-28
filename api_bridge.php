@@ -580,9 +580,48 @@ function handleGet($pdo, $endpoint, $id) {
                 }
                 break;
 
+            case 'technologies':
+                if ($id) {
+                    // Get specific technology by ID
+                    $stmt = $pdo->prepare("SELECT * FROM technologies WHERE id = ? AND is_active = 1");
+                    $stmt->execute([$id]);
+                    $result = $stmt->fetch();
+                    echo json_encode($result ?: null);
+                } else {
+                    // Get all active technologies
+                    $category = $_GET['category'] ?? '';
+                    $include_inactive = $_GET['include_inactive'] ?? false;
+                    
+                    $sql = "SELECT * FROM technologies";
+                    $params = [];
+                    $where = [];
+                    
+                    if (!$include_inactive) {
+                        $where[] = "is_active = 1";
+                    }
+                    
+                    if ($category) {
+                        $where[] = "category = ?";
+                        $params[] = $category;
+                    }
+                    
+                    if (!empty($where)) {
+                        $sql .= " WHERE " . implode(" AND ", $where);
+                    }
+                    
+                    $sql .= " ORDER BY category, sort_order ASC, name ASC";
+                    
+                    $stmt = $pdo->prepare($sql);
+                    $stmt->execute($params);
+                    $results = $stmt->fetchAll();
+                    
+                    echo json_encode($results);
+                }
+                break;
+
             case 'debug':
                 // Debug endpoint to check table structure
-                $tables = ['post', 'author', 'category', 'portfolio', 'portfoliocategory', 'team_members', 'partners', 'about_content', 'settings', 'blog_posts', 'portfolio_items'];
+                $tables = ['post', 'author', 'category', 'portfolio', 'portfoliocategory', 'team_members', 'partners', 'about_content', 'settings', 'blog_posts', 'portfolio_items', 'technologies'];
                 $debug = [];
                 foreach ($tables as $table) {
                     $debug[$table] = getTableColumns($pdo, $table);
@@ -935,14 +974,43 @@ function handlePost($pdo, $endpoint) {
                 echo json_encode(['success' => true, 'id' => $pdo->lastInsertId()]);
                 break;
 
+            case 'technologies':
+                // Create new technology
+                if (empty($data['name']) || empty($data['icon'])) {
+                    http_response_code(400);
+                    echo json_encode(['error' => 'Name and icon are required']);
+                    return;
+                }
+                
+                $name = trim($data['name']);
+                $icon = trim($data['icon']);
+                $description_en = $data['description_en'] ?? '';
+                $description_id = $data['description_id'] ?? '';
+                $category = $data['category'] ?? 'general';
+                $color = $data['color'] ?? '#6B7280';
+                $sort_order = $data['sort_order'] ?? 0;
+                $is_active = isset($data['is_active']) ? ($data['is_active'] ? 1 : 0) : 1;
+                
+                // Validate category
+                $validCategories = ['web', 'mobile', 'uiux', 'game', 'system', 'marketing', 'general'];
+                if (!in_array($category, $validCategories)) {
+                    $category = 'general';
+                }
+                
+                $stmt = $pdo->prepare("
+                    INSERT INTO technologies (name, icon, description_en, description_id, category, color, sort_order, is_active) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                ");
+                $stmt->execute([$name, $icon, $description_en, $description_id, $category, $color, $sort_order, $is_active]);
+                
+                echo json_encode(['success' => true, 'id' => $pdo->lastInsertId()]);
+                break;
+
             case 'settings':
                 // Update settings - bulk update approach with proper transaction
                 try {
                     // Start transaction for atomicity
                     $pdo->beginTransaction();
-                    
-                    // Debug: Log incoming data
-                    error_log("🔧 API BRIDGE DEBUG: Settings data received: " . json_encode($data));
                     
                     // Check if setting table exists
                     $stmt = $pdo->query("SHOW TABLES LIKE 'setting'");
@@ -959,15 +1027,12 @@ function handlePost($pdo, $endpoint) {
                             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
                         )";
                         $pdo->exec($createTableSQL);
-                        error_log("🔧 API BRIDGE DEBUG: Created setting table");
                     }
                     
                     // Check current table structure
                     $columns = getTableColumns($pdo, 'setting');
                     $hasUpdatedAt = in_array('updated_at', $columns);
                     $hasType = in_array('type', $columns);
-                    
-                    error_log("🔧 API BRIDGE DEBUG: Table columns: " . implode(', ', $columns));
                     
                     // Update or insert settings
                     $updatedCount = 0;
@@ -983,8 +1048,6 @@ function handlePost($pdo, $endpoint) {
                             // Convert value to string for storage
                             $valueStr = is_array($value) || is_object($value) ? json_encode($value) : (string)$value;
                             $type = is_array($value) || is_object($value) ? 'json' : (is_bool($value) ? 'boolean' : (is_numeric($value) ? 'number' : 'string'));
-                            
-                            error_log("🔧 API BRIDGE DEBUG: Saving key='$key', value='$valueStr', type='$type'");
                             
                             if ($hasUpdatedAt && $hasType) {
                                 // Full table with type and updated_at
@@ -1016,40 +1079,32 @@ function handlePost($pdo, $endpoint) {
                             }
                             
                             if ($result) {
-                                $affectedRows = $stmt->rowCount();
-                                error_log("🔧 API BRIDGE DEBUG: Key '$key' - affected rows: $affectedRows");
                                 $updatedCount++;
                             } else {
                                 $error = $stmt->errorInfo();
                                 $errors[] = "Failed to save key '$key': " . $error[2];
-                                error_log("🔧 API BRIDGE ERROR: Failed to save key '$key': " . $error[2]);
                             }
                             
                         } catch (Exception $keyError) {
                             $errors[] = "Error saving key '$key': " . $keyError->getMessage();
-                            error_log("🔧 API BRIDGE ERROR: Exception for key '$key': " . $keyError->getMessage());
                         }
                     }
                     
                     // Commit transaction if no errors
                     if (empty($errors)) {
                         $pdo->commit();
-                        error_log("🔧 API BRIDGE DEBUG: Transaction committed successfully. Updated: $updatedCount");
                         
                         // Verify data was actually saved
                         $stmt = $pdo->query("SELECT COUNT(*) as count FROM setting");
                         $totalSettings = $stmt->fetch()['count'];
-                        error_log("🔧 API BRIDGE DEBUG: Total settings in database: $totalSettings");
                         
                         echo json_encode([
                             'success' => true, 
                             'updated' => $updatedCount,
-                            'total_in_db' => $totalSettings,
-                            'debug' => 'Data committed to database successfully'
+                            'total_in_db' => $totalSettings
                         ]);
                     } else {
                         $pdo->rollBack();
-                        error_log("🔧 API BRIDGE ERROR: Transaction rolled back due to errors: " . implode(', ', $errors));
                         throw new Exception('Some settings failed to save: ' . implode(', ', $errors));
                     }
                     
@@ -1058,7 +1113,6 @@ function handlePost($pdo, $endpoint) {
                     if ($pdo->inTransaction()) {
                         $pdo->rollBack();
                     }
-                    error_log("🔧 API BRIDGE ERROR: Settings save failed: " . $e->getMessage());
                     http_response_code(500);
                     echo json_encode(['error' => 'Settings error: ' . $e->getMessage()]);
                 }
@@ -1336,6 +1390,45 @@ function handlePut($pdo, $endpoint, $id) {
                 echo json_encode(['success' => true]);
                 break;
 
+            case 'technologies':
+                if (!$id) {
+                    http_response_code(400);
+                    echo json_encode(['error' => 'ID required for update']);
+                    return;
+                }
+                
+                if (empty($data['name']) || empty($data['icon'])) {
+                    http_response_code(400);
+                    echo json_encode(['error' => 'Name and icon are required']);
+                    return;
+                }
+                
+                $name = trim($data['name']);
+                $icon = trim($data['icon']);
+                $description_en = $data['description_en'] ?? '';
+                $description_id = $data['description_id'] ?? '';
+                $category = $data['category'] ?? 'general';
+                $color = $data['color'] ?? '#6B7280';
+                $sort_order = $data['sort_order'] ?? 0;
+                $is_active = isset($data['is_active']) ? ($data['is_active'] ? 1 : 0) : 1;
+                
+                // Validate category
+                $validCategories = ['web', 'mobile', 'uiux', 'game', 'system', 'marketing', 'general'];
+                if (!in_array($category, $validCategories)) {
+                    $category = 'general';
+                }
+                
+                $stmt = $pdo->prepare("
+                    UPDATE technologies 
+                    SET name = ?, icon = ?, description_en = ?, description_id = ?, 
+                        category = ?, color = ?, sort_order = ?, is_active = ?, updated_at = NOW()
+                    WHERE id = ?
+                ");
+                $stmt->execute([$name, $icon, $description_en, $description_id, $category, $color, $sort_order, $is_active, $id]);
+                
+                echo json_encode(['success' => true]);
+                break;
+
             default:
                 http_response_code(404);
                 echo json_encode(['error' => 'Endpoint not found']);
@@ -1486,6 +1579,20 @@ function handleDelete($pdo, $endpoint, $id) {
                 }
                 
                 $stmt = $pdo->prepare("DELETE FROM partners WHERE id = ?");
+                $stmt->execute([$id]);
+                
+                echo json_encode(['success' => true]);
+                break;
+
+            case 'technologies':
+                if (!$id) {
+                    http_response_code(400);
+                    echo json_encode(['error' => 'ID required for delete']);
+                    return;
+                }
+                
+                // Soft delete by setting is_active = 0 (safer for data integrity)
+                $stmt = $pdo->prepare("UPDATE technologies SET is_active = 0 WHERE id = ?");
                 $stmt->execute([$id]);
                 
                 echo json_encode(['success' => true]);

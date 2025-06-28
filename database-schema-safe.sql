@@ -86,6 +86,26 @@ CREATE TABLE IF NOT EXISTS settings (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
+-- ===========================
+-- TECHNOLOGIES TABLE
+-- ===========================
+CREATE TABLE IF NOT EXISTS technologies (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(100) NOT NULL,
+  icon VARCHAR(20) NOT NULL,
+  description_en TEXT,
+  description_id TEXT,
+  category ENUM('web', 'mobile', 'uiux', 'game', 'system', 'marketing', 'general') DEFAULT 'general',
+  color VARCHAR(7) DEFAULT '#6B7280',
+  sort_order INT DEFAULT 0,
+  is_active TINYINT(1) DEFAULT 1,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  INDEX idx_category (category),
+  INDEX idx_active (is_active),
+  INDEX idx_sort (sort_order)
+);
+
 -- =====================================================
 -- SAFE DATA INSERTION - Only if data doesn't exist
 -- =====================================================
@@ -164,6 +184,21 @@ INSERT INTO settings (
     social_linkedin = VALUES(social_linkedin),
     social_github = VALUES(social_github),
     updated_at = CURRENT_TIMESTAMP;
+
+-- Insert default technologies data
+INSERT INTO technologies (name, icon, description_en, description_id, category, color, sort_order) VALUES
+('React', '⚛️', 'Modern UI framework for building interactive user interfaces', 'Framework UI modern untuk membangun antarmuka pengguna interaktif', 'web', '#61DAFB', 1),
+('Next.js', '▲', 'Full-stack React framework with server-side rendering', 'Framework React full-stack dengan server-side rendering', 'web', '#000000', 2),
+('TypeScript', '📘', 'Type-safe JavaScript for better development experience', 'JavaScript dengan type safety untuk pengembangan yang lebih baik', 'web', '#3178C6', 3),
+('Tailwind CSS', '🎨', 'Utility-first CSS framework for rapid UI development', 'Framework CSS utility-first untuk pengembangan UI yang cepat', 'web', '#06B6D4', 4),
+('Node.js', '🟢', 'JavaScript runtime for server-side development', 'Runtime JavaScript untuk pengembangan server-side', 'web', '#339933', 5),
+('MySQL', '🗄️', 'Reliable relational database management system', 'Sistem manajemen database relasional yang handal', 'web', '#4479A1', 6),
+('Figma', '🎨', 'Collaborative interface design tool', 'Tool desain antarmuka kolaboratif', 'uiux', '#F24E1E', 7),
+('Adobe XD', '🟣', 'Vector-based user experience design tool', 'Tool desain pengalaman pengguna berbasis vektor', 'uiux', '#FF61F6', 8),
+('Unity', '🎮', '3D game development engine', 'Engine pengembangan game 3D', 'game', '#000000', 9),
+('React Native', '📱', 'Cross-platform mobile app framework', 'Framework aplikasi mobile cross-platform', 'mobile', '#61DAFB', 10),
+('Flutter', '💙', 'Google UI toolkit for cross-platform apps', 'Toolkit UI Google untuk aplikasi cross-platform', 'mobile', '#02569B', 11),
+('Firebase', '🔥', 'Google backend-as-a-service platform', 'Platform backend-as-a-service dari Google', 'general', '#FFCA28', 12);
 
 -- =====================================================
 -- VERIFICATION QUERIES

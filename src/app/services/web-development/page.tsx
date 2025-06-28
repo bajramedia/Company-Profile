@@ -4,19 +4,33 @@ import Link from "next/link";
 import { useState, useEffect } from 'react';
 import { Button, Heading, Navbar, Footer, AnimatedText } from "@/components";
 import { useLanguage } from "@/context/LanguageContext";
+import { technologiesService, Technology } from "@/services/TechnologiesService";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
-const technologies = [
-    { name: 'React', icon: '⚛️', description: 'Modern UI framework' },
-    { name: 'Next.js', icon: '▲', description: 'Full-stack framework' },
-    { name: 'TypeScript', icon: '📘', description: 'Type-safe JavaScript' },
-    { name: 'Tailwind', icon: '🎨', description: 'Utility-first CSS' }
-];
-
 export default function WebDevelopmentPage() {
-    const { t } = useLanguage();
+    const { t, language } = useLanguage();
     const [isDarkMode, setIsDarkMode] = useState(false);
+    const [technologies, setTechnologies] = useState<Technology[]>([]);
+    const [loadingTechnologies, setLoadingTechnologies] = useState(true);
+
+    // Load technologies dynamically
+    useEffect(() => {
+        const loadTechnologies = async () => {
+            try {
+                setLoadingTechnologies(true);
+                const webTech = await technologiesService.getWebTechnologies();
+                setTechnologies(webTech);
+            } catch (error) {
+                // Silent error - will show fallback UI
+                setTechnologies([]);
+            } finally {
+                setLoadingTechnologies(false);
+            }
+        };
+
+        loadTechnologies();
+    }, []);
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -67,6 +81,11 @@ export default function WebDevelopmentPage() {
             localStorage.setItem('darkMode', newMode ? 'true' : 'false');
             return newMode;
         });
+    };
+
+    // Get description based on current language
+    const getDescription = (tech: Technology) => {
+        return technologiesService.getDescription(tech, language);
     };
 
     return (
@@ -136,22 +155,56 @@ export default function WebDevelopmentPage() {
                         </p>
                     </div>
 
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                        {technologies.map((tech, index) => (
-                            <div
-                                key={tech.name}
-                                className="group bg-white dark:bg-gray-800 rounded-xl p-6 text-center shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 border border-gray-100 dark:border-gray-700"
-                                data-aos="fade-up"
-                                data-aos-delay={index * 100}
-                            >
-                                <div className={`text-4xl mb-3 group-hover:scale-110 transition-transform duration-300`}>
-                                    {tech.icon}
+                    {loadingTechnologies ? (
+                        // Loading skeleton
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                            {[...Array(4)].map((_, index) => (
+                                <div
+                                    key={index}
+                                    className="bg-white dark:bg-slate-800/90 dark:backdrop-blur-sm dark:border dark:border-gray-700/50 rounded-xl p-6 text-center shadow-sm border border-gray-100 animate-pulse"
+                                >
+                                    <div className="w-16 h-16 bg-gray-200 dark:bg-gray-700 rounded-full mx-auto mb-3"></div>
+                                    <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded mb-2 mx-auto w-3/4"></div>
+                                    <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded mx-auto w-1/2"></div>
                                 </div>
-                                <h3 className="font-semibold text-gray-900 dark:text-white mb-2">{tech.name}</h3>
-                                <p className="text-sm text-gray-600 dark:text-gray-400">{tech.description}</p>
-                            </div>
-                        ))}
-                    </div>
+                            ))}
+                        </div>
+                    ) : technologies.length > 0 ? (
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                            {technologies.map((tech, index) => (
+                                <div
+                                    key={tech.id}
+                                    className="group bg-white dark:bg-slate-800/90 dark:backdrop-blur-sm dark:border dark:border-gray-700/50 rounded-xl p-6 text-center shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 border border-gray-100"
+                                    data-aos="fade-up"
+                                    data-aos-delay={index * 100}
+                                >
+                                    <div
+                                        className="text-4xl mb-3 group-hover:scale-110 transition-transform duration-300"
+                                        style={{ color: tech.color }}
+                                    >
+                                        {tech.icon}
+                                    </div>
+                                    <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
+                                        {tech.name}
+                                    </h3>
+                                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                                        {getDescription(tech)}
+                                    </p>
+                                </div>
+                            ))}
+                        </div>
+                    ) : (
+                        // Empty state
+                        <div className="text-center py-12">
+                            <div className="text-6xl mb-4 opacity-50">🔧</div>
+                            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                                Teknologi Sedang Disiapkan
+                            </h3>
+                            <p className="text-gray-600 dark:text-gray-400">
+                                Tim kami sedang menyiapkan daftar teknologi terbaru untuk Anda
+                            </p>
+                        </div>
+                    )}
                 </section>
 
                 {/* Pricing Section */}
