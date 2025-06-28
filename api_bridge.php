@@ -174,6 +174,10 @@ function handleGet($pdo, $endpoint, $id) {
     try {
         switch ($endpoint) {
             case 'posts':
+                // DEBUG: Log received parameters
+                error_log("Posts endpoint called with GET params: " . print_r($_GET, true));
+                error_log("Request URI: " . $_SERVER['REQUEST_URI']);
+                
                 // Get table columns first
                 $postColumns = getTableColumns($pdo, 'post');
                 $authorColumns = getTableColumns($pdo, 'author');
@@ -211,6 +215,8 @@ function handleGet($pdo, $endpoint, $id) {
                     $limit = max(1, min(100, intval($_GET['limit'] ?? 10)));
                     $offset = ($page - 1) * $limit;
                     
+                    error_log("Posts pagination: page=$page, limit=$limit, offset=$offset");
+                    
                     $sql = "
                         SELECT p.*, 
                                a.$authorNameCol as authorName, 
@@ -224,8 +230,12 @@ function handleGet($pdo, $endpoint, $id) {
                         ORDER BY p.$dateCol DESC 
                         LIMIT $limit OFFSET $offset
                     ";
+                    
+                    error_log("Posts SQL: " . $sql);
                     $stmt = $pdo->query($sql);
                     $results = $stmt->fetchAll();
+                    
+                    error_log("Posts found: " . count($results));
                     
                     // Add date field for compatibility
                     foreach ($results as &$result) {
