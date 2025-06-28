@@ -281,7 +281,7 @@ export default function UIUXDesignPage() {
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                         <div
-                            className="bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-100 dark:border-gray-700 hover:scale-105 transition-all duration-300 flex flex-col h-full"
+                            className="bg-white dark:bg-slate-700 rounded-2xl p-8 border border-gray-100 dark:border-slate-600 hover:scale-105 transition-all duration-300 flex flex-col h-full"
                             data-aos="fade-up"
                             data-aos-delay="200"
                         >
@@ -297,7 +297,7 @@ export default function UIUXDesignPage() {
                         </div>
 
                         <div
-                            className="bg-white dark:bg-gray-800 rounded-2xl p-8 border-2 border-green-500 relative hover:scale-105 transition-all duration-300 flex flex-col h-full"
+                            className="bg-white dark:bg-slate-700 rounded-2xl p-8 border-2 border-green-500 relative hover:scale-105 transition-all duration-300 flex flex-col h-full"
                             data-aos="fade-up"
                             data-aos-delay="300"
                         >
@@ -316,7 +316,7 @@ export default function UIUXDesignPage() {
                         </div>
 
                         <div
-                            className="bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-100 dark:border-gray-700 hover:scale-105 transition-all duration-300 flex flex-col h-full"
+                            className="bg-white dark:bg-slate-700 rounded-2xl p-8 border border-gray-100 dark:border-slate-600 hover:scale-105 transition-all duration-300 flex flex-col h-full"
                             data-aos="fade-up"
                             data-aos-delay="400"
                         >
