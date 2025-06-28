@@ -350,54 +350,8 @@ const translations = {
   "about.cta.contact": { en: "Get in Touch", id: "Hubungi Kami" },
   "about.cta.portfolio": { en: "View Our Work", id: "Lihat Karya Kami" },
 
-  // Portfolio Demo Data (should be replaced with database content)
-  "portfolio.demo.title": { en: "Bajra Media Corporate Website", id: "Website Korporat Bajra Media" },
-  "portfolio.demo.description": { en: "Modern corporate website with responsive design and powerful CMS features for easy content management.", id: "Website perusahaan modern dengan design responsif dan fitur CMS yang powerful untuk mengelola konten dengan mudah." },
-  "portfolio.demo.content": {
-    en: `<p>Bajra Media Corporate Website is an ambitious project we worked on to build a comprehensive digital platform. This website functions not only as a company profile, but also as a dynamic information and blog center.</p>
-    
-    <h3>Challenge & Solution</h3>
-    <p>The client needed a website that not only looked professional, but was also easy to manage by their internal team. We developed a custom CMS that is user-friendly yet powerful.</p>
-    
-    <h3>Technology Stack</h3>
-    <p>We use Next.js 14 for optimal performance, TypeScript for type safety, Tailwind CSS for consistent styling, and modern database management for data efficiency.</p>
-    
-    <h3>Key Features</h3>
-    <ul>
-      <li>Perfect responsive design on all devices</li>
-      <li>Blog CMS with rich text editor</li>
-      <li>SEO optimization for good Google rankings</li>
-      <li>Dark mode support</li>
-      <li>Very fast page load speed</li>
-      <li>Intuitive admin dashboard</li>
-    </ul>
-    
-    <h3>Results</h3>
-    <p>The website successfully increased organic traffic by 300% in the first 3 months. Loading speed reached 95+ on Google PageSpeed Insights, and bounce rate dropped significantly to 15%.</p>`,
-
-    id: `<p>Bajra Media Corporate Website adalah project ambisius yang kami kerjakan untuk membangun platform digital yang komprehensif. Website ini tidak hanya berfungsi sebagai company profile, tetapi juga sebagai pusat informasi dan blog yang dinamis.</p>
-    
-    <h3>Challenge & Solution</h3>
-    <p>Klien membutuhkan website yang tidak hanya terlihat profesional, tapi juga mudah dikelola oleh tim internal mereka. Kami mengembangkan CMS custom yang user-friendly namun powerful.</p>
-    
-    <h3>Technology Stack</h3>
-    <p>Kami menggunakan Next.js 14 untuk performa optimal, TypeScript untuk type safety, Tailwind CSS untuk styling yang konsisten, dan modern database management untuk efisiensi data.</p>
-    
-    <h3>Key Features</h3>
-    <ul>
-      <li>Responsive design yang sempurna di semua device</li>
-      <li>Blog CMS dengan rich text editor</li>
-      <li>SEO optimization untuk ranking Google yang baik</li>
-      <li>Dark mode support</li>
-      <li>Page load speed yang sangat cepat</li>
-      <li>Admin dashboard yang intuitive</li>
-    </ul>
-    
-    <h3>Results</h3>
-    <p>Website berhasil meningkatkan traffic organic sebesar 300% dalam 3 bulan pertama. Loading speed mencapai 95+ di Google PageSpeed Insights, dan bounce rate turun signifikan menjadi 15%.</p>`
-  },
-  "portfolio.demo.client": { en: "Bajra Media", id: "Bajra Media" },
-  "portfolio.demo.category": { en: "Web Development", id: "Pengembangan Web" },
+  // NOTE: All portfolio and blog content is now loaded dynamically from the database
+  // No dummy/hardcoded content should be added here
 
   // Portfolio Form - comprehensive translations
   "portfolioForm.basicInfo": { en: "Basic Information", id: "Informasi Dasar" },
