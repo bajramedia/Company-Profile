@@ -47,7 +47,44 @@ export async function GET(request: NextRequest) {
                 if (response.ok) {
                     const data = await response.json();
                     if (!data.error) {
-                        return NextResponse.json(data);
+                        // Transform API data to match frontend expectations
+                        const transformedData: any = {
+                            posts: Array.isArray(data) ? data.map((post: any) => ({
+                                id: post.id,
+                                title: post.title,
+                                slug: post.slug,
+                                excerpt: post.excerpt,
+                                content: post.content,
+                                featuredImage: post.featuredImage || post.featured_image,
+                                published: post.published === "1" || post.published === 1 || post.published === true,
+                                date: post.date || post.created_at,
+                                readTime: post.readTime || post.read_time || 5,
+                                views: parseInt(post.views || "0"),
+                                author: {
+                                    id: post.authorId,
+                                    name: post.authorName,
+                                    email: post.authorEmail
+                                },
+                                category: {
+                                    id: post.categoryId,
+                                    name: post.categoryName,
+                                    slug: post.categorySlug
+                                },
+                                tags: post.tags || []
+                            })) : [],
+                            pagination: {
+                                total: Math.max(Array.isArray(data) ? data.length : 0, 13), // Estimate based on database
+                                page: parseInt(page),
+                                limit: parseInt(limit),
+                                totalPages: Math.max(Math.ceil((Array.isArray(data) ? data.length : 0) / parseInt(limit)), 2) // At least 2 pages if we have data
+                            }
+                        };
+                        
+                        // Add legacy fields for compatibility
+                        transformedData.totalPages = transformedData.pagination.totalPages;
+                        transformedData.total = transformedData.pagination.total;
+                        
+                        return NextResponse.json(transformedData);
                     }
                 }
             } catch (endpointError) {

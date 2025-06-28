@@ -65,6 +65,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     { name: t('admin.dashboard'), href: '/admin', icon: FiHome },
     { name: t('admin.posts'), href: '/admin/posts', icon: FiFileText },
     { name: t('admin.portfolio'), href: '/admin/portfolio', icon: FiBriefcase },
+    { name: 'Technologies', href: '/admin/technologies', icon: FiSettings },
     { name: 'Team', href: '/admin/team', icon: FiUsers },
     { name: 'Partners', href: '/admin/partners', icon: FiGlobe },
     { name: 'About', href: '/admin/about', icon: FiFolder },
