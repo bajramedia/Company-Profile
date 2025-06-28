@@ -5,11 +5,20 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Button, Heading, Logo, LanguageSwitcher, AnimatedText, Footer, WhatsAppChat } from '@/components';
 import { useLanguage } from '@/context/LanguageContext';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
 
 // Debug state for error tracking
 const DEBUG_MODE = true; // TEMPORARY: Enable debug mode
+
+// Conditional AOS import to avoid SSR issues
+let AOS: any = null;
+if (typeof window !== 'undefined') {
+  import('aos').then((aosModule) => {
+    AOS = aosModule.default;
+    import('aos/dist/aos.css');
+  }).catch((error) => {
+    console.warn('AOS could not be loaded:', error);
+  });
+}
 
 // Team members will be fetched from API
 
@@ -45,7 +54,11 @@ interface Partner {
 }
 
 export default function AboutPage() {
-  const { t, language } = useLanguage();
+  // Safe language hook usage
+  const languageContext = useLanguage();
+  const t = languageContext?.t || ((key: string) => key);
+  const language = languageContext?.language || 'en';
+
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
   const [teamLoading, setTeamLoading] = useState(true);
@@ -55,12 +68,16 @@ export default function AboutPage() {
   const [partnersError, setPartnersError] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // DEBUG: Error tracking
+  // DEBUG: Error tracking with safer console usage
   const [debugLogs, setDebugLogs] = useState<string[]>([]);
   const addDebugLog = (message: string) => {
-    if (DEBUG_MODE) {
-      console.log('🔍 DEBUG:', message);
-      setDebugLogs(prev => [...prev.slice(-10), `${new Date().toLocaleTimeString()}: ${message}`]);
+    if (DEBUG_MODE && typeof window !== 'undefined' && window.console && window.console.log) {
+      try {
+        window.console.log('🔍 DEBUG:', message);
+        setDebugLogs(prev => [...prev.slice(-10), `${new Date().toLocaleTimeString()}: ${message}`]);
+      } catch (error) {
+        // Ignore console errors
+      }
     }
   };
 
@@ -70,7 +87,7 @@ export default function AboutPage() {
       addDebugLog('Initializing dark mode...');
       if (typeof window !== 'undefined') {
         const savedMode = localStorage.getItem('darkMode');
-        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const systemPrefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
 
         // Priority: User saved preference > System preference > Default (light)
         let shouldEnableDarkMode = false;
@@ -93,61 +110,77 @@ export default function AboutPage() {
           document.documentElement.classList.remove('dark');
         }
 
-        // Listen for system theme changes
-        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-        const handleSystemThemeChange = (e: MediaQueryListEvent) => {
-          // Only auto-update if user hasn't manually set preference
-          const userPreference = localStorage.getItem('darkMode');
-          if (userPreference === null) {
-            addDebugLog(`System theme changed: ${e.matches ? 'dark' : 'light'}`);
-            setIsDarkMode(e.matches);
-            if (e.matches) {
-              document.documentElement.classList.add('dark');
-            } else {
-              document.documentElement.classList.remove('dark');
+        // Listen for system theme changes (with safety checks)
+        if (window.matchMedia) {
+          const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+          const handleSystemThemeChange = (e: MediaQueryListEvent) => {
+            try {
+              // Only auto-update if user hasn't manually set preference
+              const userPreference = localStorage.getItem('darkMode');
+              if (userPreference === null) {
+                addDebugLog(`System theme changed: ${e.matches ? 'dark' : 'light'}`);
+                setIsDarkMode(e.matches);
+                if (e.matches) {
+                  document.documentElement.classList.add('dark');
+                } else {
+                  document.documentElement.classList.remove('dark');
+                }
+              }
+            } catch (error) {
+              addDebugLog(`Theme change error: ${error}`);
             }
-          }
-        };
+          };
 
-        // Add listener for system theme changes
-        if (mediaQuery.addEventListener) {
-          mediaQuery.addEventListener('change', handleSystemThemeChange);
-        } else {
-          // Fallback for older browsers
-          mediaQuery.addListener(handleSystemThemeChange);
+          // Add listener for system theme changes
+          if (mediaQuery.addEventListener) {
+            mediaQuery.addEventListener('change', handleSystemThemeChange);
+          } else if (mediaQuery.addListener) {
+            // Fallback for older browsers
+            mediaQuery.addListener(handleSystemThemeChange);
+          }
+
+          // Listen for localStorage changes (for sync across tabs)
+          const handleStorageChange = (e: StorageEvent) => {
+            try {
+              if (e.key === 'darkMode') {
+                const newMode = e.newValue === 'true';
+                addDebugLog(`Theme synced across tabs: ${newMode ? 'dark' : 'light'}`);
+                setIsDarkMode(newMode);
+
+                if (newMode) {
+                  document.documentElement.classList.add('dark');
+                } else {
+                  document.documentElement.classList.remove('dark');
+                }
+              }
+            } catch (error) {
+              addDebugLog(`Storage change error: ${error}`);
+            }
+          };
+
+          window.addEventListener('storage', handleStorageChange);
+
+          // Cleanup
+          return () => {
+            try {
+              if (mediaQuery.removeEventListener) {
+                mediaQuery.removeEventListener('change', handleSystemThemeChange);
+              } else if (mediaQuery.removeListener) {
+                mediaQuery.removeListener(handleSystemThemeChange);
+              }
+              window.removeEventListener('storage', handleStorageChange);
+            } catch (error) {
+              // Ignore cleanup errors
+            }
+          };
         }
-
-        // Listen for localStorage changes (for sync across tabs)
-        const handleStorageChange = (e: StorageEvent) => {
-          if (e.key === 'darkMode') {
-            const newMode = e.newValue === 'true';
-            addDebugLog(`Theme synced across tabs: ${newMode ? 'dark' : 'light'}`);
-            setIsDarkMode(newMode);
-
-            if (newMode) {
-              document.documentElement.classList.add('dark');
-            } else {
-              document.documentElement.classList.remove('dark');
-            }
-          }
-        };
-
-        window.addEventListener('storage', handleStorageChange);
-
-        // Cleanup
-        return () => {
-          if (mediaQuery.removeEventListener) {
-            mediaQuery.removeEventListener('change', handleSystemThemeChange);
-          } else {
-            mediaQuery.removeListener(handleSystemThemeChange);
-          }
-          window.removeEventListener('storage', handleStorageChange);
-        };
       }
       addDebugLog('Dark mode initialization completed');
     } catch (error) {
       addDebugLog(`Dark mode initialization error: ${error}`);
-      console.error('Dark mode initialization error:', error);
+      if (typeof window !== 'undefined' && window.console && window.console.error) {
+        window.console.error('Dark mode initialization error:', error);
+      }
     }
   }, []);
 
@@ -167,12 +200,14 @@ export default function AboutPage() {
         }
 
         const data = await response.json();
-        addDebugLog(`Team members received: ${data.length} members`);
-        setTeamMembers(data);
+        addDebugLog(`Team members received: ${Array.isArray(data) ? data.length : 0} members`);
+        setTeamMembers(Array.isArray(data) ? data : []);
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : 'Failed to load team members';
         addDebugLog(`Team fetch error: ${errorMessage}`);
-        console.error('Failed to fetch team members:', error);
+        if (typeof window !== 'undefined' && window.console && window.console.error) {
+          window.console.error('Failed to fetch team members:', error);
+        }
         setTeamError(errorMessage);
       } finally {
         setTeamLoading(false);
@@ -199,12 +234,14 @@ export default function AboutPage() {
         }
 
         const data = await response.json();
-        addDebugLog(`Partners received: ${data.length} partners`);
-        setPartners(data);
+        addDebugLog(`Partners received: ${Array.isArray(data) ? data.length : 0} partners`);
+        setPartners(Array.isArray(data) ? data : []);
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : 'Failed to load partners';
         addDebugLog(`Partners fetch error: ${errorMessage}`);
-        console.error('Failed to fetch partners:', error);
+        if (typeof window !== 'undefined' && window.console && window.console.error) {
+          window.console.error('Failed to fetch partners:', error);
+        }
         setPartnersError(errorMessage);
       } finally {
         setPartnersLoading(false);
@@ -215,44 +252,71 @@ export default function AboutPage() {
     fetchPartners();
   }, []);
 
-  // Initialize AOS
+  // Initialize AOS with safer approach
   useEffect(() => {
     try {
       addDebugLog('Initializing AOS...');
-      AOS.init({
-        duration: 800,
-        easing: 'ease-out',
-        once: true,
-        offset: 100,
-      });
-      addDebugLog('AOS initialization completed');
+
+      if (typeof window !== 'undefined' && AOS && typeof AOS.init === 'function') {
+        AOS.init({
+          duration: 800,
+          easing: 'ease-out',
+          once: true,
+          offset: 100,
+        });
+        addDebugLog('AOS initialization completed');
+      } else {
+        // Fallback: Load AOS dynamically
+        import('aos').then((aosModule) => {
+          const aosInstance = aosModule.default;
+          if (aosInstance && typeof aosInstance.init === 'function') {
+            aosInstance.init({
+              duration: 800,
+              easing: 'ease-out',
+              once: true,
+              offset: 100,
+            });
+            addDebugLog('AOS loaded and initialized dynamically');
+          }
+        }).catch((error) => {
+          addDebugLog(`AOS dynamic loading failed: ${error}`);
+        });
+      }
     } catch (error) {
       addDebugLog(`AOS initialization error: ${error}`);
-      console.error('AOS initialization error:', error);
+      if (typeof window !== 'undefined' && window.console && window.console.error) {
+        window.console.error('AOS initialization error:', error);
+      }
     }
   }, []);
 
   const toggleDarkMode = () => {
-    setIsDarkMode(prev => {
-      const newMode = !prev;
-      addDebugLog(`Manual toggle: ${newMode ? 'dark' : 'light'}`);
+    try {
+      setIsDarkMode(prev => {
+        const newMode = !prev;
+        addDebugLog(`Manual toggle: ${newMode ? 'dark' : 'light'}`);
 
-      if (newMode) {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
+        if (newMode) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
 
-      // Save user preference (overrides system preference)
-      localStorage.setItem('darkMode', newMode ? 'true' : 'false');
-      return newMode;
-    });
+        // Save user preference (overrides system preference)
+        if (typeof window !== 'undefined' && window.localStorage) {
+          localStorage.setItem('darkMode', newMode ? 'true' : 'false');
+        }
+        return newMode;
+      });
+    } catch (error) {
+      addDebugLog(`Toggle dark mode error: ${error}`);
+    }
   };
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
       {/* DEBUG Panel - TEMPORARY */}
-      {DEBUG_MODE && (
+      {DEBUG_MODE && typeof window !== 'undefined' && (
         <div className="fixed top-0 right-0 w-80 h-32 bg-black/90 text-white text-xs p-2 z-50 overflow-auto">
           <div className="font-bold mb-1">🔍 DEBUG PANEL (REMOVE AFTER FIXING)</div>
           {debugLogs.map((log, index) => (
