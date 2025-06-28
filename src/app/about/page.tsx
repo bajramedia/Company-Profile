@@ -713,7 +713,7 @@ export default function AboutPage() {
                     data-aos="fade-up"
                     data-aos-delay={index * 200}
                   >
-                    <div className="relative w-24 h-24 mx-auto mb-6 bg-gradient-to-br from-white via-gray-50 to-gray-100 dark:from-gray-100 dark:via-gray-200 dark:to-gray-300 rounded-xl p-3 shadow-lg border border-gray-200 dark:border-gray-400 hover:shadow-xl hover:scale-105 transition-all duration-300 group">
+                    <div className="relative w-24 h-24 mx-auto mb-6 bg-transparent dark:bg-gradient-to-br dark:from-gray-100 dark:via-gray-200 dark:to-gray-300 rounded-xl p-3 shadow-md dark:shadow-lg border border-gray-100 dark:border-gray-400 hover:shadow-lg dark:hover:shadow-xl hover:scale-105 transition-all duration-300 group">
                       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-blue-500/5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                       <Image
                         src={partner.logo || '/images/logo.png'}
