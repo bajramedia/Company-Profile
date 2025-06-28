@@ -10,7 +10,7 @@ interface Technology {
     icon: string;
     description_en: string;
     description_id: string;
-    category: 'web' | 'mobile' | 'uiux' | 'game' | 'system' | 'marketing' | 'general';
+    category: string;
     color: string;
     sort_order: number;
     is_active: boolean;
@@ -18,19 +18,18 @@ interface Technology {
     updated_at: string;
 }
 
-const CATEGORIES = [
-    { value: 'web', label: 'Web Development', color: '#3B82F6' },
-    { value: 'mobile', label: 'Mobile Development', color: '#10B981' },
-    { value: 'uiux', label: 'UI/UX Design', color: '#F59E0B' },
-    { value: 'game', label: 'Game Development', color: '#8B5CF6' },
-    { value: 'system', label: 'System Development', color: '#EF4444' },
-    { value: 'marketing', label: 'Digital Marketing', color: '#F97316' },
-    { value: 'general', label: 'General', color: '#6B7280' },
-];
+interface Category {
+    value: string;
+    label: string;
+    color: string;
+    description?: string;
+}
 
 export default function TechnologiesAdminPage() {
     const [technologies, setTechnologies] = useState<Technology[]>([]);
+    const [categories, setCategories] = useState<Category[]>([]);
     const [loading, setLoading] = useState(true);
+    const [loadingCategories, setLoadingCategories] = useState(true);
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [editingTech, setEditingTech] = useState<Technology | null>(null);
     const [formData, setFormData] = useState({
@@ -38,11 +37,36 @@ export default function TechnologiesAdminPage() {
         icon: '',
         description_en: '',
         description_id: '',
-        category: 'general' as Technology['category'],
+        category: 'general',
         color: '#6B7280',
         sort_order: 0,
         is_active: true,
     });
+
+    // Fetch categories from database
+    const fetchCategories = async () => {
+        try {
+            setLoadingCategories(true);
+            const response = await fetch('/api/admin/technology-categories');
+            if (response.ok) {
+                const data = await response.json();
+                setCategories(data);
+
+                // Set default category untuk form
+                if (data.length > 0 && !formData.category) {
+                    setFormData(prev => ({ ...prev, category: data[0].value }));
+                }
+            }
+        } catch (error) {
+            console.error('Error fetching categories:', error);
+            // Fallback jika error
+            setCategories([
+                { value: 'general', label: 'General', color: '#6B7280' }
+            ]);
+        } finally {
+            setLoadingCategories(false);
+        }
+    };
 
     // Fetch technologies
     const fetchTechnologies = async () => {
@@ -61,8 +85,15 @@ export default function TechnologiesAdminPage() {
     };
 
     useEffect(() => {
+        fetchCategories();
         fetchTechnologies();
     }, []);
+
+    // Get category info by value
+    const getCategoryInfo = (categoryValue: string) => {
+        return categories.find(cat => cat.value === categoryValue) ||
+            { value: categoryValue, label: categoryValue, color: '#6B7280' };
+    };
 
     // Handle form submission
     const handleSubmit = async (e: React.FormEvent) => {
@@ -211,11 +242,11 @@ export default function TechnologiesAdminPage() {
                                             <span
                                                 className="text-xs px-2 py-1 rounded-full font-medium"
                                                 style={{
-                                                    backgroundColor: `${CATEGORIES.find(c => c.value === tech.category)?.color}20`,
-                                                    color: CATEGORIES.find(c => c.value === tech.category)?.color
+                                                    backgroundColor: `${getCategoryInfo(tech.category)?.color}20`,
+                                                    color: getCategoryInfo(tech.category)?.color
                                                 }}
                                             >
-                                                {CATEGORIES.find(c => c.value === tech.category)?.label}
+                                                {getCategoryInfo(tech.category)?.label}
                                             </span>
                                         </div>
                                     </div>
@@ -328,10 +359,10 @@ export default function TechnologiesAdminPage() {
                                         </label>
                                         <select
                                             value={formData.category}
-                                            onChange={(e) => setFormData({ ...formData, category: e.target.value as Technology['category'] })}
+                                            onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                                             className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-blue-500 focus:border-blue-500"
                                         >
-                                            {CATEGORIES.map((cat) => (
+                                            {categories.map((cat) => (
                                                 <option key={cat.value} value={cat.value}>
                                                     {cat.label}
                                                 </option>
