@@ -62,23 +62,26 @@ class BlogServiceAPI {
       
       const posts = await response.json();
       
-      // Posts are already formatted by our API route
-      return posts.map((post: any) => ({
+      // Posts are already formatted by our API route with PURE database data
+      return posts.filter((post: any) => {
+        // Only return posts with complete database data - NO DUMMY DATA
+        return post.id && post.title && post.author?.name && post.category?.name;
+      }).map((post: any) => ({
         ...post,
         date: post.date || post.createdAt,
         featured: post.featured || false,
-        readTime: parseInt(post.readTime) || calculateReadTime(post.content || ''),
+        readTime: parseInt(post.readTime) || null,
         author: {
-          id: post.author?.id || '1',
-          name: post.author?.name || 'Unknown Author',
-          email: post.author?.email || '',
-          avatar: post.author?.avatar || '',
-          bio: post.author?.bio || ''
+          id: post.author.id,
+          name: post.author.name,
+          email: post.author.email || '',
+          avatar: post.author.avatar || '',
+          bio: post.author.bio || ''
         },
         category: {
-          id: post.category?.id || '1',
-          name: post.category?.name || 'Uncategorized',
-          slug: post.category?.slug || 'uncategorized',
+          id: post.category.id,
+          name: post.category.name,
+          slug: post.category.slug
         },
         views: post.views || 0
       }));
@@ -101,23 +104,34 @@ class BlogServiceAPI {
       
       if (!post) return null;
       
-      // Post is already formatted by our API route
+      // Validate post has required database fields - NO DUMMY DATA
+      if (!post.id || !post.title || !post.author?.name || !post.category?.name) {
+        console.error('❌ Post missing required fields:', {
+          id: !!post.id,
+          title: !!post.title,
+          authorName: !!post.author?.name,
+          categoryName: !!post.category?.name
+        });
+        return null;
+      }
+      
+      // Post with PURE database data only
       return {
         ...post,
         date: post.date || post.createdAt,
         featured: post.featured || false,
-        readTime: parseInt(post.readTime) || calculateReadTime(post.content || ''),
+        readTime: parseInt(post.readTime) || null,
         author: {
-          id: post.author?.id || '1',
-          name: post.author?.name || 'Unknown Author',
-          email: post.author?.email || '',
-          avatar: post.author?.avatar || '',
-          bio: post.author?.bio || ''
+          id: post.author.id,
+          name: post.author.name,
+          email: post.author.email || '',
+          avatar: post.author.avatar || '',
+          bio: post.author.bio || ''
         },
         category: {
-          id: post.category?.id || '1',
-          name: post.category?.name || 'Uncategorized',
-          slug: post.category?.slug || 'uncategorized',
+          id: post.category.id,
+          name: post.category.name,
+          slug: post.category.slug
         },
         views: post.views || 0
       };
