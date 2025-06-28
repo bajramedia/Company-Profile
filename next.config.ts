@@ -34,9 +34,9 @@ const nextConfig: NextConfig = {
     ],
   },
   
-  // Environment variables for client-side
+  // Environment variables for client-side - ensure API always points to production
   env: {
-    NEXT_PUBLIC_API_BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL,
+    NEXT_PUBLIC_API_BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL || 'https://bajramedia.com/api_bridge.php',
   },
   
   // Webpack configuration
