@@ -4,9 +4,10 @@ const API_BASE_URL = 'https://bajramedia.com';
 
 export async function GET(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    context: { params: Promise<{ id: string }> }
 ) {
     try {
+        const params = await context.params;
         const { id } = params;
 
         const response = await fetch(`${API_BASE_URL}/api_bridge.php/technologies/${id}`, {
@@ -24,7 +25,7 @@ export async function GET(
         const data = await response.json();
         return NextResponse.json(data);
     } catch (error) {
-        console.error('❌ Error fetching technology:', error);
+        console.error('Error fetching technology:', error);
         return NextResponse.json(
             { error: 'Failed to fetch technology' },
             { status: 500 }
@@ -34,9 +35,10 @@ export async function GET(
 
 export async function PUT(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    context: { params: Promise<{ id: string }> }
 ) {
     try {
+        const params = await context.params;
         const { id } = params;
         const body = await request.json();
         
@@ -64,7 +66,7 @@ export async function PUT(
         const data = await response.json();
         return NextResponse.json(data);
     } catch (error) {
-        console.error('❌ Error updating technology:', error);
+        console.error('Error updating technology:', error);
         return NextResponse.json(
             { error: 'Failed to update technology' },
             { status: 500 }
@@ -74,9 +76,10 @@ export async function PUT(
 
 export async function DELETE(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    context: { params: Promise<{ id: string }> }
 ) {
     try {
+        const params = await context.params;
         const { id } = params;
 
         const response = await fetch(`${API_BASE_URL}/api_bridge.php/technologies/${id}`, {
@@ -94,7 +97,7 @@ export async function DELETE(
         const data = await response.json();
         return NextResponse.json(data);
     } catch (error) {
-        console.error('❌ Error deleting technology:', error);
+        console.error('Error deleting technology:', error);
         return NextResponse.json(
             { error: 'Failed to delete technology' },
             { status: 500 }
