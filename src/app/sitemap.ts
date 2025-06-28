@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 
 // Required for static export
 export const dynamic = 'force-static';
-
+  
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://bajramedia.com';
 
@@ -55,7 +55,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: new Date(),
     changeFrequency: 'monthly' as const,
     priority: 0.7,
-  }));
+        }));
 
   // For static export, we'll skip dynamic content fetching
   // In production with server, you would fetch posts and portfolio here

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const API_BASE_URL = 'https://bajramedia.com/api_bridge.php';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://bajramedia.com/api_bridge.php';
 
 export async function GET(request: NextRequest) {
   try {
@@ -9,19 +9,34 @@ export async function GET(request: NextRequest) {
     const limit = parseInt(searchParams.get("limit") || "10");
     const search = searchParams.get("search") || "";
 
-    console.log('Public Posts API: Fetching from production database...');
-    const response = await fetch(`${API_BASE_URL}?endpoint=posts&page=${page}&limit=${limit}`);
+    console.log('📝 Public Posts API: Fetching from', API_BASE_URL);
+    console.log('📊 Query params:', { page, limit, search });
+    
+    const response = await fetch(`${API_BASE_URL}?endpoint=posts&page=${page}&limit=${limit}`, {
+      method: 'GET',
+      headers: {
+        'User-Agent': 'Bajramedia-Website/1.0'
+      }
+    });
+    
+    console.log('📡 API Response status:', response.status);
     
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     
     const posts = await response.json();
+    console.log('📄 Raw posts received:', Array.isArray(posts) ? posts.length : 'Not array');
+    
+    // Ensure posts is array
+    const postsArray = Array.isArray(posts) ? posts : [];
     
     // Filter only published posts for public access
-    const publishedPosts = posts.filter((post: any) => 
+    const publishedPosts = postsArray.filter((post: any) => 
       post.published === "1" || post.published === 1 || post.published === true
     );
+    
+    console.log('✅ Published posts found:', publishedPosts.length);
 
     // Filter posts based on search if provided
     let filteredPosts = publishedPosts;
@@ -43,6 +58,7 @@ export async function GET(request: NextRequest) {
       content: post.content,
       featuredImage: post.featuredImage,
       date: post.createdAt || post.date,
+      createdAt: post.createdAt || post.date,
       readTime: post.readTime || 5,
       published: true, // Always true for public API
       featured: post.featured === "1" || post.featured === 1 || post.featured === true,
@@ -61,16 +77,17 @@ export async function GET(request: NextRequest) {
       views: post.views || 0
     }));
 
-    console.log('Public Posts API: Database success');
+    console.log('🎉 Formatted posts ready:', formattedPosts.length);
     return NextResponse.json(formattedPosts);
     
   } catch (error) {
-    console.error("Public Posts API: Database connection failed:", error);
+    console.error("❌ Public Posts API Error:", error);
     return NextResponse.json(
       { 
         error: 'Failed to fetch posts from database',
-        message: 'Please check if post table exists in bajx7634_bajra database',
-        details: error instanceof Error ? error.message : 'Unknown error occurred' 
+        message: 'API connection failed',
+        details: error instanceof Error ? error.message : 'Unknown error occurred',
+        apiUrl: API_BASE_URL
       },
       { status: 500 }
     );
