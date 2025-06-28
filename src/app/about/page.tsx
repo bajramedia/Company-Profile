@@ -5,20 +5,50 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Button, Heading, Logo, LanguageSwitcher, AnimatedText, Footer, WhatsAppChat } from '@/components';
 import { useLanguage } from '@/context/LanguageContext';
+// Import AOS CSS statically to avoid build issues
+import 'aos/dist/aos.css';
 
 // Debug state for error tracking
 const DEBUG_MODE = true; // TEMPORARY: Enable debug mode
 
-// Conditional AOS import to avoid SSR issues
+// Enhanced console logger for debugging
+const logger = {
+  log: (...args: any[]) => {
+    if (typeof window !== 'undefined') {
+      try {
+        console.log('[BAJRA DEBUG]', ...args);
+      } catch (e) {
+        // Fallback if console is not available
+        if (window.localStorage) {
+          const logs = JSON.parse(localStorage.getItem('bajra_logs') || '[]');
+          logs.push(`${new Date().toISOString()}: ${args.join(' ')}`);
+          localStorage.setItem('bajra_logs', JSON.stringify(logs.slice(-50))); // Keep last 50 logs
+        }
+      }
+    }
+  },
+  error: (...args: any[]) => {
+    if (typeof window !== 'undefined') {
+      try {
+        console.error('[BAJRA ERROR]', ...args);
+      } catch (e) {
+        // Fallback logging
+      }
+    }
+  },
+  warn: (...args: any[]) => {
+    if (typeof window !== 'undefined') {
+      try {
+        console.warn('[BAJRA WARN]', ...args);
+      } catch (e) {
+        // Fallback logging
+      }
+    }
+  }
+};
+
+// AOS will be loaded dynamically
 let AOS: any = null;
-if (typeof window !== 'undefined') {
-  import('aos').then((aosModule) => {
-    AOS = aosModule.default;
-    import('aos/dist/aos.css');
-  }).catch((error) => {
-    console.warn('AOS could not be loaded:', error);
-  });
-}
 
 // Team members will be fetched from API
 
@@ -58,7 +88,7 @@ export default function AboutPage() {
   const languageContext = useLanguage();
   const t = languageContext?.t || ((key: string) => key);
   const language = languageContext?.language || 'en';
-
+  
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
   const [teamLoading, setTeamLoading] = useState(true);
@@ -67,16 +97,29 @@ export default function AboutPage() {
   const [partnersLoading, setPartnersLoading] = useState(true);
   const [partnersError, setPartnersError] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-  // DEBUG: Error tracking with safer console usage
+  
+  // DEBUG: Enhanced error tracking
   const [debugLogs, setDebugLogs] = useState<string[]>([]);
-  const addDebugLog = (message: string) => {
-    if (DEBUG_MODE && typeof window !== 'undefined' && window.console && window.console.log) {
-      try {
-        window.console.log('🔍 DEBUG:', message);
-        setDebugLogs(prev => [...prev.slice(-10), `${new Date().toLocaleTimeString()}: ${message}`]);
-      } catch (error) {
-        // Ignore console errors
+  const [consoleVisible, setConsoleVisible] = useState(false);
+  
+  const addDebugLog = (message: string, type: 'log' | 'error' | 'warn' = 'log') => {
+    if (DEBUG_MODE) {
+      const timestamp = new Date().toLocaleTimeString();
+      const logEntry = `[${timestamp}] ${message}`;
+      
+      // Add to state for UI display
+      setDebugLogs(prev => [...prev.slice(-20), logEntry]);
+      
+      // Also log to console
+      switch (type) {
+        case 'error':
+          logger.error(message);
+          break;
+        case 'warn':
+          logger.warn(message);
+          break;
+        default:
+          logger.log(message);
       }
     }
   };
@@ -84,7 +127,7 @@ export default function AboutPage() {
   // Initialize dark mode with system preference detection
   useEffect(() => {
     try {
-      addDebugLog('Initializing dark mode...');
+      addDebugLog('🌙 Initializing dark mode...');
       if (typeof window !== 'undefined') {
         const savedMode = localStorage.getItem('darkMode');
         const systemPrefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -127,7 +170,7 @@ export default function AboutPage() {
                 }
               }
             } catch (error) {
-              addDebugLog(`Theme change error: ${error}`);
+              addDebugLog(`Theme change error: ${error}`, 'error');
             }
           };
 
@@ -154,7 +197,7 @@ export default function AboutPage() {
                 }
               }
             } catch (error) {
-              addDebugLog(`Storage change error: ${error}`);
+              addDebugLog(`Storage change error: ${error}`, 'error');
             }
           };
 
@@ -175,12 +218,9 @@ export default function AboutPage() {
           };
         }
       }
-      addDebugLog('Dark mode initialization completed');
+      addDebugLog('✅ Dark mode initialization completed');
     } catch (error) {
-      addDebugLog(`Dark mode initialization error: ${error}`);
-      if (typeof window !== 'undefined' && window.console && window.console.error) {
-        window.console.error('Dark mode initialization error:', error);
-      }
+      addDebugLog(`❌ Dark mode initialization error: ${error}`, 'error');
     }
   }, []);
 
@@ -188,30 +228,27 @@ export default function AboutPage() {
   useEffect(() => {
     const fetchTeamMembers = async () => {
       try {
-        addDebugLog('Starting team members fetch...');
+        addDebugLog('👥 Starting team members fetch...');
         setTeamLoading(true);
         setTeamError(null);
 
         const response = await fetch('/api/team-members');
-        addDebugLog(`Team API response status: ${response.status}`);
-
+        addDebugLog(`📡 Team API response status: ${response.status}`);
+        
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
         const data = await response.json();
-        addDebugLog(`Team members received: ${Array.isArray(data) ? data.length : 0} members`);
+        addDebugLog(`✅ Team members received: ${Array.isArray(data) ? data.length : 0} members`);
         setTeamMembers(Array.isArray(data) ? data : []);
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : 'Failed to load team members';
-        addDebugLog(`Team fetch error: ${errorMessage}`);
-        if (typeof window !== 'undefined' && window.console && window.console.error) {
-          window.console.error('Failed to fetch team members:', error);
-        }
+        addDebugLog(`❌ Team fetch error: ${errorMessage}`, 'error');
         setTeamError(errorMessage);
       } finally {
         setTeamLoading(false);
-        addDebugLog('Team members fetch completed');
+        addDebugLog('🏁 Team members fetch completed');
       }
     };
 
@@ -222,30 +259,27 @@ export default function AboutPage() {
   useEffect(() => {
     const fetchPartners = async () => {
       try {
-        addDebugLog('Starting partners fetch...');
+        addDebugLog('🤝 Starting partners fetch...');
         setPartnersLoading(true);
         setPartnersError(null);
 
         const response = await fetch('/api/partners');
-        addDebugLog(`Partners API response status: ${response.status}`);
-
+        addDebugLog(`📡 Partners API response status: ${response.status}`);
+        
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
         const data = await response.json();
-        addDebugLog(`Partners received: ${Array.isArray(data) ? data.length : 0} partners`);
+        addDebugLog(`✅ Partners received: ${Array.isArray(data) ? data.length : 0} partners`);
         setPartners(Array.isArray(data) ? data : []);
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : 'Failed to load partners';
-        addDebugLog(`Partners fetch error: ${errorMessage}`);
-        if (typeof window !== 'undefined' && window.console && window.console.error) {
-          window.console.error('Failed to fetch partners:', error);
-        }
+        addDebugLog(`❌ Partners fetch error: ${errorMessage}`, 'error');
         setPartnersError(errorMessage);
       } finally {
         setPartnersLoading(false);
-        addDebugLog('Partners fetch completed');
+        addDebugLog('🏁 Partners fetch completed');
       }
     };
 
@@ -254,47 +288,40 @@ export default function AboutPage() {
 
   // Initialize AOS with safer approach
   useEffect(() => {
-    try {
-      addDebugLog('Initializing AOS...');
-
-      if (typeof window !== 'undefined' && AOS && typeof AOS.init === 'function') {
-        AOS.init({
-          duration: 800,
-          easing: 'ease-out',
-          once: true,
-          offset: 100,
-        });
-        addDebugLog('AOS initialization completed');
-      } else {
-        // Fallback: Load AOS dynamically
-        import('aos').then((aosModule) => {
-          const aosInstance = aosModule.default;
-          if (aosInstance && typeof aosInstance.init === 'function') {
-            aosInstance.init({
+    const initAOS = async () => {
+      try {
+        addDebugLog('🎨 Initializing AOS...');
+        
+        if (typeof window !== 'undefined') {
+          // Import AOS dynamically
+          const aosModule = await import('aos');
+          AOS = aosModule.default;
+          
+          if (AOS && typeof AOS.init === 'function') {
+            AOS.init({
               duration: 800,
               easing: 'ease-out',
               once: true,
               offset: 100,
             });
-            addDebugLog('AOS loaded and initialized dynamically');
+            addDebugLog('✅ AOS initialized successfully');
+          } else {
+            addDebugLog('⚠️ AOS module loaded but init function not found', 'warn');
           }
-        }).catch((error) => {
-          addDebugLog(`AOS dynamic loading failed: ${error}`);
-        });
+        }
+      } catch (error) {
+        addDebugLog(`❌ AOS initialization error: ${error}`, 'error');
       }
-    } catch (error) {
-      addDebugLog(`AOS initialization error: ${error}`);
-      if (typeof window !== 'undefined' && window.console && window.console.error) {
-        window.console.error('AOS initialization error:', error);
-      }
-    }
+    };
+
+    initAOS();
   }, []);
 
   const toggleDarkMode = () => {
     try {
       setIsDarkMode(prev => {
         const newMode = !prev;
-        addDebugLog(`Manual toggle: ${newMode ? 'dark' : 'light'}`);
+        addDebugLog(`🎛️ Manual toggle: ${newMode ? 'dark' : 'light'}`);
 
         if (newMode) {
           document.documentElement.classList.add('dark');
@@ -309,20 +336,55 @@ export default function AboutPage() {
         return newMode;
       });
     } catch (error) {
-      addDebugLog(`Toggle dark mode error: ${error}`);
+      addDebugLog(`❌ Toggle dark mode error: ${error}`, 'error');
     }
   };
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
-      {/* DEBUG Panel - TEMPORARY */}
+      {/* Enhanced DEBUG Console - TEMPORARY */}
       {DEBUG_MODE && typeof window !== 'undefined' && (
-        <div className="fixed top-0 right-0 w-80 h-32 bg-black/90 text-white text-xs p-2 z-50 overflow-auto">
-          <div className="font-bold mb-1">🔍 DEBUG PANEL (REMOVE AFTER FIXING)</div>
-          {debugLogs.map((log, index) => (
-            <div key={index} className="mb-1">{log}</div>
-          ))}
-        </div>
+        <>
+          {/* Console Toggle Button */}
+          <div className="fixed top-4 right-4 z-50">
+            <button
+              onClick={() => setConsoleVisible(!consoleVisible)}
+              className="bg-black/90 text-white px-3 py-2 rounded text-xs font-mono hover:bg-black"
+            >
+              🔍 {consoleVisible ? 'Hide' : 'Show'} Debug Console
+            </button>
+          </div>
+          
+          {/* Console Panel */}
+          {consoleVisible && (
+            <div className="fixed top-16 right-4 w-96 h-80 bg-black/95 text-green-400 text-xs p-3 z-50 overflow-auto font-mono border border-green-500 rounded">
+              <div className="sticky top-0 bg-black/95 pb-2 mb-2 border-b border-green-500">
+                <div className="flex justify-between items-center">
+                  <span className="text-green-300 font-bold">🚀 BAJRAMEDIA DEBUG CONSOLE</span>
+                  <button
+                    onClick={() => {
+                      setDebugLogs([]);
+                      addDebugLog('🗑️ Console cleared');
+                    }}
+                    className="text-red-400 hover:text-red-300"
+                  >
+                    Clear
+                  </button>
+                </div>
+              </div>
+              <div className="space-y-1">
+                {debugLogs.map((log, index) => (
+                  <div key={index} className="text-green-400 leading-tight">
+                    {log}
+                  </div>
+                ))}
+                {debugLogs.length === 0 && (
+                  <div className="text-gray-500">No logs yet...</div>
+                )}
+              </div>
+            </div>
+          )}
+        </>
       )}
 
       {/* Header */}
@@ -807,7 +869,7 @@ export default function AboutPage() {
                               className="w-8 h-8 bg-gray-800 text-white rounded-full flex items-center justify-center hover:bg-gray-900 transition-colors"
                             >
                               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.239 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
                               </svg>
                             </a>
                           )}
@@ -819,7 +881,7 @@ export default function AboutPage() {
                               className="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full flex items-center justify-center hover:from-purple-600 hover:to-pink-600 transition-colors"
                             >
                               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
                               </svg>
                             </a>
                           )}
