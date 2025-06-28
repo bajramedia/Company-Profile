@@ -528,7 +528,6 @@ export default function AdminTeamPage() {
                                     <ImageUpload
                                         value={formData.image_url || ''}
                                         onChange={handleImageChange}
-                                        folder="team"
                                     />
                                     {formData.image_url && (
                                         <div className="flex items-center space-x-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">

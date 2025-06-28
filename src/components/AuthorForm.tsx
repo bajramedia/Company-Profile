@@ -126,7 +126,6 @@ export default function AuthorForm({ authorId, initialData }: AuthorFormProps) {
                 <ImageUpload
                   value={formData.avatar}
                   onChange={handleAvatarChange}
-                  folder="authors"
                 />
                 {formData.avatar && (
                   <div className="flex items-center space-x-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
