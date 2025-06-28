@@ -8,6 +8,9 @@ import { useLanguage } from '@/context/LanguageContext';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
+// Debug state for error tracking
+const DEBUG_MODE = true; // TEMPORARY: Enable debug mode
+
 // Team members will be fetched from API
 
 // Partners data will be fetched from API
@@ -52,83 +55,99 @@ export default function AboutPage() {
   const [partnersError, setPartnersError] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+  // DEBUG: Error tracking
+  const [debugLogs, setDebugLogs] = useState<string[]>([]);
+  const addDebugLog = (message: string) => {
+    if (DEBUG_MODE) {
+      console.log('🔍 DEBUG:', message);
+      setDebugLogs(prev => [...prev.slice(-10), `${new Date().toLocaleTimeString()}: ${message}`]);
+    }
+  };
+
   // Initialize dark mode with system preference detection
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const savedMode = localStorage.getItem('darkMode');
-      const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    try {
+      addDebugLog('Initializing dark mode...');
+      if (typeof window !== 'undefined') {
+        const savedMode = localStorage.getItem('darkMode');
+        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
-      // Priority: User saved preference > System preference > Default (light)
-      let shouldEnableDarkMode = false;
+        // Priority: User saved preference > System preference > Default (light)
+        let shouldEnableDarkMode = false;
 
-      if (savedMode !== null) {
-        // User has manually set preference
-        shouldEnableDarkMode = savedMode === 'true';
-        console.log('🎨 Using user preference:', shouldEnableDarkMode ? 'dark' : 'light');
-      } else {
-        // No user preference, use system setting
-        shouldEnableDarkMode = systemPrefersDark;
-        console.log('🖥️ Using system preference:', shouldEnableDarkMode ? 'dark' : 'light');
-      }
-
-      setIsDarkMode(shouldEnableDarkMode);
-
-      if (shouldEnableDarkMode) {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
-
-      // Listen for system theme changes
-      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-      const handleSystemThemeChange = (e: MediaQueryListEvent) => {
-        // Only auto-update if user hasn't manually set preference
-        const userPreference = localStorage.getItem('darkMode');
-        if (userPreference === null) {
-          console.log('🔄 System theme changed:', e.matches ? 'dark' : 'light');
-          setIsDarkMode(e.matches);
-          if (e.matches) {
-            document.documentElement.classList.add('dark');
-          } else {
-            document.documentElement.classList.remove('dark');
-          }
-        }
-      };
-
-      // Add listener for system theme changes
-      if (mediaQuery.addEventListener) {
-        mediaQuery.addEventListener('change', handleSystemThemeChange);
-      } else {
-        // Fallback for older browsers
-        mediaQuery.addListener(handleSystemThemeChange);
-      }
-
-      // Listen for localStorage changes (for sync across tabs)
-      const handleStorageChange = (e: StorageEvent) => {
-        if (e.key === 'darkMode') {
-          const newMode = e.newValue === 'true';
-          console.log('📱 Theme synced across tabs:', newMode ? 'dark' : 'light');
-          setIsDarkMode(newMode);
-
-          if (newMode) {
-            document.documentElement.classList.add('dark');
-          } else {
-            document.documentElement.classList.remove('dark');
-          }
-        }
-      };
-
-      window.addEventListener('storage', handleStorageChange);
-
-      // Cleanup
-      return () => {
-        if (mediaQuery.removeEventListener) {
-          mediaQuery.removeEventListener('change', handleSystemThemeChange);
+        if (savedMode !== null) {
+          // User has manually set preference
+          shouldEnableDarkMode = savedMode === 'true';
+          addDebugLog(`Using user preference: ${shouldEnableDarkMode ? 'dark' : 'light'}`);
         } else {
-          mediaQuery.removeListener(handleSystemThemeChange);
+          // No user preference, use system setting
+          shouldEnableDarkMode = systemPrefersDark;
+          addDebugLog(`Using system preference: ${shouldEnableDarkMode ? 'dark' : 'light'}`);
         }
-        window.removeEventListener('storage', handleStorageChange);
-      };
+
+        setIsDarkMode(shouldEnableDarkMode);
+
+        if (shouldEnableDarkMode) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+
+        // Listen for system theme changes
+        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        const handleSystemThemeChange = (e: MediaQueryListEvent) => {
+          // Only auto-update if user hasn't manually set preference
+          const userPreference = localStorage.getItem('darkMode');
+          if (userPreference === null) {
+            addDebugLog(`System theme changed: ${e.matches ? 'dark' : 'light'}`);
+            setIsDarkMode(e.matches);
+            if (e.matches) {
+              document.documentElement.classList.add('dark');
+            } else {
+              document.documentElement.classList.remove('dark');
+            }
+          }
+        };
+
+        // Add listener for system theme changes
+        if (mediaQuery.addEventListener) {
+          mediaQuery.addEventListener('change', handleSystemThemeChange);
+        } else {
+          // Fallback for older browsers
+          mediaQuery.addListener(handleSystemThemeChange);
+        }
+
+        // Listen for localStorage changes (for sync across tabs)
+        const handleStorageChange = (e: StorageEvent) => {
+          if (e.key === 'darkMode') {
+            const newMode = e.newValue === 'true';
+            addDebugLog(`Theme synced across tabs: ${newMode ? 'dark' : 'light'}`);
+            setIsDarkMode(newMode);
+
+            if (newMode) {
+              document.documentElement.classList.add('dark');
+            } else {
+              document.documentElement.classList.remove('dark');
+            }
+          }
+        };
+
+        window.addEventListener('storage', handleStorageChange);
+
+        // Cleanup
+        return () => {
+          if (mediaQuery.removeEventListener) {
+            mediaQuery.removeEventListener('change', handleSystemThemeChange);
+          } else {
+            mediaQuery.removeListener(handleSystemThemeChange);
+          }
+          window.removeEventListener('storage', handleStorageChange);
+        };
+      }
+      addDebugLog('Dark mode initialization completed');
+    } catch (error) {
+      addDebugLog(`Dark mode initialization error: ${error}`);
+      console.error('Dark mode initialization error:', error);
     }
   }, []);
 
@@ -136,21 +155,28 @@ export default function AboutPage() {
   useEffect(() => {
     const fetchTeamMembers = async () => {
       try {
+        addDebugLog('Starting team members fetch...');
         setTeamLoading(true);
         setTeamError(null);
 
         const response = await fetch('/api/team-members');
+        addDebugLog(`Team API response status: ${response.status}`);
+
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
         const data = await response.json();
+        addDebugLog(`Team members received: ${data.length} members`);
         setTeamMembers(data);
       } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Failed to load team members';
+        addDebugLog(`Team fetch error: ${errorMessage}`);
         console.error('Failed to fetch team members:', error);
-        setTeamError(error instanceof Error ? error.message : 'Failed to load team members');
+        setTeamError(errorMessage);
       } finally {
         setTeamLoading(false);
+        addDebugLog('Team members fetch completed');
       }
     };
 
@@ -161,21 +187,28 @@ export default function AboutPage() {
   useEffect(() => {
     const fetchPartners = async () => {
       try {
+        addDebugLog('Starting partners fetch...');
         setPartnersLoading(true);
         setPartnersError(null);
 
         const response = await fetch('/api/partners');
+        addDebugLog(`Partners API response status: ${response.status}`);
+
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
         const data = await response.json();
+        addDebugLog(`Partners received: ${data.length} partners`);
         setPartners(data);
       } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : 'Failed to load partners';
+        addDebugLog(`Partners fetch error: ${errorMessage}`);
         console.error('Failed to fetch partners:', error);
-        setPartnersError(error instanceof Error ? error.message : 'Failed to load partners');
+        setPartnersError(errorMessage);
       } finally {
         setPartnersLoading(false);
+        addDebugLog('Partners fetch completed');
       }
     };
 
@@ -184,18 +217,25 @@ export default function AboutPage() {
 
   // Initialize AOS
   useEffect(() => {
-    AOS.init({
-      duration: 800,
-      easing: 'ease-out',
-      once: true,
-      offset: 100,
-    });
+    try {
+      addDebugLog('Initializing AOS...');
+      AOS.init({
+        duration: 800,
+        easing: 'ease-out',
+        once: true,
+        offset: 100,
+      });
+      addDebugLog('AOS initialization completed');
+    } catch (error) {
+      addDebugLog(`AOS initialization error: ${error}`);
+      console.error('AOS initialization error:', error);
+    }
   }, []);
 
   const toggleDarkMode = () => {
     setIsDarkMode(prev => {
       const newMode = !prev;
-      console.log('🎛️ Manual toggle:', newMode ? 'dark' : 'light');
+      addDebugLog(`Manual toggle: ${newMode ? 'dark' : 'light'}`);
 
       if (newMode) {
         document.documentElement.classList.add('dark');
@@ -211,6 +251,16 @@ export default function AboutPage() {
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
+      {/* DEBUG Panel - TEMPORARY */}
+      {DEBUG_MODE && (
+        <div className="fixed top-0 right-0 w-80 h-32 bg-black/90 text-white text-xs p-2 z-50 overflow-auto">
+          <div className="font-bold mb-1">🔍 DEBUG PANEL (REMOVE AFTER FIXING)</div>
+          {debugLogs.map((log, index) => (
+            <div key={index} className="mb-1">{log}</div>
+          ))}
+        </div>
+      )}
+
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 bg-white/95 dark:bg-gray-800/95 shadow-sm z-50 py-3 md:py-4 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto flex justify-between items-center px-4 sm:px-6 md:px-8">

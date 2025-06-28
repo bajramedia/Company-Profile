@@ -28,7 +28,7 @@ export default function GlobalError({
                 A critical error has occurred. Please try refreshing the page.
               </p>
             </div>
-            
+
             <div className="space-y-4">
               <button
                 onClick={reset}
@@ -36,7 +36,7 @@ export default function GlobalError({
               >
                 Try again
               </button>
-              
+
               <button
                 onClick={() => window.location.href = '/'}
                 className="w-full border border-gray-300 text-gray-700 py-3 px-6 rounded-lg font-medium hover:bg-gray-50 transition-colors"
@@ -44,18 +44,25 @@ export default function GlobalError({
                 Go to Homepage
               </button>
             </div>
-            
-            {process.env.NODE_ENV === 'development' && (
-              <details className="mt-8 text-left">
-                <summary className="cursor-pointer text-sm text-gray-500 hover:text-gray-700">
-                  Error Details (Development Only)
-                </summary>
-                <pre className="mt-4 p-4 bg-gray-100 rounded text-xs text-red-600 overflow-auto">
-                  {error.message}
-                  {error.stack}
-                </pre>
-              </details>
-            )}
+
+            {/* TEMPORARY: Show error details in production for debugging */}
+            <details className="mt-8 text-left">
+              <summary className="cursor-pointer text-sm text-gray-500 hover:text-gray-700">
+                🔍 Global Error Details (Debug Mode - REMOVE AFTER FIXING)
+              </summary>
+              <pre className="mt-4 p-4 bg-gray-100 rounded text-xs text-red-600 overflow-auto max-h-64">
+                <strong>Error Message:</strong><br />
+                {error.message}<br /><br />
+                <strong>Stack Trace:</strong><br />
+                {error.stack}<br /><br />
+                {error.digest && (
+                  <>
+                    <strong>Digest:</strong><br />
+                    {error.digest}
+                  </>
+                )}
+              </pre>
+            </details>
           </div>
         </div>
       </body>
