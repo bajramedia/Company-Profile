@@ -1,18 +1,19 @@
 import { NextResponse } from "next/server";
+import { fetchWithFallback } from '@/utils/api-client';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "https://www.bajramedia.com/api_bridge.php";
 
 export async function GET() {
   try {
-    const response = await fetch(`${API_BASE_URL}?endpoint=posts&limit=10`);
+    const response = await fetchWithFallback('?endpoint=posts&limit=10');
     
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     
-    const posts = await response.json();
+    const data = await response.json();
     
-    const sortedPosts = posts
+    const sortedPosts = data
       .filter((post: any) => post.id && post.id !== '')
       .sort((a: any, b: any) => {
         const readTimeA = parseInt(a.readTime) || 0;

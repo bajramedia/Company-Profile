@@ -1,14 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://www.bajramedia.com/api_bridge.php';
+import { fetchWithFallback, apiPost, apiPut } from '@/utils/api-client';
 
 export async function POST(
   request: NextRequest,
-  context: { params: Promise<{ slug: string }> }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
-    const params = await context.params;
-    const slug = params.slug;
+    const { slug } = await params;
 
     if (!slug) {
       return NextResponse.json(
@@ -17,92 +15,66 @@ export async function POST(
       );
     }
 
-    // Get IP address and user agent for tracking
+    // Get visitor's IP address for tracking
     const forwarded = request.headers.get('x-forwarded-for');
-    const ip = forwarded ? forwarded.split(',')[0] : request.headers.get('x-real-ip') || '127.0.0.1';
-    const userAgent = request.headers.get('user-agent') || 'Unknown';
+    const ip = forwarded ? forwarded.split(',')[0] : request.headers.get('x-real-ip') || 'unknown';
 
-    // First, get the post to verify it exists and get the ID
-    const postResponse = await fetch(`${API_BASE_URL}?endpoint=posts&slug=${slug}`);
+    // Get the post first
+    const postResponse = await fetchWithFallback(`?endpoint=posts&slug=${slug}`);
     
     if (!postResponse.ok) {
-      return NextResponse.json(
-        { error: 'Post not found' },
-        { status: 404 }
-      );
+      throw new Error(`Failed to fetch post: ${postResponse.status}`);
     }
-
+    
     const postData = await postResponse.json();
     const post = Array.isArray(postData) ? postData[0] : postData;
     
-    if (!post || !post.id) {
+    if (!post) {
       return NextResponse.json(
         { error: 'Post not found' },
         { status: 404 }
       );
     }
 
-    // Check if this IP already viewed this post recently (within last hour)
-    const recentViewResponse = await fetch(
-      `${API_BASE_URL}?endpoint=post_views&postId=${post.id}&ipAddress=${ip}&since=${new Date(Date.now() - 60 * 60 * 1000).toISOString()}`
+    // Check if this IP has viewed this post in the last hour (to prevent spam)
+    const recentViewResponse = await fetchWithFallback(
+      `?endpoint=post_views&postId=${post.id}&ipAddress=${ip}&since=${new Date(Date.now() - 60 * 60 * 1000).toISOString()}`
     );
-
+    
     if (recentViewResponse.ok) {
       const recentViews = await recentViewResponse.json();
       if (Array.isArray(recentViews) && recentViews.length > 0) {
-        // User already viewed this post recently, don't count it again
-        return NextResponse.json({ 
-          success: true, 
-          message: 'View already counted recently',
-          views: post.views || 0
+        // View already counted recently, return current count without incrementing
+        return NextResponse.json({
+          success: true,
+          views: post.views || 0,
+          message: 'View already counted recently'
         });
       }
     }
 
     // Track the view
-    const viewData = {
+    const trackResponse = await apiPost('?endpoint=post_views', {
       postId: post.id,
       ipAddress: ip,
-      userAgent: userAgent,
-      viewedAt: new Date().toISOString()
-    };
-
-    const trackResponse = await fetch(`${API_BASE_URL}?endpoint=post_views`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(viewData)
+      userAgent: request.headers.get('user-agent') || '',
+      timestamp: new Date().toISOString()
     });
 
     // Update post view count
-    let updatedViews = (post.views || 0) + 1;
-    
-    const updateResponse = await fetch(`${API_BASE_URL}?endpoint=posts&id=${post.id}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ views: updatedViews })
+    const updateResponse = await apiPut(`?endpoint=posts&id=${post.id}`, {
+      views: (post.views || 0) + 1
     });
 
-    if (updateResponse.ok) {
-      const updateResult = await updateResponse.json();
-      if (updateResult.success) {
-        updatedViews = updateResult.data?.views || updatedViews;
-      }
-    }
-
-    return NextResponse.json({ 
-      success: true, 
-      views: updatedViews,
-      message: 'View tracked successfully'
+    return NextResponse.json({
+      success: true,
+      views: (post.views || 0) + 1
     });
 
   } catch (error) {
     console.error('Error tracking post view:', error);
     return NextResponse.json(
-      { error: 'Failed to track view' },
+      { error: 'Failed to track post view' },
       { status: 500 }
     );
   }
