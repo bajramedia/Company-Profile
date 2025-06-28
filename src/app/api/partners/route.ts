@@ -1,12 +1,11 @@
 import { NextResponse } from 'next/server';
-
-const API_BASE_URL = 'https://www.bajramedia.com/api_bridge.php';
+import { fetchWithFallback } from '@/utils/api-client';
 
 // GET /api/partners - Get all partners for public display
 export async function GET() {
   try {
     console.log('Public Partners API: Fetching from production database...');
-    const response = await fetch(`${API_BASE_URL}?endpoint=partners`);
+    const response = await fetchWithFallback('?endpoint=partners');
     
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);

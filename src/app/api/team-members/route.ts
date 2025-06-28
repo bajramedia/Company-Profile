@@ -1,12 +1,11 @@
 import { NextResponse } from 'next/server';
-
-const API_BASE_URL = 'https://www.bajramedia.com/api_bridge.php';
+import { fetchWithFallback } from '@/utils/api-client';
 
 // GET /api/team-members - Get all team members for public display
 export async function GET() {
   try {
     console.log('Public Team Members API: Fetching from production database...');
-    const response = await fetch(`${API_BASE_URL}?endpoint=team-members`);
+    const response = await fetchWithFallback('?endpoint=team-members');
     
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
