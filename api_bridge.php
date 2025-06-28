@@ -53,6 +53,7 @@ $method = $_SERVER['REQUEST_METHOD'];
 // ====================================
 $requestUri = $_SERVER['REQUEST_URI'];
 $path = parse_url($requestUri, PHP_URL_PATH);
+$queryString = parse_url($requestUri, PHP_URL_QUERY);
 
 // Check if this is REST-style endpoint (api_bridge.php/endpoint)
 $endpoint = '';
@@ -69,8 +70,15 @@ if (strpos($path, '/api_bridge.php/') !== false) {
             $endpoint = $restParts[0];
             $id = $restParts[1] ?? null;
             
+            // WORKAROUND: Manually parse query string for REST routes
+            if ($queryString) {
+                parse_str($queryString, $parsedQuery);
+                $_GET = array_merge($_GET, $parsedQuery);
+                error_log("REST Route with query params: " . print_r($parsedQuery, true));
+            }
+            
             // Log REST routing
-            error_log("REST Route detected: endpoint='$endpoint', id='$id'");
+            error_log("REST Route detected: endpoint='$endpoint', id='$id', query_params=" . print_r($_GET, true));
         }
     }
 }

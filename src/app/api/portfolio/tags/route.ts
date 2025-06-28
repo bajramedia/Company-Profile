@@ -12,6 +12,9 @@ export async function GET(request: NextRequest) {
         // Try each endpoint until one works
         for (const baseUrl of API_ENDPOINTS) {
             try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 10000);
+
                 const response = await fetch(`${baseUrl}/api_bridge.php/portfolio-tags`, {
                     method: 'GET',
                     headers: {
@@ -19,8 +22,10 @@ export async function GET(request: NextRequest) {
                         'User-Agent': 'BajramediaAdmin/1.0',
                     },
                     cache: 'no-store',
-                    signal: AbortSignal.timeout(10000),
+                    signal: controller.signal,
                 });
+                
+                clearTimeout(timeoutId);
 
                 if (response.ok) {
                     const data = await response.json();
@@ -47,8 +52,11 @@ export async function GET(request: NextRequest) {
     } catch (error) {
         console.error('Error in portfolio tags API:', error);
         return NextResponse.json(
-            { error: 'Failed to fetch portfolio tags', fallback: true },
-            { status: 200 }
+            { 
+                error: 'Failed to fetch portfolio tags', 
+                details: error instanceof Error ? error.message : 'Unknown error'
+            },
+            { status: 500 }
         );
     }
 }
@@ -75,6 +83,9 @@ export async function POST(request: NextRequest) {
     // Try each endpoint until one works
     for (const baseUrl of API_ENDPOINTS) {
         try {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 10000);
+
             const response = await fetch(`${baseUrl}/api_bridge.php/portfolio-tags`, {
                 method: 'POST',
                 headers: {
@@ -82,8 +93,10 @@ export async function POST(request: NextRequest) {
                     'User-Agent': 'BajramediaAdmin/1.0',
                 },
                 body: JSON.stringify(tagData),
-                signal: AbortSignal.timeout(10000),
+                signal: controller.signal,
             });
+            
+            clearTimeout(timeoutId);
 
             if (response.ok) {
                 const result = await response.json();

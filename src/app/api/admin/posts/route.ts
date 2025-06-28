@@ -69,10 +69,13 @@ export async function GET(request: NextRequest) {
     } catch (error) {
         console.error('Error in posts API:', error);
         return NextResponse.json(
-            { error: 'Failed to fetch posts', fallback: true },
-            { status: 200 }
+            { 
+                error: 'Failed to fetch posts', 
+                details: error instanceof Error ? error.message : 'Unknown error'
+            },
+            { status: 500 }
         );
-  }
+    }
 }
 
 export async function POST(request: NextRequest) {
