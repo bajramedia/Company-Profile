@@ -47,8 +47,43 @@ try {
 }
 
 $method = $_SERVER['REQUEST_METHOD'];
-$endpoint = $_GET['endpoint'] ?? '';
-$id = $_GET['id'] ?? null;
+
+// ====================================
+// REST-STYLE ROUTING SUPPORT
+// ====================================
+$requestUri = $_SERVER['REQUEST_URI'];
+$path = parse_url($requestUri, PHP_URL_PATH);
+
+// Check if this is REST-style endpoint (api_bridge.php/endpoint)
+$endpoint = '';
+$id = null;
+
+if (strpos($path, '/api_bridge.php/') !== false) {
+    // Parse REST-style path: /api_bridge.php/technologies/123
+    $pathParts = explode('/api_bridge.php/', $path);
+    if (count($pathParts) > 1) {
+        $restPath = trim($pathParts[1], '/');
+        $restParts = explode('/', $restPath);
+        
+        if (!empty($restParts[0])) {
+            $endpoint = $restParts[0];
+            $id = $restParts[1] ?? null;
+            
+            // Log REST routing
+            error_log("REST Route detected: endpoint='$endpoint', id='$id'");
+        }
+    }
+}
+
+// Fallback to original query parameter method for backward compatibility
+if (empty($endpoint)) {
+    $endpoint = $_GET['endpoint'] ?? '';
+    $id = $_GET['id'] ?? null;
+    
+    if (!empty($endpoint)) {
+        error_log("Query Route detected: endpoint='$endpoint', id='$id'");
+    }
+}
 
 // Handle endpoint aliases - category should map to categories
 if ($endpoint === 'category') {
