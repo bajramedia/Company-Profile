@@ -37,49 +37,15 @@ export async function GET() {
         }
     }
 
-    // If all endpoints fail, return fallback data
-    console.log('All categories API endpoints failed, returning fallback data');
-    
-    const fallbackCategories = [
-        {
-            id: 1,
-            name: 'Technology',
-            slug: 'technology',
-            description: 'Latest technology trends and insights',
-            postCount: 0,
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString()
-        },
-        {
-            id: 2,
-            name: 'Web Design',
-            slug: 'web-design',
-            description: 'Web design tips and tutorials',
-            postCount: 0,
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString()
-        },
-        {
-            id: 3,
-            name: 'Mobile Design',
-            slug: 'mobile-design',
-            description: 'Mobile app design and development',
-            postCount: 0,
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString()
-        },
-        {
-            id: 4,
-            name: 'Digital Marketing',
-            slug: 'digital-marketing',
-            description: 'Digital marketing strategies and tips',
-            postCount: 0,
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString()
-        }
-    ];
-
-    return NextResponse.json(fallbackCategories);
+         // If all endpoints fail, return proper error
+     return NextResponse.json(
+         { 
+             error: 'Failed to fetch categories from all endpoints',
+             endpoints_tested: API_ENDPOINTS,
+             message: 'Please check server status and API bridge configuration'
+         },
+         { status: 500 }
+     );
     
   } catch (error) {
     console.error('Error in categories API:', error);

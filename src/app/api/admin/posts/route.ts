@@ -7,7 +7,7 @@ const API_ENDPOINTS = [
 ];
 
 export async function GET(request: NextRequest) {
-    try {
+  try {
         const { searchParams } = new URL(request.url);
         const page = searchParams.get('page') || '1';
         const limit = searchParams.get('limit') || '10';
@@ -29,6 +29,9 @@ export async function GET(request: NextRequest) {
                 
                 url += `?${params.toString()}`;
 
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 10000);
+
                 const response = await fetch(url, {
                     method: 'GET',
                     headers: {
@@ -36,8 +39,10 @@ export async function GET(request: NextRequest) {
                         'User-Agent': 'BajramediaAdmin/1.0',
                     },
                     cache: 'no-store',
-                    signal: AbortSignal.timeout(10000),
+                    signal: controller.signal,
                 });
+                
+                clearTimeout(timeoutId);
 
                 if (response.ok) {
                     const data = await response.json();
@@ -51,37 +56,15 @@ export async function GET(request: NextRequest) {
             }
         }
 
-        // If all endpoints fail, return fallback data
-        console.log('All posts API endpoints failed, returning fallback data');
-        
-        const fallbackPosts = {
-            posts: [
-                {
-                    id: 1,
-                    title: 'Welcome to Bajramedia Blog',
-                    slug: 'welcome-to-bajramedia-blog',
-                    excerpt: 'Selamat datang di blog resmi Bajramedia. Tempat berbagi insight teknologi terbaru.',
-                    content: 'Content will be loaded from database...',
-                    status: 'published',
-                    featured_image: '/images/placeholder.jpg',
-                    author_id: 1,
-                    author_name: 'Admin',
-                    category_id: 1,
-                    category_name: 'Technology',
-                    created_at: new Date().toISOString(),
-                    updated_at: new Date().toISOString(),
-                    views: 0
-                }
-            ],
-            pagination: {
-                total: 1,
-                page: 1,
-                limit: 10,
-                total_pages: 1
-            }
-        };
-
-        return NextResponse.json(fallbackPosts);
+        // If all endpoints fail, return proper error
+    return NextResponse.json(
+      { 
+                error: 'Failed to fetch posts from all endpoints',
+                endpoints_tested: API_ENDPOINTS,
+                message: 'Please check server status and API bridge configuration'
+      },
+      { status: 500 }
+    );
 
     } catch (error) {
         console.error('Error in posts API:', error);
@@ -89,24 +72,27 @@ export async function GET(request: NextRequest) {
             { error: 'Failed to fetch posts', fallback: true },
             { status: 200 }
         );
-    }
+  }
 }
 
 export async function POST(request: NextRequest) {
-    try {
-        const body = await request.json();
-        
-        // Validate required fields
+  try {
+    const body = await request.json();
+    
+    // Validate required fields
         if (!body.title || !body.content) {
-            return NextResponse.json(
+      return NextResponse.json(
                 { error: 'Title and content are required' },
-                { status: 400 }
-            );
-        }
+        { status: 400 }
+      );
+    }
 
         // Try each endpoint until one works
         for (const baseUrl of API_ENDPOINTS) {
             try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 10000);
+
                 const response = await fetch(`${baseUrl}/api_bridge.php/posts`, {
                     method: 'POST',
                     headers: {
@@ -114,8 +100,10 @@ export async function POST(request: NextRequest) {
                         'User-Agent': 'BajramediaAdmin/1.0',
                     },
                     body: JSON.stringify(body),
-                    signal: AbortSignal.timeout(10000),
+                    signal: controller.signal,
                 });
+                
+                clearTimeout(timeoutId);
 
                 if (response.ok) {
                     const data = await response.json();
@@ -133,14 +121,14 @@ export async function POST(request: NextRequest) {
             { error: 'Failed to create post - server unavailable' },
             { status: 503 }
         );
-
-    } catch (error) {
+    
+  } catch (error) {
         console.error('Error creating post:', error);
-        return NextResponse.json(
+    return NextResponse.json(
             { error: 'Failed to create post' },
-            { status: 500 }
-        );
-    }
+      { status: 500 }
+    );
+  }
 }
 
 export async function PUT(request: NextRequest) {
@@ -167,7 +155,7 @@ export async function PUT(request: NextRequest) {
       tags: updateData.tagIds || updateData.tags || []
     };
 
-    const response = await fetch(`${API_BASE_URL}?endpoint=posts&id=${id}`, {
+    const response = await fetch(`${API_ENDPOINTS[0]}/api_bridge.php/posts/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(postData)
@@ -198,7 +186,7 @@ export async function DELETE(request: NextRequest) {
 
     console.log('Posts API: Deleting entry from database...');
     
-    const response = await fetch(`${API_BASE_URL}?endpoint=posts&id=${id}`, {
+    const response = await fetch(`${API_ENDPOINTS[0]}/api_bridge.php/posts/${id}`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" }
     });

@@ -13,6 +13,8 @@ export async function GET(request: NextRequest) {
         const category = searchParams.get('category');
         const include_inactive = searchParams.get('include_inactive');
         
+        let lastError: string = '';
+        
         // Try each endpoint until one works
         for (const baseUrl of API_ENDPOINTS) {
             try {
@@ -45,86 +47,57 @@ export async function GET(request: NextRequest) {
                 
                 clearTimeout(timeoutId);
 
+                console.log(`Testing ${baseUrl}: Status ${response.status}`);
+                
                 if (response.ok) {
-                    const data = await response.json();
+                    const responseText = await response.text();
+                    console.log(`Response from ${baseUrl}:`, responseText.substring(0, 200));
                     
-                    // Check if we got actual data
-                    if (!data.error) {
+                    try {
+                        const data = JSON.parse(responseText);
+                        
+                        // Check if we got actual data or error
+                        if (data.error) {
+                            lastError = `API Error from ${baseUrl}: ${data.error}`;
+                            console.error(lastError);
+                            continue;
+                        }
+                        
                         return NextResponse.json(data);
+                    } catch (parseError) {
+                        lastError = `JSON Parse Error from ${baseUrl}: ${parseError}`;
+                        console.error(lastError);
+                        continue;
                     }
+                } else {
+                    lastError = `HTTP ${response.status} from ${baseUrl}: ${response.statusText}`;
+                    console.error(lastError);
                 }
             } catch (endpointError) {
-                console.error(`Failed with ${baseUrl}:`, endpointError);
+                lastError = `Network Error from ${baseUrl}: ${endpointError}`;
+                console.error(lastError);
                 continue;
             }
         }
         
-        // If all endpoints fail, return fallback data
-        console.log('All API endpoints failed, returning fallback data');
-        
-        // Fallback technologies data
-        const fallbackTechnologies = [
-            {
-                id: 1,
-                name: 'React',
-                icon: '⚛️',
-                description_en: 'Modern UI framework for building interactive user interfaces',
-                description_id: 'Framework UI modern untuk membangun antarmuka pengguna interaktif',
-                category: 'web',
-                color: '#61DAFB',
-                sort_order: 1,
-                is_active: true,
-                created_at: new Date().toISOString(),
-                updated_at: new Date().toISOString()
+        // If all endpoints failed, return detailed error
+        return NextResponse.json(
+            { 
+                error: 'Failed to fetch technologies from all endpoints',
+                details: lastError,
+                endpoints_tested: API_ENDPOINTS
             },
-            {
-                id: 2,
-                name: 'Next.js',
-                icon: '▲',
-                description_en: 'Full-stack React framework with server-side rendering',
-                description_id: 'Framework React full-stack dengan server-side rendering',
-                category: 'web',
-                color: '#000000',
-                sort_order: 2,
-                is_active: true,
-                created_at: new Date().toISOString(),
-                updated_at: new Date().toISOString()
-            },
-            {
-                id: 3,
-                name: 'TypeScript',
-                icon: '📘',
-                description_en: 'Type-safe JavaScript for better development experience',
-                description_id: 'JavaScript dengan type safety untuk pengembangan yang lebih baik',
-                category: 'web',
-                color: '#3178C6',
-                sort_order: 3,
-                is_active: true,
-                created_at: new Date().toISOString(),
-                updated_at: new Date().toISOString()
-            },
-            {
-                id: 4,
-                name: 'Tailwind CSS',
-                icon: '🎨',
-                description_en: 'Utility-first CSS framework for rapid UI development',
-                description_id: 'Framework CSS utility-first untuk pengembangan UI yang cepat',
-                category: 'web',
-                color: '#06B6D4',
-                sort_order: 4,
-                is_active: true,
-                created_at: new Date().toISOString(),
-                updated_at: new Date().toISOString()
-            }
-        ];
-
-        return NextResponse.json(fallbackTechnologies);
+            { status: 500 }
+        );
 
     } catch (error) {
         console.error('Error in technologies API:', error);
         return NextResponse.json(
-            { error: 'Failed to fetch technologies', fallback: true },
-            { status: 200 } // Return 200 with fallback data instead of 500
+            { 
+                error: 'Failed to fetch technologies', 
+                details: error instanceof Error ? error.message : 'Unknown error'
+            },
+            { status: 500 }
         );
     }
 }
@@ -140,6 +113,8 @@ export async function POST(request: NextRequest) {
                 { status: 400 }
             );
         }
+
+        let lastError: string = '';
 
         // Try each endpoint until one works
         for (const baseUrl of API_ENDPOINTS) {
@@ -163,18 +138,25 @@ export async function POST(request: NextRequest) {
                     const data = await response.json();
                     if (!data.error) {
                         return NextResponse.json(data);
+                    } else {
+                        lastError = `API Error: ${data.error}`;
                     }
+                } else {
+                    lastError = `HTTP ${response.status}: ${response.statusText}`;
                 }
             } catch (endpointError) {
+                lastError = `Network Error: ${endpointError}`;
                 console.error(`POST failed with ${baseUrl}:`, endpointError);
                 continue;
             }
         }
 
-        // If all endpoints fail
         return NextResponse.json(
-            { error: 'Failed to create technology - server unavailable' },
-            { status: 503 }
+            { 
+                error: 'Failed to create technology - all endpoints failed',
+                details: lastError
+            },
+            { status: 500 }
         );
 
     } catch (error) {

@@ -34,41 +34,15 @@ export async function GET(request: NextRequest) {
             }
         }
 
-        // If all endpoints fail, return fallback data
-        console.log('All portfolio tags API endpoints failed, returning fallback data');
-        
-        const fallbackTags = [
-            {
-                id: 1,
-                name: 'Web Development',
-                slug: 'web-development',
-                created_at: new Date().toISOString(),
-                updated_at: new Date().toISOString()
+        // If all endpoints fail, return proper error
+        return NextResponse.json(
+            { 
+                error: 'Failed to fetch portfolio tags from all endpoints',
+                endpoints_tested: API_ENDPOINTS,
+                message: 'Please check server status and API bridge configuration'
             },
-            {
-                id: 2,
-                name: 'Mobile App',
-                slug: 'mobile-app',
-                created_at: new Date().toISOString(),
-                updated_at: new Date().toISOString()
-            },
-            {
-                id: 3,
-                name: 'UI/UX Design',
-                slug: 'ui-ux-design',
-                created_at: new Date().toISOString(),
-                updated_at: new Date().toISOString()
-            },
-            {
-                id: 4,
-                name: 'Digital Marketing',
-                slug: 'digital-marketing',
-                created_at: new Date().toISOString(),
-                updated_at: new Date().toISOString()
-            }
-        ];
-
-        return NextResponse.json(fallbackTags);
+            { status: 500 }
+        );
 
     } catch (error) {
         console.error('Error in portfolio tags API:', error);
