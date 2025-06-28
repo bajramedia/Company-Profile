@@ -32,13 +32,13 @@ export default function WhatsAppChat({
 
   return (
     <div
-      className={`fixed bottom-6 right-6 z-50 transition-all duration-500 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-16 opacity-0'
+      className={`fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 transition-all duration-500 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-16 opacity-0'
         } ${className}`}
     >
       {/* Chat Button */}
       <div className="relative group">
         {/* Tooltip */}
-        <div className="absolute bottom-16 right-0 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+        <div className="absolute bottom-16 right-0 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none hidden sm:block">
           <div className="bg-gray-900 dark:bg-gray-700 text-white text-sm px-3 py-2 rounded-lg whitespace-nowrap shadow-lg">
             Chat via WhatsApp
             <div className="absolute -bottom-1 right-4 w-2 h-2 bg-gray-900 dark:bg-gray-700 transform rotate-45"></div>
@@ -48,12 +48,12 @@ export default function WhatsAppChat({
         {/* Main Button */}
         <button
           onClick={handleWhatsAppClick}
-          className="w-16 h-16 bg-green-500 hover:bg-green-600 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center group-hover:scale-110 animate-pulse hover:animate-none"
+          className="w-14 h-14 sm:w-16 sm:h-16 bg-green-500 hover:bg-green-600 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center group-hover:scale-110 animate-pulse hover:animate-none touch-manipulation"
           aria-label="Chat via WhatsApp"
         >
           {/* WhatsApp Logo */}
           <svg
-            className="w-8 h-8 text-white"
+            className="w-6 h-6 sm:w-8 sm:h-8 text-white"
             fill="currentColor"
             viewBox="0 0 24 24"
           >

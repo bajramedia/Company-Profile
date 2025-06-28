@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Button, Heading, Logo, LanguageSwitcher, AnimatedText, Footer } from '@/components';
+import { Button, Heading, Logo, LanguageSwitcher, AnimatedText, Footer, WhatsAppChat } from '@/components';
 import { useLanguage } from '@/context/LanguageContext';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
@@ -657,6 +657,12 @@ export default function AboutPage() {
           {isDarkMode ? <span className="text-2xl">☀️</span> : <span className="text-2xl">🌙</span>}
         </button>
       </div>
+
+      {/* WhatsApp Chat */}
+      <WhatsAppChat
+        phoneNumber="6285739402436"
+        message="Halo! Saya tertarik dengan layanan Bajramedia. Bisa konsultasi gratis?"
+      />
 
       {/* Footer */}
       <Footer />
