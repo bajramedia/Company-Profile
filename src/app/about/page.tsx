@@ -612,10 +612,14 @@ export default function AboutPage() {
                   >
                     <div className="relative w-24 h-24 mx-auto mb-6">
                       <Image
-                        src={partner.logo}
+                        src={partner.logo || '/images/logo.png'}
                         alt={partner.name}
                         fill
                         className="object-contain"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.src = '/images/logo.png';
+                        }}
                       />
                     </div>
                     <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
