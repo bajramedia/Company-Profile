@@ -221,7 +221,74 @@ export default function AboutPage() {
             <nav className="flex space-x-6">
               <Link href="/" className="text-gray-700 dark:text-gray-300 hover:text-primary transition-colors">{t('nav.home')}</Link>
               <Link href="/about" className="text-primary transition-colors">{t('nav.about')}</Link>
-              <Link href="/services" className="text-gray-700 dark:text-gray-300 hover:text-primary transition-colors">{t('nav.services')}</Link>
+
+              {/* Services Dropdown */}
+              <div className="relative group">
+                <Link href="/services" className="text-gray-700 dark:text-gray-300 hover:text-primary transition-colors flex items-center">
+                  {t('nav.services')}
+                  <span className="inline-block ml-1 transform group-hover:rotate-180 transition-transform duration-200">
+                    <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </span>
+                </Link>
+
+                {/* Dropdown Menu */}
+                <div className="absolute top-full left-0 mt-2 w-64 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                  <div className="p-2">
+                    <Link href="/services/web-development" className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
+                      <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center text-white text-sm">
+                        🌐
+                      </div>
+                      <div>
+                        <div className="font-medium text-gray-900 dark:text-white text-sm">Web Development</div>
+                        <div className="text-gray-500 dark:text-gray-400 text-xs">Website modern & responsif</div>
+                      </div>
+                    </Link>
+
+                    <Link href="/services/aset-game-development" className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
+                      <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-purple-500 to-purple-600 flex items-center justify-center text-white text-sm">
+                        🎮
+                      </div>
+                      <div>
+                        <div className="font-medium text-gray-900 dark:text-white text-sm">Aset Game Development</div>
+                        <div className="text-gray-500 dark:text-gray-400 text-xs">Assets & character untuk game</div>
+                      </div>
+                    </Link>
+
+                    <Link href="/services/uiux-design" className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
+                      <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-pink-500 to-pink-600 flex items-center justify-center text-white text-sm">
+                        🎨
+                      </div>
+                      <div>
+                        <div className="font-medium text-gray-900 dark:text-white text-sm">UI/UX Design</div>
+                        <div className="text-gray-500 dark:text-gray-400 text-xs">Interface yang memukau</div>
+                      </div>
+                    </Link>
+
+                    <Link href="/services/sistem-development" className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
+                      <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-green-500 to-green-600 flex items-center justify-center text-white text-sm">
+                        ⚙️
+                      </div>
+                      <div>
+                        <div className="font-medium text-gray-900 dark:text-white text-sm">Sistem Development</div>
+                        <div className="text-gray-500 dark:text-gray-400 text-xs">Enterprise & custom system</div>
+                      </div>
+                    </Link>
+
+                    <Link href="/services/sosial-media-management" className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
+                      <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-orange-500 to-orange-600 flex items-center justify-center text-white text-sm">
+                        📱
+                      </div>
+                      <div>
+                        <div className="font-medium text-gray-900 dark:text-white text-sm">Social Media Management</div>
+                        <div className="text-gray-500 dark:text-gray-400 text-xs">Kelola media sosial bisnis</div>
+                      </div>
+                    </Link>
+                  </div>
+                </div>
+              </div>
+
               <Link href="/portfolio" className="text-gray-700 dark:text-gray-300 hover:text-primary transition-colors">{t('nav.portfolio')}</Link>
               <Link href="/blog" className="text-gray-700 dark:text-gray-300 hover:text-primary transition-colors">{t('nav.blog')}</Link>
             </nav>
@@ -293,6 +360,50 @@ export default function AboutPage() {
               >
                 {t('nav.services')}
               </Link>
+
+              {/* Services Submenu in Mobile */}
+              <div className="ml-4 space-y-1">
+                <Link
+                  href="/services/web-development"
+                  className="flex items-center space-x-2 px-3 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-primary hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <span>🌐</span>
+                  <span>Web Development</span>
+                </Link>
+                <Link
+                  href="/services/aset-game-development"
+                  className="flex items-center space-x-2 px-3 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-primary hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <span>🎮</span>
+                  <span>Aset Game Development</span>
+                </Link>
+                <Link
+                  href="/services/uiux-design"
+                  className="flex items-center space-x-2 px-3 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-primary hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <span>🎨</span>
+                  <span>UI/UX Design</span>
+                </Link>
+                <Link
+                  href="/services/sistem-development"
+                  className="flex items-center space-x-2 px-3 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-primary hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <span>⚙️</span>
+                  <span>Sistem Development</span>
+                </Link>
+                <Link
+                  href="/services/sosial-media-management"
+                  className="flex items-center space-x-2 px-3 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-primary hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <span>📱</span>
+                  <span>Social Media Management</span>
+                </Link>
+              </div>
               <Link
                 href="/portfolio"
                 className="block px-3 py-2 text-gray-700 dark:text-gray-300 hover:text-primary hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-colors"
@@ -606,7 +717,7 @@ export default function AboutPage() {
                               className="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center hover:bg-blue-700 transition-colors"
                             >
                               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M6.938 4.503c.702 0 1.34.06 1.92.188.577.125 1.074.32 1.485.58.41.263.733.597.96 1.02.225.42.34.952.34 1.59 0 .71-.183 1.31-.55 1.79-.368.48-.88.84-1.543 1.1.893.26 1.54.65 1.92 1.18.38.53.57 1.18.57 1.95 0 .68-.122 1.27-.365 1.78-.243.51-.595.93-1.06 1.26-.467.33-1.04.56-1.716.7-.678.14-1.454.21-2.34.21H0V4.503h6.938zM3.24 7.248v2.906h3.22c.4 0 .73-.061.99-.185.26-.123.47-.295.63-.516.16-.22.24-.48.24-.78 0-.56-.17-.99-.51-1.29-.34-.3-.822-.45-1.44-.45H3.24zm0 5.154v3.462h3.76c.42 0 .78-.066 1.07-.2.29-.13.52-.31.69-.54.17-.23.25-.5.25-.81 0-.32-.08-.59-.24-.81-.16-.22-.39-.39-.68-.51-.29-.12-.64-.18-1.05-.18H3.24zm11.697-12.52c.827 0 1.576.095 2.246.285.67.19 1.24.468 1.71.834.47.365.83.822 1.08 1.368.25.546.375 1.162.375 1.846 0 .684-.125 1.3-.375 1.846-.25.546-.61 1.003-1.08 1.368-.47.366-1.04.644-1.71.834-.67.19-1.419.285-2.246.285-.827 0-1.576-.095-2.246-.285-.67-.19-1.24-.468-1.71-.834-.47-.365-.83-.822-1.08-1.368-.25-.546-.375-1.162-.375-1.846 0-.684.125-1.3.375-1.846.25-.546.61-1.003 1.08-1.368.47-.366 1.04-.644 1.71-.834.67-.19 1.419-.285 2.246-.285z" />
+                                <path d="M6.938 4.503c.702 0 1.34.06 1.92.188.577.125 1.074.32 1.485.58.41.263.733.597.96 1.02.225.42.34.952.34 1.59 0 .71-.183 1.31-.55 1.79-.368.48-.88.84-1.543 1.1-.893.26 1.54.65 1.92 1.18.38.53.57 1.18.57 1.95 0 .68-.122 1.27-.365 1.78-.243.51-.595.93-1.06 1.26-.467.33-1.04.56-1.716.7-.678.14-1.454.21-2.34.21H0V4.503h6.938zM3.24 7.248v2.906h3.22c.4 0 .73-.061.99-.185.26-.123.47-.295.63-.516.16-.22.24-.48.24-.78 0-.56-.17-.99-.51-1.29-.34-.3-.822-.45-1.44-.45H3.24zm0 5.154v3.462h3.76c.42 0 .78-.066 1.07-.2.29-.13.52-.31.69-.54.17-.23.25-.5.25-.81 0-.32-.08-.59-.24-.81-.16-.22-.39-.39-.68-.51-.29-.12-.64-.18-1.05-.18H3.24zm11.697-12.52c.827 0 1.576.095 2.246.285.67.19 1.24.468 1.71.834.47.365.83.822 1.08 1.368.25.546.375 1.162.375 1.846 0 .684-.125 1.3-.375 1.846-.25.546-.61 1.003-1.08 1.368-.47.366-1.04.644-1.71.834-.67.19-1.419.285-2.246.285-.827 0-1.576-.095-2.246-.285-.67-.19-1.24-.468-1.71-.834-.47-.365-.83-.822-1.08-1.368-.25-.546-.375-1.162-.375-1.846 0-.684.125-1.3.375-1.846.25-.546.61-1.003 1.08-1.368.47-.366 1.04-.644 1.71-.834.67-.19 1.419-.285 2.246-.285z" />
                               </svg>
                             </a>
                           )}
