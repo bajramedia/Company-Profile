@@ -29,30 +29,38 @@ export default function NewPortfolioPage() {
     const [categories, setCategories] = useState<PortfolioCategory[]>([]);
     const [tags, setTags] = useState<PortfolioTag[]>([]);
 
-    // Fetch categories dan tags dari database
+    // Fetch categories dan technologies dari database
     useEffect(() => {
         const fetchData = async () => {
             try {
                 setIsLoading(true);
 
-                // Fetch categories dan tags secara bersamaan
-                const [categoriesResponse, tagsResponse] = await Promise.all([
+                // Fetch categories dan technologies secara bersamaan
+                const [categoriesResponse, technologiesResponse] = await Promise.all([
                     fetch('/api/portfolio/categories'),
-                    fetch('/api/portfolio/tags')
+                    fetch('/api/admin/technologies')
                 ]);
 
-                if (!categoriesResponse.ok || !tagsResponse.ok) {
-                    throw new Error('Failed to fetch categories or tags');
+                if (!categoriesResponse.ok || !technologiesResponse.ok) {
+                    throw new Error('Failed to fetch categories or technologies');
                 }
 
                 const categoriesData = await categoriesResponse.json();
-                const tagsData = await tagsResponse.json();
+                const technologiesData = await technologiesResponse.json();
+
+                // Transform technologies data to match tag interface
+                const transformedTechnologies = Array.isArray(technologiesData) ? technologiesData.map((tech: any) => ({
+                    id: tech.id,
+                    name: tech.name,
+                    slug: tech.name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+                    color: tech.color || '#6B7280'
+                })) : [];
 
                 setCategories(categoriesData);
-                setTags(tagsData);
+                setTags(transformedTechnologies);
             } catch (error) {
                 console.error('❌ Error fetching data:', error);
-                setError('Gagal memuat data kategori dan tag. Silakan refresh halaman.');
+                setError('Gagal memuat data kategori dan technologies. Silakan refresh halaman.');
             } finally {
                 setIsLoading(false);
             }
@@ -124,7 +132,7 @@ export default function NewPortfolioPage() {
                     <div className="flex items-center justify-center py-12">
                         <div className="flex items-center space-x-3">
                             <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
-                            <span className="text-gray-600 dark:text-gray-400">Memuat data kategori dan tag...</span>
+                            <span className="text-gray-600 dark:text-gray-400">Memuat data kategori dan technologies...</span>
                         </div>
                     </div>
                 </div>

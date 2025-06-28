@@ -58,11 +58,11 @@ export default function EditPortfolioPage() {
                 setIsLoadingData(true);
                 setError('');
 
-                // Fetch portfolio data, categories, dan tags secara bersamaan
-                const [portfolioResponse, categoriesResponse, tagsResponse] = await Promise.all([
+                // Fetch portfolio data, categories, dan technologies secara bersamaan
+                const [portfolioResponse, categoriesResponse, technologiesResponse] = await Promise.all([
                     fetch(`/api/admin/portfolio/${portfolioId}`),
                     fetch('/api/portfolio/categories'),
-                    fetch('/api/portfolio/tags')
+                    fetch('/api/admin/technologies')
                 ]);
 
                 // Check responses
@@ -72,14 +72,14 @@ export default function EditPortfolioPage() {
                 if (!categoriesResponse.ok) {
                     throw new Error(`Failed to fetch categories: ${categoriesResponse.status}`);
                 }
-                if (!tagsResponse.ok) {
-                    throw new Error(`Failed to fetch tags: ${tagsResponse.status}`);
+                if (!technologiesResponse.ok) {
+                    throw new Error(`Failed to fetch technologies: ${technologiesResponse.status}`);
                 }
 
-                const [portfolioResult, categoriesData, tagsData] = await Promise.all([
+                const [portfolioResult, categoriesData, technologiesData] = await Promise.all([
                     portfolioResponse.json(),
                     categoriesResponse.json(),
-                    tagsResponse.json()
+                    technologiesResponse.json()
                 ]);
 
                 // Process portfolio data
@@ -107,8 +107,16 @@ export default function EditPortfolioPage() {
                     throw new Error('Portfolio not found');
                 }
 
+                // Transform technologies data to match tag interface
+                const transformedTechnologies = Array.isArray(technologiesData) ? technologiesData.map((tech: any) => ({
+                    id: tech.id,
+                    name: tech.name,
+                    slug: tech.name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+                    color: tech.color || '#6B7280'
+                })) : [];
+
                 setCategories(categoriesData);
-                setTags(tagsData);
+                setTags(transformedTechnologies);
 
             } catch (error) {
                 console.error('❌ Error loading data:', error);
