@@ -139,19 +139,12 @@ class BlogServiceAPI {
         featured: post.featured 
       })));
       
-      // Try to get featured posts first
+      // Only return actual featured posts - NO FALLBACK
       const featuredPosts = allPosts.filter(post => post.featured === true);
       console.log('⭐ Featured posts found:', featuredPosts.length);
       
-      // If no featured posts found, return the most recent posts instead
-      if (featuredPosts.length === 0) {
-        console.log('🔄 No featured posts found, returning recent posts instead');
-        const recentPosts = allPosts.slice(0, limit);
-        console.log('📈 Returning recent posts:', recentPosts.length);
-        return recentPosts;
-      }
-      
-      console.log('✅ Returning featured posts:', featuredPosts.length);
+      // Return featured posts only, empty array if none found
+      console.log('✅ Returning featured posts:', featuredPosts.slice(0, limit).length);
       return featuredPosts.slice(0, limit);
     } catch (error) {
       console.error('❌ Error fetching featured posts:', error);

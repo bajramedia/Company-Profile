@@ -304,12 +304,7 @@ export async function getPortfolioCategories() {
     const response = await fetch(`${API_BASE_URL}?endpoint=portfolio_categories`);
     
     if (!response.ok) {
-      // Fallback to default categories
-      return [
-        { id: 'web-dev-001', name: 'Web Development', slug: 'web-development', color: '#3B82F6', icon: '🌐' },
-        { id: 'mobile-001', name: 'Mobile Apps', slug: 'mobile-apps', color: '#10B981', icon: '📱' },
-        { id: 'uiux-001', name: 'UI/UX Design', slug: 'uiux-design', color: '#8B5CF6', icon: '🎨' }
-      ];
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
 
     const categories = await response.json();
@@ -326,12 +321,7 @@ export async function getPortfolioTags() {
     const response = await fetch(`${API_BASE_URL}?endpoint=portfolio_tags`);
     
     if (!response.ok) {
-      // Fallback to default tags
-      return [
-        { id: 'react-001', name: 'React', slug: 'react', color: '#61DAFB' },
-        { id: 'nextjs-001', name: 'Next.js', slug: 'nextjs', color: '#000000' },
-        { id: 'typescript-001', name: 'TypeScript', slug: 'typescript', color: '#3178C6' }
-      ];
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
 
     const tags = await response.json();
