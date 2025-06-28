@@ -30,6 +30,9 @@ export async function GET(request: NextRequest) {
                     url += `?${params.toString()}`;
                 }
 
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 10000);
+                
                 const response = await fetch(url, {
                     method: 'GET',
                     headers: {
@@ -37,8 +40,10 @@ export async function GET(request: NextRequest) {
                         'User-Agent': 'BajramediaAdmin/1.0',
                     },
                     cache: 'no-store',
-                    signal: AbortSignal.timeout(10000), // 10 second timeout
+                    signal: controller.signal,
                 });
+                
+                clearTimeout(timeoutId);
 
                 if (response.ok) {
                     const data = await response.json();
@@ -139,6 +144,9 @@ export async function POST(request: NextRequest) {
         // Try each endpoint until one works
         for (const baseUrl of API_ENDPOINTS) {
             try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 10000);
+                
                 const response = await fetch(`${baseUrl}/api_bridge.php/technologies`, {
                     method: 'POST',
                     headers: {
@@ -146,8 +154,10 @@ export async function POST(request: NextRequest) {
                         'User-Agent': 'BajramediaAdmin/1.0',
                     },
                     body: JSON.stringify(body),
-                    signal: AbortSignal.timeout(10000),
+                    signal: controller.signal,
                 });
+                
+                clearTimeout(timeoutId);
 
                 if (response.ok) {
                     const data = await response.json();
