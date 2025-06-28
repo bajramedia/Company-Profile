@@ -17,17 +17,7 @@ export async function GET(
       );
     }
 
-    console.log('📄 Single Post API: Fetching slug:', slug);
-    
-    // Query single post by slug using api_bridge.php structure
-    const response = await fetch(`${API_BASE_URL}?endpoint=posts&id=${slug}`, {
-      method: 'GET',
-      headers: {
-        'User-Agent': 'Bajramedia-Website/1.0'
-      }
-    });
-    
-    console.log('📡 API Response status:', response.status);
+    const response = await fetch(`${API_BASE_URL}?endpoint=posts&slug=${slug}&published=true`);
     
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -44,54 +34,31 @@ export async function GET(
 
     const post = Array.isArray(data) ? data[0] : data;
     
-    // Validate required fields exist - NO DUMMY DATA
-    if (!post.id || !post.title || !post.authorName || !post.categoryName) {
-      console.log('❌ Post missing required fields:', {
-        id: !!post.id,
-        title: !!post.title,
-        authorName: !!post.authorName,
-        categoryName: !!post.categoryName
-      });
-      return NextResponse.json(
-        { error: 'Post data incomplete' },
-        { status: 500 }
-      );
-    }
-    
-    // Format the post with PURE database data - NO FALLBACKS
+    // Format the post to match expected structure
     const formattedPost = {
-      id: post.id,
-      title: post.title,
-      slug: post.slug,
-      excerpt: post.excerpt || '',
-      content: post.content || '',
-      featuredImage: post.featuredImage || '',
-      date: post.date || post.createdAt,
-      createdAt: post.createdAt || post.date,
+      ...post,
       published: post.published === "1" || post.published === 1 || post.published === true,
       featured: post.featured === "1" || post.featured === 1 || post.featured === true,
-      readTime: parseInt(post.readTime) || null,
-      author: { 
-        id: post.authorId, 
-        name: post.authorName,
-        email: post.authorEmail || '',
-        avatar: post.authorAvatar || '',
-        bio: post.authorBio || ''
-      },
-      category: { 
-        id: post.categoryId, 
-        name: post.categoryName,
-        slug: post.categorySlug
-      },
       tags: post.tags || [],
-      views: post.views || 0
+      author: post.author || { 
+        id: post.authorId, 
+        name: post.authorName || 'Unknown',
+        avatar: post.authorAvatar || null,
+        bio: post.authorBio || null
+      },
+      category: post.category || { 
+        id: post.categoryId, 
+        name: post.categoryName || 'Uncategorized',
+        slug: post.categorySlug || 'uncategorized'
+      },
+      views: post.views || 0,
+      readTime: post.readTime || 5
     };
 
-    console.log('✅ Single post formatted successfully:', formattedPost.title);
     return NextResponse.json(formattedPost);
 
   } catch (error) {
-    console.error('❌ Single Post API Error:', error);
+    console.error('Error fetching post:', error);
     return NextResponse.json(
       { error: 'Failed to fetch post' },
       { status: 500 }

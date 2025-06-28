@@ -140,7 +140,7 @@ export default function WebDevelopmentPage() {
                         {technologies.map((tech, index) => (
                             <div
                                 key={tech.name}
-                                className="group bg-white dark:bg-slate-700 rounded-xl p-6 text-center shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 border border-gray-100 dark:border-slate-600"
+                                className="group bg-white dark:bg-gray-800 rounded-xl p-6 text-center shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 border border-gray-100 dark:border-gray-700"
                                 data-aos="fade-up"
                                 data-aos-delay={index * 100}
                             >
@@ -173,7 +173,7 @@ export default function WebDevelopmentPage() {
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        <div className="bg-white dark:bg-slate-700 rounded-2xl p-8 border border-gray-100 dark:border-slate-600 flex flex-col h-full">
+                        <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-100 dark:border-gray-700 flex flex-col h-full">
                             <div className="flex-grow">
                                 <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Landing Page</h3>
                                 <p className="text-gray-600 dark:text-gray-400 mb-6">Website satu halaman yang powerful</p>
@@ -184,7 +184,7 @@ export default function WebDevelopmentPage() {
                             <Button variant="outline" size="lg" className="w-full mt-auto">Pilih Paket</Button>
                         </div>
 
-                        <div className="bg-white dark:bg-slate-700 rounded-2xl p-8 border-2 border-green-500 ring-2 ring-green-500/20 relative flex flex-col h-full">
+                        <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 border-2 border-green-500 ring-2 ring-green-500/20 relative flex flex-col h-full">
                             <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
                                 <span className="bg-green-500 text-white px-4 py-2 rounded-full text-sm font-medium">
                                     Paling Populer
@@ -200,7 +200,7 @@ export default function WebDevelopmentPage() {
                             <Button variant="primary" size="lg" className="w-full mt-auto">Pilih Paket</Button>
                         </div>
 
-                        <div className="bg-white dark:bg-slate-700 rounded-2xl p-8 border border-gray-100 dark:border-slate-600 flex flex-col h-full">
+                        <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-100 dark:border-gray-700 flex flex-col h-full">
                             <div className="flex-grow">
                                 <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">E-Commerce</h3>
                                 <p className="text-gray-600 dark:text-gray-400 mb-6">Toko online dengan payment gateway</p>

@@ -62,26 +62,23 @@ class BlogServiceAPI {
       
       const posts = await response.json();
       
-      // Posts are already formatted by our API route with PURE database data
-      return posts.filter((post: any) => {
-        // Only return posts with complete database data - NO DUMMY DATA
-        return post.id && post.title && post.author?.name && post.category?.name;
-      }).map((post: any) => ({
+      // Posts are already formatted by our API route
+      return posts.map((post: any) => ({
         ...post,
         date: post.date || post.createdAt,
         featured: post.featured || false,
-        readTime: parseInt(post.readTime) || null,
+        readTime: parseInt(post.readTime) || calculateReadTime(post.content || ''),
         author: {
-          id: post.author.id,
-          name: post.author.name,
-          email: post.author.email || '',
-          avatar: post.author.avatar || '',
-          bio: post.author.bio || ''
+          id: post.author?.id || '1',
+          name: post.author?.name || 'Unknown Author',
+          email: post.author?.email || '',
+          avatar: post.author?.avatar || '',
+          bio: post.author?.bio || ''
         },
         category: {
-          id: post.category.id,
-          name: post.category.name,
-          slug: post.category.slug
+          id: post.category?.id || '1',
+          name: post.category?.name || 'Uncategorized',
+          slug: post.category?.slug || 'uncategorized',
         },
         views: post.views || 0
       }));
@@ -104,34 +101,23 @@ class BlogServiceAPI {
       
       if (!post) return null;
       
-      // Validate post has required database fields - NO DUMMY DATA
-      if (!post.id || !post.title || !post.author?.name || !post.category?.name) {
-        console.error('❌ Post missing required fields:', {
-          id: !!post.id,
-          title: !!post.title,
-          authorName: !!post.author?.name,
-          categoryName: !!post.category?.name
-        });
-        return null;
-      }
-      
-      // Post with PURE database data only
+      // Post is already formatted by our API route
       return {
         ...post,
         date: post.date || post.createdAt,
         featured: post.featured || false,
-        readTime: parseInt(post.readTime) || null,
+        readTime: parseInt(post.readTime) || calculateReadTime(post.content || ''),
         author: {
-          id: post.author.id,
-          name: post.author.name,
-          email: post.author.email || '',
-          avatar: post.author.avatar || '',
-          bio: post.author.bio || ''
+          id: post.author?.id || '1',
+          name: post.author?.name || 'Unknown Author',
+          email: post.author?.email || '',
+          avatar: post.author?.avatar || '',
+          bio: post.author?.bio || ''
         },
         category: {
-          id: post.category.id,
-          name: post.category.name,
-          slug: post.category.slug
+          id: post.category?.id || '1',
+          name: post.category?.name || 'Uncategorized',
+          slug: post.category?.slug || 'uncategorized',
         },
         views: post.views || 0
       };
@@ -153,12 +139,19 @@ class BlogServiceAPI {
         featured: post.featured 
       })));
       
-      // Only return actual featured posts - NO FALLBACK
+      // Try to get featured posts first
       const featuredPosts = allPosts.filter(post => post.featured === true);
       console.log('⭐ Featured posts found:', featuredPosts.length);
       
-      // Return featured posts only, empty array if none found
-      console.log('✅ Returning featured posts:', featuredPosts.slice(0, limit).length);
+      // If no featured posts found, return the most recent posts instead
+      if (featuredPosts.length === 0) {
+        console.log('🔄 No featured posts found, returning recent posts instead');
+        const recentPosts = allPosts.slice(0, limit);
+        console.log('📈 Returning recent posts:', recentPosts.length);
+        return recentPosts;
+      }
+      
+      console.log('✅ Returning featured posts:', featuredPosts.length);
       return featuredPosts.slice(0, limit);
     } catch (error) {
       console.error('❌ Error fetching featured posts:', error);

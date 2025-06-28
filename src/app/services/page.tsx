@@ -177,7 +177,7 @@ export default function ServicesPage() {
                             <AnimatedText key={service.id} as="div">
                                 <Link href={`/services/${service.id}`}>
                                     <div
-                                        className="group bg-white dark:bg-slate-700 rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 dark:border-slate-600 cursor-pointer h-full flex flex-col"
+                                        className="group bg-white dark:bg-slate-800/90 dark:backdrop-blur-sm dark:border dark:border-gray-700/50 rounded-2xl p-8 shadow-sm hover:shadow-xl dark:hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 cursor-pointer h-full flex flex-col"
                                         data-aos="fade-up"
                                         data-aos-delay={index * 100}
                                     >

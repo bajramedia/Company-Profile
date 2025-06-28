@@ -18,22 +18,10 @@ export async function GET(request: NextRequest) {
     
     const posts = await response.json();
     
-    // Filter only published posts with complete data - NO DUMMY DATA
-    const publishedPosts = posts.filter((post: any) => {
-      const isPublished = post.published === "1" || post.published === 1 || post.published === true;
-      const hasRequiredFields = post.id && post.title && post.authorName && post.categoryName;
-      
-      if (isPublished && !hasRequiredFields) {
-        console.log('❌ Published post missing required fields:', {
-          id: post.id,
-          title: post.title?.substring(0, 30),
-          hasAuthor: !!post.authorName,
-          hasCategory: !!post.categoryName
-        });
-      }
-      
-      return isPublished && hasRequiredFields;
-    });
+    // Filter only published posts for public access
+    const publishedPosts = posts.filter((post: any) => 
+      post.published === "1" || post.published === 1 || post.published === true
+    );
 
     // Filter posts based on search if provided
     let filteredPosts = publishedPosts;
@@ -59,15 +47,15 @@ export async function GET(request: NextRequest) {
       published: true, // Always true for public API
       featured: post.featured === "1" || post.featured === 1 || post.featured === true,
       author: {
-        id: post.authorId,
-        name: post.authorName,
+        id: post.authorId || "cmbf4aq8s0000tsa4kiz9m58q",
+        name: post.authorName || "Admin User",
         avatar: post.authorAvatar || "",
         bio: post.authorBio || ""
       },
       category: {
-        id: post.categoryId,
-        name: post.categoryName,
-        slug: post.categorySlug
+        id: post.categoryId || "cmbf4aq900001tsa4kx7e1sgo",
+        name: post.categoryName || "Uncategorized",
+        slug: post.categorySlug || "uncategorized"
       },
       tags: post.tags || [],
       views: post.views || 0

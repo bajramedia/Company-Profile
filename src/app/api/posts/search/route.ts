@@ -37,31 +37,24 @@ export async function GET(request: NextRequest) {
     // Handle different response formats
     const posts = Array.isArray(data) ? data : data.posts || [];
     
-    // Filter posts with complete data only - NO DUMMY DATA
-    const validPosts = posts.filter((post: any) => {
-      return post.id && post.title && post.authorName && post.categoryName;
-    });
-    
-    console.log(`🔍 Search results: ${validPosts.length}/${posts.length} posts have complete data`);
-    
     // Format posts to match expected structure
-    const formattedPosts = validPosts.map((post: any) => ({
+    const formattedPosts = posts.map((post: any) => ({
       ...post,
       published: post.published === "1" || post.published === 1 || post.published === true,
       featured: post.featured === "1" || post.featured === 1 || post.featured === true,
       tags: post.tags || [],
-      author: { 
+      author: post.author || { 
         id: post.authorId, 
-        name: post.authorName,
-        avatar: post.authorAvatar || ''
+        name: post.authorName || 'Unknown',
+        avatar: post.authorAvatar || null
       },
-      category: { 
+      category: post.category || { 
         id: post.categoryId, 
-        name: post.categoryName,
-        slug: post.categorySlug
+        name: post.categoryName || 'Uncategorized',
+        slug: post.categorySlug || 'uncategorized'
       },
       views: post.views || 0,
-      readTime: parseInt(post.readTime) || null,
+      readTime: post.readTime || Math.ceil((post.content?.length || 0) / 200) || 5,
       // Add search relevance score if available
       relevance: post.relevance || 1
     }));

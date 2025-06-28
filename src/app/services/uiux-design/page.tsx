@@ -223,7 +223,7 @@ export default function UIUXDesignPage() {
 
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                         <div
-                            className="group bg-white dark:bg-gray-800 rounded-xl p-6 text-center border border-gray-100 dark:border-gray-700 hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+                            className="group bg-white dark:bg-slate-800/90 dark:backdrop-blur-sm dark:border dark:border-gray-700/50 rounded-xl p-6 text-center border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
                             data-aos="fade-up"
                             data-aos-delay="100"
                         >
@@ -232,7 +232,7 @@ export default function UIUXDesignPage() {
                             <p className="text-gray-600 dark:text-gray-400 text-sm">Analisis user & kompetitor</p>
                         </div>
                         <div
-                            className="group bg-white dark:bg-gray-800 rounded-xl p-6 text-center border border-gray-100 dark:border-gray-700 hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+                            className="group bg-white dark:bg-slate-800/90 dark:backdrop-blur-sm dark:border dark:border-gray-700/50 rounded-xl p-6 text-center border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
                             data-aos="fade-up"
                             data-aos-delay="200"
                         >
@@ -241,7 +241,7 @@ export default function UIUXDesignPage() {
                             <p className="text-gray-600 dark:text-gray-400 text-sm">Struktur & layout dasar</p>
                         </div>
                         <div
-                            className="group bg-white dark:bg-gray-800 rounded-xl p-6 text-center border border-gray-100 dark:border-gray-700 hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+                            className="group bg-white dark:bg-slate-800/90 dark:backdrop-blur-sm dark:border dark:border-gray-700/50 rounded-xl p-6 text-center border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
                             data-aos="fade-up"
                             data-aos-delay="300"
                         >
@@ -250,7 +250,7 @@ export default function UIUXDesignPage() {
                             <p className="text-gray-600 dark:text-gray-400 text-sm">UI yang menarik</p>
                         </div>
                         <div
-                            className="group bg-white dark:bg-gray-800 rounded-xl p-6 text-center border border-gray-100 dark:border-gray-700 hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+                            className="group bg-white dark:bg-slate-800/90 dark:backdrop-blur-sm dark:border dark:border-gray-700/50 rounded-xl p-6 text-center border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
                             data-aos="fade-up"
                             data-aos-delay="400"
                         >
@@ -281,7 +281,7 @@ export default function UIUXDesignPage() {
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                         <div
-                            className="bg-white dark:bg-slate-700 rounded-2xl p-8 border border-gray-100 dark:border-slate-600 hover:scale-105 transition-all duration-300 flex flex-col h-full"
+                            className="bg-white dark:bg-slate-800/90 dark:backdrop-blur-sm dark:border dark:border-gray-700/50 rounded-2xl p-8 border border-gray-100 hover:scale-105 transition-all duration-300 flex flex-col h-full"
                             data-aos="fade-up"
                             data-aos-delay="200"
                         >
@@ -297,7 +297,7 @@ export default function UIUXDesignPage() {
                         </div>
 
                         <div
-                            className="bg-white dark:bg-slate-700 rounded-2xl p-8 border-2 border-green-500 relative hover:scale-105 transition-all duration-300 flex flex-col h-full"
+                            className="bg-white dark:bg-slate-800/90 dark:backdrop-blur-sm dark:border dark:border-gray-700/50 rounded-2xl p-8 border-2 border-green-500 relative hover:scale-105 transition-all duration-300 flex flex-col h-full"
                             data-aos="fade-up"
                             data-aos-delay="300"
                         >
@@ -316,7 +316,7 @@ export default function UIUXDesignPage() {
                         </div>
 
                         <div
-                            className="bg-white dark:bg-slate-700 rounded-2xl p-8 border border-gray-100 dark:border-slate-600 hover:scale-105 transition-all duration-300 flex flex-col h-full"
+                            className="bg-white dark:bg-slate-800/90 dark:backdrop-blur-sm dark:border dark:border-gray-700/50 rounded-2xl p-8 border border-gray-100 hover:scale-105 transition-all duration-300 flex flex-col h-full"
                             data-aos="fade-up"
                             data-aos-delay="400"
                         >
@@ -353,7 +353,7 @@ export default function UIUXDesignPage() {
 
                     <div className="grid grid-cols-3 md:grid-cols-6 gap-6">
                         <div
-                            className="group bg-white dark:bg-gray-800 rounded-xl p-4 text-center border border-gray-100 dark:border-gray-700 hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+                            className="group bg-white dark:bg-slate-800/90 dark:backdrop-blur-sm dark:border dark:border-gray-700/50 rounded-xl p-4 text-center border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
                             data-aos="fade-up"
                             data-aos-delay="100"
                         >
@@ -361,7 +361,7 @@ export default function UIUXDesignPage() {
                             <p className="text-xs text-gray-600 dark:text-gray-400">Figma</p>
                         </div>
                         <div
-                            className="group bg-white dark:bg-gray-800 rounded-xl p-4 text-center border border-gray-100 dark:border-gray-700 hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+                            className="group bg-white dark:bg-slate-800/90 dark:backdrop-blur-sm dark:border dark:border-gray-700/50 rounded-xl p-4 text-center border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
                             data-aos="fade-up"
                             data-aos-delay="150"
                         >
@@ -369,7 +369,7 @@ export default function UIUXDesignPage() {
                             <p className="text-xs text-gray-600 dark:text-gray-400">Adobe XD</p>
                         </div>
                         <div
-                            className="group bg-white dark:bg-gray-800 rounded-xl p-4 text-center border border-gray-100 dark:border-gray-700 hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+                            className="group bg-white dark:bg-slate-800/90 dark:backdrop-blur-sm dark:border dark:border-gray-700/50 rounded-xl p-4 text-center border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
                             data-aos="fade-up"
                             data-aos-delay="200"
                         >
@@ -377,7 +377,7 @@ export default function UIUXDesignPage() {
                             <p className="text-xs text-gray-600 dark:text-gray-400">Sketch</p>
                         </div>
                         <div
-                            className="group bg-white dark:bg-gray-800 rounded-xl p-4 text-center border border-gray-100 dark:border-gray-700 hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+                            className="group bg-white dark:bg-slate-800/90 dark:backdrop-blur-sm dark:border dark:border-gray-700/50 rounded-xl p-4 text-center border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
                             data-aos="fade-up"
                             data-aos-delay="250"
                         >
@@ -385,7 +385,7 @@ export default function UIUXDesignPage() {
                             <p className="text-xs text-gray-600 dark:text-gray-400">Illustrator</p>
                         </div>
                         <div
-                            className="group bg-white dark:bg-gray-800 rounded-xl p-4 text-center border border-gray-100 dark:border-gray-700 hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+                            className="group bg-white dark:bg-slate-800/90 dark:backdrop-blur-sm dark:border dark:border-gray-700/50 rounded-xl p-4 text-center border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
                             data-aos="fade-up"
                             data-aos-delay="300"
                         >
@@ -393,7 +393,7 @@ export default function UIUXDesignPage() {
                             <p className="text-xs text-gray-600 dark:text-gray-400">Photoshop</p>
                         </div>
                         <div
-                            className="group bg-white dark:bg-gray-800 rounded-xl p-4 text-center border border-gray-100 dark:border-gray-700 hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+                            className="group bg-white dark:bg-slate-800/90 dark:backdrop-blur-sm dark:border dark:border-gray-700/50 rounded-xl p-4 text-center border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
                             data-aos="fade-up"
                             data-aos-delay="350"
                         >

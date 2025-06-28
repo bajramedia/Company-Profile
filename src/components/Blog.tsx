@@ -121,13 +121,11 @@ const Blog: React.FC<BlogProps> = ({ className = '' }) => {
     const fetchPosts = async () => {
       try {
         setLoading(true);
-        // Get featured blog posts from the service - NO FALLBACK
+        // Get featured blog posts from the service
         const featuredPosts = await blogService.getFeaturedPosts(3);
         setPosts(featuredPosts);
       } catch (error) {
-        console.error("❌ Error fetching blog posts:", error);
-        // No fallback - show empty state with error info
-        setPosts([]);
+        console.error("Error fetching blog posts:", error);
       } finally {
         setLoading(false);
       }

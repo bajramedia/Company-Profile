@@ -417,7 +417,7 @@ export default function AboutPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
               {/* Vision */}
-              <div className="bg-white dark:bg-slate-700 rounded-2xl p-8 shadow-lg border border-gray-100 dark:border-slate-600" data-aos="fade-right">
+              <div className="bg-white dark:bg-gray-800/80 dark:backdrop-blur-sm dark:border dark:border-gray-700/50 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300" data-aos="fade-right">
                 <div className="text-center mb-8">
                   <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
                     <svg className="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -435,7 +435,7 @@ export default function AboutPage() {
               </div>
 
               {/* Mission */}
-              <div className="bg-white dark:bg-slate-700 rounded-2xl p-8 shadow-lg border border-gray-100 dark:border-slate-600" data-aos="fade-left">
+              <div className="bg-white dark:bg-gray-800/80 dark:backdrop-blur-sm dark:border dark:border-gray-700/50 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300" data-aos="fade-left">
                 <div className="text-center mb-8">
                   <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
                     <svg className="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -484,7 +484,7 @@ export default function AboutPage() {
                 {[...Array(6)].map((_, index) => (
                   <div
                     key={index}
-                    className="bg-white dark:bg-slate-700 rounded-2xl p-6 shadow-lg animate-pulse border border-gray-100 dark:border-slate-600"
+                    className="bg-white dark:bg-gray-800/80 dark:backdrop-blur-sm dark:border dark:border-gray-700/50 rounded-2xl p-6 shadow-lg animate-pulse"
                   >
                     <div className="text-center">
                       <div className="w-24 h-24 bg-gray-300 dark:bg-gray-600 rounded-full mx-auto mb-4"></div>
@@ -536,7 +536,7 @@ export default function AboutPage() {
                 {teamMembers.map((member, index) => (
                   <div
                     key={member.id}
-                    className="bg-white dark:bg-slate-700 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-slate-600"
+                    className="bg-white dark:bg-gray-800/80 dark:backdrop-blur-sm dark:border dark:border-gray-700/50 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300"
                     data-aos="fade-up"
                     data-aos-delay={index * 100}
                   >
@@ -663,7 +663,7 @@ export default function AboutPage() {
                 {[...Array(2)].map((_, index) => (
                   <div
                     key={index}
-                    className="bg-white dark:bg-slate-700 rounded-2xl p-8 shadow-lg animate-pulse text-center border border-gray-100 dark:border-slate-600"
+                    className="bg-white dark:bg-gray-800/80 dark:backdrop-blur-sm dark:border dark:border-gray-700/50 rounded-2xl p-8 shadow-lg animate-pulse text-center"
                   >
                     <div className="w-24 h-24 bg-gray-300 dark:bg-gray-600 rounded mx-auto mb-6"></div>
                     <div className="h-6 bg-gray-300 dark:bg-gray-600 rounded mb-2"></div>
@@ -709,7 +709,7 @@ export default function AboutPage() {
                 {partners.map((partner, index) => (
                   <div
                     key={partner.id}
-                    className="bg-white dark:bg-slate-700 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 text-center border border-gray-100 dark:border-slate-600"
+                    className="bg-white dark:bg-gray-800/80 dark:backdrop-blur-sm dark:border dark:border-gray-700/50 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 text-center"
                     data-aos="fade-up"
                     data-aos-delay={index * 200}
                   >

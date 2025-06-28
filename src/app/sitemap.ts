@@ -1,64 +1,61 @@
 import { MetadataRoute } from 'next';
-
-// Required for static export
-export const dynamic = 'force-static';
   
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://bajramedia.com';
-
-  // Static routes
+  // Static routes (always available)
   const staticRoutes = [
     {
-      url: baseUrl,
+      url: 'https://bajramedia.com',
       lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: 1,
+      changeFrequency: 'daily' as const,
+      priority: 1.0,
     },
     {
-      url: `${baseUrl}/about`,
+      url: 'https://bajramedia.com/blog',
       lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/services`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
+      changeFrequency: 'daily' as const,
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/portfolio`,
+      url: 'https://bajramedia.com/portfolio',
       lastModified: new Date(),
       changeFrequency: 'weekly' as const,
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/blog`,
+      url: 'https://bajramedia.com/services',
       lastModified: new Date(),
-      changeFrequency: 'daily' as const,
+      changeFrequency: 'monthly' as const,
       priority: 0.7,
     },
   ];
 
-  // Service pages
-  const serviceRoutes = [
-    'web-development',
-    'uiux-design',
-    'mobile-apps',
-    'sistem-development',
-    'digital-marketing',
-    'consulting',
-    'sosial-media-management',
-    'aset-game-development'
-  ].map(service => ({
-    url: `${baseUrl}/services/${service}`,
-    lastModified: new Date(),
-    changeFrequency: 'monthly' as const,
-    priority: 0.7,
+  // Try to get blog posts from API bridge
+  try {
+    const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "https://bajramedia.com/api_bridge.php";
+    const response = await fetch(`${API_BASE_URL}?endpoint=posts&limit=100`, {
+      // Add timeout to prevent hanging during build
+      next: { revalidate: 3600 }, // Cache for 1 hour
+    });
+    
+    if (response.ok) {
+      const posts = await response.json();
+      
+      const blogPosts = posts
+        .filter((post: any) => post.id && post.id !== '' && post.slug) // Filter valid posts
+        .map((post: any) => ({
+          url: `https://bajramedia.com/blog/${post.slug}`,
+          lastModified: new Date(post.date || post.createdAt || new Date()),
+          changeFrequency: 'weekly' as const,
+          priority: 0.8,
         }));
 
-  // For static export, we'll skip dynamic content fetching
-  // In production with server, you would fetch posts and portfolio here
-  
-  return [...staticRoutes, ...serviceRoutes];
+      return [...staticRoutes, ...blogPosts];
+    }
+  } catch (error) {
+    console.error('Error fetching posts for sitemap:', error);
+    // Continue with static routes only if API fails
+  }
+
+  // Return static routes if API fails
+  return staticRoutes;
 }
