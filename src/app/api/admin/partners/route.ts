@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://company-profile-mu-nine.vercel.app';
+const API_BASE_URL = 'https://bajramedia.com';
 
 export async function GET() {
   try {
-    const response = await fetch(`${API_BASE_URL}/api_bridge.php?endpoint=partners&method=GET`, {
+    const response = await fetch(`${API_BASE_URL}/api_bridge.php?endpoint=partners`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const response = await fetch(`${API_BASE_URL}/api_bridge.php?endpoint=partners&method=POST`, {
+    const response = await fetch(`${API_BASE_URL}/api_bridge.php?endpoint=partners`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://company-profile-mu-nine.vercel.app';
+const API_BASE_URL = 'https://bajramedia.com';
 
 export async function GET(
   request: NextRequest,
@@ -10,7 +10,7 @@ export async function GET(
     const params = await context.params;
     const { id } = params;
     
-    const response = await fetch(`${API_BASE_URL}/api_bridge.php?endpoint=partners&method=GET&id=${id}`, {
+    const response = await fetch(`${API_BASE_URL}/api_bridge.php?endpoint=partners&id=${id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -42,8 +42,8 @@ export async function PUT(
     const { id } = params;
     const body = await request.json();
 
-    const response = await fetch(`${API_BASE_URL}/api_bridge.php?endpoint=partners&method=PUT&id=${id}`, {
-      method: 'POST', // api_bridge menggunakan POST untuk semua
+    const response = await fetch(`${API_BASE_URL}/api_bridge.php?endpoint=partners&id=${id}`, {
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -74,8 +74,8 @@ export async function DELETE(
     const params = await context.params;
     const { id } = params;
 
-    const response = await fetch(`${API_BASE_URL}/api_bridge.php?endpoint=partners&method=DELETE&id=${id}`, {
-      method: 'POST', // api_bridge menggunakan POST untuk semua
+    const response = await fetch(`${API_BASE_URL}/api_bridge.php?endpoint=partners&id=${id}`, {
+      method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
       },

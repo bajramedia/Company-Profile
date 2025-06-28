@@ -48,18 +48,29 @@ export default function PartnersAdminPage() {
         if (!confirm('Are you sure you want to delete this partner?')) return;
 
         try {
+            console.log('🗑️ Deleting partner with ID:', id);
+
             const response = await fetch(`/api/admin/partners/${id}`, {
                 method: 'DELETE',
             });
 
+            console.log('🗑️ Delete response status:', response.status);
+
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                const errorText = await response.text();
+                console.error('🗑️ Delete failed response:', errorText);
+                throw new Error(`HTTP error! status: ${response.status}, ${errorText}`);
             }
 
+            const result = await response.json();
+            console.log('🗑️ Delete result:', result);
+
+            console.log('🔄 Refreshing partners list...');
             await fetchPartners(); // Refresh list
+            console.log('✅ Partners list refreshed');
         } catch (error) {
-            console.error('Failed to delete partner:', error);
-            alert('Failed to delete partner');
+            console.error('❌ Failed to delete partner:', error);
+            alert('Failed to delete partner: ' + (error instanceof Error ? error.message : 'Unknown error'));
         }
     };
 
