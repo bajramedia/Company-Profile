@@ -59,10 +59,18 @@ export default function EditPartnerPage() {
                 throw new Error(`HTTP error! status: ${response.status} - ${errorText}`);
             }
 
-            const partner = await response.json();
-            console.log('✅ Partner data received:', partner);
-            console.log('🔍 Partner data keys:', Object.keys(partner));
-            console.log('🔍 Raw partner data structure:', JSON.stringify(partner, null, 2));
+            const partnerResponse = await response.json();
+            console.log('✅ Partner data received:', partnerResponse);
+
+            // Handle case where API returns array vs single object
+            const partner = Array.isArray(partnerResponse) ? partnerResponse[0] : partnerResponse;
+
+            if (!partner) {
+                throw new Error('Partner not found or invalid response format');
+            }
+
+            console.log('🔍 Actual partner object:', partner);
+            console.log('🔍 Partner object keys:', Object.keys(partner));
 
             // Handle multiple possible field name formats from API
             const formattedPartner = {
