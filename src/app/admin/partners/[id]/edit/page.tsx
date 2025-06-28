@@ -61,19 +61,23 @@ export default function EditPartnerPage() {
 
             const partner = await response.json();
             console.log('✅ Partner data received:', partner);
+            console.log('🔍 Partner data keys:', Object.keys(partner));
+            console.log('🔍 Raw partner data structure:', JSON.stringify(partner, null, 2));
 
-            // Ensure all required fields are present and handle different API response formats
+            // Handle multiple possible field name formats from API
             const formattedPartner = {
-                id: partner.id || '',
-                name_en: partner.name_en || partner.nameEn || '',
-                name_id: partner.name_id || partner.nameId || '',
-                description_en: partner.description_en || partner.descriptionEn || '',
-                description_id: partner.description_id || partner.descriptionId || '',
-                logo_url: partner.logo_url || partner.logoUrl || '',
-                website_url: partner.website_url || partner.websiteUrl || '',
-                partner_type: partner.partner_type || partner.partnerType || 'Strategic Partner',
-                sort_order: partner.sort_order || 0,
-                is_active: partner.is_active !== undefined ? partner.is_active : true,
+                id: partner.id || partner.ID || '',
+                name_en: partner.name_en || partner.nameEn || partner.name_english || partner.NameEn || '',
+                name_id: partner.name_id || partner.nameId || partner.name_indonesian || partner.NameId || '',
+                description_en: partner.description_en || partner.descriptionEn || partner.desc_en || partner.DescriptionEn || '',
+                description_id: partner.description_id || partner.descriptionId || partner.desc_id || partner.DescriptionId || '',
+                logo_url: partner.logo_url || partner.logoUrl || partner.logo || partner.Logo || partner.LogoUrl || '',
+                website_url: partner.website_url || partner.websiteUrl || partner.website || partner.Website || partner.WebsiteUrl || '',
+                partner_type: partner.partner_type || partner.partnerType || partner.type || partner.Type || partner.PartnerType || 'Strategic Partner',
+                sort_order: parseInt(partner.sort_order || partner.sortOrder || partner.order || partner.Order || '0') || 0,
+                is_active: partner.is_active !== undefined ? Boolean(partner.is_active) :
+                    partner.isActive !== undefined ? Boolean(partner.isActive) :
+                        partner.active !== undefined ? Boolean(partner.active) : true,
             };
 
             console.log('📝 Formatted partner data:', formattedPartner);
