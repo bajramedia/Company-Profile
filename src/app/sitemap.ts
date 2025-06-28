@@ -1,61 +1,114 @@
 import { MetadataRoute } from 'next';
-  
+import { fetchWithFallback } from '@/utils/api-client';
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  // Static routes (always available)
-  const staticRoutes = [
-    {
-      url: 'https://bajramedia.com',
-      lastModified: new Date(),
-      changeFrequency: 'daily' as const,
-      priority: 1.0,
-    },
-    {
-      url: 'https://bajramedia.com/blog',
-      lastModified: new Date(),
-      changeFrequency: 'daily' as const,
-      priority: 0.9,
-    },
-    {
-      url: 'https://bajramedia.com/portfolio',
-      lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
-      priority: 0.8,
-    },
-    {
-      url: 'https://bajramedia.com/services',
-      lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.7,
-    },
-  ];
+  const baseUrl = 'https://bajramedia.com';
 
-  // Try to get blog posts from API bridge
   try {
-    const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "https://www.bajramedia.com/api_bridge.php";
-    const response = await fetch(`${API_BASE_URL}?endpoint=posts&limit=100`, {
-      // Add timeout to prevent hanging during build
-      next: { revalidate: 3600 }, // Cache for 1 hour
-    });
-    
-    if (response.ok) {
-      const posts = await response.json();
+    // Basic routes
+    const routes = [
+      {
+        url: baseUrl,
+        lastModified: new Date(),
+        changeFrequency: 'daily' as const,
+        priority: 1,
+      },
+      {
+        url: `${baseUrl}/about`,
+        lastModified: new Date(),
+        changeFrequency: 'weekly' as const,
+        priority: 0.8,
+      },
+      {
+        url: `${baseUrl}/services`,
+        lastModified: new Date(),
+        changeFrequency: 'weekly' as const,
+        priority: 0.8,
+      },
+      {
+        url: `${baseUrl}/portfolio`,
+        lastModified: new Date(),
+        changeFrequency: 'daily' as const,
+        priority: 0.9,
+      },
+      {
+        url: `${baseUrl}/blog`,
+        lastModified: new Date(),
+        changeFrequency: 'daily' as const,
+        priority: 0.9,
+      },
+    ];
+
+    // Fetch dynamic posts
+    try {
+      const response = await fetchWithFallback("?endpoint=posts&limit=100", {
+        next: { revalidate: 3600 } // Revalidate every hour
+      });
       
-      const blogPosts = posts
-        .filter((post: any) => post.id && post.id !== '' && post.slug) // Filter valid posts
-        .map((post: any) => ({
-          url: `https://bajramedia.com/blog/${post.slug}`,
-          lastModified: new Date(post.date || post.createdAt || new Date()),
+      if (response.ok) {
+        const posts = await response.json();
+        const postRoutes = posts.map((post: any) => ({
+          url: `${baseUrl}/blog/${post.slug}`,
+          lastModified: new Date(post.updatedAt || post.createdAt || new Date()),
           changeFrequency: 'weekly' as const,
-          priority: 0.8,
+          priority: 0.6,
         }));
-
-      return [...staticRoutes, ...blogPosts];
+        routes.push(...postRoutes);
+      }
+    } catch (error) {
+      console.error('Error fetching posts for sitemap:', error);
     }
-  } catch (error) {
-    console.error('Error fetching posts for sitemap:', error);
-    // Continue with static routes only if API fails
-  }
 
-  // Return static routes if API fails
-  return staticRoutes;
+    // Fetch portfolio items
+    try {
+      const portfolioResponse = await fetchWithFallback("?endpoint=portfolio&limit=100", {
+        next: { revalidate: 3600 }
+      });
+      
+      if (portfolioResponse.ok) {
+        const portfolioItems = await portfolioResponse.json();
+        const portfolioRoutes = portfolioItems.map((item: any) => ({
+          url: `${baseUrl}/portfolio/${item.slug}`,
+          lastModified: new Date(item.updatedAt || item.createdAt || new Date()),
+          changeFrequency: 'monthly' as const,
+          priority: 0.7,
+        }));
+        routes.push(...portfolioRoutes);
+      }
+    } catch (error) {
+      console.error('Error fetching portfolio for sitemap:', error);
+    }
+
+    return routes;
+
+  } catch (error) {
+    console.error('Error generating sitemap:', error);
+    // Return basic routes as fallback
+    return [
+      {
+        url: baseUrl,
+        lastModified: new Date(),
+        changeFrequency: 'daily',
+        priority: 1,
+      },
+      {
+        url: `${baseUrl}/about`,
+        lastModified: new Date(),
+        changeFrequency: 'weekly',
+        priority: 0.8,
+      },
+      {
+        url: `${baseUrl}/portfolio`,
+        lastModified: new Date(),
+        changeFrequency: 'daily',
+        priority: 0.9,
+      },
+      {
+        url: `${baseUrl}/blog`,
+        lastModified: new Date(),
+        changeFrequency: 'daily',
+        priority: 0.9,
+      },
+    ];
+  }
 }
