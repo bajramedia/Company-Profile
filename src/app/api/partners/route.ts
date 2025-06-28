@@ -1,11 +1,12 @@
 import { NextResponse } from 'next/server';
-import { fetchWithFallback } from '@/utils/api-client';
+
+const API_BASE_URL = 'https://bajramedia.com/api_bridge.php';
 
 // GET /api/partners - Get all partners for public display
 export async function GET() {
   try {
     console.log('Public Partners API: Fetching from production database...');
-    const response = await fetchWithFallback('?endpoint=partners');
+    const response = await fetch(`${API_BASE_URL}?endpoint=partners`);
     
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -34,10 +35,13 @@ export async function GET() {
     
   } catch (error) {
     console.error('Public Partners API: Database connection failed:', error);
-    
-    // Return empty array instead of 500 error to prevent page crash
-    const fallbackPartners: any[] = [];
-    
-    return NextResponse.json(fallbackPartners);
+    return NextResponse.json(
+      { 
+        error: 'Failed to fetch partners from database',
+        message: 'Please check if partners table exists in bajx7634_bajra database',
+        details: error instanceof Error ? error.message : 'Unknown error occurred'
+      },
+      { status: 500 }
+    );
   }
 } 

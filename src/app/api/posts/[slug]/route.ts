@@ -1,12 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { fetchWithFallback } from '@/utils/api-client';
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://bajramedia.com/api_bridge.php';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ slug: string }> }
+  context: { params: Promise<{ slug: string }> }
 ) {
   try {
-    const { slug } = await params;
+    const params = await context.params;
+    const slug = params.slug;
 
     if (!slug) {
       return NextResponse.json(
@@ -15,7 +17,7 @@ export async function GET(
       );
     }
 
-    const response = await fetchWithFallback(`?endpoint=posts&slug=${slug}&published=true`);
+    const response = await fetch(`${API_BASE_URL}?endpoint=posts&slug=${slug}&published=true`);
     
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);

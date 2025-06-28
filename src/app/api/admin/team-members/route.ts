@@ -27,7 +27,7 @@ export async function GET(request: NextRequest) {
             });
             
             clearTimeout(timeoutId);
-
+    
             if (response.ok) {
                 const data = await response.json();
                 if (!data.error && Array.isArray(data)) {
@@ -37,7 +37,7 @@ export async function GET(request: NextRequest) {
                 }
             } else {
                 lastError = `HTTP ${response.status}: ${response.statusText}`;
-            }
+    }
         } catch (endpointError) {
             lastError = `Network Error: ${endpointError}`;
             console.error(`Team members failed with ${baseUrl}:`, endpointError);
@@ -76,19 +76,19 @@ export async function POST(request: NextRequest) {
         try {
             const controller = new AbortController();
             const timeoutId = setTimeout(() => controller.abort(), 10000);
-
+    
             const response = await fetch(`${baseUrl}/api_bridge.php/team-members`, {
-                method: 'POST',
+      method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'User-Agent': 'BajramediaAdmin/1.0',
                 },
-                body: JSON.stringify(body),
+      body: JSON.stringify(body),
                 signal: controller.signal,
-            });
+    });
             
             clearTimeout(timeoutId);
-
+    
             if (response.ok) {
                 const data = await response.json();
                 if (!data.error) {
@@ -98,7 +98,7 @@ export async function POST(request: NextRequest) {
                 }
             } else {
                 lastError = `HTTP ${response.status}: ${response.statusText}`;
-            }
+    }
         } catch (endpointError) {
             lastError = `Network Error: ${endpointError}`;
             console.error(`POST team member failed with ${baseUrl}:`, endpointError);

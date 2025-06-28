@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://www.bajramedia.com/api_bridge.php';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://bajramedia.com/api_bridge.php';
 
 // GET /api/admin/tags/[id] - Get single tag by ID
 export async function GET(

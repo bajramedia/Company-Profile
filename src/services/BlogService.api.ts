@@ -43,28 +43,6 @@ function calculateReadTime(content: string): number {
   return readTime;
 }
 
-// Helper function to get the correct base URL for API calls
-function getApiBaseUrl(): string {
-  // During build time or server-side rendering
-  if (typeof window === 'undefined') {
-    // Check if we're in a Vercel environment
-    if (process.env.VERCEL_URL) {
-      return `https://${process.env.VERCEL_URL}`;
-    }
-    // Check if we have a custom domain
-    if (process.env.NEXT_PUBLIC_SITE_URL) {
-      return process.env.NEXT_PUBLIC_SITE_URL;
-    }
-    // Fallback for local development
-    return process.env.NODE_ENV === 'production' 
-      ? 'https://bajramedia.com' 
-      : 'http://localhost:3000';
-  }
-  
-  // Client-side: use relative URLs
-  return '';
-}
-
 class BlogServiceAPI {
   private apiBaseUrl: string;
 
@@ -75,26 +53,14 @@ class BlogServiceAPI {
 
   async getAllPosts(page: number = 1, limit: number = 10): Promise<BlogPost[]> {
     try {
-      // Build URL with proper base for build-time vs runtime
-      const baseUrl = getApiBaseUrl();
-      const url = `${baseUrl}/api/posts?page=${page}&limit=${limit}`;
-      
-      console.log('📡 BlogService: Fetching posts from', url);
-      
       // Use our API route instead of direct API bridge
-      const response = await fetch(url);
+      const response = await fetch(`/api/posts?page=${page}&limit=${limit}`);
       
       if (!response.ok) {
-        console.error(`❌ BlogService: HTTP error ${response.status} for ${url}`);
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       
       const posts = await response.json();
-      
-      if (!Array.isArray(posts)) {
-        console.warn('⚠️ BlogService: Posts response is not an array:', posts);
-        return [];
-      }
       
       // Posts are already formatted by our API route
       return posts.map((post: any) => ({
@@ -117,34 +83,17 @@ class BlogServiceAPI {
         views: post.views || 0
       }));
     } catch (error) {
-      console.error('❌ BlogService: Error fetching posts:', error);
-      
-      // During build time, return empty array instead of crashing
-      if (typeof window === 'undefined') {
-        console.log('🔄 BlogService: Build-time fallback, returning empty posts array');
-        return [];
-      }
-      
+      console.error('Error fetching posts:', error);
       return [];
     }
   }
 
   async getPostBySlug(slug: string): Promise<BlogPost | null> {
     try {
-      // Build URL with proper base for build-time vs runtime
-      const baseUrl = getApiBaseUrl();
-      const url = `${baseUrl}/api/posts/${slug}`;
-      
-      console.log('📡 BlogService: Fetching post from', url);
-      
       // Use our API route instead of direct API bridge
-      const response = await fetch(url);
+      const response = await fetch(`/api/posts/${slug}`);
       
       if (!response.ok) {
-        console.error(`❌ BlogService: HTTP error ${response.status} for ${url}`);
-        if (response.status === 404) {
-          return null;
-        }
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       
@@ -173,14 +122,7 @@ class BlogServiceAPI {
         views: post.views || 0
       };
     } catch (error) {
-      console.error('❌ BlogService: Error fetching post:', error);
-      
-      // During build time, return null instead of crashing
-      if (typeof window === 'undefined') {
-        console.log('🔄 BlogService: Build-time fallback, returning null for post');
-        return null;
-      }
-      
+      console.error('Error fetching post:', error);
       return null;
     }
   }

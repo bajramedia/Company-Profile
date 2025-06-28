@@ -1,72 +1,125 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { fetchWithFallback } from '@/utils/api-client';
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://bajramedia.com/api_bridge.php';
 
 // GET /api/posts/category/[category] - Get posts by category
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ category: string }> }
+  context: { params: Promise<{ category: string }> }
 ) {
   try {
-    const { category } = await params;
-    const { searchParams } = new URL(request.url);
-    const page = parseInt(searchParams.get('page') || '1');
-    const limit = parseInt(searchParams.get('limit') || '10');
+    const params = await context.params;
+    const categorySlug = params.category;
 
-    if (!category) {
+    if (!categorySlug) {
       return NextResponse.json(
-        { error: 'Category is required' },
+        { error: 'Category slug is required' },
         { status: 400 }
       );
     }
 
-    // First, get the category info
-    const categorySlug = decodeURIComponent(category);
-    const categoryResponse = await fetchWithFallback(`?endpoint=categories&slug=${categorySlug}`);
-    
-    let categoryInfo = null;
-    if (categoryResponse.ok) {
-      const categoryData = await categoryResponse.json();
-      categoryInfo = Array.isArray(categoryData) ? categoryData[0] : categoryData;
-    }
+    const searchParams = request.nextUrl.searchParams;
+    const page = parseInt(searchParams.get('page') || '1');
+    const limit = parseInt(searchParams.get('limit') || '10');
 
-    if (!categoryInfo) {
+    // First, verify the category exists and get its details
+    const categoryResponse = await fetch(`${API_BASE_URL}?endpoint=categories&slug=${categorySlug}`);
+    
+    if (!categoryResponse.ok) {
       return NextResponse.json(
         { error: 'Category not found' },
         { status: 404 }
       );
     }
 
-    // Then get posts for this category
+    const categoryData = await categoryResponse.json();
+    const category = Array.isArray(categoryData) ? categoryData[0] : categoryData;
+
+    if (!category) {
+      return NextResponse.json(
+        { error: 'Category not found' },
+        { status: 404 }
+      );
+    }
+
+    // Get posts for this category
     const queryParams = new URLSearchParams({
       endpoint: 'posts',
+      categoryId: category.id,
+      categorySlug: categorySlug,
       page: page.toString(),
       limit: limit.toString(),
-      category: categoryInfo.id.toString(),
-      published: 'true'
+      published: 'true' // Only get published posts
     });
 
-    const postsResponse = await fetchWithFallback(`?${queryParams}`);
+    const postsResponse = await fetch(`${API_BASE_URL}?${queryParams}`);
     
     if (!postsResponse.ok) {
       throw new Error(`HTTP error! status: ${postsResponse.status}`);
     }
     
-    const posts = await postsResponse.json();
+    const postsData = await postsResponse.json();
+    
+    // Handle different response formats
+    const posts = Array.isArray(postsData) ? postsData : postsData.posts || [];
+    
+    // Format posts to match expected structure
+    const formattedPosts = posts.map((post: any) => ({
+      ...post,
+      published: post.published === "1" || post.published === 1 || post.published === true,
+      featured: post.featured === "1" || post.featured === 1 || post.featured === true,
+      tags: post.tags || [],
+      author: post.author || { 
+        id: post.authorId, 
+        name: post.authorName || 'Unknown',
+        avatar: post.authorAvatar || null
+      },
+      category: {
+        id: category.id,
+        name: category.name,
+        slug: category.slug
+      },
+      views: post.views || 0,
+      readTime: post.readTime || Math.ceil((post.content?.length || 0) / 200) || 5
+    }));
 
-    return NextResponse.json({
-      category: categoryInfo,
-      posts: posts || [],
+    // Sort by date (newest first) and featured status
+    formattedPosts.sort((a: any, b: any) => {
+      // Featured posts first
+      if (a.featured && !b.featured) return -1;
+      if (!a.featured && b.featured) return 1;
+      
+      // Then by date
+      return new Date(b.date || b.createdAt).getTime() - new Date(a.date || a.createdAt).getTime();
+    });
+
+    const responseData = {
+      posts: formattedPosts,
+      category: {
+        id: category.id,
+        name: category.name,
+        slug: category.slug,
+        description: category.description || null
+      },
       pagination: {
         page,
         limit,
-        total: posts?.length || 0
+        total: formattedPosts.length,
+        pages: Math.ceil(formattedPosts.length / limit)
       }
-    });
+    };
+
+    return NextResponse.json(responseData);
 
   } catch (error) {
     console.error('Error fetching posts by category:', error);
     return NextResponse.json(
-      { error: 'Failed to fetch posts by category' },
+      { 
+        error: 'Failed to fetch posts',
+        posts: [],
+        category: null,
+        pagination: { page: 1, limit: 10, total: 0, pages: 0 }
+      },
       { status: 500 }
     );
   }

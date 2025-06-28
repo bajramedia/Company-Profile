@@ -8,7 +8,7 @@ const API_ENDPOINTS = [
 
 // GET /api/portfolio/tags - Get all portfolio tags
 export async function GET(request: NextRequest) {
-    try {
+  try {
         // Try each endpoint until one works
         for (const baseUrl of API_ENDPOINTS) {
             try {
@@ -48,17 +48,17 @@ export async function GET(request: NextRequest) {
             },
             { status: 500 }
         );
-
-    } catch (error) {
+    
+  } catch (error) {
         console.error('Error in portfolio tags API:', error);
-        return NextResponse.json(
-            { 
+    return NextResponse.json(
+      { 
                 error: 'Failed to fetch portfolio tags', 
                 details: error instanceof Error ? error.message : 'Unknown error'
-            },
-            { status: 500 }
-        );
-    }
+      },
+      { status: 500 }
+    );
+  }
 }
 
 // POST /api/portfolio/tags - Create new portfolio tag
@@ -85,31 +85,31 @@ export async function POST(request: NextRequest) {
         try {
             const controller = new AbortController();
             const timeoutId = setTimeout(() => controller.abort(), 10000);
-
+    
             const response = await fetch(`${baseUrl}/api_bridge.php/portfolio-tags`, {
-                method: 'POST',
+      method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'User-Agent': 'BajramediaAdmin/1.0',
                 },
                 body: JSON.stringify(tagData),
                 signal: controller.signal,
-            });
+    });
             
             clearTimeout(timeoutId);
 
             if (response.ok) {
-                const result = await response.json();
+    const result = await response.json();
                 if (!result.error) {
-                    return NextResponse.json({
-                        success: true,
-                        tag: {
-                            id: result.id,
-                            name: tagData.name,
-                            slug: tagData.slug,
-                            color: tagData.color
-                        }
-                    }, { status: 201 });
+    return NextResponse.json({
+      success: true,
+      tag: {
+        id: result.id,
+        name: tagData.name,
+        slug: tagData.slug,
+        color: tagData.color
+      }
+    }, { status: 201 });
                 }
             }
         } catch (endpointError) {

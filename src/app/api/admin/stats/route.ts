@@ -1,22 +1,29 @@
-import { NextResponse } from 'next/server';
-import { fetchWithFallback } from '@/utils/api-client';
+import { NextRequest, NextResponse } from 'next/server';
 
-// GET /api/admin/stats - Get dashboard statistics
+const API_BASE_URL = 'https://www.bajramedia.com/api_bridge.php';
+
+// GET /api/admin/stats - Get admin dashboard statistics
 export async function GET() {
   try {
-    const response = await fetchWithFallback('?endpoint=stats');
+    console.log('Stats API: Fetching from production database...');
+    const response = await fetch(`${API_BASE_URL}?endpoint=stats`);
     
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     
-    const data = await response.json();
-    return NextResponse.json(data);
-
+    const stats = await response.json();
+    console.log('Stats API: Database success');
+    return NextResponse.json(stats);
+    
   } catch (error) {
-    console.error('Error fetching stats:', error);
+    console.error('Stats API: Database connection failed:', error);
     return NextResponse.json(
-      { error: 'Failed to fetch statistics' },
+      { 
+        error: 'Failed to fetch stats from database',
+        message: 'Please check database connection and stats tables',
+        details: error instanceof Error ? error.message : 'Unknown error occurred'
+      },
       { status: 500 }
     );
   }

@@ -50,27 +50,27 @@ export async function GET(request: NextRequest) {
                         // Transform API data to match frontend expectations
                         const transformedData: any = {
                             posts: Array.isArray(data) ? data.map((post: any) => ({
-                                id: post.id,
+      id: post.id,
                                 title: post.title,
                                 slug: post.slug,
                                 excerpt: post.excerpt,
                                 content: post.content,
                                 featuredImage: post.featuredImage || post.featured_image,
-                                published: post.published === "1" || post.published === 1 || post.published === true,
+      published: post.published === "1" || post.published === 1 || post.published === true,
                                 date: post.date || post.created_at,
                                 readTime: post.readTime || post.read_time || 5,
                                 views: parseInt(post.views || "0"),
-                                author: {
-                                    id: post.authorId,
+      author: {
+        id: post.authorId,
                                     name: post.authorName,
                                     email: post.authorEmail
-                                },
-                                category: {
-                                    id: post.categoryId,
+      },
+      category: {
+        id: post.categoryId,
                                     name: post.categoryName,
                                     slug: post.categorySlug
-                                },
-                                tags: post.tags || []
+      },
+      tags: post.tags || []
                             })) : [],
                             pagination: {
                                 total: Math.max(Array.isArray(data) ? data.length : 0, 13), // Estimate based on database
@@ -109,10 +109,10 @@ export async function GET(request: NextRequest) {
             { 
                 error: 'Failed to fetch posts', 
                 details: error instanceof Error ? error.message : 'Unknown error'
-            },
-            { status: 500 }
-        );
-    }
+      },
+      { status: 500 }
+    );
+  }
 }
 
 export async function POST(request: NextRequest) {
@@ -141,7 +141,7 @@ export async function POST(request: NextRequest) {
                     },
                     body: JSON.stringify(body),
                     signal: controller.signal,
-                });
+    });
                 
                 clearTimeout(timeoutId);
 
@@ -149,7 +149,7 @@ export async function POST(request: NextRequest) {
                     const data = await response.json();
                     if (!data.error) {
                         return NextResponse.json(data);
-                    }
+    }
                 }
             } catch (endpointError) {
                 console.error(`POST failed with ${baseUrl}:`, endpointError);

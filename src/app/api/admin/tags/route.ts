@@ -1,72 +1,85 @@
-import { NextResponse } from 'next/server';
-import { fetchWithFallback, apiPost } from '@/utils/api-client';
+import { NextResponse } from "next/server";
 
-// GET /api/admin/tags - Get all tags
+const API_BASE_URL = 'https://www.bajramedia.com/api_bridge.php';
+
 export async function GET() {
   try {
-    const response = await fetchWithFallback('?endpoint=tags');
+    console.log('Tags API: Fetching from production database...');
+    const response = await fetch(`${API_BASE_URL}?endpoint=tags`);
     
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     
-    const data = await response.json();
-    return NextResponse.json(data);
-
+    const tags = await response.json();
+    const formattedTags = tags.map((tag: any) => ({
+      ...tag,
+      postCount: tag.postCount || 0
+    }));
+    
+    console.log('Tags API: Database success');
+    return NextResponse.json(formattedTags);
+    
   } catch (error) {
-    console.error('Error fetching tags:', error);
+    console.error('Tags API: Database connection failed:', error);
     return NextResponse.json(
-      { error: 'Failed to fetch tags' },
+      { 
+        error: 'Failed to fetch tags from database',
+        message: 'Please check if tag table exists in bajx7634_bajra database',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      },
       { status: 500 }
     );
   }
 }
 
-// POST /api/admin/tags - Create new tag
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    
     const { name, slug, description } = body;
 
-    // Validate required fields
-    if (!name || !slug) {
-      return NextResponse.json(
-        { error: 'Name and slug are required' },
-        { status: 400 }
-      );
+    if (!name || !name.trim()) {
+      return NextResponse.json({ error: 'Name is required' }, { status: 400 });
     }
 
-    // Prepare tag data
     const tagData = {
-      name,
-      slug,
-      description: description || '',
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
+      name: name.trim(),
+      slug: slug || name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''),
+      description: description || ''
     };
 
-    const response = await apiPost('?endpoint=tags', tagData);
+    console.log('Tags API: Creating new entry in database...');
     
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
-    }
-    
-    const result = await response.json();
-    
-    return NextResponse.json({ 
-      success: true, 
-      tag: result.data || result 
+    const response = await fetch(`${API_BASE_URL}?endpoint=tags`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(tagData)
     });
 
+    if (!response.ok) {
+      const errorData = await response.text();
+      console.error('Tags API: Server error:', errorData);
+      throw new Error(`Server error: ${response.status} - ${errorData}`);
+    }
+
+    const result = await response.json();
+    
+    // Return the actual result from database without fallback
+    return NextResponse.json({ 
+      success: true, 
+      tag: { 
+        id: result.id,
+        name: tagData.name,
+        slug: tagData.slug,
+        description: tagData.description,
+        postCount: 0
+      }
+    }, { status: 201 });
+
   } catch (error) {
-    console.error('Error creating tag:', error);
+    console.error('Tags API: Database creation failed:', error);
     return NextResponse.json(
-      { 
-        error: 'Failed to create tag',
-        details: error instanceof Error ? error.message : 'Unknown error'
-      },
+      { error: 'Failed to create tag in database', details: error instanceof Error ? error.message : 'Unknown error' },
       { status: 500 }
     );
   }

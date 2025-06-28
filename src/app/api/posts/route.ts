@@ -1,15 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
-import { fetchWithFallback } from '@/utils/api-client';
+
+const API_BASE_URL = 'https://www.bajramedia.com/api_bridge.php';
 
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
+    const searchParams = request.nextUrl.searchParams;
     const page = parseInt(searchParams.get("page") || "1");
     const limit = parseInt(searchParams.get("limit") || "10");
     const search = searchParams.get("search") || "";
 
     console.log('Public Posts API: Fetching from production database...');
-    const response = await fetchWithFallback(`?endpoint=posts&page=${page}&limit=${limit}`);
+    const response = await fetch(`${API_BASE_URL}?endpoint=posts&page=${page}&limit=${limit}`);
     
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);

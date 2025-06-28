@@ -5,9 +5,7 @@ $allowedOrigins = [
     'https://company-profile-git-main-bajra-media.vercel.app',
     'https://company-profile-c0emzkquv-bajra-media.vercel.app', 
     'https://bajramedia.vercel.app',
-    'https://company-profile-mu-nine.vercel.app',
-    'https://bajramedia.com',
-    'https://www.bajramedia.com'
+    'https://company-profile-mu-nine.vercel.app'
 ];
 
 $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
@@ -87,8 +85,8 @@ if (strpos($path, '/api_bridge.php/') !== false) {
 
 // Fallback to original query parameter method for backward compatibility
 if (empty($endpoint)) {
-    $endpoint = $_GET['endpoint'] ?? '';
-    $id = $_GET['id'] ?? null;
+$endpoint = $_GET['endpoint'] ?? '';
+$id = $_GET['id'] ?? null;
     
     if (!empty($endpoint)) {
         error_log("Query Route detected: endpoint='$endpoint', id='$id'");

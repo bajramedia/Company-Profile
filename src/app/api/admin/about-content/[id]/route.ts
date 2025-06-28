@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://www.bajramedia.com/api_bridge.php';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://bajramedia.com/api_bridge.php';
 
 export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {

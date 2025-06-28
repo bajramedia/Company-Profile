@@ -1,30 +1,32 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { fetchWithFallback } from '@/utils/api-client';
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://www.bajramedia.com/api_bridge.php';
 
 // GET /api/posts/search - Search posts
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
-    const query = searchParams.get('q') || '';
+    const searchParams = request.nextUrl.searchParams;
+    const query = searchParams.get('q');
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '10');
-    const category = searchParams.get('category') || '';
 
-    if (!query) {
+    if (!query || query.trim().length === 0) {
       return NextResponse.json(
         { error: 'Search query is required' },
         { status: 400 }
       );
     }
 
-    // Build query parameters
-    let queryParams = `endpoint=posts&page=${page}&limit=${limit}&search=${encodeURIComponent(query)}`;
-    
-    if (category) {
-      queryParams += `&category=${encodeURIComponent(category)}`;
-    }
+    // Build search parameters
+    const queryParams = new URLSearchParams({
+      endpoint: 'posts',
+      search: query.trim(),
+      page: page.toString(),
+      limit: limit.toString(),
+      published: 'true' // Only search published posts
+    });
 
-    const response = await fetchWithFallback(`?${queryParams}`);
+    const response = await fetch(`${API_BASE_URL}?${queryParams}`);
     
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -80,7 +82,12 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     console.error('Error searching posts:', error);
     return NextResponse.json(
-      { error: 'Failed to search posts' },
+      { 
+        error: 'Failed to search posts',
+        posts: [],
+        query: request.nextUrl.searchParams.get('q') || '',
+        pagination: { page: 1, limit: 10, total: 0, pages: 0 }
+      },
       { status: 500 }
     );
   }

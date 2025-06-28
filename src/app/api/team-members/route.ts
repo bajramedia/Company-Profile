@@ -1,11 +1,12 @@
 import { NextResponse } from 'next/server';
-import { fetchWithFallback } from '@/utils/api-client';
+
+const API_BASE_URL = 'https://bajramedia.com/api_bridge.php';
 
 // GET /api/team-members - Get all team members for public display
 export async function GET() {
   try {
     console.log('Public Team Members API: Fetching from production database...');
-    const response = await fetchWithFallback('?endpoint=team-members');
+    const response = await fetch(`${API_BASE_URL}?endpoint=team-members`);
     
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -41,29 +42,13 @@ export async function GET() {
     
   } catch (error) {
     console.error('Public Team Members API: Database connection failed:', error);
-    
-    // Return mock/fallback data instead of 500 error to prevent page crash
-    const fallbackTeamMembers = [
-      {
-        id: 1,
-        name: "Bajra Media Team",
-        role: "Development Team",
-        roleId: "Development Team",
-        bio: "Passionate team of developers, designers, and digital strategists.",
-        bioId: "Tim yang berdedikasi terdiri dari developer, desainer, dan ahli strategi digital.",
-        image: "/images/team/admin-avatar.jpg",
-        social: {
-          linkedin: "#",
-          github: "#",
-          instagram: "#",
-          behance: "#",
-          tiktok: "#",
-          youtube: "#"
-        },
-        order: 1
-      }
-    ];
-    
-    return NextResponse.json(fallbackTeamMembers);
+    return NextResponse.json(
+      { 
+        error: 'Failed to fetch team members from database',
+        message: 'Please check if team_members table exists in bajx7634_bajra database',
+        details: error instanceof Error ? error.message : 'Unknown error occurred'
+      },
+      { status: 500 }
+    );
   }
 } 
