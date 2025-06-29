@@ -300,13 +300,18 @@ function handleGet($pdo, $endpoint, $id) {
                 $dateCol = getDateColumn($portfolioColumns);
                 $categoryNameCol = in_array('name', $categoryColumns) ? 'name' : 'category_name';
                 
+                // Add debugging for portfolio queries
+                error_log("API Bridge: Portfolio endpoint accessed with ID: " . ($id ?: 'NULL'));
+                
                 if ($id) {
-                    // Get single portfolio by slug
+                    // Get single portfolio by slug or ID (for admin, allow unpublished)
+                    error_log("API Bridge: Fetching single portfolio with ID/slug: " . $id);
+                    
                     $stmt = $pdo->prepare("
-                        SELECT p.*, pc.$categoryNameCol as categoryName, pc.icon as categoryIcon
+                        SELECT p.*, pc.$categoryNameCol as categoryName, pc.icon as categoryIcon, pc.slug as categorySlug
                         FROM portfolio p 
                         LEFT JOIN portfoliocategory pc ON p.categoryId = pc.id
-                        WHERE (p.slug = ? OR p.id = ?) AND p.published = 1
+                        WHERE (p.slug = ? OR p.id = ?)
                     ");
                     $stmt->execute([$id, $id]);
                     $result = $stmt->fetch();
@@ -315,23 +320,43 @@ function handleGet($pdo, $endpoint, $id) {
                         $result['date'] = $result[$dateCol] ?? date('Y-m-d H:i:s');
                     }
                     
+                    error_log("API Bridge: Single portfolio query result: " . ($result ? json_encode($result) : 'NULL'));
                     echo json_encode($result);
                 } else {
-                    // Get all portfolio items
+                    // Get all portfolio items (for admin, include unpublished)
+                    error_log("API Bridge: Fetching all portfolio items");
+                    
+                    // Check if this is for admin (allow unpublished) or public (only published)
+                    $adminMode = isset($_GET['admin']) || strpos($_SERVER['HTTP_USER_AGENT'] ?? '', 'BajramediaAdmin') !== false;
+                    
+                    $whereClause = $adminMode ? '' : 'WHERE p.published = 1';
+                    
                     $sql = "
-                        SELECT p.*, pc.$categoryNameCol as categoryName, pc.icon as categoryIcon
+                        SELECT p.*, 
+                               pc.$categoryNameCol as categoryName, 
+                               pc.icon as categoryIcon,
+                               pc.slug as categorySlug
                         FROM portfolio p 
                         LEFT JOIN portfoliocategory pc ON p.categoryId = pc.id
-                        WHERE p.published = 1 
+                        $whereClause
                         ORDER BY p.$dateCol DESC
                     ";
+                    
+                    error_log("API Bridge: Portfolio SQL query: " . $sql);
+                    
                     $stmt = $pdo->query($sql);
                     $results = $stmt->fetchAll();
+                    
+                    error_log("API Bridge: Portfolio query returned " . count($results) . " items");
                     
                     foreach ($results as &$result) {
                         if ($dateCol !== 'date') {
                             $result['date'] = $result[$dateCol] ?? date('Y-m-d H:i:s');
                         }
+                        
+                        // Ensure boolean fields are properly formatted
+                        $result['published'] = (int)($result['published'] ?? 0);
+                        $result['featured'] = (int)($result['featured'] ?? 0);
                     }
                     
                     echo json_encode($results);
