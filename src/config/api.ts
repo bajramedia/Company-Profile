@@ -4,10 +4,8 @@
  */
 
 // Main API Base URL
-// For development, use local PHP server to avoid CORS issues
-const isDevelopment = process.env.NODE_ENV === 'development';
-export const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 
-  (isDevelopment ? 'http://localhost:8000' : 'https://balimoonartandspeace.com/api_bridge.php');
+// Main API Base URL - prioritize environment variable for production
+export const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://balimoonartandspeace.com/api_bridge.php';
 
 // API Endpoints Helper Functions
 export const apiEndpoints = {

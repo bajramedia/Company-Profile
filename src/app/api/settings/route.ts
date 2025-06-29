@@ -26,6 +26,26 @@ export async function GET() {
     
     const settings = await response.json();
     
+    // Parse JSON strings if they exist in the raw response
+    let socialLinksObj = {};
+    let seoSettingsObj = {};
+    
+    try {
+      if (settings.socialLinks && typeof settings.socialLinks === 'string') {
+        socialLinksObj = JSON.parse(settings.socialLinks);
+      }
+    } catch (e) {
+      console.warn('Failed to parse socialLinks JSON:', e);
+    }
+    
+    try {
+      if (settings.seoSettings && typeof settings.seoSettings === 'string') {
+        seoSettingsObj = JSON.parse(settings.seoSettings);
+      }
+    } catch (e) {
+      console.warn('Failed to parse seoSettings JSON:', e);
+    }
+
     // Format settings untuk public use
     const publicSettings = {
       siteName: settings.siteName || 'Bajramedia',
@@ -38,17 +58,17 @@ export async function GET() {
       enableComments: settings.enableComments !== undefined ? settings.enableComments : true,
       enableSocialShare: settings.enableSocialShare !== undefined ? settings.enableSocialShare : true,
       socialLinks: {
-        facebook: settings.social_facebook || '',
-        twitter: settings.social_twitter || '',
-        instagram: settings.social_instagram || '',
-        linkedin: settings.social_linkedin || '',
-        youtube: settings.social_youtube || ''
+        facebook: socialLinksObj.facebook || settings.social_facebook || '',
+        twitter: socialLinksObj.twitter || settings.social_twitter || '',
+        instagram: socialLinksObj.instagram || settings.social_instagram || '',
+        linkedin: socialLinksObj.linkedin || settings.social_linkedin || '',
+        youtube: socialLinksObj.youtube || settings.social_youtube || ''
       },
       seoSettings: {
-        metaTitle: settings.seo_metaTitle || 'Bajramedia - Creative Digital Agency',
-        metaDescription: settings.seo_metaDescription || 'Professional digital agency providing creative solutions for your business needs.',
-        metaKeywords: settings.seo_metaKeywords || 'digital agency, creative, design, development, bali',
-        ogImage: settings.seo_ogImage || ''
+        metaTitle: seoSettingsObj.metaTitle || settings.seo_metaTitle || 'Bajramedia - Creative Digital Agency',
+        metaDescription: seoSettingsObj.metaDescription || settings.seo_metaDescription || 'Professional digital agency providing creative solutions for your business needs.',
+        metaKeywords: seoSettingsObj.metaKeywords || settings.seo_metaKeywords || 'digital agency, creative, design, development, bali',
+        ogImage: seoSettingsObj.ogImage || settings.seo_ogImage || ''
       }
     };
 
