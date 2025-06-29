@@ -54,6 +54,29 @@ export const defaultSettings: SiteSettings = {
   }
 };
 
+// Fallback settings if API fails
+const fallbackSettings = {
+  siteName: 'Bajramedia',
+  tagline: 'Digital Solutions for Modern Business',
+  siteUrl: 'https://bajramedia.com',
+  adminEmail: 'admin.bajra@bajramedia.com',
+  postsPerPage: 6,
+  maintenanceMode: false,
+  allowComments: true,
+  socialLinks: {
+    facebook: '',
+    twitter: '',
+    instagram: '',
+    linkedin: '',
+    youtube: ''
+  },
+  seoSettings: {
+    metaTitle: 'Bajramedia - Digital Solutions Agency',
+    metaDescription: 'Professional digital solutions for your business growth',
+    keywords: 'web development, mobile apps, UI/UX design, digital marketing'
+  }
+};
+
 class SettingsService {
   private baseUrl = '/api/admin/settings';
 

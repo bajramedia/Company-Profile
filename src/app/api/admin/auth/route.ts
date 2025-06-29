@@ -6,8 +6,8 @@ export async function POST(request: NextRequest) {
     const { username, password } = body;
 
     // Get admin credentials from environment variables (server-side only)
-    const adminEmail = process.env.ADMIN_EMAIL || 'admin@bajramedia.com';
-    const adminPassword = process.env.ADMIN_PASSWORD || 'admin123';
+    const adminEmail = process.env.ADMIN_EMAIL || 'admin.bajra@bajramedia.com';
+    const adminPassword = process.env.ADMIN_PASSWORD || '@bajra#admin';
 
     // Validate credentials
     if (username === adminEmail && password === adminPassword) {
