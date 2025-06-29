@@ -315,8 +315,7 @@ export default function ConsultingPage() {
                 </section>
             </main>
 
-            {/* Footer */}
-            <Footer />
+            {/* Footer will be handled by ClientLayout */}
 
             {/* Dark Mode Toggle */}
             <div className="fixed bottom-6 left-6 z-50">
