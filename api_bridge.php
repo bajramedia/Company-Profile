@@ -313,6 +313,10 @@ function handleGet($pdo, $endpoint, $id) {
                         throw new Exception("Table 'category' does not exist in database");
                     }
                     
+                    // Get table structure to check which columns exist
+                    $categoryColumns = getTableColumns($pdo, 'category');
+                    $hasDescription = in_array('description', $categoryColumns);
+                    
                     if ($id) {
                         // Get single category by ID
                         $stmt = $pdo->prepare("SELECT * FROM category WHERE id = ?");
@@ -321,12 +325,19 @@ function handleGet($pdo, $endpoint, $id) {
                         echo json_encode($result);
                     } else {
                         // Get all categories with post count
+                        // Build GROUP BY clause based on available columns
+                        $groupByColumns = ['c.id', 'c.name', 'c.slug'];
+                        if ($hasDescription) {
+                            $groupByColumns[] = 'c.description';
+                        }
+                        $groupByClause = implode(', ', $groupByColumns);
+                        
                         $stmt = $pdo->query("
                             SELECT c.*, 
                                    COALESCE(COUNT(p.id), 0) as postCount
                             FROM category c 
                             LEFT JOIN post p ON c.id = p.categoryId AND p.published = 1
-                            GROUP BY c.id, c.name, c.slug
+                            GROUP BY $groupByClause
                             ORDER BY c.name ASC
                         ");
                         $results = $stmt->fetchAll();
