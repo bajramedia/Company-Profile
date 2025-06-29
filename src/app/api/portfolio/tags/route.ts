@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
                 const controller = new AbortController();
                 const timeoutId = setTimeout(() => controller.abort(), 10000);
 
-                const response = await fetch(`${baseUrl}/api.php/portfolio-tags`, {
+                const response = await fetch(`${baseUrl}/api_bridge.php?endpoint=portfolio-tags`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -86,7 +86,7 @@ export async function POST(request: NextRequest) {
             const controller = new AbortController();
             const timeoutId = setTimeout(() => controller.abort(), 10000);
     
-            const response = await fetch(`${baseUrl}/api.php/portfolio-tags`, {
+            const response = await fetch(`${baseUrl}/api_bridge.php?endpoint=portfolio-tags`, {
       method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
