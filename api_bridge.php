@@ -177,8 +177,8 @@ function handleGet($pdo, $endpoint, $id) {
         'settings', 'team-members', 'about-content', 'team', 'about', 'partners'
     ];
     
-    // Block access to sensitive endpoints regardless of environment
-    if (in_array($endpoint, $hiddenEndpoints)) {
+    // Block access to sensitive endpoints regardless of environment (except debug for troubleshooting)
+    if (in_array($endpoint, $hiddenEndpoints) && $endpoint !== 'debug') {
         http_response_code(404);
         echo json_encode(['error' => 'Not Found']);
         return;
@@ -306,8 +306,24 @@ function handleGet($pdo, $endpoint, $id) {
                 break;
 
             case 'categories':
-                $stmt = $pdo->query("SELECT * FROM category ORDER BY name ASC");
-                echo json_encode($stmt->fetchAll());
+                try {
+                    // Check if table exists first
+                    $tableExists = $pdo->query("SHOW TABLES LIKE 'category'")->fetch();
+                    if (!$tableExists) {
+                        throw new Exception("Table 'category' does not exist in database");
+                    }
+                    
+                    $stmt = $pdo->query("SELECT * FROM category ORDER BY name ASC");
+                    echo json_encode($stmt->fetchAll());
+                } catch (Exception $e) {
+                    http_response_code(500);
+                    echo json_encode([
+                        'error' => 'Categories table error',
+                        'message' => $e->getMessage(),
+                        'suggestion' => 'Please run database-schema-safe.sql to create missing tables'
+                    ]);
+                    return;
+                }
                 break;
 
             case 'portfolio-categories':
@@ -414,12 +430,28 @@ function handleGet($pdo, $endpoint, $id) {
             
             case 'team':
             case 'team-members':
-                $stmt = $pdo->query("
-                    SELECT * FROM team_members 
-                    WHERE is_active = 1 
-                    ORDER BY sort_order ASC
-                ");
-                $results = $stmt->fetchAll();
+                try {
+                    // Check if table exists first
+                    $tableExists = $pdo->query("SHOW TABLES LIKE 'team_members'")->fetch();
+                    if (!$tableExists) {
+                        throw new Exception("Table 'team_members' does not exist in database");
+                    }
+                    
+                    $stmt = $pdo->query("
+                        SELECT * FROM team_members 
+                        WHERE is_active = 1 
+                        ORDER BY sort_order ASC
+                    ");
+                    $results = $stmt->fetchAll();
+                } catch (Exception $e) {
+                    http_response_code(500);
+                    echo json_encode([
+                        'error' => 'Team members table error',
+                        'message' => $e->getMessage(),
+                        'suggestion' => 'Please run database-schema-safe.sql to create missing tables'
+                    ]);
+                    return;
+                }
                 
                 // Format for About page frontend compatibility
                 foreach ($results as &$result) {
@@ -454,12 +486,28 @@ function handleGet($pdo, $endpoint, $id) {
                 break;
 
             case 'partners':
-                $stmt = $pdo->query("
-                    SELECT * FROM partners 
-                    WHERE is_active = 1 
-                    ORDER BY sort_order ASC
-                ");
-                $results = $stmt->fetchAll();
+                try {
+                    // Check if table exists first
+                    $tableExists = $pdo->query("SHOW TABLES LIKE 'partners'")->fetch();
+                    if (!$tableExists) {
+                        throw new Exception("Table 'partners' does not exist in database");
+                    }
+                    
+                    $stmt = $pdo->query("
+                        SELECT * FROM partners 
+                        WHERE is_active = 1 
+                        ORDER BY sort_order ASC
+                    ");
+                    $results = $stmt->fetchAll();
+                } catch (Exception $e) {
+                    http_response_code(500);
+                    echo json_encode([
+                        'error' => 'Partners table error',
+                        'message' => $e->getMessage(),
+                        'suggestion' => 'Please run database-schema-safe.sql to create missing tables'
+                    ]);
+                    return;
+                }
                 
                 // Format for About page frontend compatibility
                 foreach ($results as &$result) {
