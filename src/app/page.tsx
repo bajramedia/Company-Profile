@@ -212,6 +212,7 @@ export default function HomePage() {
           <CTA />
         </main>
 
+        {/* Footer */}
         {/* Footer will be handled by ClientLayout */}
 
         {/* Floating Dark Mode Toggle Button */}
