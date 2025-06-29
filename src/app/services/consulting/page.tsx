@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState, useEffect } from 'react';
-import { Button, Heading, Logo, LanguageSwitcher, Footer } from "@/components";
+import { Button, Heading, Logo, LanguageSwitcher } from "@/components";
 import { useLanguage } from "@/context/LanguageContext";
 import AOS from 'aos';
 import 'aos/dist/aos.css';

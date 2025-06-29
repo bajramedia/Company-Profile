@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Button, Heading, Logo, LanguageSwitcher, AnimatedText, Footer, WhatsAppChat } from '@/components';
+import { Button, Heading, Logo, LanguageSwitcher, AnimatedText, WhatsAppChat } from '@/components';
 import { useLanguage } from '@/context/LanguageContext';
 import dynamic from 'next/dynamic';
 
@@ -936,8 +936,7 @@ export default function AboutPage() {
         message="Halo! Saya tertarik dengan layanan Bajramedia. Bisa konsultasi gratis?"
       />
 
-      {/* Footer */}
-      <Footer />
+      {/* Footer will be handled by ClientLayout */}
     </div>
   );
 } 

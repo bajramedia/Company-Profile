@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Button, Heading, Navbar, WhatsAppChat, Footer } from '@/components';
+import { Button, Heading, Navbar, WhatsAppChat } from '@/components';
 import { useLanguage } from '@/context/LanguageContext';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
@@ -236,7 +236,6 @@ export default function PortfolioPage() {
                         </div>
                     </section>
                 </main>
-                <Footer />
             </div>
         );
     }
@@ -263,7 +262,6 @@ export default function PortfolioPage() {
                         </Button>
                     </div>
                 </main>
-                <Footer />
             </div>
         );
     }
@@ -517,9 +515,6 @@ export default function PortfolioPage() {
                     </div>
                 </section>
             </main>
-
-            {/* Footer */}
-            <Footer />
 
             {/* Dark Mode Toggle */}
             <div className="fixed bottom-6 left-6 z-50">
