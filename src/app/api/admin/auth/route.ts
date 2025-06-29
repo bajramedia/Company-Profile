@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
     const adminEmail = process.env.ADMIN_EMAIL || 'admin.bajra@bajramedia.com';
     const adminPassword = process.env.ADMIN_PASSWORD || '@bajra#admin';
 
-    // Validate credentials
+    // Validate credentials - ONLY new credentials accepted
     if (username === adminEmail && password === adminPassword) {
       // Return success response
       return NextResponse.json({
@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
       // Return error response
       return NextResponse.json({
         success: false,
-        message: 'Invalid username or password'
+        message: 'Invalid username or password. Please use the new admin credentials.'
       }, { status: 401 });
     }
   } catch (error) {

@@ -417,8 +417,33 @@ function handleGet($pdo, $endpoint, $id) {
                 break;
 
             case 'portfolio-categories':
-                $stmt = $pdo->query("SELECT * FROM portfoliocategory ORDER BY name ASC");
-                echo json_encode($stmt->fetchAll());
+                try {
+                    // Check if table exists first
+                    $tableExists = $pdo->query("SHOW TABLES LIKE 'portfoliocategory'")->fetch();
+                    if (!$tableExists) {
+                        // Try alternative table name
+                        $tableExists = $pdo->query("SHOW TABLES LIKE 'portfolio_categories'")->fetch();
+                        if (!$tableExists) {
+                            throw new Exception("Neither 'portfoliocategory' nor 'portfolio_categories' table exists in database");
+                        }
+                        $tableName = 'portfolio_categories';
+                    } else {
+                        $tableName = 'portfoliocategory';
+                    }
+                    
+                    $stmt = $pdo->query("SELECT * FROM {$tableName} WHERE is_active = 1 ORDER BY sort_order ASC, name ASC");
+                    $results = $stmt->fetchAll();
+                } catch (Exception $e) {
+                    http_response_code(500);
+                    echo json_encode([
+                        'error' => 'Portfolio categories table error',
+                        'message' => $e->getMessage(),
+                        'suggestion' => 'Please run database-schema-safe.sql to create missing tables'
+                    ]);
+                    return;
+                }
+                
+                echo json_encode($results);
                 break;
 
             case 'authors':

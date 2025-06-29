@@ -6,6 +6,7 @@ import { Navbar, Footer } from "@/components";
 import WhatsAppChat from "@/components/WhatsAppChat";
 import SecurityWrapper from "@/components/SecurityWrapper";
 import { API_BASE_URL } from "@/config/api";
+import ClientLayout from "@/components/ClientLayout";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -181,14 +182,9 @@ export default function RootLayout({
       <body className={inter.className}>
         <SecurityWrapper>
           <LanguageProvider>
-            <div className="flex flex-col min-h-screen">
-              <Navbar />
-              <main className="flex-grow">
-                {children}
-              </main>
-              <Footer />
-              <WhatsAppChat />
-            </div>
+            <ClientLayout>
+              {children}
+            </ClientLayout>
           </LanguageProvider>
         </SecurityWrapper>
       </body>

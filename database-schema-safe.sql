@@ -29,6 +29,8 @@ CREATE TABLE IF NOT EXISTS team_members (
     github_url VARCHAR(255),
     instagram_url VARCHAR(255),
     behance_url VARCHAR(255),
+    tiktok_url VARCHAR(255),
+    youtube_url VARCHAR(255),
     sort_order INT DEFAULT 0,
     is_active TINYINT(1) DEFAULT 1,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -45,6 +47,21 @@ CREATE TABLE IF NOT EXISTS partners (
     logo_url VARCHAR(255),
     website_url VARCHAR(255),
     partner_type ENUM('university', 'company', 'startup', 'government', 'other') DEFAULT 'company',
+    sort_order INT DEFAULT 0,
+    is_active TINYINT(1) DEFAULT 1,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- Portfolio Categories Management (Safe CREATE)
+CREATE TABLE IF NOT EXISTS portfoliocategory (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    slug VARCHAR(100) NOT NULL UNIQUE,
+    description_en TEXT,
+    description_id TEXT,
+    icon VARCHAR(50) DEFAULT '📁',
+    color VARCHAR(7) DEFAULT '#6B7280',
     sort_order INT DEFAULT 0,
     is_active TINYINT(1) DEFAULT 1,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -124,6 +141,38 @@ INSERT IGNORE INTO about_content (section_key, title_en, title_id, content_en, c
 '• Provide accessible and affordable digital solutions for SMEs\n• Foster innovation through cutting-edge technology implementation\n• Build long-term partnerships based on trust and measurable results',
 '• Menyediakan solusi digital yang mudah diakses dan terjangkau untuk UKM\n• Mendorong inovasi melalui implementasi teknologi terdepan\n• Membangun kemitraan jangka panjang berdasarkan kepercayaan dan hasil yang terukur');
 
+-- Insert Portfolio Categories (Safe INSERT)
+INSERT IGNORE INTO portfoliocategory (name, slug, description_en, description_id, icon, color, sort_order) VALUES
+('Web Development', 'web-development', 
+'Modern web applications and websites built with cutting-edge technologies', 
+'Aplikasi web dan website modern yang dibangun dengan teknologi terdepan', 
+'🌐', '#3B82F6', 1),
+
+('Game Development', 'game-development', 
+'Interactive game assets and game development projects', 
+'Aset game interaktif dan proyek pengembangan game', 
+'🎮', '#8B5CF6', 2),
+
+('UI/UX Design', 'uiux-design', 
+'User interface and user experience design for digital products', 
+'Desain antarmuka dan pengalaman pengguna untuk produk digital', 
+'🎨', '#EC4899', 3),
+
+('Mobile Apps', 'mobile-apps', 
+'Cross-platform mobile applications for iOS and Android', 
+'Aplikasi mobile cross-platform untuk iOS dan Android', 
+'📱', '#10B981', 4),
+
+('System Development', 'system-development', 
+'Enterprise systems and business automation solutions', 
+'Sistem enterprise dan solusi otomasi bisnis', 
+'⚙️', '#F59E0B', 5),
+
+('Digital Marketing', 'digital-marketing', 
+'Digital marketing campaigns and social media management', 
+'Kampanye pemasaran digital dan manajemen media sosial', 
+'📊', '#EF4444', 6);
+
 -- Team Members table ready for real data (no dummy data)
 -- Add your real team members through the admin panel
 
@@ -186,7 +235,7 @@ INSERT INTO settings (
     updated_at = CURRENT_TIMESTAMP;
 
 -- Insert default technologies data
-INSERT INTO technologies (name, icon, description_en, description_id, category, color, sort_order) VALUES
+INSERT IGNORE INTO technologies (name, icon, description_en, description_id, category, color, sort_order) VALUES
 ('React', '⚛️', 'Modern UI framework for building interactive user interfaces', 'Framework UI modern untuk membangun antarmuka pengguna interaktif', 'web', '#61DAFB', 1),
 ('Next.js', '▲', 'Full-stack React framework with server-side rendering', 'Framework React full-stack dengan server-side rendering', 'web', '#000000', 2),
 ('TypeScript', '📘', 'Type-safe JavaScript for better development experience', 'JavaScript dengan type safety untuk pengembangan yang lebih baik', 'web', '#3178C6', 3),
@@ -208,8 +257,10 @@ INSERT INTO technologies (name, icon, description_en, description_id, category, 
 SELECT 'About Content Count:' as Info, COUNT(*) as Count FROM about_content;
 SELECT 'Team Members Count:' as Info, COUNT(*) as Count FROM team_members;
 SELECT 'Partners Count:' as Info, COUNT(*) as Count FROM partners;
+SELECT 'Portfolio Categories Count:' as Info, COUNT(*) as Count FROM portfoliocategory;
 SELECT 'Footer Content Count:' as Info, COUNT(*) as Count FROM footer_content;
 SELECT 'Settings Count:' as Info, COUNT(*) as Count FROM settings;
+SELECT 'Technologies Count:' as Info, COUNT(*) as Count FROM technologies;
 
 -- Show sample data
 SELECT 'ABOUT CONTENT:' as Section;
@@ -221,6 +272,9 @@ SELECT id, name, role_en, role_id, sort_order FROM team_members ORDER BY sort_or
 SELECT 'PARTNERS:' as Section;
 SELECT id, name_en, name_id, partner_type, sort_order FROM partners ORDER BY sort_order LIMIT 5;
 
+SELECT 'PORTFOLIO CATEGORIES:' as Section;
+SELECT id, name, slug, icon, color, sort_order FROM portfoliocategory ORDER BY sort_order LIMIT 10;
+
 -- =====================================================
 -- CLEANUP QUERIES (Optional - Use if needed)
 -- =====================================================
@@ -231,6 +285,7 @@ SELECT id, name_en, name_id, partner_type, sort_order FROM partners ORDER BY sor
 -- DELETE FROM about_content;
 -- DELETE FROM team_members;
 -- DELETE FROM partners;
+-- DELETE FROM portfoliocategory;
 -- DELETE FROM footer_content;
 -- DELETE FROM settings WHERE id = 1;
 
@@ -238,6 +293,7 @@ SELECT id, name_en, name_id, partner_type, sort_order FROM partners ORDER BY sor
 -- ALTER TABLE about_content AUTO_INCREMENT = 1;
 -- ALTER TABLE team_members AUTO_INCREMENT = 1;
 -- ALTER TABLE partners AUTO_INCREMENT = 1;
+-- ALTER TABLE portfoliocategory AUTO_INCREMENT = 1;
 -- ALTER TABLE footer_content AUTO_INCREMENT = 1;
 */
 
