@@ -57,7 +57,7 @@ class BlogServiceAPI {
     
     // For build time and server-side, use full URL
     if (this.isServer) {
-      this.baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://bajramedia.com';
+      this.baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.bajramedia.com';
     } else {
       // For client-side, use relative URLs
       this.baseUrl = '';
