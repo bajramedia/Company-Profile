@@ -27,8 +27,8 @@ export async function GET() {
     const settings = await response.json();
     
     // Parse JSON strings if they exist in the raw response
-    let socialLinksObj = {};
-    let seoSettingsObj = {};
+    let socialLinksObj: any = {};
+    let seoSettingsObj: any = {};
     
     try {
       if (settings.socialLinks && typeof settings.socialLinks === 'string') {
