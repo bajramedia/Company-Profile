@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState, useEffect } from 'react';
-import { Button, Heading, Logo, LanguageSwitcher, Footer } from "@/components";
+import { Button, Heading, Logo, LanguageSwitcher } from "@/components";
 import { useLanguage } from "@/context/LanguageContext";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
@@ -393,8 +393,7 @@ export default function SosialMediaManagementPage() {
                 </section>
             </main>
 
-            {/* Footer */}
-            <Footer />
+            {/* Footer will be handled by ClientLayout */}
 
             {/* Dark Mode Toggle */}
             <div className="fixed bottom-6 left-6 z-50">
