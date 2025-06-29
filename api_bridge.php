@@ -326,7 +326,7 @@ function handleGet($pdo, $endpoint, $id) {
                                    COALESCE(COUNT(p.id), 0) as postCount
                             FROM category c 
                             LEFT JOIN post p ON c.id = p.categoryId AND p.published = 1
-                            GROUP BY c.id, c.name, c.slug, c.description
+                            GROUP BY c.id, c.name, c.slug
                             ORDER BY c.name ASC
                         ");
                         $results = $stmt->fetchAll();

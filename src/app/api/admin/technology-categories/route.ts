@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
                 const controller = new AbortController();
                 const timeoutId = setTimeout(() => controller.abort(), 10000);
 
-                const response = await fetch(`${baseUrl}/api.php/categories`, {
+                const response = await fetch(`${baseUrl}/api_bridge.php?endpoint=categories`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -48,18 +48,20 @@ export async function GET(request: NextRequest) {
             }
         }
 
-        // If all endpoints failed
-        throw new Error('All API endpoints failed');
-    } catch (error) {
-        console.error('Error fetching categories:', error);
-        
-        // Return proper error instead of fallback data
+        // If all endpoints fail, return proper error
         return NextResponse.json(
             { 
-                error: 'Failed to fetch technology categories',
-                message: 'Please check server status and API bridge configuration',
-                details: error instanceof Error ? error.message : 'Unknown error'
+                error: 'Failed to fetch technology categories from all endpoints',
+                endpoints_tested: API_ENDPOINTS,
+                message: 'Please check server status and API bridge configuration'
             },
+            { status: 500 }
+        );
+        
+    } catch (error) {
+        console.error('Error in technology categories API:', error);
+        return NextResponse.json(
+            { error: 'Failed to fetch technology categories from database' },
             { status: 500 }
         );
     }

@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
             const controller = new AbortController();
             const timeoutId = setTimeout(() => controller.abort(), 10000);
 
-            const response = await fetch(`${baseUrl}/api.php/portfolio-categories`, {
+            const response = await fetch(`${baseUrl}/api_bridge.php?endpoint=portfolio-categories`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
