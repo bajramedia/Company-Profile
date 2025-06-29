@@ -1359,8 +1359,25 @@ function handlePost($pdo, $endpoint) {
                 break;
                 
             case 'team-members':
-                // Fix any existing empty IDs first
-                fixEmptyIds($pdo, 'team_members');
+                // Fix any existing empty IDs first to prevent duplicate key errors
+                try {
+                    $stmt = $pdo->query("SELECT COUNT(*) as count FROM team_members WHERE id = '' OR id IS NULL");
+                    $emptyCount = $stmt->fetch()['count'];
+                    
+                    if ($emptyCount > 0) {
+                        // Fix empty IDs
+                        $stmt = $pdo->query("SELECT * FROM team_members WHERE id = '' OR id IS NULL");
+                        $emptyRecords = $stmt->fetchAll();
+                        
+                        foreach ($emptyRecords as $record) {
+                            $newId = generateUniqueId();
+                            $updateStmt = $pdo->prepare("UPDATE team_members SET id = ? WHERE (id = '' OR id IS NULL) AND name = ? LIMIT 1");
+                            $updateStmt->execute([$newId, $record['name']]);
+                        }
+                    }
+                } catch (Exception $e) {
+                    // Continue even if fix fails
+                }
                 
                 // Create new team member
                 $name = $data['name'] ?? '';
@@ -1384,28 +1401,13 @@ function handlePost($pdo, $endpoint) {
                     return;
                 }
                 
-                // Check if ID column is auto-increment
-                $stmt = $pdo->query("SHOW COLUMNS FROM team_members WHERE Field = 'id'");
-                $idColumn = $stmt->fetch();
-                $isAutoIncrement = strpos(strtolower($idColumn['Extra'] ?? ''), 'auto_increment') !== false;
-                
-                if ($isAutoIncrement) {
-                    // Use auto-increment ID
-                    $stmt = $pdo->prepare("
-                        INSERT INTO team_members (name, role_en, role_id, bio_en, bio_id, email, image_url, linkedin_url, github_url, instagram_url, behance_url, sort_order, is_active) 
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                    ");
-                    $stmt->execute([$name, $role_en, $role_id, $bio_en, $bio_id, $email, $image_url, $linkedin_url, $github_url, $instagram_url, $behance_url, $sort_order, $is_active]);
-                    $teamId = $pdo->lastInsertId();
-                } else {
-                    // Generate unique ID
-                    $teamId = generateUniqueId();
-                    $stmt = $pdo->prepare("
-                        INSERT INTO team_members (id, name, role_en, role_id, bio_en, bio_id, email, image_url, linkedin_url, github_url, instagram_url, behance_url, sort_order, is_active) 
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                    ");
-                    $stmt->execute([$teamId, $name, $role_en, $role_id, $bio_en, $bio_id, $email, $image_url, $linkedin_url, $github_url, $instagram_url, $behance_url, $sort_order, $is_active]);
-                }
+                // Generate unique ID for new record
+                $teamId = generateUniqueId();
+                $stmt = $pdo->prepare("
+                    INSERT INTO team_members (id, name, role_en, role_id, bio_en, bio_id, email, image_url, linkedin_url, github_url, instagram_url, behance_url, sort_order, is_active) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ");
+                $stmt->execute([$teamId, $name, $role_en, $role_id, $bio_en, $bio_id, $email, $image_url, $linkedin_url, $github_url, $instagram_url, $behance_url, $sort_order, $is_active]);
                 
                 echo json_encode(['success' => true, 'id' => $teamId]);
                 break;
