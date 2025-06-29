@@ -205,8 +205,10 @@ function handleGet($pdo, $endpoint, $id) {
                 
                 if ($id) {
                     // Get single post by slug or ID (for admin, allow unpublished)
-                    // Add debugging to help troubleshoot
-                    error_log("API Bridge: Fetching single post with ID/slug: " . $id);
+                    // Add debugging to help troubleshoot (only in development)
+                    if ($_SERVER['HTTP_HOST'] === 'localhost' || strpos($_SERVER['HTTP_HOST'], 'localhost') !== false) {
+                        error_log("API Bridge: Fetching single post with ID/slug: " . $id);
+                    }
                     
                     $stmt = $pdo->prepare("
                         SELECT p.*, 
@@ -300,8 +302,10 @@ function handleGet($pdo, $endpoint, $id) {
                 $dateCol = getDateColumn($portfolioColumns);
                 $categoryNameCol = in_array('name', $categoryColumns) ? 'name' : 'category_name';
                 
-                // Add debugging for portfolio queries
-                error_log("API Bridge: Portfolio endpoint accessed with ID: " . ($id ?: 'NULL'));
+                                    // Add debugging for portfolio queries (only in development)
+                    if ($_SERVER['HTTP_HOST'] === 'localhost' || strpos($_SERVER['HTTP_HOST'], 'localhost') !== false) {
+                        error_log("API Bridge: Portfolio endpoint accessed with ID: " . ($id ?: 'NULL'));
+                    }
                 
                 if ($id) {
                     // Get single portfolio by slug or ID (for admin, allow unpublished)
@@ -795,9 +799,11 @@ function handleGet($pdo, $endpoint, $id) {
                 break;
 
             case 'technologies':
-                // Add debugging for technologies queries
-                error_log("API Bridge: Technologies endpoint accessed with ID: " . ($id ?: 'NULL'));
-                error_log("API Bridge: Include inactive parameter: " . ($_GET['include_inactive'] ?? 'false'));
+                                    // Add debugging for technologies queries (only in development)
+                    if ($_SERVER['HTTP_HOST'] === 'localhost' || strpos($_SERVER['HTTP_HOST'], 'localhost') !== false) {
+                        error_log("API Bridge: Technologies endpoint accessed with ID: " . ($id ?: 'NULL'));
+                        error_log("API Bridge: Include inactive parameter: " . ($_GET['include_inactive'] ?? 'false'));
+                    }
                 
                 try {
                     // Check if table exists first
