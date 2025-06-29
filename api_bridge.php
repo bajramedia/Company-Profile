@@ -204,7 +204,7 @@ function handleGet($pdo, $endpoint, $id) {
                 $categoryNameCol = in_array('name', $categoryColumns) ? 'name' : 'category_name';
                 
                 if ($id) {
-                    // Get single post by slug
+                    // Get single post by slug or ID (for admin, allow unpublished)
                     $stmt = $pdo->prepare("
                         SELECT p.*, 
                                a.$authorNameCol as authorName, 
@@ -214,7 +214,7 @@ function handleGet($pdo, $endpoint, $id) {
                         FROM post p 
                         LEFT JOIN author a ON p.authorId = a.id
                         LEFT JOIN category c ON p.categoryId = c.id  
-                        WHERE (p.slug = ? OR p.id = ?) AND p.published = 1
+                        WHERE (p.slug = ? OR p.id = ?)
                     ");
                     $stmt->execute([$id, $id]);
                     $result = $stmt->fetch();
@@ -313,8 +313,25 @@ function handleGet($pdo, $endpoint, $id) {
                         throw new Exception("Table 'category' does not exist in database");
                     }
                     
-                    $stmt = $pdo->query("SELECT * FROM category ORDER BY name ASC");
-                    echo json_encode($stmt->fetchAll());
+                    if ($id) {
+                        // Get single category by ID
+                        $stmt = $pdo->prepare("SELECT * FROM category WHERE id = ?");
+                        $stmt->execute([$id]);
+                        $result = $stmt->fetch();
+                        echo json_encode($result);
+                    } else {
+                        // Get all categories with post count
+                        $stmt = $pdo->query("
+                            SELECT c.*, 
+                                   COALESCE(COUNT(p.id), 0) as postCount
+                            FROM category c 
+                            LEFT JOIN post p ON c.id = p.categoryId AND p.published = 1
+                            GROUP BY c.id, c.name, c.slug, c.description
+                            ORDER BY c.name ASC
+                        ");
+                        $results = $stmt->fetchAll();
+                        echo json_encode($results);
+                    }
                 } catch (Exception $e) {
                     http_response_code(500);
                     echo json_encode([
