@@ -20,54 +20,15 @@ export default function EditPostPage() {
 
         const response = await fetch(`/api/admin/posts/${id}`);
 
-        if (response.ok) {
-          const data = await response.json();
-          setPost(data);
-        } else {
-          console.warn('⚠️ Post API unavailable, using fallback data');
-          // Fallback data structure untuk development
-          const fallbackPost = {
-            id: id,
-            title: 'Blog Post Title (Edit Mode)',
-            slug: 'blog-post-title-edit-mode',
-            content: '<p>Blog post content here...</p>',
-            excerpt: 'Blog post excerpt...',
-            featuredImage: '',
-            published: true,
-            featured: false,
-            categoryId: '1',
-            authorId: '1',
-            tags: [],
-            publishedAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-            createdAt: new Date().toISOString()
-          };
-          setPost(fallbackPost);
-          setError('⚠️ Menggunakan data fallback karena API tidak tersedia. Upload api_bridge.php untuk data real.');
+        if (!response.ok) {
+          throw new Error(`Failed to fetch post: ${response.status}`);
         }
+
+        const data = await response.json();
+        setPost(data);
       } catch (err) {
         console.error('Error fetching post:', err);
-
-        // Provide fallback even on network error
-        console.warn('⚠️ Network error, using fallback data');
-        const fallbackPost = {
-          id: id,
-          title: 'Blog Post Title (Edit Mode)',
-          slug: 'blog-post-title-edit-mode',
-          content: '<p>Blog post content here...</p>',
-          excerpt: 'Blog post excerpt...',
-          featuredImage: '',
-          published: true,
-          featured: false,
-          categoryId: '1',
-          authorId: '1',
-          tags: [],
-          publishedAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-          createdAt: new Date().toISOString()
-        };
-        setPost(fallbackPost);
-        setError('⚠️ Koneksi bermasalah, menggunakan data fallback. Upload api_bridge.php untuk data real.');
+        setError(err instanceof Error ? err.message : 'Could not load post. Please try again.');
       } finally {
         setLoading(false);
       }

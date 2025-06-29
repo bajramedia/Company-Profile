@@ -65,64 +65,25 @@ export default function EditPortfolioPage() {
                     fetch('/api/admin/technologies')
                 ]);
 
-                // Handle portfolio response dengan fallback
-                let portfolioResult = null;
-                if (portfolioResponse.ok) {
-                    portfolioResult = await portfolioResponse.json();
-                } else {
-                    console.warn('⚠️ Portfolio API unavailable, providing fallback data');
-                    // Fallback data structure untuk development
-                    portfolioResult = {
-                        portfolio: {
-                            id: portfolioId,
-                            title: 'Portfolio Title (Edit Mode)',
-                            slug: 'portfolio-title-edit-mode',
-                            description: 'Portfolio description here...',
-                            content: 'Portfolio content here...',
-                            featuredImage: '',
-                            images: [],
-                            clientName: 'Client Name',
-                            projectUrl: '',
-                            githubUrl: '',
-                            featured: false,
-                            published: true,
-                            startDate: new Date().toISOString().split('T')[0],
-                            endDate: new Date().toISOString().split('T')[0],
-                            categoryId: '1',
-                            tags: []
-                        }
-                    };
+                // Check responses - NO FALLBACKS, THROW ERROR IF FAIL
+                if (!portfolioResponse.ok) {
+                    throw new Error(`Failed to fetch portfolio: ${portfolioResponse.status}`);
+                }
+                if (!categoriesResponse.ok) {
+                    throw new Error(`Failed to fetch categories: ${categoriesResponse.status}`);
+                }
+                if (!technologiesResponse.ok) {
+                    throw new Error(`Failed to fetch technologies: ${technologiesResponse.status}`);
                 }
 
-                // Handle categories dengan fallback
-                let categoriesData = [];
-                if (categoriesResponse.ok) {
-                    categoriesData = await categoriesResponse.json();
-                } else {
-                    console.warn('⚠️ Categories API unavailable, providing fallback data');
-                    categoriesData = [
-                        { id: '1', name: 'Web Development', slug: 'web-development', icon: '🌐' },
-                        { id: '2', name: 'Mobile App', slug: 'mobile-app', icon: '📱' },
-                        { id: '3', name: 'UI/UX Design', slug: 'ui-ux-design', icon: '🎨' }
-                    ];
-                }
-
-                // Handle technologies dengan fallback
-                let technologiesData = [];
-                if (technologiesResponse.ok) {
-                    technologiesData = await technologiesResponse.json();
-                } else {
-                    console.warn('⚠️ Technologies API unavailable, providing fallback data');
-                    technologiesData = [
-                        { id: '1', name: 'React', color: '#61DAFB' },
-                        { id: '2', name: 'Next.js', color: '#000000' },
-                        { id: '3', name: 'TypeScript', color: '#3178C6' },
-                        { id: '4', name: 'Tailwind CSS', color: '#06B6D4' }
-                    ];
-                }
+                const [portfolioResult, categoriesData, technologiesData] = await Promise.all([
+                    portfolioResponse.json(),
+                    categoriesResponse.json(),
+                    technologiesResponse.json()
+                ]);
 
                 // Process portfolio data
-                if (portfolioResult?.portfolio) {
+                if (portfolioResult.portfolio) {
                     const portfolio = portfolioResult.portfolio;
                     setPortfolioData({
                         id: portfolio.id,
@@ -156,11 +117,6 @@ export default function EditPortfolioPage() {
 
                 setCategories(categoriesData);
                 setTags(transformedTechnologies);
-
-                // Show warning if using fallback data
-                if (!portfolioResponse.ok || !categoriesResponse.ok || !technologiesResponse.ok) {
-                    setError('⚠️ Menggunakan data fallback karena API tidak tersedia. Upload api_bridge.php untuk data real.');
-                }
 
             } catch (error) {
                 console.error('❌ Error loading data:', error);
