@@ -24,3 +24,5 @@ export { default as PortfolioForm } from './PortfolioForm';
 export { default as RichTextEditor } from './RichTextEditor';
 export { default as ImageUpload } from './ImageUpload';
 export { default as Navbar } from './Navbar';
+export { default as Home } from './Home';
+export { default as SecurityWrapper } from './SecurityWrapper';

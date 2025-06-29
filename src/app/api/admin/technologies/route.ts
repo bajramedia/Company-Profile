@@ -7,6 +7,25 @@ const API_ENDPOINTS = [
     // Add your direct server IP if needed
 ];
 
+// Secure logger - only logs in development
+const logger = {
+  log: (...args: any[]) => {
+    if (process.env.NODE_ENV === 'development') {
+      console.log(...args);
+    }
+  },
+  error: (...args: any[]) => {
+    if (process.env.NODE_ENV === 'development') {
+      console.error(...args);
+    }
+  },
+  warn: (...args: any[]) => {
+    if (process.env.NODE_ENV === 'development') {
+      console.warn(...args);
+    }
+  }
+};
+
 export async function GET(request: NextRequest) {
     try {
         const { searchParams } = new URL(request.url);
@@ -15,7 +34,7 @@ export async function GET(request: NextRequest) {
         
         let lastError: string = '';
         
-        console.log('🔄 Admin Technologies API: Fetching technologies...', { category, include_inactive });
+        logger.log('🔄 Admin Technologies API: Fetching technologies...', { category, include_inactive });
         
         // Try each endpoint until one works
         for (const baseUrl of API_ENDPOINTS) {
@@ -34,7 +53,7 @@ export async function GET(request: NextRequest) {
                     url += `&${params.toString()}`;
                 }
 
-                console.log(`🌐 Trying: ${url}`);
+                logger.log(`🌐 Trying: ${url}`);
 
                 const controller = new AbortController();
                 const timeoutId = setTimeout(() => controller.abort(), 10000);
@@ -51,11 +70,11 @@ export async function GET(request: NextRequest) {
                 
                 clearTimeout(timeoutId);
 
-                console.log(`📊 Response status: ${response.status} from ${baseUrl}`);
+                logger.log(`📊 Response status: ${response.status} from ${baseUrl}`);
                 
                 if (response.ok) {
                     const responseText = await response.text();
-                    console.log(`📄 Response preview:`, responseText.substring(0, 200));
+                    logger.log(`📄 Response preview:`, responseText.substring(0, 200));
                     
                     try {
                         const data = JSON.parse(responseText);
@@ -63,30 +82,30 @@ export async function GET(request: NextRequest) {
                         // Check if we got actual data or error
                         if (data.error) {
                             lastError = `API Error from ${baseUrl}: ${data.error}`;
-                            console.error('❌', lastError);
+                            logger.error('❌', lastError);
                             continue;
                         }
                         
-                        console.log('✅ Technologies loaded:', data.length, 'items');
+                        logger.log('✅ Technologies loaded:', data.length, 'items');
                         return NextResponse.json(data);
                     } catch (parseError) {
                         lastError = `JSON Parse Error from ${baseUrl}: ${parseError}`;
-                        console.error('❌', lastError);
+                        logger.error('❌', lastError);
                         continue;
                     }
                 } else {
                     lastError = `HTTP ${response.status} from ${baseUrl}: ${response.statusText}`;
-                    console.error('❌', lastError);
+                    logger.error('❌', lastError);
                 }
             } catch (endpointError) {
                 lastError = `Network Error from ${baseUrl}: ${endpointError}`;
-                console.error('❌', lastError);
+                logger.error('❌', lastError);
                 continue;
             }
         }
         
         // If all endpoints failed, return detailed error
-        console.error('❌ All endpoints failed:', lastError);
+        logger.error('❌ All endpoints failed:', lastError);
         return NextResponse.json(
             { 
                 error: 'Failed to fetch technologies from all endpoints',
@@ -97,7 +116,7 @@ export async function GET(request: NextRequest) {
         );
 
     } catch (error) {
-        console.error('❌ Error in technologies API:', error);
+        logger.error('❌ Error in technologies API:', error);
         return NextResponse.json(
             { 
                 error: 'Failed to fetch technologies', 
@@ -112,7 +131,7 @@ export async function POST(request: NextRequest) {
     try {
         const body = await request.json();
         
-        console.log('🔄 Creating technology:', body);
+        logger.log('🔄 Creating technology:', body);
         
         // Validate required fields
         if (!body.name || !body.icon) {
@@ -145,7 +164,7 @@ export async function POST(request: NextRequest) {
                 if (response.ok) {
                     const data = await response.json();
                     if (!data.error) {
-                        console.log('✅ Technology created successfully:', data);
+                        logger.log('✅ Technology created successfully:', data);
                         return NextResponse.json(data);
                     } else {
                         lastError = `API Error: ${data.error}`;
@@ -155,12 +174,12 @@ export async function POST(request: NextRequest) {
                 }
             } catch (endpointError) {
                 lastError = `Network Error: ${endpointError}`;
-                console.error(`❌ POST failed with ${baseUrl}:`, endpointError);
+                logger.error(`❌ POST failed with ${baseUrl}:`, endpointError);
                 continue;
             }
         }
 
-        console.error('❌ Failed to create technology:', lastError);
+        logger.error('❌ Failed to create technology:', lastError);
         return NextResponse.json(
             { 
                 error: 'Failed to create technology - all endpoints failed',
@@ -170,7 +189,7 @@ export async function POST(request: NextRequest) {
         );
 
     } catch (error) {
-        console.error('❌ Error creating technology:', error);
+        logger.error('❌ Error creating technology:', error);
         return NextResponse.json(
             { error: 'Failed to create technology' },
             { status: 500 }

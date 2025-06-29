@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components';
+import { logger } from '@/utils/logger';
 
 // Interface untuk portfolio item
 interface PortfolioItem {
@@ -52,14 +53,14 @@ export default function AdminPortfolioPage() {
             }
 
             if (!categoriesResponse.ok) {
-                console.warn('Categories API failed, using fallback categories');
+                logger.warn('Categories API failed, using fallback categories');
             }
 
             const portfolioData = await portfolioResponse.json();
             const categoriesData = categoriesResponse.ok ? await categoriesResponse.json() : [];
 
-            console.log('📊 Portfolio Data:', portfolioData);
-            console.log('📊 Categories Data:', categoriesData);
+            logger.info('📊 Portfolio Data:', portfolioData);
+            logger.info('📊 Categories Data:', categoriesData);
 
             // Transform portfolio data untuk match interface
             const transformedPortfolios = portfolioData.portfolio.map((item: any) => ({
@@ -101,11 +102,11 @@ export default function AdminPortfolioPage() {
             setPortfolios(transformedPortfolios);
             setCategories(transformedCategories);
 
-            console.log('✅ Portfolio loaded:', transformedPortfolios.length, 'items');
-            console.log('✅ Categories loaded:', transformedCategories.length, 'categories');
+            logger.info('✅ Portfolio loaded:', transformedPortfolios.length, 'items');
+            logger.info('✅ Categories loaded:', transformedCategories.length, 'categories');
 
         } catch (error) {
-            console.error('❌ Error fetching data:', error);
+            logger.error('❌ Error fetching data:', error);
             setError('Gagal memuat data portfolio. Silakan refresh halaman.');
         } finally {
             setLoading(false);
