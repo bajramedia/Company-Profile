@@ -44,76 +44,7 @@ $dbname = 'bajx7634_bajra';
 $username = 'bajx7634_bajra';
 $password = 'bajra@media@com';
 
-// Check if running locally and provide mock data for development
-$isLocalDevelopment = ($_SERVER['HTTP_HOST'] ?? '') === 'localhost:8000';
-if ($isLocalDevelopment) {
-    // For local development, provide mock data instead of database connection
-    $method = $_SERVER['REQUEST_METHOD'];
-    $endpoint = $_GET['endpoint'] ?? '';
-    
-    if ($method === 'GET' && $endpoint === 'settings') {
-        echo json_encode([
-            'siteName' => 'Bajramedia Development',
-            'siteDescription' => 'Creative Digital Agency & Blog Platform',
-            'siteUrl' => 'http://localhost:3000',
-            'contactEmail' => 'contact@bajramedia.com',
-            'contactPhone' => '+6285739402436',
-            'contactAddress' => 'Bali, Indonesia',
-            'enableComments' => '1',
-            'enableSocialShare' => '1',
-            'footerText' => '© 2025 Bajramedia. All rights reserved.',
-            'social_facebook' => '',
-            'social_twitter' => '',
-            'social_instagram' => '',
-            'social_linkedin' => '',
-            'social_youtube' => '',
-            'seo_metaTitle' => 'Bajramedia - Creative Digital Agency',
-            'seo_metaDescription' => 'Professional digital agency providing creative solutions for your business needs.',
-            'seo_metaKeywords' => 'digital agency, creative, design, development, bali',
-            'seo_ogImage' => ''
-        ]);
-        exit;
-    }
-    
-    if ($method === 'GET' && $endpoint === 'posts') {
-        echo json_encode([
-            [
-                'id' => '1',
-                'title' => 'Welcome to Bajramedia Development',
-                'slug' => 'welcome-to-bajramedia',
-                'excerpt' => 'This is a sample post for development purposes.',
-                'content' => '<p>This is sample content for development testing.</p>',
-                'published' => 1,
-                'featured' => 1,
-                'date' => date('Y-m-d H:i:s'),
-                'authorName' => 'Development Team',
-                'categoryName' => 'Development',
-                'categorySlug' => 'development',
-                'views' => 100
-            ]
-        ]);
-        exit;
-    }
-    
-    if ($method === 'GET' && $endpoint === 'portfolio') {
-        echo json_encode([
-            [
-                'id' => '1',
-                'title' => 'Sample Portfolio Project',
-                'slug' => 'sample-portfolio',
-                'description' => 'This is a sample portfolio item for development.',
-                'published' => 1,
-                'date' => date('Y-m-d H:i:s'),
-                'categoryName' => 'Web Development'
-            ]
-        ]);
-        exit;
-    }
-    
-    // Default mock response for other endpoints
-    echo json_encode(['message' => 'Development mock data - endpoint: ' . $endpoint]);
-    exit;
-}
+// Remove development mock data - use production database only
 
 // Initialize database connection
 try {
@@ -235,28 +166,29 @@ function generateSlug($title) {
 }
 
 function handleGet($pdo, $endpoint, $id) {
-    // ENHANCED SECURITY - Hide all sensitive endpoints in production
+    // ENHANCED SECURITY - Restrict access to sensitive endpoints
     $hiddenEndpoints = [
-        'debug', 'test', 'stats-full', 'database-info', 'server-info'
+        'debug', 'test', 'stats-full', 'database-info', 'server-info', 'admin-debug'
     ];
     
-    // Allow essential endpoints for public access AND admin endpoints
-    $allowedPublicEndpoints = ['posts', 'portfolio', 'categories', 'portfolio-categories', 'authors', 'tags', 'stats', 'settings', 'team-members', 'about-content', 'team', 'about', 'partners', 'new-settings', 'blog-posts', 'portfolio-items'];
+    // Only allow essential public endpoints
+    $allowedPublicEndpoints = [
+        'posts', 'portfolio', 'categories', 'portfolio-categories', 'authors', 'tags', 
+        'settings', 'team-members', 'about-content', 'team', 'about', 'partners'
+    ];
     
-    // Check if it's production environment
-    $isProduction = isset($_SERVER['HTTP_HOST']) && (
-        $_SERVER['HTTP_HOST'] === 'bajramedia.com' || 
-        strpos($_SERVER['HTTP_HOST'], 'vercel.app') !== false ||
-        $_SERVER['HTTP_HOST'] === 'www.bajramedia.com'
-    );
+    // Block access to sensitive endpoints regardless of environment
+    if (in_array($endpoint, $hiddenEndpoints)) {
+        http_response_code(404);
+        echo json_encode(['error' => 'Not Found']);
+        return;
+    }
     
-    // In production, block access ONLY to hidden endpoints, allow all others
-    if ($isProduction) {
-        if (in_array($endpoint, $hiddenEndpoints)) {
-            http_response_code(404);
-            echo json_encode(['error' => 'Not Found']);
-            return;
-        }
+    // Validate endpoint is in allowed list for public access
+    if (!in_array($endpoint, $allowedPublicEndpoints) && !preg_match('/^admin/', $endpoint)) {
+        http_response_code(403);
+        echo json_encode(['error' => 'Access Denied']);
+        return;
     }
     
     try {
