@@ -24,36 +24,49 @@ interface PortfolioItem {
 
 export default function AdminPortfolioPage() {
     const [portfolios, setPortfolios] = useState<PortfolioItem[]>([]);
+    const [categories, setCategories] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('all');
     const [selectedStatus, setSelectedStatus] = useState('all');
 
-    // Fetch portfolio data dari API
+    // Fetch portfolio data dan categories dari API
     useEffect(() => {
-        fetchPortfolios();
+        fetchData();
     }, []);
 
-    const fetchPortfolios = async () => {
+    const fetchData = async () => {
         try {
             setLoading(true);
             setError(null);
 
-            const response = await fetch('/api/admin/portfolio');
+            // Fetch portfolio dan categories secara parallel
+            const [portfolioResponse, categoriesResponse] = await Promise.all([
+                fetch('/api/admin/portfolio'),
+                fetch('/api/portfolio/categories')
+            ]);
 
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+            if (!portfolioResponse.ok) {
+                throw new Error(`Portfolio API error! status: ${portfolioResponse.status}`);
             }
 
-            const data = await response.json();
+            if (!categoriesResponse.ok) {
+                console.warn('Categories API failed, using fallback categories');
+            }
 
-            // Transform data untuk match interface
-            const transformedPortfolios = data.portfolio.map((item: any) => ({
+            const portfolioData = await portfolioResponse.json();
+            const categoriesData = categoriesResponse.ok ? await categoriesResponse.json() : [];
+
+            console.log('📊 Portfolio Data:', portfolioData);
+            console.log('📊 Categories Data:', categoriesData);
+
+            // Transform portfolio data untuk match interface
+            const transformedPortfolios = portfolioData.portfolio.map((item: any) => ({
                 id: item.id,
                 title: item.title,
                 description: item.description,
-                clientName: item.clientName || 'Unknown Client',
+                clientName: item.clientName || item.client || 'Unknown Client',
                 featuredImage: item.featuredImage || '/images/placeholder.jpg',
                 published: item.published === true || item.published === 1 || item.published === "1",
                 featured: item.featured === true || item.featured === 1 || item.featured === "1",
@@ -65,23 +78,39 @@ export default function AdminPortfolioPage() {
                 }
             }));
 
+            // Transform categories data
+            const transformedCategories = [
+                { value: 'all', label: 'Semua Kategori' },
+                ...categoriesData.map((cat: any) => ({
+                    value: cat.slug || cat.name?.toLowerCase().replace(/[^a-z0-9]+/g, '-') || 'uncategorized',
+                    label: cat.name || 'Unknown Category'
+                }))
+            ];
+
+            // Jika tidak ada categories dari API, pakai fallback
+            if (categoriesData.length === 0) {
+                transformedCategories.push(
+                    { value: 'web-development', label: 'Web Development' },
+                    { value: 'aset-game-development', label: 'Aset Game Development' },
+                    { value: 'uiux-design', label: 'UI/UX Design' },
+                    { value: 'sistem-development', label: 'Sistem Development' },
+                    { value: 'sosial-media-management', label: 'Social Media Management' }
+                );
+            }
+
             setPortfolios(transformedPortfolios);
+            setCategories(transformedCategories);
+
+            console.log('✅ Portfolio loaded:', transformedPortfolios.length, 'items');
+            console.log('✅ Categories loaded:', transformedCategories.length, 'categories');
+
         } catch (error) {
-            console.error('Error fetching portfolios:', error);
+            console.error('❌ Error fetching data:', error);
             setError('Gagal memuat data portfolio. Silakan refresh halaman.');
         } finally {
             setLoading(false);
         }
     };
-
-    const categories = [
-        { value: 'all', label: 'Semua Kategori' },
-        { value: 'web-development', label: 'Web Development' },
-        { value: 'aset-game-development', label: 'Aset Game Development' },
-        { value: 'uiux-design', label: 'UI/UX Design' },
-        { value: 'sistem-development', label: 'Sistem Development' },
-        { value: 'sosial-media-management', label: 'Social Media Management' }
-    ];
 
     const statusOptions = [
         { value: 'all', label: 'Semua Status' },
@@ -92,7 +121,13 @@ export default function AdminPortfolioPage() {
     const filteredPortfolios = portfolios.filter(portfolio => {
         const matchesSearch = portfolio.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
             portfolio.clientName.toLowerCase().includes(searchTerm.toLowerCase());
-        const matchesCategory = selectedCategory === 'all' || portfolio.category.name.toLowerCase().includes(selectedCategory);
+
+        // Fix category matching logic
+        const matchesCategory = selectedCategory === 'all' ||
+            portfolio.category.name.toLowerCase().replace(/[^a-z0-9]+/g, '-') === selectedCategory ||
+            portfolio.category.name.toLowerCase().includes(selectedCategory.replace(/-/g, ' ')) ||
+            portfolio.category.name.toLowerCase().includes(selectedCategory.replace(/-/g, ''));
+
         const matchesStatus = selectedStatus === 'all' ||
             (selectedStatus === 'published' && portfolio.published) ||
             (selectedStatus === 'draft' && !portfolio.published);
@@ -201,7 +236,7 @@ export default function AdminPortfolioPage() {
                     </p>
                     <Button
                         variant="primary"
-                        onClick={fetchPortfolios}
+                        onClick={fetchData}
                     >
                         Coba Lagi
                     </Button>
