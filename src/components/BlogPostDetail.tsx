@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useLanguage } from '@/context/LanguageContext';
-import { Blog, BlogPostCard } from '@/components';
+import { BlogPostCard } from '@/components/Blog';
 import SocialShare from '@/components/SocialShare';
 import { BlogPost } from '@/services/BlogService.api';
 import { useViewTracker, useViewCounter } from '@/hooks/useViewTracker';
