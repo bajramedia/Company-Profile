@@ -63,8 +63,23 @@ export default function EnhancedSEO({
     const { settings, loading } = usePublicSettings();
 
     useEffect(() => {
+        if (typeof window === 'undefined') return;
+
+        // Dynamic title update
+        if (title && settings?.siteName) {
+            document.title = `${title} | ${settings.siteName}`;
+        }
+
+        // Dynamic meta description
+        if (description) {
+            const metaDesc = document.querySelector('meta[name="description"]');
+            if (metaDesc) {
+                metaDesc.setAttribute('content', description);
+            }
+        }
+
         // Google Analytics
-        if (settings?.analyticsCode && typeof window !== 'undefined') {
+        if (settings?.analyticsCode) {
             const script = document.createElement('script');
             script.src = `https://www.googletagmanager.com/gtag/js?id=${settings.analyticsCode}`;
             script.async = true;
@@ -79,7 +94,164 @@ export default function EnhancedSEO({
       `;
             document.head.appendChild(configScript);
         }
-    }, [settings]);
+
+        // JSON-LD Structured Data
+        const generateStructuredData = () => {
+            if (!settings) return null;
+
+            const seoTitle = title ? `${title} | ${settings.siteName}` : settings.seoSettings?.metaTitle || settings.siteName;
+            const seoDescription = description || settings.seoSettings?.metaDescription || settings.siteDescription;
+            const seoImage = image || settings.seoSettings?.ogImage || `${settings.siteUrl}/images/og-image.jpg`;
+            const seoUrl = url || settings.siteUrl;
+
+            const orgData = organization || {
+                name: settings.siteName,
+                url: settings.siteUrl,
+                logo: `${settings.siteUrl}/images/logo.png`,
+                sameAs: Object.values(settings.socialLinks || {}).filter(Boolean)
+            };
+
+            // Organization Schema
+            if (schema === 'Organization' || type === 'website') {
+                return {
+                    "@context": "https://schema.org",
+                    "@type": "Organization",
+                    "name": orgData.name,
+                    "url": orgData.url,
+                    "logo": {
+                        "@type": "ImageObject",
+                        "url": orgData.logo
+                    },
+                    "description": seoDescription,
+                    "contactPoint": {
+                        "@type": "ContactPoint",
+                        "telephone": settings.contactPhone,
+                        "contactType": "customer service",
+                        "email": settings.contactEmail,
+                        "areaServed": "ID",
+                        "availableLanguage": ["English", "Indonesian"]
+                    },
+                    "address": {
+                        "@type": "PostalAddress",
+                        "addressLocality": settings.contactAddress,
+                        "addressCountry": "ID"
+                    },
+                    "sameAs": orgData.sameAs,
+                    "foundingDate": "2020",
+                    "numberOfEmployees": "10-50",
+                    "slogan": "Digital Solutions for Modern Business"
+                };
+            }
+
+            // Service Schema
+            if (schema === 'Service' && services.length > 0) {
+                return {
+                    "@context": "https://schema.org",
+                    "@type": "Service",
+                    "name": seoTitle,
+                    "description": seoDescription,
+                    "url": seoUrl,
+                    "provider": {
+                        "@type": "Organization",
+                        "name": orgData.name,
+                        "url": orgData.url
+                    },
+                    "areaServed": "Indonesia",
+                    "hasOfferCatalog": {
+                        "@type": "OfferCatalog",
+                        "name": "Digital Services",
+                        "itemListElement": services.map((service) => ({
+                            "@type": "Offer",
+                            "itemOffered": {
+                                "@type": "Service",
+                                "name": service.name,
+                                "description": service.description,
+                                "url": service.url
+                            }
+                        }))
+                    }
+                };
+            }
+
+            // Article Schema
+            if (schema === 'Article' && author) {
+                return {
+                    "@context": "https://schema.org",
+                    "@type": "Article",
+                    "headline": seoTitle,
+                    "description": seoDescription,
+                    "image": seoImage,
+                    "url": seoUrl,
+                    "datePublished": publishedTime,
+                    "dateModified": modifiedTime || publishedTime,
+                    "author": {
+                        "@type": "Person",
+                        "name": author.name,
+                        "url": author.url
+                    },
+                    "publisher": {
+                        "@type": "Organization",
+                        "name": orgData.name,
+                        "logo": {
+                            "@type": "ImageObject",
+                            "url": orgData.logo
+                        }
+                    }
+                };
+            }
+
+            return null;
+        };
+
+        // FAQ Schema
+        const generateFAQSchema = () => {
+            if (faq.length === 0) return null;
+
+            return {
+                "@context": "https://schema.org",
+                "@type": "FAQPage",
+                "mainEntity": faq.map(item => ({
+                    "@type": "Question",
+                    "name": item.question,
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": item.answer
+                    }
+                }))
+            };
+        };
+
+        // Add structured data to head
+        const structuredData = generateStructuredData();
+        const faqData = generateFAQSchema();
+
+        if (structuredData) {
+            const script = document.createElement('script');
+            script.type = 'application/ld+json';
+            script.innerHTML = JSON.stringify(structuredData);
+            script.id = 'structured-data';
+
+            // Remove existing structured data
+            const existing = document.getElementById('structured-data');
+            if (existing) existing.remove();
+
+            document.head.appendChild(script);
+        }
+
+        if (faqData) {
+            const script = document.createElement('script');
+            script.type = 'application/ld+json';
+            script.innerHTML = JSON.stringify(faqData);
+            script.id = 'faq-data';
+
+            // Remove existing FAQ data
+            const existing = document.getElementById('faq-data');
+            if (existing) existing.remove();
+
+            document.head.appendChild(script);
+        }
+
+    }, [settings, title, description, schema, author, organization, services, faq]);
 
     if (loading || !settings) return null;
 
