@@ -532,7 +532,9 @@ const BlogPostDetail: React.FC<BlogPostDetailProps> = ({ post }) => {
               <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-8">Related Articles</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {relatedPosts.map(relatedPost => (
-                  <BlogPostCard key={relatedPost.id} post={relatedPost} />
+                  <div key={relatedPost.id}>
+                    <BlogPostCard post={relatedPost} />
+                  </div>
                 ))}
               </div>
             </div>
