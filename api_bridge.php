@@ -205,6 +205,9 @@ function handleGet($pdo, $endpoint, $id) {
                 
                 if ($id) {
                     // Get single post by slug or ID (for admin, allow unpublished)
+                    // Add debugging to help troubleshoot
+                    error_log("API Bridge: Fetching single post with ID/slug: " . $id);
+                    
                     $stmt = $pdo->prepare("
                         SELECT p.*, 
                                a.$authorNameCol as authorName, 
@@ -219,12 +222,42 @@ function handleGet($pdo, $endpoint, $id) {
                     $stmt->execute([$id, $id]);
                     $result = $stmt->fetch();
                     
-                    // Add date field for compatibility
-                    if ($result && $dateCol !== 'date') {
-                        $result['date'] = $result[$dateCol] ?? date('Y-m-d H:i:s');
-                    }
+                    error_log("API Bridge: Single post query result: " . ($result ? json_encode($result) : 'NULL'));
                     
-                    echo json_encode($result);
+                    if ($result) {
+                        // Add date field for compatibility
+                        if ($dateCol !== 'date') {
+                            $result['date'] = $result[$dateCol] ?? date('Y-m-d H:i:s');
+                        }
+                        
+                        // Ensure all expected fields exist for admin panel
+                        $result['published'] = $result['published'] ?? 0;
+                        $result['featured'] = $result['featured'] ?? 0;
+                        $result['readTime'] = $result['readTime'] ?? 5;
+                        $result['excerpt'] = $result['excerpt'] ?? '';
+                        $result['featuredImage'] = $result['featuredImage'] ?? '';
+                        
+                        // Get tags for this post
+                        try {
+                            $tagStmt = $pdo->prepare("
+                                SELECT t.id, t.name, t.slug 
+                                FROM tag t 
+                                INNER JOIN posttags pt ON t.id = pt.tagId 
+                                WHERE pt.postId = ?
+                            ");
+                            $tagStmt->execute([$result['id']]);
+                            $result['tags'] = $tagStmt->fetchAll();
+                        } catch (Exception $tagError) {
+                            error_log("API Bridge: Error fetching post tags: " . $tagError->getMessage());
+                            $result['tags'] = [];
+                        }
+                        
+                        echo json_encode($result);
+                    } else {
+                        // Post not found, return null but log for debugging
+                        error_log("API Bridge: Post not found for ID/slug: " . $id);
+                        echo json_encode(null);
+                    }
                 } else {
                     // Get all posts with proper pagination
                     $page = max(1, intval($_GET['page'] ?? 1));
