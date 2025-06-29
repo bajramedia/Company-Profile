@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { API_BASE_URL } from "@/utils/api-config";
+import { API_BASE_URL } from "@/config/api";
 
 // Interface for blog post creation/update
 export interface PostFormData {

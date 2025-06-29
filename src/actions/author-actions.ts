@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from 'next/cache';
-import { API_BASE_URL } from "@/utils/api-config";
+import { API_BASE_URL } from "@/config/api";
 
 export interface AuthorData {
   name: string;
