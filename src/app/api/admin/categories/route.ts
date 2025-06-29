@@ -50,8 +50,8 @@ export async function GET() {
   } catch (error) {
     console.error('Error in categories API:', error);
     return NextResponse.json(
-      { error: 'Failed to fetch categories', fallback: true },
-      { status: 200 }
+      { error: 'Failed to fetch categories from database' },
+      { status: 500 }
     );
   }
 }

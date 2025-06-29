@@ -219,7 +219,7 @@ export default function Home() {
                 </div>
                 <div>
                   <p className="text-gray-400 text-sm">{t('Email') || 'Email'}</p>
-                  <p className="text-white font-medium">hello@bajramedia.com</p>
+                  <p className="text-white font-medium">{publicSettings?.contactEmail || 'Contact email not configured'}</p>
                 </div>
               </div>
 
@@ -231,7 +231,7 @@ export default function Home() {
                 </div>
                 <div>
                   <p className="text-gray-400 text-sm">{t('Phone') || 'Phone'}</p>
-                  <p className="text-white font-medium">+6285739402436</p>
+                  <p className="text-white font-medium">{publicSettings?.contactPhone || 'Contact phone not configured'}</p>
                 </div>
               </div>
 
@@ -244,7 +244,7 @@ export default function Home() {
                 </div>
                 <div>
                   <p className="text-gray-400 text-sm">{t('Location') || 'Location'}</p>
-                  <p className="text-white font-medium">Denpasar, Bali</p>
+                  <p className="text-white font-medium">{publicSettings?.contactAddress || 'Contact location not configured'}</p>
                 </div>
               </div>
             </div>

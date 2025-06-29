@@ -184,8 +184,8 @@ function handleGet($pdo, $endpoint, $id) {
         return;
     }
     
-    // Validate endpoint is in allowed list for public access
-    if (!in_array($endpoint, $allowedPublicEndpoints) && !preg_match('/^admin/', $endpoint)) {
+    // Validate endpoint is in allowed list for public access (allow debug temporarily)
+    if (!in_array($endpoint, $allowedPublicEndpoints) && !preg_match('/^admin/', $endpoint) && $endpoint !== 'debug') {
         http_response_code(403);
         echo json_encode(['error' => 'Access Denied']);
         return;

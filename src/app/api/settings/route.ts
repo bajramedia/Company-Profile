@@ -87,39 +87,10 @@ export async function GET() {
 
   } catch (error) {
     console.error('Error fetching public settings:', error);
-    console.warn('Using fallback settings for development');
-    
-    // Return default settings sebagai fallback
-    return NextResponse.json({
-      siteName: 'Bajramedia',
-      siteDescription: 'Creative Digital Agency & Blog Platform',
-      siteUrl: 'https://balimoonartandspeace.com',
-      contactEmail: 'contact@bajramedia.com',
-      contactPhone: '+6285739402436',
-      contactAddress: 'Bali, Indonesia',
-      footerText: '© 2025 Bajramedia. All rights reserved.',
-      enableComments: true,
-      enableSocialShare: true,
-      socialLinks: {
-        facebook: '',
-        twitter: '',
-        instagram: '',
-        linkedin: '',
-        youtube: ''
-      },
-      seoSettings: {
-        metaTitle: 'Bajramedia - Creative Digital Agency',
-        metaDescription: 'Professional digital agency providing creative solutions for your business needs.',
-        metaKeywords: 'digital agency, creative, design, development, bali',
-        ogImage: ''
-      }
-    }, {
-      headers: {
-        'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0',
-        'Pragma': 'no-cache',
-        'Expires': '0'
-      }
-    });
+    return NextResponse.json(
+      { error: 'Failed to fetch settings from database' },
+      { status: 500 }
+    );
   }
 }
 

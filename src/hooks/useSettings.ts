@@ -80,17 +80,8 @@ export function usePublicSettings() {
       const publicSettings = await settingsService.getPublicSettings();
       setSettings(publicSettings);
     } catch (err) {
-      // Fallback ke default settings publik tanpa spam console
-      setSettings({
-        siteName: defaultSettings.siteName,
-        siteDescription: defaultSettings.siteDescription,
-        contactEmail: defaultSettings.contactEmail,
-        contactPhone: defaultSettings.contactPhone,
-        contactAddress: defaultSettings.contactAddress,
-        socialLinks: defaultSettings.socialLinks,
-        footerText: defaultSettings.footerText,
-        seoSettings: defaultSettings.seoSettings
-      });
+      console.error('Error loading public settings:', err);
+      setSettings(null);
     } finally {
       setLoading(false);
     }
