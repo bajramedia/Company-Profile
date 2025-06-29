@@ -543,7 +543,6 @@ function handleGet($pdo, $endpoint, $id) {
             // NEW ENDPOINTS FOR NEW TABLES
             // ====================================
             
-            case 'team':
             case 'team-members':
                 try {
                     // Check if table exists first
@@ -552,117 +551,112 @@ function handleGet($pdo, $endpoint, $id) {
                         throw new Exception("Table 'team_members' does not exist in database");
                     }
                     
-                    $stmt = $pdo->query("
-                        SELECT * FROM team_members 
-                        WHERE is_active = 1 
-                        ORDER BY sort_order ASC
-                    ");
-                    $results = $stmt->fetchAll();
+                    if ($id) {
+                        // Get single team member by ID
+                        $stmt = $pdo->prepare("SELECT * FROM team_members WHERE id = ?");
+                        $stmt->execute([$id]);
+                        $result = $stmt->fetch();
+                        echo json_encode($result);
+                    } else {
+                        // Get all active team members
+                        $stmt = $pdo->query("
+                            SELECT * FROM team_members 
+                            WHERE is_active = 1 
+                            ORDER BY sort_order ASC, name ASC
+                        ");
+                        $results = $stmt->fetchAll();
+                        
+                        // Format for About page frontend compatibility
+                        foreach ($results as &$result) {
+                            $result['imageUrl'] = $result['image_url'];
+                            $result['linkedinUrl'] = $result['linkedin_url'];
+                            $result['githubUrl'] = $result['github_url'];
+                            $result['instagramUrl'] = $result['instagram_url'];
+                            $result['behanceUrl'] = $result['behance_url'];
+                            $result['roleEn'] = $result['role_en'];
+                            $result['roleId'] = $result['role_id'];
+                            $result['bioEn'] = $result['bio_en'];
+                            $result['bioId'] = $result['bio_id'];
+                        }
+                        
+                        echo json_encode($results);
+                    }
                 } catch (Exception $e) {
                     http_response_code(500);
                     echo json_encode([
-                        'error' => 'Team members table error',
-                        'message' => $e->getMessage(),
-                        'suggestion' => 'Please run database-schema-safe.sql to create missing tables'
+                        'error' => 'Team members error',
+                        'message' => $e->getMessage()
                     ]);
                     return;
                 }
-                
-                // Format for About page frontend compatibility
-                foreach ($results as &$result) {
-                    // Map to About page expected format
-                    $result['image'] = $result['image_url'];
-                    $result['role'] = $result['role_en'];
-                    $result['roleId'] = $result['role_id'];
-                    $result['bio'] = $result['bio_en'];
-                    $result['bioId'] = $result['bio_id'];
-                    
-                    // Create social object structure
-                    $result['social'] = [
-                        'linkedin' => $result['linkedin_url'] ?? '',
-                        'github' => $result['github_url'] ?? '',
-                        'instagram' => $result['instagram_url'] ?? '',
-                        'behance' => $result['behance_url'] ?? '',
-                        'tiktok' => $result['tiktok_url'] ?? '',
-                        'youtube' => $result['youtube_url'] ?? ''
-                    ];
-                    
-                    // Keep legacy format for admin compatibility
-                    $result['imageUrl'] = $result['image_url'];
-                    $result['linkedinUrl'] = $result['linkedin_url'];
-                    $result['githubUrl'] = $result['github_url'];
-                    $result['instagramUrl'] = $result['instagram_url'];
-                    $result['behanceUrl'] = $result['behance_url'];
-                    $result['roleEn'] = $result['role_en'];
-                    $result['bioEn'] = $result['bio_en'];
-                }
-                
-                echo json_encode($results);
                 break;
 
             case 'partners':
                 try {
-                    // Check if table exists first
-                    $tableExists = $pdo->query("SHOW TABLES LIKE 'partners'")->fetch();
-                    if (!$tableExists) {
-                        throw new Exception("Table 'partners' does not exist in database");
+                    if ($id) {
+                        // Get single partner by ID
+                        $stmt = $pdo->prepare("SELECT * FROM partners WHERE id = ?");
+                        $stmt->execute([$id]);
+                        $result = $stmt->fetch();
+                        echo json_encode($result);
+                    } else {
+                        // Get all active partners
+                        $stmt = $pdo->query("
+                            SELECT * FROM partners 
+                            WHERE is_active = 1 
+                            ORDER BY sort_order ASC, name_en ASC
+                        ");
+                        $results = $stmt->fetchAll();
+                        
+                        // Format for frontend compatibility
+                        foreach ($results as &$result) {
+                            $result['nameEn'] = $result['name_en'];
+                            $result['nameId'] = $result['name_id'];
+                            $result['descriptionEn'] = $result['description_en'];
+                            $result['descriptionId'] = $result['description_id'];
+                            $result['logoUrl'] = $result['logo_url'];
+                            $result['websiteUrl'] = $result['website_url'];
+                            $result['partnerType'] = $result['partner_type'];
+                        }
+                        
+                        echo json_encode($results);
                     }
-                    
-                    $stmt = $pdo->query("
-                        SELECT * FROM partners 
-                        WHERE is_active = 1 
-                        ORDER BY sort_order ASC
-                    ");
-                    $results = $stmt->fetchAll();
                 } catch (Exception $e) {
                     http_response_code(500);
                     echo json_encode([
-                        'error' => 'Partners table error',
-                        'message' => $e->getMessage(),
-                        'suggestion' => 'Please run database-schema-safe.sql to create missing tables'
+                        'error' => 'Partners error',
+                        'message' => $e->getMessage()
                     ]);
                     return;
                 }
-                
-                // Format for About page frontend compatibility
-                foreach ($results as &$result) {
-                    // Map to About page expected format
-                    $result['name'] = $result['name_en'];
-                    $result['nameId'] = $result['name_id'];
-                    $result['description'] = $result['description_en'];
-                    $result['descriptionId'] = $result['description_id'];
-                    $result['logo'] = $result['logo_url'];
-                    $result['website'] = $result['website_url'];
-                    $result['type'] = $result['partner_type'];
-                    
-                    // Keep legacy format for admin compatibility
-                    $result['nameEn'] = $result['name_en'];
-                    $result['descriptionEn'] = $result['description_en'];
-                    $result['logoUrl'] = $result['logo_url'];
-                    $result['websiteUrl'] = $result['website_url'];
-                    $result['partnerType'] = $result['partner_type'];
-                }
-                
-                echo json_encode($results);
                 break;
 
             case 'about':
             case 'about-content':
-                if ($id) {
-                    // Get single about content by ID
-                    $stmt = $pdo->prepare("SELECT * FROM about_content WHERE id = ?");
-                    $stmt->execute([$id]);
-                    $result = $stmt->fetch();
-                    echo json_encode($result);
-                } else {
-                    // Get all about content
-                    $stmt = $pdo->query("
-                        SELECT * FROM about_content 
-                        WHERE is_active = 1 
-                        ORDER BY id ASC
-                    ");
-                    $results = $stmt->fetchAll();
-                    echo json_encode($results);
+                try {
+                    if ($id) {
+                        // Get single about content by ID
+                        $stmt = $pdo->prepare("SELECT * FROM about_content WHERE id = ?");
+                        $stmt->execute([$id]);
+                        $result = $stmt->fetch();
+                        echo json_encode($result);
+                    } else {
+                        // Get all about content
+                        $stmt = $pdo->query("
+                            SELECT * FROM about_content 
+                            WHERE is_active = 1 
+                            ORDER BY id ASC
+                        ");
+                        $results = $stmt->fetchAll();
+                        echo json_encode($results);
+                    }
+                } catch (Exception $e) {
+                    http_response_code(500);
+                    echo json_encode([
+                        'error' => 'About content error',
+                        'message' => $e->getMessage()
+                    ]);
+                    return;
                 }
                 break;
 
@@ -824,44 +818,23 @@ function handleGet($pdo, $endpoint, $id) {
                 break;
 
             case 'technologies':
-                                    // Add debugging for technologies queries (only in development)
-                    if ($_SERVER['HTTP_HOST'] === 'localhost' || strpos($_SERVER['HTTP_HOST'], 'localhost') !== false) {
-                        error_log("API Bridge: Technologies endpoint accessed with ID: " . ($id ?: 'NULL'));
-                        error_log("API Bridge: Include inactive parameter: " . ($_GET['include_inactive'] ?? 'false'));
-                    }
-                
                 try {
-                    // Check if table exists first
-                    $tableExists = $pdo->query("SHOW TABLES LIKE 'technologies'")->fetch();
-                    if (!$tableExists) {
-                        throw new Exception("Table 'technologies' does not exist in database");
-                    }
-                    
                     if ($id) {
-                        // Get specific technology by ID (admin can see inactive)
-                        error_log("API Bridge: Fetching single technology with ID: " . $id);
-                        
-                        $stmt = $pdo->prepare("SELECT * FROM technologies WHERE id = ?");
+                        // Get specific technology by ID
+                        $stmt = $pdo->prepare("SELECT * FROM technologies WHERE id = ? AND is_active = 1");
                         $stmt->execute([$id]);
                         $result = $stmt->fetch();
-                        
-                        error_log("API Bridge: Single technology query result: " . ($result ? json_encode($result) : 'NULL'));
                         echo json_encode($result ?: null);
                     } else {
-                        // Get all technologies with proper filtering
-                        error_log("API Bridge: Fetching all technologies");
-                        
+                        // Get all active technologies
                         $category = $_GET['category'] ?? '';
-                        $include_inactive = isset($_GET['include_inactive']) && $_GET['include_inactive'] === 'true';
+                        $include_inactive = $_GET['include_inactive'] ?? false;
                         
                         $sql = "SELECT * FROM technologies";
                         $params = [];
                         $where = [];
                         
-                        // For admin requests, include inactive if requested
-                        $adminMode = isset($_GET['admin']) || strpos($_SERVER['HTTP_USER_AGENT'] ?? '', 'BajramediaAdmin') !== false || $include_inactive;
-                        
-                        if (!$adminMode && !$include_inactive) {
+                        if (!$include_inactive) {
                             $where[] = "is_active = 1";
                         }
                         
@@ -876,19 +849,13 @@ function handleGet($pdo, $endpoint, $id) {
                         
                         $sql .= " ORDER BY category, sort_order ASC, name ASC";
                         
-                        error_log("API Bridge: Technologies SQL query: " . $sql);
-                        error_log("API Bridge: Technologies SQL params: " . json_encode($params));
-                        
                         $stmt = $pdo->prepare($sql);
                         $stmt->execute($params);
                         $results = $stmt->fetchAll();
                         
-                        error_log("API Bridge: Technologies query returned " . count($results) . " items");
-                        
                         echo json_encode($results);
                     }
                 } catch (Exception $e) {
-                    error_log("API Bridge: Technologies error: " . $e->getMessage());
                     http_response_code(500);
                     echo json_encode([
                         'error' => 'Technologies table error',
@@ -983,476 +950,60 @@ function handleGet($pdo, $endpoint, $id) {
                 echo json_encode($debugInfo, JSON_PRETTY_PRINT);
                 break;
 
-            default:
-                http_response_code(404);
-                echo json_encode(['error' => 'Endpoint not found']);
-        }
-    } catch (Exception $e) {
-        http_response_code(500);
-        echo json_encode(['error' => 'Database error: ' . $e->getMessage()]);
-    }
-}
-
-function fixEmptyIds($pdo, $tableName) {
-    try {
-        // Find records with empty ID
-        $stmt = $pdo->prepare("SELECT COUNT(*) FROM $tableName WHERE id = ''");
-        $stmt->execute();
-        $count = $stmt->fetchColumn();
-        
-        if ($count > 0) {
-            // Update empty IDs with unique generated IDs
-            $stmt = $pdo->prepare("SELECT * FROM $tableName WHERE id = ''");
-            $stmt->execute();
-            $emptyRecords = $stmt->fetchAll();
-            
-            foreach ($emptyRecords as $record) {
-                $newId = generateUniqueId();
-                $updateStmt = $pdo->prepare("UPDATE $tableName SET id = ? WHERE id = '' LIMIT 1");
-                $updateStmt->execute([$newId]);
-            }
-        }
-    } catch (Exception $e) {
-        // Ignore errors - table might not have the issue
-    }
-}
-
-function handlePost($pdo, $endpoint) {
-    $data = json_decode(file_get_contents('php://input'), true);
-    
-    try {
-        switch ($endpoint) {
-            case 'posts':
-                // Validate required fields - NO FALLBACK DATA
-                if (empty($data['title']) || empty($data['slug']) || empty($data['content'])) {
-                    http_response_code(400);
-                    echo json_encode(['error' => 'Title, slug, and content are required']);
-                    return;
-                }
-                
-                if (empty($data['authorId']) || empty($data['categoryId'])) {
-                    http_response_code(400);
-                    echo json_encode(['error' => 'Author and category are required']);
-                    return;
-                }
-                
-                $title = $data['title'];
-                $slug = $data['slug'];
-                $excerpt = $data['excerpt'] ?? '';
-                $content = $data['content'];
-                $featuredImage = $data['featuredImage'] ?? '';
-                $published = $data['published'] ?? false;
-                $readTime = $data['readTime'] ?? 5;
-                $authorId = $data['authorId'];
-                $categoryId = $data['categoryId'];
-                
-                // Convert boolean to int for MySQL
-                $publishedInt = $published ? 1 : 0;
-                
-                // Use auto-increment ID - let database generate ID
-                $stmt = $pdo->prepare("
-                    INSERT INTO post (title, slug, excerpt, content, featuredImage, published, readTime, authorId, categoryId, date) 
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
-                ");
-                $stmt->execute([$title, $slug, $excerpt, $content, $featuredImage, $publishedInt, $readTime, $authorId, $categoryId]);
-                
-                $postId = $pdo->lastInsertId();
-                
-                // Handle tags if provided
-                if (isset($data['tags']) && is_array($data['tags'])) {
-                    foreach ($data['tags'] as $tagId) {
-                        if (!empty($tagId)) {
-                        $stmt = $pdo->prepare("INSERT INTO posttags (postId, tagId) VALUES (?, ?)");
-                        $stmt->execute([$postId, $tagId]);
-                        }
-                    }
-                }
-                
-                echo json_encode(['success' => true, 'id' => $postId]);
-                break;
-
-            case 'categories':
-                // Fix any existing empty IDs first
-                fixEmptyIds($pdo, 'category');
-                
-                // Validate required fields
-                if (empty($data['name'])) {
-                    http_response_code(400);
-                    echo json_encode(['error' => 'Name is required']);
-                    return;
-                }
-                
-                $name = trim($data['name']);
-                $slug = $data['slug'] ?? generateSlug($name);
-                $description = $data['description'] ?? '';
-                
-                // Check table structure first
-                $categoryColumns = getTableColumns($pdo, 'category');
-                $hasDescription = in_array('description', $categoryColumns);
-                
-                // Check if ID column is auto-increment by trying to get column info
-                $stmt = $pdo->query("SHOW COLUMNS FROM category WHERE Field = 'id'");
-                $idColumn = $stmt->fetch();
-                $isAutoIncrement = strpos(strtolower($idColumn['Extra'] ?? ''), 'auto_increment') !== false;
-                
-                if ($isAutoIncrement) {
-                    // Use auto-increment
-                if ($hasDescription) {
-                $stmt = $pdo->prepare("INSERT INTO category (name, slug, description) VALUES (?, ?, ?)");
-                $stmt->execute([$name, $slug, $description]);
-                } else {
-                    $stmt = $pdo->prepare("INSERT INTO category (name, slug) VALUES (?, ?)");
-                    $stmt->execute([$name, $slug]);
-                }
-                    $categoryId = $pdo->lastInsertId();
-                } else {
-                    // Generate unique string ID
-                    $categoryId = generateUniqueId();
-                    if ($hasDescription) {
-                        $stmt = $pdo->prepare("INSERT INTO category (id, name, slug, description) VALUES (?, ?, ?, ?)");
-                        $stmt->execute([$categoryId, $name, $slug, $description]);
-                    } else {
-                        $stmt = $pdo->prepare("INSERT INTO category (id, name, slug) VALUES (?, ?, ?)");
-                        $stmt->execute([$categoryId, $name, $slug]);
-                    }
-                }
-                
-                echo json_encode(['success' => true, 'id' => $categoryId]);
-                break;
-
-            case 'authors':
-                // Fix any existing empty IDs first
-                fixEmptyIds($pdo, 'author');
-                
-                // Validate required fields
-                if (empty($data['name']) || empty($data['email'])) {
-                    http_response_code(400);
-                    echo json_encode(['error' => 'Name and email are required']);
-                    return;
-                }
-                
-                $name = trim($data['name']);
-                $email = trim($data['email']);
-                $bio = $data['bio'] ?? '';
-                $avatar = $data['avatar'] ?? '';
-                
-                // Validate email format
-                if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                    http_response_code(400);
-                    echo json_encode(['error' => 'Invalid email format']);
-                    return;
-                }
-                
-                // Check if ID column is auto-increment
-                $stmt = $pdo->query("SHOW COLUMNS FROM author WHERE Field = 'id'");
-                $idColumn = $stmt->fetch();
-                $isAutoIncrement = strpos(strtolower($idColumn['Extra'] ?? ''), 'auto_increment') !== false;
-                
-                if ($isAutoIncrement) {
-                    // Use auto-increment
-                $stmt = $pdo->prepare("INSERT INTO author (name, email, bio, avatar) VALUES (?, ?, ?, ?)");
-                $stmt->execute([$name, $email, $bio, $avatar]);
-                    $authorId = $pdo->lastInsertId();
-                } else {
-                    // Generate unique string ID
-                    $authorId = generateUniqueId();
-                    $stmt = $pdo->prepare("INSERT INTO author (id, name, email, bio, avatar) VALUES (?, ?, ?, ?, ?)");
-                    $stmt->execute([$authorId, $name, $email, $bio, $avatar]);
-                }
-                
-                echo json_encode(['success' => true, 'id' => $authorId]);
-                break;
-
-            case 'tags':
-                // Fix any existing empty IDs first
-                fixEmptyIds($pdo, 'tag');
-                
-                // Validate required fields
-                if (empty($data['name'])) {
-                    http_response_code(400);
-                    echo json_encode(['error' => 'Name is required']);
-                    return;
-                }
-                
-                $name = trim($data['name']);
-                $slug = $data['slug'] ?? generateSlug($name);
-                $description = $data['description'] ?? '';
-                
-                // Check table structure
-                $tagColumns = getTableColumns($pdo, 'tag');
-                $hasDescription = in_array('description', $tagColumns);
-                
-                // Check if ID column is auto-increment
-                $stmt = $pdo->query("SHOW COLUMNS FROM tag WHERE Field = 'id'");
-                $idColumn = $stmt->fetch();
-                $isAutoIncrement = strpos(strtolower($idColumn['Extra'] ?? ''), 'auto_increment') !== false;
-                
-                if ($isAutoIncrement) {
-                    // Use auto-increment
-                    if ($hasDescription) {
-                        $stmt = $pdo->prepare("INSERT INTO tag (name, slug, description) VALUES (?, ?, ?)");
-                        $stmt->execute([$name, $slug, $description]);
-                    } else {
-                $stmt = $pdo->prepare("INSERT INTO tag (name, slug) VALUES (?, ?)");
-                $stmt->execute([$name, $slug]);
-                    }
-                    $tagId = $pdo->lastInsertId();
-                } else {
-                    // Generate unique string ID
-                    $tagId = generateUniqueId();
-                    if ($hasDescription) {
-                        $stmt = $pdo->prepare("INSERT INTO tag (id, name, slug, description) VALUES (?, ?, ?, ?)");
-                        $stmt->execute([$tagId, $name, $slug, $description]);
-                    } else {
-                        $stmt = $pdo->prepare("INSERT INTO tag (id, name, slug) VALUES (?, ?, ?)");
-                        $stmt->execute([$tagId, $name, $slug]);
-                    }
-                }
-                
-                echo json_encode(['success' => true, 'id' => $tagId]);
-                break;
-
-            case 'portfolio':
-                // Create new portfolio
-                $title = $data['title'] ?? '';
-                $slug = $data['slug'] ?? generateSlug($title);
-                $description = $data['description'] ?? '';
-                $content = $data['content'] ?? '';
-                $featuredImage = $data['featuredImage'] ?? '';
-                $images = $data['images'] ?? null;
-                $clientName = $data['clientName'] ?? '';
-                $projectUrl = $data['projectUrl'] ?? '';
-                $githubUrl = $data['githubUrl'] ?? '';
-                $featured = $data['featured'] ?? false;
-                $published = $data['published'] ?? false;
-                $startDate = $data['startDate'] ?? null;
-                $endDate = $data['endDate'] ?? null;
-                $categoryId = $data['categoryId'] ?? '1';
-                
-                // Convert boolean to int for MySQL
-                $featuredInt = $featured ? 1 : 0;
-                $publishedInt = $published ? 1 : 0;
-                
-                // Check if portfolio table has date column or date
-                $portfolioColumns = getTableColumns($pdo, 'portfolio');
-                $hasdate = in_array('date', $portfolioColumns);
-                
-                if ($hasdate) {
-                    $stmt = $pdo->prepare("
-                        INSERT INTO portfolio (title, slug, description, content, featuredImage, images, clientName, projectUrl, githubUrl, featured, published, startDate, endDate, categoryId, date) 
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
-                    ");
-                    $stmt->execute([$title, $slug, $description, $content, $featuredImage, $images, $clientName, $projectUrl, $githubUrl, $featuredInt, $publishedInt, $startDate, $endDate, $categoryId]);
-                } else {
-                    // Use without date if column doesn't exist
-                    $stmt = $pdo->prepare("
-                        INSERT INTO portfolio (title, slug, description, content, featuredImage, images, clientName, projectUrl, githubUrl, featured, published, startDate, endDate, categoryId) 
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                    ");
-                    $stmt->execute([$title, $slug, $description, $content, $featuredImage, $images, $clientName, $projectUrl, $githubUrl, $featuredInt, $publishedInt, $startDate, $endDate, $categoryId]);
-                }
-                
-                echo json_encode(['success' => true, 'id' => $pdo->lastInsertId()]);
-                break;
-
-            case 'post-view':
+            case 'technology-categories':
                 try {
-                    $stmt = $pdo->prepare("INSERT INTO postview (postId, ipAddress, date) VALUES (?, ?, NOW())");
-                    $stmt->execute([$data['postId'], $_SERVER['REMOTE_ADDR'] ?? 'unknown']);
-                    echo json_encode(['success' => true]);
+                    // Get technology categories from ENUM values
+                    $stmt = $pdo->query("SHOW COLUMNS FROM technologies LIKE 'category'");
+                    $column = $stmt->fetch();
+                    
+                    if ($column && $column['Type']) {
+                        // Extract ENUM values
+                        preg_match("/^enum\((.+)\)$/", $column['Type'], $matches);
+                        if ($matches) {
+                            $enumValues = str_getcsv($matches[1], ',', "'");
+                            
+                            // Format as categories with labels and colors
+                            $categories = [];
+                            $colors = [
+                                'web' => '#3B82F6',
+                                'mobile' => '#10B981', 
+                                'uiux' => '#EC4899',
+                                'game' => '#8B5CF6',
+                                'system' => '#F59E0B',
+                                'marketing' => '#EF4444',
+                                'general' => '#6B7280'
+                            ];
+                            
+                            $labels = [
+                                'web' => 'Web Development',
+                                'mobile' => 'Mobile Development',
+                                'uiux' => 'UI/UX Design',
+                                'game' => 'Game Development', 
+                                'system' => 'System Development',
+                                'marketing' => 'Digital Marketing',
+                                'general' => 'General'
+                            ];
+                            
+                            foreach ($enumValues as $value) {
+                                $categories[] = [
+                                    'value' => $value,
+                                    'label' => $labels[$value] ?? ucfirst($value),
+                                    'color' => $colors[$value] ?? '#6B7280'
+                                ];
+                            }
+                            
+                            echo json_encode($categories);
+                        } else {
+                            throw new Exception("Could not parse ENUM values");
+                        }
+                    } else {
+                        throw new Exception("Category column not found");
+                    }
                 } catch (Exception $e) {
-                    echo json_encode(['success' => true, 'note' => 'View tracking not available']);
-                }
-                break;
-                
-            case 'about-content':
-                // Create new about content
-                $section_key = $data['section_key'] ?? '';
-                $title_en = $data['title_en'] ?? '';
-                $title_id = $data['title_id'] ?? '';
-                $content_en = $data['content_en'] ?? '';
-                $content_id = $data['content_id'] ?? '';
-                
-                $stmt = $pdo->prepare("
-                    INSERT INTO about_content (section_key, title_en, title_id, content_en, content_id) 
-                    VALUES (?, ?, ?, ?, ?)
-                ");
-                $stmt->execute([$section_key, $title_en, $title_id, $content_en, $content_id]);
-                
-                echo json_encode(['success' => true, 'id' => $pdo->lastInsertId()]);
-                break;
-                
-            case 'team-members':
-                // Create new team member
-                $name = $data['name'] ?? '';
-                $role_en = $data['role_en'] ?? '';
-                $role_id = $data['role_id'] ?? '';
-                $bio_en = $data['bio_en'] ?? '';
-                $bio_id = $data['bio_id'] ?? '';
-                $image_url = $data['image_url'] ?? '';
-                $linkedin_url = $data['linkedin_url'] ?? '';
-                $github_url = $data['github_url'] ?? '';
-                $instagram_url = $data['instagram_url'] ?? '';
-                $behance_url = $data['behance_url'] ?? '';
-                $tiktok_url = $data['tiktok_url'] ?? '';
-                $youtube_url = $data['youtube_url'] ?? '';
-                $sort_order = $data['sort_order'] ?? 0;
-                $is_active = isset($data['is_active']) ? ($data['is_active'] ? 1 : 0) : 1;
-                
-                $stmt = $pdo->prepare("
-                    INSERT INTO team_members (name, role_en, role_id, bio_en, bio_id, image_url, linkedin_url, github_url, instagram_url, behance_url, tiktok_url, youtube_url, sort_order, is_active) 
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                ");
-                $stmt->execute([$name, $role_en, $role_id, $bio_en, $bio_id, $image_url, $linkedin_url, $github_url, $instagram_url, $behance_url, $tiktok_url, $youtube_url, $sort_order, $is_active]);
-                
-                echo json_encode(['success' => true, 'id' => $pdo->lastInsertId()]);
-                break;
-                
-            case 'partners':
-                // Create new partner
-                $name_en = $data['name_en'] ?? '';
-                $name_id = $data['name_id'] ?? '';
-                $description_en = $data['description_en'] ?? '';
-                $description_id = $data['description_id'] ?? '';
-                $logo_url = $data['logo_url'] ?? '';
-                $website_url = $data['website_url'] ?? '';
-                $partner_type = $data['partner_type'] ?? 'company';
-                $sort_order = $data['sort_order'] ?? 0;
-                
-                $stmt = $pdo->prepare("
-                    INSERT INTO partners (name_en, name_id, description_en, description_id, logo_url, website_url, partner_type, sort_order) 
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-                ");
-                $stmt->execute([$name_en, $name_id, $description_en, $description_id, $logo_url, $website_url, $partner_type, $sort_order]);
-                
-                echo json_encode(['success' => true, 'id' => $pdo->lastInsertId()]);
-                break;
-
-            case 'technologies':
-                // Create new technology
-                if (empty($data['name']) || empty($data['icon'])) {
-                    http_response_code(400);
-                    echo json_encode(['error' => 'Name and icon are required']);
-                    return;
-                }
-                
-                $name = trim($data['name']);
-                $icon = trim($data['icon']);
-                $description_en = $data['description_en'] ?? '';
-                $description_id = $data['description_id'] ?? '';
-                $category = $data['category'] ?? 'general';
-                $color = $data['color'] ?? '#6B7280';
-                $sort_order = $data['sort_order'] ?? 0;
-                $is_active = isset($data['is_active']) ? ($data['is_active'] ? 1 : 0) : 1;
-                
-                // Validate category
-                $validCategories = ['web', 'mobile', 'uiux', 'game', 'system', 'marketing', 'general'];
-                if (!in_array($category, $validCategories)) {
-                    $category = 'general';
-                }
-                
-                $stmt = $pdo->prepare("
-                    INSERT INTO technologies (name, icon, description_en, description_id, category, color, sort_order, is_active) 
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-                ");
-                $stmt->execute([$name, $icon, $description_en, $description_id, $category, $color, $sort_order, $is_active]);
-                
-                echo json_encode(['success' => true, 'id' => $pdo->lastInsertId()]);
-                break;
-
-            case 'settings':
-                // Update settings - bulk update approach with proper transaction
-                try {
-                    // Start transaction for atomicity
-                    $pdo->beginTransaction();
-                    
-                    // Check if setting table exists
-                    $stmt = $pdo->query("SHOW TABLES LIKE 'setting'");
-                    $tableExists = $stmt->fetch();
-                    
-                    if (!$tableExists) {
-                        // Create settings table if it doesn't exist (minimal structure)
-                        $createTableSQL = "CREATE TABLE setting (
-                            id INT AUTO_INCREMENT PRIMARY KEY,
-                            `key` VARCHAR(255) UNIQUE NOT NULL,
-                            `value` TEXT,
-                            `type` VARCHAR(50) DEFAULT 'string',
-                            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-                        )";
-                        $pdo->exec($createTableSQL);
-                    }
-                    
-                    // Check current table structure
-                    $columns = getTableColumns($pdo, 'setting');
-                    $hasUpdatedAt = in_array('updated_at', $columns);
-                    $hasType = in_array('type', $columns);
-                    
-                    // Update or insert settings
-                    $updatedCount = 0;
-                    $errors = [];
-                    
-                    foreach ($data as $key => $value) {
-                        try {
-                            // Skip empty keys
-                            if (empty($key)) {
-                                continue;
-                            }
-                            
-                            // Convert value to string for storage
-                            $valueStr = is_array($value) || is_object($value) ? json_encode($value) : (string)$value;
-                            $type = is_array($value) || is_object($value) ? 'json' : (is_bool($value) ? 'boolean' : (is_numeric($value) ? 'number' : 'string'));
-                            
-                            if ($hasUpdatedAt && $hasType) {
-                                // Full table with type and updated_at
-                                $sql = "INSERT INTO setting (`key`, `value`, `type`) 
-                                       VALUES (?, ?, ?) 
-                                       ON DUPLICATE KEY UPDATE 
-                                       `value` = VALUES(`value`), 
-                                       `type` = VALUES(`type`), 
-                                       updated_at = NOW()";
-                                $stmt = $pdo->prepare($sql);
-                                $result = $stmt->execute([$key, $valueStr, $type]);
-                            } elseif ($hasUpdatedAt) {
-                                // Table with updated_at but no type
-                                $sql = "INSERT INTO setting (`key`, `value`) 
-                                       VALUES (?, ?) 
-                                       ON DUPLICATE KEY UPDATE 
-                                       `value` = VALUES(`value`), 
-                                       updated_at = NOW()";
-                                $stmt = $pdo->prepare($sql);
-                                $result = $stmt->execute([$key, $valueStr]);
-                            } else {
-                                // Minimal table structure
-                                $sql = "INSERT INTO setting (`key`, `value`) 
-                                       VALUES (?, ?) 
-                                       ON DUPLICATE KEY UPDATE 
-                                       `value` = VALUES(`value`)";
-                                $stmt = $pdo->prepare($sql);
-                                $result = $stmt->execute([$key, $valueStr]);
-                            }
-                            
-                            if ($result) {
-                                $updatedCount++;
-                            } else {
-                                $error = $stmt->errorInfo();
-                                $errors[] = "Failed to save key '$key': " . $error[2];
-                            }
-                            
-                        } catch (Exception $keyError) {
-                            $errors[] = "Error saving key '$key': " . $keyError->getMessage();
-                        }
-                    }
-                    
-                    // Commit transaction if no errors
-                    if (empty($errors)) {
-                        $pdo->commit();
-                        
-                        // Verify data was actually saved
-                        $stmt = $pdo->query("SELECT COUNT(*) as count FROM setting");
-                        $totalSettings = $stmt->fetch()['count'];
-                        
-                        echo json_encode([
+                    // Fallback to default categories
+                    echo json_encode([
+                        ['value' => 'web', 'label' => 'Web Development', 'color' => '#3B82F6'],
+                        ['value' => 'mobile', 'label' => 'Mobile Development', 'color' => '#10B981'],
                             'success' => true, 
                             'updated' => $updatedCount,
                             'total_in_db' => $totalSettings
