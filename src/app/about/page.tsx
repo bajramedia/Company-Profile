@@ -48,7 +48,7 @@ export default function AboutPage() {
   const languageContext = useLanguage();
   const t = languageContext?.t || ((key: string) => key);
   const language = languageContext?.language || 'en';
-  
+
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
   const [teamLoading, setTeamLoading] = useState(true);
@@ -67,7 +67,7 @@ export default function AboutPage() {
   // Initialize dark mode with proper error handling
   useEffect(() => {
     if (!isClient) return;
-    
+
     try {
       const savedMode = localStorage.getItem('darkMode');
       const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -134,25 +134,25 @@ export default function AboutPage() {
           }
           window.removeEventListener('storage', handleStorageChange);
         } catch (e) {
-          console.error('Cleanup error:', e);
+          // Silent cleanup error
         }
       };
     } catch (error) {
-      console.error('Dark mode initialization error:', error);
+      // Silent error - don't use console.error to prevent apply() issues
     }
   }, [isClient]);
 
   // Fetch team members from API
   useEffect(() => {
     if (!isClient) return;
-    
+
     const fetchTeamMembers = async () => {
       try {
         setTeamLoading(true);
         setTeamError(null);
 
         const response = await fetch('/api/team-members');
-        
+
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -161,7 +161,6 @@ export default function AboutPage() {
         setTeamMembers(data);
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : 'Failed to load team members';
-        console.error('Failed to fetch team members:', error);
         setTeamError(errorMessage);
       } finally {
         setTeamLoading(false);
@@ -174,14 +173,14 @@ export default function AboutPage() {
   // Fetch partners from API
   useEffect(() => {
     if (!isClient) return;
-    
+
     const fetchPartners = async () => {
       try {
         setPartnersLoading(true);
         setPartnersError(null);
 
         const response = await fetch('/api/partners');
-        
+
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -190,7 +189,6 @@ export default function AboutPage() {
         setPartners(data);
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : 'Failed to load partners';
-        console.error('Failed to fetch partners:', error);
         setPartnersError(errorMessage);
       } finally {
         setPartnersLoading(false);
@@ -207,8 +205,7 @@ export default function AboutPage() {
     const initAOS = async () => {
       try {
         const AOS = await import('aos');
-        await import('aos/dist/aos.css');
-        
+
         AOS.init({
           duration: 800,
           easing: 'ease-out',
@@ -216,8 +213,7 @@ export default function AboutPage() {
           offset: 100,
         });
       } catch (error) {
-        console.error('AOS initialization error:', error);
-        // Don't break the page if AOS fails
+        // Silent error - don't use console.error
       }
     };
 
@@ -226,7 +222,7 @@ export default function AboutPage() {
 
   const toggleDarkMode = () => {
     if (!isClient) return;
-    
+
     setIsDarkMode(prev => {
       const newMode = !prev;
 
@@ -239,7 +235,7 @@ export default function AboutPage() {
 
         localStorage.setItem('darkMode', newMode ? 'true' : 'false');
       } catch (error) {
-        console.error('Toggle dark mode error:', error);
+        // Silent error
       }
 
       return newMode;
