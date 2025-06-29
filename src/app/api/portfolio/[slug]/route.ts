@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://bajramedia.com/api_bridge.php';
+import { API_BASE_URL } from '@/config/api';
 
 // GET /api/portfolio/[slug] - Get single portfolio by slug
 export async function GET(

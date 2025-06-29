@@ -42,8 +42,9 @@ const nextConfig: NextConfig = {
   
   // Environment variables for client-side
   env: {
-    NEXT_PUBLIC_API_BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL || 'https://www.bajramedia.com/api_bridge.php',
-    NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL || 'https://www.bajramedia.com',
+    NEXT_PUBLIC_API_BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL || 
+      (process.env.NODE_ENV === 'development' ? 'http://localhost:8000' : 'https://balimoonartandspeace.com/api_bridge.php'),
+    NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000',
   },
   
   // Webpack configuration

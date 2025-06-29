@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://www.bajramedia.com/api_bridge.php';
+import { API_BASE_URL } from '@/config/api';
 
 export interface TagData {
   name: string;

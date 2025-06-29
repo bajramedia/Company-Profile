@@ -24,7 +24,7 @@ interface GenerateMetadataParams {
 // Default site constants
 const SITE_NAME = 'Bajramedia';
 const SITE_DESCRIPTION = 'Creative Digital Agency & Blog Platform';
-const SITE_URL = 'https://bajramedia.com';
+const SITE_URL = 'https://balimoonartandspeace.com';
 const DEFAULT_OG_IMAGE = '/images/logo.png';
 const DEFAULT_LOCALE = 'id_ID';
 

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 // Try multiple API endpoints
 const API_ENDPOINTS = [
-    'https://bajramedia.com',
+    'https://balimoonartandspeace.com',
     'https://www.bajramedia.com',
     // Add your direct server IP if needed
 ];
@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
         // Try each endpoint until one works
         for (const baseUrl of API_ENDPOINTS) {
             try {
-                let url = `${baseUrl}/api_bridge.php/technologies`;
+                let url = `${baseUrl}/api.php/technologies`;
                 const params = new URLSearchParams();
                 
                 if (category) {
@@ -122,7 +122,7 @@ export async function POST(request: NextRequest) {
                 const controller = new AbortController();
                 const timeoutId = setTimeout(() => controller.abort(), 10000);
                 
-                const response = await fetch(`${baseUrl}/api_bridge.php/technologies`, {
+                const response = await fetch(`${baseUrl}/api.php/technologies`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

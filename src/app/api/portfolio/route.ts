@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const API_BASE_URL = 'https://www.bajramedia.com/api_bridge.php';
+import { API_BASE_URL } from '@/config/api';
 
 // GET /api/portfolio - Get all portfolios with filters
 export async function GET(request: NextRequest) {
@@ -15,7 +15,13 @@ export async function GET(request: NextRequest) {
 
     // Get portfolio from external API
     console.log('Portfolio API: Fetching from production database...');
-    const response = await fetch(`${API_BASE_URL}?endpoint=portfolio&page=${page}&limit=${limit}`);
+    const response = await fetch(`${API_BASE_URL}?endpoint=portfolio&page=${page}&limit=${limit}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'User-Agent': 'BajraMedia-NextJS/1.0',
+        'Origin': process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+      }
+    });
     
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);

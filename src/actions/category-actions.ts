@@ -1,8 +1,7 @@
 "use server";
 
 import { revalidatePath } from 'next/cache';
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://www.bajramedia.com/api_bridge.php';
+import { API_BASE_URL } from "@/utils/api-config";
 
 export interface CategoryData {
   name: string;

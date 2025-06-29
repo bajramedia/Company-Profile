@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 // Try multiple API endpoints
 const API_ENDPOINTS = [
-    'https://bajramedia.com',
+    'https://balimoonartandspeace.com',
     'https://www.bajramedia.com',
 ];
 
@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
             const controller = new AbortController();
             const timeoutId = setTimeout(() => controller.abort(), 10000);
 
-            const response = await fetch(`${baseUrl}/api_bridge.php/portfolio-categories`, {
+            const response = await fetch(`${baseUrl}/api.php/portfolio-categories`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

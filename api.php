@@ -7,13 +7,7 @@ $allowedOrigins = [
     'https://bajramedia.vercel.app',
     'https://company-profile-mu-nine.vercel.app',
     'https://www.bajramedia.com',
-    'https://bajramedia.com',
-    'https://balimoonartandspeace.com',
-    'https://www.balimoonartandspeace.com',
-    'http://localhost:3000',
-    'http://localhost:3001',
-    'http://127.0.0.1:3000',
-    'http://127.0.0.1:3001'
+    'https://bajramedia.com'
 ];
 
 $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
@@ -38,82 +32,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 }
 
 // Database configuration
-// Use production database even in local development for consistency
 $host = 'localhost';
 $dbname = 'bajx7634_bajra';
 $username = 'bajx7634_bajra';
 $password = 'bajra@media@com';
-
-// Check if running locally and provide mock data for development
-$isLocalDevelopment = ($_SERVER['HTTP_HOST'] ?? '') === 'localhost:8000';
-if ($isLocalDevelopment) {
-    // For local development, provide mock data instead of database connection
-    $method = $_SERVER['REQUEST_METHOD'];
-    $endpoint = $_GET['endpoint'] ?? '';
-    
-    if ($method === 'GET' && $endpoint === 'settings') {
-        echo json_encode([
-            'siteName' => 'Bajramedia Development',
-            'siteDescription' => 'Creative Digital Agency & Blog Platform',
-            'siteUrl' => 'http://localhost:3000',
-            'contactEmail' => 'contact@bajramedia.com',
-            'contactPhone' => '+6285739402436',
-            'contactAddress' => 'Bali, Indonesia',
-            'enableComments' => '1',
-            'enableSocialShare' => '1',
-            'footerText' => '© 2025 Bajramedia. All rights reserved.',
-            'social_facebook' => '',
-            'social_twitter' => '',
-            'social_instagram' => '',
-            'social_linkedin' => '',
-            'social_youtube' => '',
-            'seo_metaTitle' => 'Bajramedia - Creative Digital Agency',
-            'seo_metaDescription' => 'Professional digital agency providing creative solutions for your business needs.',
-            'seo_metaKeywords' => 'digital agency, creative, design, development, bali',
-            'seo_ogImage' => ''
-        ]);
-        exit;
-    }
-    
-    if ($method === 'GET' && $endpoint === 'posts') {
-        echo json_encode([
-            [
-                'id' => '1',
-                'title' => 'Welcome to Bajramedia Development',
-                'slug' => 'welcome-to-bajramedia',
-                'excerpt' => 'This is a sample post for development purposes.',
-                'content' => '<p>This is sample content for development testing.</p>',
-                'published' => 1,
-                'featured' => 1,
-                'date' => date('Y-m-d H:i:s'),
-                'authorName' => 'Development Team',
-                'categoryName' => 'Development',
-                'categorySlug' => 'development',
-                'views' => 100
-            ]
-        ]);
-        exit;
-    }
-    
-    if ($method === 'GET' && $endpoint === 'portfolio') {
-        echo json_encode([
-            [
-                'id' => '1',
-                'title' => 'Sample Portfolio Project',
-                'slug' => 'sample-portfolio',
-                'description' => 'This is a sample portfolio item for development.',
-                'published' => 1,
-                'date' => date('Y-m-d H:i:s'),
-                'categoryName' => 'Web Development'
-            ]
-        ]);
-        exit;
-    }
-    
-    // Default mock response for other endpoints
-    echo json_encode(['message' => 'Development mock data - endpoint: ' . $endpoint]);
-    exit;
-}
 
 // Initialize database connection
 try {

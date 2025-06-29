@@ -1,10 +1,11 @@
 import { MetadataRoute } from 'next';
+import { API_BASE_URL } from '@/config/api';
   
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Static routes (always available)
   const staticRoutes = [
     {
-      url: 'https://bajramedia.com',
+      url: 'https://balimoonartandspeace.com',
       lastModified: new Date(),
       changeFrequency: 'daily' as const,
       priority: 1.0,
@@ -31,7 +32,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // Try to get blog posts from API bridge
   try {
-    const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "https://www.bajramedia.com/api_bridge.php";
     const response = await fetch(`${API_BASE_URL}?endpoint=posts&limit=100`, {
       // Add timeout to prevent hanging during build
       next: { revalidate: 3600 }, // Cache for 1 hour

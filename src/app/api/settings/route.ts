@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-const API_BASE_URL = 'https://www.bajramedia.com/api_bridge.php';
+import { API_BASE_URL } from '@/config/api';
 
 // GET - Ambil public settings (tanpa admin settings)
 export async function GET() {
@@ -13,7 +13,9 @@ export async function GET() {
         'Content-Type': 'application/json',
         'Cache-Control': 'no-cache, no-store, must-revalidate',
         'Pragma': 'no-cache',
-        'Expires': '0'
+        'Expires': '0',
+        'User-Agent': 'BajraMedia-NextJS/1.0',
+        'Origin': process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
       },
       cache: 'no-store',
     });
@@ -28,7 +30,7 @@ export async function GET() {
     const publicSettings = {
       siteName: settings.siteName || 'Bajramedia',
       siteDescription: settings.siteDescription || 'Creative Digital Agency & Blog Platform',
-      siteUrl: settings.siteUrl || 'https://bajramedia.com',
+      siteUrl: settings.siteUrl || 'https://balimoonartandspeace.com',
       contactEmail: settings.contactEmail || 'contact@bajramedia.com',
       contactPhone: settings.contactPhone || '+6285739402436',
       contactAddress: settings.contactAddress || 'Bali, Indonesia',
@@ -65,12 +67,13 @@ export async function GET() {
 
   } catch (error) {
     console.error('Error fetching public settings:', error);
+    console.warn('Using fallback settings for development');
     
     // Return default settings sebagai fallback
     return NextResponse.json({
       siteName: 'Bajramedia',
       siteDescription: 'Creative Digital Agency & Blog Platform',
-      siteUrl: 'https://bajramedia.com',
+      siteUrl: 'https://balimoonartandspeace.com',
       contactEmail: 'contact@bajramedia.com',
       contactPhone: '+6285739402436',
       contactAddress: 'Bali, Indonesia',

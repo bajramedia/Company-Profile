@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://www.bajramedia.com/api_bridge.php';
+import { API_BASE_URL } from '@/config/api';
 
 // GET /api/posts/search - Search posts
 export async function GET(request: NextRequest) {

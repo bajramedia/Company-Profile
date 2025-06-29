@@ -52,8 +52,8 @@ class BlogServiceAPI {
     // Check if we're on server or client
     this.isServer = typeof window === 'undefined';
     
-    // Use environment variable or fallback
-    this.apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://www.bajramedia.com/api_bridge.php';
+    // Use environment variable or fallback to new hosting domain
+    this.apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://balimoonartandspeace.com/api_bridge.php';
     
     // For build time and server-side, use full URL
     if (this.isServer) {

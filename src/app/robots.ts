@@ -8,6 +8,6 @@ export default function robots(): MetadataRoute.Robots {
       disallow: ['/admin/', '/api/'],
     },
     sitemap: 'https://bajramedia.com/sitemap.xml',
-    host: 'https://bajramedia.com',
+    host: 'https://balimoonartandspeace.com',
   };
 }

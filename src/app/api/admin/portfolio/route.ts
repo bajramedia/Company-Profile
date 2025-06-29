@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const API_BASE_URL = 'https://www.bajramedia.com/api_bridge.php';
+import { API_BASE_URL } from '@/config/api';
 
 export async function GET(request: NextRequest) {
   try {
