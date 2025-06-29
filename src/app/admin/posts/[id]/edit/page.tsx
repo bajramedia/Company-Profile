@@ -2,6 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
+import Link from 'next/link';
+import { Button } from '@/components';
 import PostForm from '@/components/PostForm';
 
 export default function EditPostPage() {
@@ -9,44 +11,134 @@ export default function EditPostPage() {
   const [post, setPost] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  
+
   useEffect(() => {
     const fetchPost = async () => {
       try {
+        setLoading(true);
+        setError(null);
+
         const response = await fetch(`/api/admin/posts/${id}`);
-        
-        if (!response.ok) {
-          throw new Error('Failed to fetch post');
+
+        if (response.ok) {
+          const data = await response.json();
+          setPost(data);
+        } else {
+          console.warn('⚠️ Post API unavailable, using fallback data');
+          // Fallback data structure untuk development
+          const fallbackPost = {
+            id: id,
+            title: 'Blog Post Title (Edit Mode)',
+            slug: 'blog-post-title-edit-mode',
+            content: '<p>Blog post content here...</p>',
+            excerpt: 'Blog post excerpt...',
+            featuredImage: '',
+            published: true,
+            featured: false,
+            categoryId: '1',
+            authorId: '1',
+            tags: [],
+            publishedAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+            createdAt: new Date().toISOString()
+          };
+          setPost(fallbackPost);
+          setError('⚠️ Menggunakan data fallback karena API tidak tersedia. Upload api_bridge.php untuk data real.');
         }
-        
-        const data = await response.json();
-        setPost(data);
       } catch (err) {
         console.error('Error fetching post:', err);
-        setError('Could not load post. Please try again.');
+
+        // Provide fallback even on network error
+        console.warn('⚠️ Network error, using fallback data');
+        const fallbackPost = {
+          id: id,
+          title: 'Blog Post Title (Edit Mode)',
+          slug: 'blog-post-title-edit-mode',
+          content: '<p>Blog post content here...</p>',
+          excerpt: 'Blog post excerpt...',
+          featuredImage: '',
+          published: true,
+          featured: false,
+          categoryId: '1',
+          authorId: '1',
+          tags: [],
+          publishedAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          createdAt: new Date().toISOString()
+        };
+        setPost(fallbackPost);
+        setError('⚠️ Koneksi bermasalah, menggunakan data fallback. Upload api_bridge.php untuk data real.');
       } finally {
         setLoading(false);
       }
     };
-    
+
     fetchPost();
   }, [id]);
-  
+
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+              Edit Post
+            </h1>
+            <p className="text-gray-600 dark:text-gray-400 mt-1">
+              Memuat data...
+            </p>
+          </div>
+          <Link href="/admin/posts">
+            <Button variant="outline" size="md">
+              <span className="mr-2">←</span>
+              Kembali
+            </Button>
+          </Link>
+        </div>
+
+        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
+          <div className="flex items-center justify-center py-12">
+            <div className="flex items-center space-x-3">
+              <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+              <span className="text-gray-600 dark:text-gray-400">Memuat data post...</span>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
-  
-  if (error || !post) {
-    return (
-      <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 my-6">
-        <p>{error || 'Could not find post'}</p>
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+            Edit Post
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400 mt-1">
+            Edit post: {post?.title}
+          </p>
+        </div>
+        <Link href="/admin/posts">
+          <Button variant="outline" size="md">
+            <span className="mr-2">←</span>
+            Kembali
+          </Button>
+        </Link>
       </div>
-    );
-  }
-  
-  return <PostForm postId={id} initialData={post} />;
+
+      {/* Error/Warning Message */}
+      {error && (
+        <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4">
+          <p className="text-yellow-600 dark:text-yellow-400 text-sm">
+            {error}
+          </p>
+        </div>
+      )}
+
+      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
+        <PostForm postId={id} initialData={post} />
+      </div>
+    </div>
+  );
 }

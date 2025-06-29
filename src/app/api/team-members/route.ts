@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-const API_BASE_URL = 'https://bajramedia.com/api_bridge.php';
+const API_BASE_URL = 'https://www.bajramedia.com/api_bridge.php';
 
 // GET /api/team-members - Get all team members for public display
 export async function GET() {

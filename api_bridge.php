@@ -5,7 +5,9 @@ $allowedOrigins = [
     'https://company-profile-git-main-bajra-media.vercel.app',
     'https://company-profile-c0emzkquv-bajra-media.vercel.app', 
     'https://bajramedia.vercel.app',
-    'https://company-profile-mu-nine.vercel.app'
+    'https://company-profile-mu-nine.vercel.app',
+    'https://www.bajramedia.com',
+    'https://bajramedia.com'
 ];
 
 $origin = $_SERVER['HTTP_ORIGIN'] ?? '';

@@ -8,7 +8,7 @@ import { useLanguage } from '@/context/LanguageContext';
 import dynamic from 'next/dynamic';
 
 // Debug state for error tracking
-const DEBUG_MODE = true; // TEMPORARY: Enable debug mode
+const DEBUG_MODE = false; // DISABLED: Debug mode off for production
 
 // Team members will be fetched from API
 
