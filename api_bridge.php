@@ -884,6 +884,69 @@ function handleGet($pdo, $endpoint, $id) {
                 }
                 break;
 
+            case 'technology-categories':
+                try {
+                    // Get technology categories from ENUM values
+                    $stmt = $pdo->query("SHOW COLUMNS FROM technologies LIKE 'category'");
+                    $column = $stmt->fetch();
+                    
+                    if ($column && $column['Type']) {
+                        // Extract ENUM values
+                        preg_match("/^enum\((.+)\)$/", $column['Type'], $matches);
+                        if ($matches) {
+                            $enumValues = str_getcsv($matches[1], ',', "'");
+                            
+                            // Format as categories with labels and colors
+                            $categories = [];
+                            $colors = [
+                                'web' => '#3B82F6',
+                                'mobile' => '#10B981', 
+                                'uiux' => '#EC4899',
+                                'game' => '#8B5CF6',
+                                'system' => '#F59E0B',
+                                'marketing' => '#EF4444',
+                                'general' => '#6B7280'
+                            ];
+                            
+                            $labels = [
+                                'web' => 'Web Development',
+                                'mobile' => 'Mobile Development',
+                                'uiux' => 'UI/UX Design',
+                                'game' => 'Game Development', 
+                                'system' => 'System Development',
+                                'marketing' => 'Digital Marketing',
+                                'general' => 'General'
+                            ];
+                            
+                            foreach ($enumValues as $value) {
+                                $categories[] = [
+                                    'value' => $value,
+                                    'label' => $labels[$value] ?? ucfirst($value),
+                                    'color' => $colors[$value] ?? '#6B7280'
+                                ];
+                            }
+                            
+                            echo json_encode($categories);
+                        } else {
+                            throw new Exception("Could not parse ENUM values");
+                        }
+                    } else {
+                        throw new Exception("Category column not found");
+                    }
+                } catch (Exception $e) {
+                    // Fallback to default categories
+                    echo json_encode([
+                        ['value' => 'web', 'label' => 'Web Development', 'color' => '#3B82F6'],
+                        ['value' => 'mobile', 'label' => 'Mobile Development', 'color' => '#10B981'],
+                        ['value' => 'uiux', 'label' => 'UI/UX Design', 'color' => '#EC4899'],
+                        ['value' => 'game', 'label' => 'Game Development', 'color' => '#8B5CF6'],
+                        ['value' => 'system', 'label' => 'System Development', 'color' => '#F59E0B'],
+                        ['value' => 'marketing', 'label' => 'Digital Marketing', 'color' => '#EF4444'],
+                        ['value' => 'general', 'label' => 'General', 'color' => '#6B7280']
+                    ]);
+                }
+                break;
+
             case 'debug':
                 // Debug endpoint for troubleshooting
                 $debugInfo = [
