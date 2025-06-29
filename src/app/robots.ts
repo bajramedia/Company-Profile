@@ -61,10 +61,10 @@ export default function robots(): MetadataRoute.Robots {
       }
     ],
     sitemap: [
-      'https://bajramedia.com/sitemap.xml',
+      'https://www.bajramedia.com/sitemap.xml',
       // Bisa tambah sitemap lain jika ada
-      // 'https://bajramedia.com/sitemap-images.xml'
+      // 'https://www.bajramedia.com/sitemap-images.xml'
     ],
-    host: 'https://bajramedia.com'
+    host: 'https://www.bajramedia.com'
   };
 }

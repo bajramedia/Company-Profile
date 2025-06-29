@@ -3,7 +3,7 @@
   
   <!-- Homepage - Prioritas tertinggi -->
   <url>
-    <loc>https://bajramedia.com</loc>
+    <loc>https://www.bajramedia.com</loc>
     <lastmod>2025-06-29T23:00:00.000Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
@@ -11,28 +11,28 @@
   
   <!-- Main Navigation Pages -->
   <url>
-    <loc>https://bajramedia.com/about</loc>
+    <loc>https://www.bajramedia.com/about</loc>
     <lastmod>2025-06-29T23:00:00.000Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   
   <url>
-    <loc>https://bajramedia.com/services</loc>
+    <loc>https://www.bajramedia.com/services</loc>
     <lastmod>2025-06-29T23:00:00.000Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   
   <url>
-    <loc>https://bajramedia.com/portfolio</loc>
+    <loc>https://www.bajramedia.com/portfolio</loc>
     <lastmod>2025-06-29T23:00:00.000Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   
   <url>
-    <loc>https://bajramedia.com/blog</loc>
+    <loc>https://www.bajramedia.com/blog</loc>
     <lastmod>2025-06-29T23:00:00.000Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
@@ -40,56 +40,56 @@
   
   <!-- Service Pages -->
   <url>
-    <loc>https://bajramedia.com/services/web-development</loc>
+    <loc>https://www.bajramedia.com/services/web-development</loc>
     <lastmod>2025-06-29T23:00:00.000Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>https://bajramedia.com/services/mobile-apps</loc>
+    <loc>https://www.bajramedia.com/services/mobile-apps</loc>
     <lastmod>2025-06-29T23:00:00.000Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>https://bajramedia.com/services/uiux-design</loc>
+    <loc>https://www.bajramedia.com/services/uiux-design</loc>
     <lastmod>2025-06-29T23:00:00.000Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>https://bajramedia.com/services/digital-marketing</loc>
+    <loc>https://www.bajramedia.com/services/digital-marketing</loc>
     <lastmod>2025-06-29T23:00:00.000Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>https://bajramedia.com/services/sistem-development</loc>
+    <loc>https://www.bajramedia.com/services/sistem-development</loc>
     <lastmod>2025-06-29T23:00:00.000Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>https://bajramedia.com/services/aset-game-development</loc>
+    <loc>https://www.bajramedia.com/services/aset-game-development</loc>
     <lastmod>2025-06-29T23:00:00.000Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>https://bajramedia.com/services/sosial-media-management</loc>
+    <loc>https://www.bajramedia.com/services/sosial-media-management</loc>
     <lastmod>2025-06-29T23:00:00.000Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
-    <loc>https://bajramedia.com/services/consulting</loc>
+    <loc>https://www.bajramedia.com/services/consulting</loc>
     <lastmod>2025-06-29T23:00:00.000Z</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>

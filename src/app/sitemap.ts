@@ -16,7 +16,7 @@ interface PortfolioItem {
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://bajramedia.com';
+  const baseUrl = 'https://www.bajramedia.com';
   
   // Static pages dengan prioritas yang disesuaikan
   const staticPages: MetadataRoute.Sitemap = [
