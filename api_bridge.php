@@ -748,13 +748,87 @@ function handleGet($pdo, $endpoint, $id) {
                 break;
 
             case 'debug':
-                // Debug endpoint to check table structure
-                $tables = ['post', 'author', 'category', 'portfolio', 'portfoliocategory', 'team_members', 'partners', 'about_content', 'settings', 'blog_posts', 'portfolio_items', 'technologies'];
-                $debug = [];
-                foreach ($tables as $table) {
-                    $debug[$table] = getTableColumns($pdo, $table);
+                // Debug endpoint for troubleshooting
+                $debugInfo = [
+                    'status' => 'API Bridge is working',
+                    'timestamp' => date('Y-m-d H:i:s'),
+                    'php_version' => phpversion(),
+                    'database_connection' => 'Connected',
+                    'database_name' => 'bajx7634_bajra',
+                    'available_tables' => [],
+                    'missing_tables' => [],
+                    'table_structures' => [],
+                    'request_info' => [
+                        'method' => $_SERVER['REQUEST_METHOD'],
+                        'endpoint' => $endpoint,
+                        'id' => $id,
+                        'user_agent' => substr($_SERVER['HTTP_USER_AGENT'] ?? 'unknown', 0, 100),
+                        'origin' => $_SERVER['HTTP_ORIGIN'] ?? 'unknown'
+                    ]
+                ];
+                
+                $expectedTables = ['post', 'author', 'category', 'portfolio', 'portfoliocategory', 'team_members', 'partners', 'about_content', 'setting', 'blog_posts', 'portfolio_items', 'technologies'];
+                
+                // Get all available tables
+                try {
+                    $stmt = $pdo->query("SHOW TABLES");
+                    $existingTables = [];
+                    while ($row = $stmt->fetch()) {
+                        $tableName = array_values($row)[0];
+                        $existingTables[] = $tableName;
+                        
+                        // Get row count
+                        try {
+                            $countStmt = $pdo->query("SELECT COUNT(*) as count FROM `$tableName`");
+                            $count = $countStmt->fetch()['count'];
+                            $debugInfo['available_tables'][$tableName] = $count . ' records';
+                        } catch (Exception $e) {
+                            $debugInfo['available_tables'][$tableName] = 'Error counting: ' . $e->getMessage();
+                        }
+                        
+                        // Get table structure for important tables
+                        if (in_array($tableName, $expectedTables)) {
+                            $debugInfo['table_structures'][$tableName] = getTableColumns($pdo, $tableName);
+                        }
+                    }
+                    
+                    // Check for missing tables
+                    $debugInfo['missing_tables'] = array_diff($expectedTables, $existingTables);
+                    
+                } catch (Exception $e) {
+                    $debugInfo['table_error'] = $e->getMessage();
                 }
-                echo json_encode($debug);
+                
+                // Check critical tables and data
+                try {
+                    $stmt = $pdo->query("SELECT COUNT(*) as count FROM team_members WHERE is_active = 1");
+                    $debugInfo['data_checks']['active_team_members'] = $stmt->fetch()['count'];
+                } catch (Exception $e) {
+                    $debugInfo['data_checks']['active_team_members'] = 'Error: ' . $e->getMessage();
+                }
+                
+                try {
+                    $stmt = $pdo->query("SELECT COUNT(*) as count FROM partners WHERE is_active = 1");
+                    $debugInfo['data_checks']['active_partners'] = $stmt->fetch()['count'];
+                } catch (Exception $e) {
+                    $debugInfo['data_checks']['active_partners'] = 'Error: ' . $e->getMessage();
+                }
+                
+                try {
+                    $stmt = $pdo->query("SELECT COUNT(*) as count FROM category");
+                    $debugInfo['data_checks']['categories'] = $stmt->fetch()['count'];
+                } catch (Exception $e) {
+                    $debugInfo['data_checks']['categories'] = 'Error: ' . $e->getMessage();
+                }
+                
+                try {
+                    $stmt = $pdo->query("SELECT COUNT(*) as count FROM setting");
+                    $debugInfo['data_checks']['settings'] = $stmt->fetch()['count'];
+                } catch (Exception $e) {
+                    $debugInfo['data_checks']['settings'] = 'Error: ' . $e->getMessage();
+                }
+                
+                echo json_encode($debugInfo, JSON_PRETTY_PRINT);
                 break;
 
             default:
