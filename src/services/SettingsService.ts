@@ -30,7 +30,7 @@ export const defaultSettings: SiteSettings = {
   siteName: 'Bajramedia',
   siteDescription: 'Creative Digital Agency & Blog Platform',
   siteUrl: 'https://balimoonartandspeace.com',
-  adminEmail: 'admin@bajramedia.com',
+  adminEmail: 'admin.bajra@bajramedia.com',
   postsPerPage: 10,
   enableComments: true,
   enableSocialShare: true,
