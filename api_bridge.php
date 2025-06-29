@@ -174,7 +174,8 @@ function handleGet($pdo, $endpoint, $id) {
     // Only allow essential public endpoints
     $allowedPublicEndpoints = [
         'posts', 'portfolio', 'categories', 'portfolio-categories', 'authors', 'tags', 
-        'settings', 'team-members', 'about-content', 'team', 'about', 'partners'
+        'settings', 'team-members', 'about-content', 'team', 'about', 'partners', 
+        'technologies', 'technology-categories'
     ];
     
     // Block access to sensitive endpoints regardless of environment (except debug for troubleshooting)
