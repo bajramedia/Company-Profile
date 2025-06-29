@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState, useEffect } from 'react';
-import { Button, Heading, Navbar, Footer, AnimatedText } from "@/components";
+import { Button, Heading, Navbar, AnimatedText } from "@/components";
 import { useLanguage } from "@/context/LanguageContext";
 import { technologiesService, Technology } from "@/services/TechnologiesService";
 import AOS from 'aos';
@@ -305,9 +305,6 @@ export default function WebDevelopmentPage() {
                     </div>
                 </section>
             </main>
-
-            {/* Footer */}
-            <Footer />
 
             {/* Dark Mode Toggle */}
             <div className="fixed bottom-6 left-6 z-50">

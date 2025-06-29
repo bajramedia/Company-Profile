@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState, useEffect } from 'react';
-import { Button, Heading, Navbar, Footer } from "@/components";
+import { Button, Heading, Navbar } from "@/components";
 import { useLanguage } from "@/context/LanguageContext";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
@@ -293,9 +293,6 @@ export default function AsetGameDevelopmentPage() {
                     </div>
                 </section>
             </main>
-
-            {/* Footer */}
-            <Footer />
 
             {/* Dark Mode Toggle */}
             <div className="fixed bottom-6 left-6 z-50">

@@ -11,21 +11,21 @@ import { generateWebsiteSchema, generateLocalBusinessSchema } from '@/lib/jsonld
 export default function Home() {
   const { t, language } = useLanguage();
   const { settings: publicSettings, loading: settingsLoading } = usePublicSettings();
-  
+
   // Dark mode state
   const [isDarkMode, setIsDarkMode] = useState(false);
-  
+
   // Initialize dark mode based on user preference
   useEffect(() => {
     if (typeof window !== 'undefined') {
       // Check localStorage
       const savedMode = localStorage.getItem('darkMode');
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      
+
       const shouldEnableDarkMode = savedMode === 'true' || (savedMode === null && prefersDark);
-      
+
       setIsDarkMode(shouldEnableDarkMode);
-      
+
       // Apply dark mode class if needed
       if (shouldEnableDarkMode) {
         document.documentElement.classList.add('dark');
@@ -33,12 +33,12 @@ export default function Home() {
       }
     }
   }, []);
-  
+
   // Toggle dark mode function
   const toggleDarkMode = () => {
     setIsDarkMode(prev => {
       const newMode = !prev;
-      
+
       if (newMode) {
         document.documentElement.classList.add('dark');
         document.body.classList.add('dark-mode');
@@ -46,10 +46,10 @@ export default function Home() {
         document.documentElement.classList.remove('dark');
         document.body.classList.remove('dark-mode');
       }
-      
+
       // Save preference to localStorage
       localStorage.setItem('darkMode', newMode ? 'true' : 'false');
-      
+
       return newMode;
     });
   };
@@ -125,10 +125,10 @@ export default function Home() {
                   <a href="#" className="text-foreground hover:text-primary transition-colors text-[15px] relative group">
                     {t('nav.services')}
                     <span className="inline-block ml-1 transform group-hover:rotate-180 transition-transform duration-200">
-                    <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  </span>
+                      <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </span>
                   </a>
                 </AnimatedText>
                 <AnimatedText as="span">
@@ -171,31 +171,16 @@ export default function Home() {
 
         {/* Team Section */}
         <Team />
-        
+
         {/* Blog Section */}
         <Blog />
-        
+
         {/* CTA Section */}
         <CTA />
 
         {/* Footer Section */}
-        <footer className="bg-gray-900 dark:bg-gray-950 text-white relative overflow-hidden pt-16 pb-10 transition-colors duration-300">
-          {/* Footer content... */}
-          
-          {/* "Back to top" button */}
-          <div className="absolute right-6 bottom-6">
-            <button 
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center hover:bg-primary/90 transition-colors shadow-lg"
-              aria-label="Back to top"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
-              </svg>
-            </button>
-          </div>
-        </footer>
-        
+        {/* Footer will be handled by ClientLayout */}
+
         {/* Floating Dark Mode Toggle Button */}
         <div className="fixed bottom-6 left-6 z-50">
           <button
@@ -206,32 +191,32 @@ export default function Home() {
           >
             {isDarkMode ? (
               // Sun icon for light mode
-              <svg 
-                className="w-6 h-6 text-yellow-500 transform group-hover:rotate-180 transition-transform duration-300" 
-                fill="none" 
-                stroke="currentColor" 
+              <svg
+                className="w-6 h-6 text-yellow-500 transform group-hover:rotate-180 transition-transform duration-300"
+                fill="none"
+                stroke="currentColor"
                 viewBox="0 0 24 24"
               >
-                <path 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round" 
-                  strokeWidth="2" 
-                  d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" 
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
                 />
               </svg>
             ) : (
               // Moon icon for dark mode
-              <svg 
-                className="w-6 h-6 text-gray-700 transform group-hover:rotate-12 transition-transform duration-300" 
-                fill="none" 
-                stroke="currentColor" 
+              <svg
+                className="w-6 h-6 text-gray-700 transform group-hover:rotate-12 transition-transform duration-300"
+                fill="none"
+                stroke="currentColor"
                 viewBox="0 0 24 24"
               >
-                <path 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round" 
-                  strokeWidth="2" 
-                  d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" 
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
                 />
               </svg>
             )}

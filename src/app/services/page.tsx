@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from 'react';
-import { Button, Heading, Navbar, Footer, AnimatedText, WhatsAppChat } from "@/components";
+import { Button, Heading, Navbar, AnimatedText, WhatsAppChat } from "@/components";
 import { useLanguage } from "@/context/LanguageContext";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
@@ -257,9 +257,6 @@ export default function ServicesPage() {
                     </div>
                 </section>
             </main>
-
-            {/* Footer */}
-            <Footer />
 
             {/* Floating Dark Mode Toggle */}
             <div className="fixed bottom-6 left-6 z-50">

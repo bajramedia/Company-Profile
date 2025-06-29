@@ -129,25 +129,7 @@ export default function Home() {
         <CTA />
 
         {/* Footer Section */}
-        <footer className="bg-gray-900 dark:bg-gray-950 text-white relative overflow-hidden pt-16 pb-10 transition-colors duration-300">
-          {/* Footer content... */}
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 relative z-10">
-            {/* Footer content here - copy from original page.tsx */}
-          </div>
-
-          {/* "Back to top" button */}
-          <div className="absolute right-6 bottom-6">
-            <button
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center hover:bg-primary/90 transition-colors shadow-lg"
-              aria-label="Back to top"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
-              </svg>
-            </button>
-          </div>
-        </footer>
+        {/* Footer will be handled by ClientLayout */}
 
         {/* Floating Dark Mode Toggle Button */}
         <div className="fixed bottom-6 left-6 z-50">

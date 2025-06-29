@@ -8,7 +8,7 @@ import Link from 'next/link';
 import Head from 'next/head';
 import Script from 'next/script';
 import { generateArticleSchema } from '@/lib/jsonld';
-import { Navbar, WhatsAppChat, Footer } from '@/components';
+import { Navbar, WhatsAppChat } from '@/components';
 
 // Utility function to format date
 const formatDate = (dateString: string): string => {
@@ -43,73 +43,73 @@ const ModernBlogPostCard: React.FC<{ post: BlogPost }> = ({ post }) => {
   return (
     <Link href={`/blog/${post.slug}`} className="block h-full">
       <article className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm hover:shadow-xl border border-gray-100 dark:border-gray-700 overflow-hidden transition-all duration-300 hover:-translate-y-1 group cursor-pointer h-full flex flex-col">
-      {/* Modern Image with badges */}
-      <div className="relative h-48 w-full overflow-hidden bg-gray-100 dark:bg-gray-700">
-        <img
-          src={post.featuredImage}
-          alt={post.title}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-          loading="lazy"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        {/* Modern Image with badges */}
+        <div className="relative h-48 w-full overflow-hidden bg-gray-100 dark:bg-gray-700">
+          <img
+            src={post.featuredImage}
+            alt={post.title}
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            loading="lazy"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
 
-        {/* Category Badge */}
-        <div className="absolute top-3 left-3 z-10">
-          <span className="bg-white dark:bg-gray-900 text-xs px-3 py-1.5 rounded-full font-medium shadow-sm text-gray-700 dark:text-gray-300 transition-colors duration-300">
-            {typeof post.category === 'string' ? post.category : post.category.name}
-          </span>
-        </div>
-      </div>
-
-      {/* Content Area */}
-      <div className="p-5 flex-1 flex flex-col text-gray-800 dark:text-gray-100 transition-colors duration-300">
-        <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 mb-3">
-          <span className="flex items-center">
-            <FiClock className="mr-1" size={12} />
-            {formatDate(post.date)}
-          </span>
-          <span className="flex items-center">
-            <FiEye className="mr-1" size={12} />
-            {post.views || 0} views
-          </span>
-        </div>
-
-        <h3 className="font-bold text-lg mb-2 line-clamp-2 group-hover:text-primary transition-colors text-gray-900 dark:text-gray-100">
-          {post.title}
-        </h3>
-
-        <p className="text-sm text-gray-600 dark:text-gray-300 mb-4 line-clamp-3 flex-1">
-          {post.excerpt}
-        </p>
-
-        <div className="border-t border-gray-100 dark:border-gray-700 pt-3 mt-auto flex justify-between items-center">
-          {/* Author info */}
-          <div className="flex items-center">
-            {post.author.avatar && (
-              <img
-                src={post.author.avatar}
-                alt={post.author.name}
-                className="w-6 h-6 rounded-full mr-2 border border-gray-200 dark:border-gray-600"
-              />
-            )}
-            <span className="text-xs font-medium">{post.author.name}</span>
-          </div>
-
-          {/* Action icons */}
-          <div className="flex space-x-2">
-            <button onClick={(e) => {
-              e.preventDefault();
-              setIsBookmarked(!isBookmarked);
-            }} className="text-gray-400 hover:text-primary transition-colors">
-              <FiBookmark size={14} className={isBookmarked ? "fill-primary text-primary" : ""} />
-            </button>
-            <button className="text-gray-400 hover:text-primary transition-colors">
-              <FiShare2 size={14} />
-            </button>
+          {/* Category Badge */}
+          <div className="absolute top-3 left-3 z-10">
+            <span className="bg-white dark:bg-gray-900 text-xs px-3 py-1.5 rounded-full font-medium shadow-sm text-gray-700 dark:text-gray-300 transition-colors duration-300">
+              {typeof post.category === 'string' ? post.category : post.category.name}
+            </span>
           </div>
         </div>
-      </div>
-    </article>
+
+        {/* Content Area */}
+        <div className="p-5 flex-1 flex flex-col text-gray-800 dark:text-gray-100 transition-colors duration-300">
+          <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 mb-3">
+            <span className="flex items-center">
+              <FiClock className="mr-1" size={12} />
+              {formatDate(post.date)}
+            </span>
+            <span className="flex items-center">
+              <FiEye className="mr-1" size={12} />
+              {post.views || 0} views
+            </span>
+          </div>
+
+          <h3 className="font-bold text-lg mb-2 line-clamp-2 group-hover:text-primary transition-colors text-gray-900 dark:text-gray-100">
+            {post.title}
+          </h3>
+
+          <p className="text-sm text-gray-600 dark:text-gray-300 mb-4 line-clamp-3 flex-1">
+            {post.excerpt}
+          </p>
+
+          <div className="border-t border-gray-100 dark:border-gray-700 pt-3 mt-auto flex justify-between items-center">
+            {/* Author info */}
+            <div className="flex items-center">
+              {post.author.avatar && (
+                <img
+                  src={post.author.avatar}
+                  alt={post.author.name}
+                  className="w-6 h-6 rounded-full mr-2 border border-gray-200 dark:border-gray-600"
+                />
+              )}
+              <span className="text-xs font-medium">{post.author.name}</span>
+            </div>
+
+            {/* Action icons */}
+            <div className="flex space-x-2">
+              <button onClick={(e) => {
+                e.preventDefault();
+                setIsBookmarked(!isBookmarked);
+              }} className="text-gray-400 hover:text-primary transition-colors">
+                <FiBookmark size={14} className={isBookmarked ? "fill-primary text-primary" : ""} />
+              </button>
+              <button className="text-gray-400 hover:text-primary transition-colors">
+                <FiShare2 size={14} />
+              </button>
+            </div>
+          </div>
+        </div>
+      </article>
     </Link>
   );
 };
@@ -461,49 +461,6 @@ export default function BlogListingPage() {
               </div>
             )}
           </div>
-        </div>
-
-        {/* Footer */}
-        <Footer />
-
-        {/* Floating Dark Mode Toggle Button */}
-        <div className="fixed bottom-6 left-6 z-50">
-          <button
-            onClick={toggleDarkMode}
-            className="w-14 h-14 rounded-full bg-white dark:bg-gray-800 shadow-lg border border-gray-200 dark:border-gray-600 flex items-center justify-center hover:shadow-xl transition-all duration-300 hover:scale-110 group dark-mode-button"
-            aria-label="Toggle dark mode"
-            title={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
-          >
-            {isDarkMode ? (
-              <svg
-                className="w-6 h-6 text-yellow-500 transform group-hover:rotate-180 transition-transform duration-300"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
-                />
-              </svg>
-            ) : (
-              <svg
-                className="w-6 h-6 text-gray-700 transform group-hover:rotate-12 transition-transform duration-300"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
-                />
-              </svg>
-            )}
-          </button>
         </div>
 
         {/* WhatsApp Chat */}
