@@ -1,61 +1,155 @@
 import { MetadataRoute } from 'next';
 import { API_BASE_URL } from '@/config/api';
-  
+
+// Types for our content
+interface BlogPost {
+  slug: string;
+  date: string;
+  published: boolean;
+}
+
+interface PortfolioItem {
+  slug: string;
+  createdAt: string;
+  published: boolean;
+}
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  // Static routes (always available)
-  const staticRoutes = [
+  const baseUrl = 'https://bajramedia.com';
+  
+  // Static pages
+  const staticPages: MetadataRoute.Sitemap = [
     {
-      url: 'https://balimoonartandspeace.com',
+      url: baseUrl,
       lastModified: new Date(),
-      changeFrequency: 'daily' as const,
+      changeFrequency: 'daily',
       priority: 1.0,
     },
     {
-      url: 'https://bajramedia.com/blog',
+      url: `${baseUrl}/about`,
       lastModified: new Date(),
-      changeFrequency: 'daily' as const,
+      changeFrequency: 'monthly',
       priority: 0.9,
     },
     {
-      url: 'https://bajramedia.com/portfolio',
+      url: `${baseUrl}/services`,
       lastModified: new Date(),
-      changeFrequency: 'weekly' as const,
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/services/web-development`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
       priority: 0.8,
     },
     {
-      url: 'https://bajramedia.com/services',
+      url: `${baseUrl}/services/mobile-apps`,
       lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.7,
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/services/uiux-design`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/services/digital-marketing`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/services/sistem-development`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/services/aset-game-development`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/services/sosial-media-management`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/services/consulting`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/portfolio`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/blog`,
+      lastModified: new Date(),
+      changeFrequency: 'daily',
+      priority: 0.9,
     },
   ];
 
-  // Try to get blog posts from API bridge
+  // Dynamic blog posts
+  let blogPages: MetadataRoute.Sitemap = [];
   try {
-    const response = await fetch(`${API_BASE_URL}?endpoint=posts&limit=100`, {
-      // Add timeout to prevent hanging during build
-      next: { revalidate: 3600 }, // Cache for 1 hour
+    const blogResponse = await fetch(`${API_BASE_URL}?endpoint=posts&published=1`, {
+      headers: {
+        'Cache-Control': 'no-cache'
+      }
     });
     
-    if (response.ok) {
-      const posts = await response.json();
+    if (blogResponse.ok) {
+      const blogData = await blogResponse.json();
+      const posts: BlogPost[] = Array.isArray(blogData) ? blogData : blogData.posts || [];
       
-      const blogPosts = posts
-        .filter((post: any) => post.id && post.id !== '' && post.slug) // Filter valid posts
-        .map((post: any) => ({
-          url: `https://bajramedia.com/blog/${post.slug}`,
-          lastModified: new Date(post.date || post.createdAt || new Date()),
+      blogPages = posts
+        .filter(post => post.published && post.slug)
+        .map(post => ({
+          url: `${baseUrl}/blog/${post.slug}`,
+          lastModified: new Date(post.date),
           changeFrequency: 'weekly' as const,
-          priority: 0.8,
+          priority: 0.7,
         }));
-
-      return [...staticRoutes, ...blogPosts];
     }
   } catch (error) {
-    console.error('Error fetching posts for sitemap:', error);
-    // Continue with static routes only if API fails
+    console.error('Error fetching blog posts for sitemap:', error);
   }
 
-  // Return static routes if API fails
-  return staticRoutes;
+  // Dynamic portfolio items
+  let portfolioPages: MetadataRoute.Sitemap = [];
+  try {
+    const portfolioResponse = await fetch(`${API_BASE_URL}?endpoint=portfolio&published=1`, {
+      headers: {
+        'Cache-Control': 'no-cache'
+      }
+    });
+    
+    if (portfolioResponse.ok) {
+      const portfolioData = await portfolioResponse.json();
+      const portfolios: PortfolioItem[] = Array.isArray(portfolioData) ? portfolioData : portfolioData.portfolio || [];
+      
+      portfolioPages = portfolios
+        .filter(item => item.published && item.slug)
+        .map(item => ({
+          url: `${baseUrl}/portfolio/${item.slug}`,
+          lastModified: new Date(item.createdAt),
+          changeFrequency: 'monthly' as const,
+          priority: 0.6,
+        }));
+    }
+  } catch (error) {
+    console.error('Error fetching portfolio items for sitemap:', error);
+  }
+
+  return [...staticPages, ...blogPages, ...portfolioPages];
 }
