@@ -724,7 +724,7 @@ export default function AboutPage() {
                       </p>
 
                       {/* Social Links - Only show if any social links exist */}
-                      {Object.values(member.social).some(link => link && link !== '') && (
+                      {member.social && Object.values(member.social).some(link => link && link !== '') && (
                         <div className="flex justify-center space-x-3">
                           {member.social.linkedin && member.social.linkedin !== '' && (
                             <a
