@@ -795,41 +795,76 @@ function handleGet($pdo, $endpoint, $id) {
                 break;
 
             case 'technologies':
-                if ($id) {
-                    // Get specific technology by ID
-                    $stmt = $pdo->prepare("SELECT * FROM technologies WHERE id = ? AND is_active = 1");
-                    $stmt->execute([$id]);
-                    $result = $stmt->fetch();
-                    echo json_encode($result ?: null);
-                } else {
-                    // Get all active technologies
-                    $category = $_GET['category'] ?? '';
-                    $include_inactive = $_GET['include_inactive'] ?? false;
-                    
-                    $sql = "SELECT * FROM technologies";
-                    $params = [];
-                    $where = [];
-                    
-                    if (!$include_inactive) {
-                        $where[] = "is_active = 1";
+                // Add debugging for technologies queries
+                error_log("API Bridge: Technologies endpoint accessed with ID: " . ($id ?: 'NULL'));
+                error_log("API Bridge: Include inactive parameter: " . ($_GET['include_inactive'] ?? 'false'));
+                
+                try {
+                    // Check if table exists first
+                    $tableExists = $pdo->query("SHOW TABLES LIKE 'technologies'")->fetch();
+                    if (!$tableExists) {
+                        throw new Exception("Table 'technologies' does not exist in database");
                     }
                     
-                    if ($category) {
-                        $where[] = "category = ?";
-                        $params[] = $category;
+                    if ($id) {
+                        // Get specific technology by ID (admin can see inactive)
+                        error_log("API Bridge: Fetching single technology with ID: " . $id);
+                        
+                        $stmt = $pdo->prepare("SELECT * FROM technologies WHERE id = ?");
+                        $stmt->execute([$id]);
+                        $result = $stmt->fetch();
+                        
+                        error_log("API Bridge: Single technology query result: " . ($result ? json_encode($result) : 'NULL'));
+                        echo json_encode($result ?: null);
+                    } else {
+                        // Get all technologies with proper filtering
+                        error_log("API Bridge: Fetching all technologies");
+                        
+                        $category = $_GET['category'] ?? '';
+                        $include_inactive = isset($_GET['include_inactive']) && $_GET['include_inactive'] === 'true';
+                        
+                        $sql = "SELECT * FROM technologies";
+                        $params = [];
+                        $where = [];
+                        
+                        // For admin requests, include inactive if requested
+                        $adminMode = isset($_GET['admin']) || strpos($_SERVER['HTTP_USER_AGENT'] ?? '', 'BajramediaAdmin') !== false || $include_inactive;
+                        
+                        if (!$adminMode && !$include_inactive) {
+                            $where[] = "is_active = 1";
+                        }
+                        
+                        if ($category) {
+                            $where[] = "category = ?";
+                            $params[] = $category;
+                        }
+                        
+                        if (!empty($where)) {
+                            $sql .= " WHERE " . implode(" AND ", $where);
+                        }
+                        
+                        $sql .= " ORDER BY category, sort_order ASC, name ASC";
+                        
+                        error_log("API Bridge: Technologies SQL query: " . $sql);
+                        error_log("API Bridge: Technologies SQL params: " . json_encode($params));
+                        
+                        $stmt = $pdo->prepare($sql);
+                        $stmt->execute($params);
+                        $results = $stmt->fetchAll();
+                        
+                        error_log("API Bridge: Technologies query returned " . count($results) . " items");
+                        
+                        echo json_encode($results);
                     }
-                    
-                    if (!empty($where)) {
-                        $sql .= " WHERE " . implode(" AND ", $where);
-                    }
-                    
-                    $sql .= " ORDER BY category, sort_order ASC, name ASC";
-                    
-                    $stmt = $pdo->prepare($sql);
-                    $stmt->execute($params);
-                    $results = $stmt->fetchAll();
-                    
-                    echo json_encode($results);
+                } catch (Exception $e) {
+                    error_log("API Bridge: Technologies error: " . $e->getMessage());
+                    http_response_code(500);
+                    echo json_encode([
+                        'error' => 'Technologies table error',
+                        'message' => $e->getMessage(),
+                        'suggestion' => 'Please run database-schema-safe.sql to create missing tables'
+                    ]);
+                    return;
                 }
                 break;
 
