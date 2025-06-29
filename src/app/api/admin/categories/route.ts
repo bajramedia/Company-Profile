@@ -11,7 +11,7 @@ export async function GET() {
     // Try each endpoint until one works
     for (const baseUrl of API_ENDPOINTS) {
         try {
-            const response = await fetch(`${baseUrl}/api.php/categories`, {
+            const response = await fetch(`${baseUrl}/api_bridge.php?endpoint=categories`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -74,7 +74,7 @@ export async function POST(request: Request) {
     // Try each endpoint until one works
     for (const baseUrl of API_ENDPOINTS) {
         try {
-            const response = await fetch(`${baseUrl}/api.php/categories`, {
+            const response = await fetch(`${baseUrl}/api_bridge.php?endpoint=categories`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

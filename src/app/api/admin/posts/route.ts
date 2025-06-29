@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
         // Try each endpoint until one works
         for (const baseUrl of API_ENDPOINTS) {
             try {
-                let url = `${baseUrl}/api.php/posts`;
+                let url = `${baseUrl}/api_bridge.php?endpoint=posts`;
                 const params = new URLSearchParams();
                 
                 params.append('page', page);
@@ -27,7 +27,9 @@ export async function GET(request: NextRequest) {
                 if (category) params.append('category', category);
                 if (status) params.append('status', status);
                 
-                url += `?${params.toString()}`;
+                if (params.toString()) {
+                    url += `&${params.toString()}`;
+                }
 
                 const controller = new AbortController();
                 const timeoutId = setTimeout(() => controller.abort(), 10000);
@@ -133,7 +135,7 @@ export async function POST(request: NextRequest) {
                 const controller = new AbortController();
                 const timeoutId = setTimeout(() => controller.abort(), 10000);
 
-                const response = await fetch(`${baseUrl}/api.php/posts`, {
+                const response = await fetch(`${baseUrl}/api_bridge.php?endpoint=posts`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -195,7 +197,7 @@ export async function PUT(request: NextRequest) {
       tags: updateData.tagIds || updateData.tags || []
     };
 
-    const response = await fetch(`${API_ENDPOINTS[0]}/api.php/posts/${id}`, {
+    const response = await fetch(`${API_ENDPOINTS[0]}/api_bridge.php?endpoint=posts&id=${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(postData)
@@ -226,7 +228,7 @@ export async function DELETE(request: NextRequest) {
 
     console.log('Posts API: Deleting entry from database...');
     
-    const response = await fetch(`${API_ENDPOINTS[0]}/api.php/posts/${id}`, {
+    const response = await fetch(`${API_ENDPOINTS[0]}/api_bridge.php?endpoint=posts&id=${id}`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" }
     });

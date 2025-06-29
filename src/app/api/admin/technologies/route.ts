@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
         // Try each endpoint until one works
         for (const baseUrl of API_ENDPOINTS) {
             try {
-                let url = `${baseUrl}/api.php/technologies`;
+                let url = `${baseUrl}/api_bridge.php?endpoint=technologies`;
                 const params = new URLSearchParams();
                 
                 if (category) {
@@ -29,7 +29,7 @@ export async function GET(request: NextRequest) {
                 }
                 
                 if (params.toString()) {
-                    url += `?${params.toString()}`;
+                    url += `&${params.toString()}`;
                 }
 
                 const controller = new AbortController();
@@ -122,7 +122,7 @@ export async function POST(request: NextRequest) {
                 const controller = new AbortController();
                 const timeoutId = setTimeout(() => controller.abort(), 10000);
                 
-                const response = await fetch(`${baseUrl}/api.php/technologies`, {
+                const response = await fetch(`${baseUrl}/api_bridge.php?endpoint=technologies`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

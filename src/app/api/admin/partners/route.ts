@@ -4,7 +4,7 @@ import { API_BASE_URL } from '@/config/api';
 
 export async function GET() {
   try {
-    const response = await fetch(`${API_BASE_URL}/api.php?endpoint=partners`, {
+    const response = await fetch(`${API_BASE_URL}?endpoint=partners`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const response = await fetch(`${API_BASE_URL}/api.php?endpoint=partners`, {
+    const response = await fetch(`${API_BASE_URL}?endpoint=partners`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
