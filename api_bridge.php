@@ -421,17 +421,33 @@ function handleGet($pdo, $endpoint, $id) {
                 ");
                 $results = $stmt->fetchAll();
                 
-                // Format for frontend compatibility
+                // Format for About page frontend compatibility
                 foreach ($results as &$result) {
+                    // Map to About page expected format
+                    $result['image'] = $result['image_url'];
+                    $result['role'] = $result['role_en'];
+                    $result['roleId'] = $result['role_id'];
+                    $result['bio'] = $result['bio_en'];
+                    $result['bioId'] = $result['bio_id'];
+                    
+                    // Create social object structure
+                    $result['social'] = [
+                        'linkedin' => $result['linkedin_url'] ?? '',
+                        'github' => $result['github_url'] ?? '',
+                        'instagram' => $result['instagram_url'] ?? '',
+                        'behance' => $result['behance_url'] ?? '',
+                        'tiktok' => $result['tiktok_url'] ?? '',
+                        'youtube' => $result['youtube_url'] ?? ''
+                    ];
+                    
+                    // Keep legacy format for admin compatibility
                     $result['imageUrl'] = $result['image_url'];
                     $result['linkedinUrl'] = $result['linkedin_url'];
                     $result['githubUrl'] = $result['github_url'];
                     $result['instagramUrl'] = $result['instagram_url'];
                     $result['behanceUrl'] = $result['behance_url'];
                     $result['roleEn'] = $result['role_en'];
-                    $result['roleId'] = $result['role_id'];
                     $result['bioEn'] = $result['bio_en'];
-                    $result['bioId'] = $result['bio_id'];
                 }
                 
                 echo json_encode($results);
@@ -445,12 +461,20 @@ function handleGet($pdo, $endpoint, $id) {
                 ");
                 $results = $stmt->fetchAll();
                 
-                // Format for frontend compatibility
+                // Format for About page frontend compatibility
                 foreach ($results as &$result) {
-                    $result['nameEn'] = $result['name_en'];
+                    // Map to About page expected format
+                    $result['name'] = $result['name_en'];
                     $result['nameId'] = $result['name_id'];
-                    $result['descriptionEn'] = $result['description_en'];
+                    $result['description'] = $result['description_en'];
                     $result['descriptionId'] = $result['description_id'];
+                    $result['logo'] = $result['logo_url'];
+                    $result['website'] = $result['website_url'];
+                    $result['type'] = $result['partner_type'];
+                    
+                    // Keep legacy format for admin compatibility
+                    $result['nameEn'] = $result['name_en'];
+                    $result['descriptionEn'] = $result['description_en'];
                     $result['logoUrl'] = $result['logo_url'];
                     $result['websiteUrl'] = $result['website_url'];
                     $result['partnerType'] = $result['partner_type'];
