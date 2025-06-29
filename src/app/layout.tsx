@@ -98,9 +98,9 @@ async function getMetadata(): Promise<Metadata> {
           creator: "@bajramedia"
         },
         verification: {
-          google: "your-google-verification-code", // Update with real code
-          yandex: "your-yandex-verification-code",
-          yahoo: "your-yahoo-verification-code"
+          google: process.env.GOOGLE_VERIFICATION_CODE || "your-google-verification-code",
+          yandex: process.env.YANDEX_VERIFICATION_CODE || "your-yandex-verification-code",
+          yahoo: process.env.YAHOO_VERIFICATION_CODE || "your-yahoo-verification-code"
         },
         alternates: {
           canonical: "https://bajramedia.com",
