@@ -60,26 +60,28 @@ export default function Error({
           </Button>
         </div>
 
-        {/* Simple error details without complex rendering */}
-        <details className="mt-8 text-left">
-          <summary className="cursor-pointer text-sm text-gray-500 hover:text-gray-700">
-            🔍 Error Details (Debug Mode)
-          </summary>
-          <div className="mt-4 p-4 bg-gray-100 rounded text-xs text-red-600 overflow-auto max-h-64">
-            <div><strong>Error:</strong></div>
-            <div>{error?.message || 'Unknown error occurred'}</div>
-            <br />
-            <div><strong>Type:</strong></div>
-            <div>{error?.name || 'Error'}</div>
-            {error?.digest && (
-              <>
-                <br />
-                <div><strong>Digest:</strong></div>
-                <div>{error.digest}</div>
-              </>
-            )}
-          </div>
-        </details>
+        {/* Only show error details in development */}
+        {process.env.NODE_ENV === 'development' && (
+          <details className="mt-8 text-left">
+            <summary className="cursor-pointer text-sm text-gray-500 hover:text-gray-700">
+              Error Details (Development Only)
+            </summary>
+            <div className="mt-4 p-4 bg-gray-100 rounded text-xs text-red-600 overflow-auto max-h-64">
+              <div><strong>Error:</strong></div>
+              <div>{error?.message || 'Unknown error occurred'}</div>
+              <br />
+              <div><strong>Type:</strong></div>
+              <div>{error?.name || 'Error'}</div>
+              {error?.digest && (
+                <>
+                  <br />
+                  <div><strong>Digest:</strong></div>
+                  <div>{error.digest}</div>
+                </>
+              )}
+            </div>
+          </details>
+        )}
       </div>
     </div>
   );
