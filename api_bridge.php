@@ -1031,6 +1031,34 @@ function handleGet($pdo, $endpoint, $id) {
                 echo json_encode($debugInfo, JSON_PRETTY_PRINT);
                 break;
 
+            case 'debug-fix-team-id':
+                try {
+                    // Fix empty ID in team_members table
+                    $stmt = $pdo->query("SELECT * FROM team_members WHERE id = '' OR id IS NULL");
+                    $emptyRecords = $stmt->fetchAll();
+                    
+                    $fixed = 0;
+                    foreach ($emptyRecords as $record) {
+                        $newId = generateUniqueId();
+                        $updateStmt = $pdo->prepare("UPDATE team_members SET id = ? WHERE (id = '' OR id IS NULL) AND name = ? LIMIT 1");
+                        $updateStmt->execute([$newId, $record['name']]);
+                        $fixed++;
+                    }
+                    
+                    echo json_encode([
+                        'success' => true,
+                        'message' => "Fixed $fixed records with empty IDs",
+                        'action' => 'Team members with empty IDs have been assigned new unique IDs'
+                    ]);
+                } catch (Exception $e) {
+                    http_response_code(500);
+                    echo json_encode([
+                        'error' => 'Fix failed',
+                        'message' => $e->getMessage()
+                    ]);
+                }
+                break;
+
             default:
                 http_response_code(404);
                 echo json_encode(['error' => 'Endpoint not found']);
