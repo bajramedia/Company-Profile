@@ -98,7 +98,7 @@ async function getMetadata(): Promise<Metadata> {
           creator: "@bajramedia"
         },
         verification: {
-          google: process.env.GOOGLE_VERIFICATION_CODE || "Dp9Oq6WSllk-BA_rFJ_IE3l8slSM",
+          google: process.env.GOOGLE_VERIFICATION_CODE || "Dp9Oq6WSllk-BA_rFJ_lE3l8sISMeuxHpWBL3yd5gfo",
           yandex: process.env.YANDEX_VERIFICATION_CODE || "your-yandex-verification-code",
           yahoo: process.env.YAHOO_VERIFICATION_CODE || "your-yahoo-verification-code"
         },
