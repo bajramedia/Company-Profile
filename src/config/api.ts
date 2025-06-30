@@ -5,7 +5,7 @@
 
 // Main API Base URL
 // Main API Base URL - prioritize environment variable for production
-export const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://bajramedia.com/api_bridge.php';
+export const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://balimoonartandspeace.com/api_bridge.php';
 
 // API Endpoints Helper Functions
 export const apiEndpoints = {

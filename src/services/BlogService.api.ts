@@ -53,7 +53,7 @@ class BlogServiceAPI {
     this.isServer = typeof window === 'undefined';
     
     // Use environment variable or fallback to new hosting domain
-    this.apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://bajramedia.com/api_bridge.php';
+    this.apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://balimoonartandspeace.com/api_bridge.php';
     
     // For build time and server-side, use full URL
     if (this.isServer) {

@@ -29,7 +29,7 @@ export interface SiteSettings {
 export const defaultSettings: SiteSettings = {
   siteName: 'Bajramedia',
   siteDescription: 'Creative Digital Agency & Blog Platform',
-  siteUrl: 'https://bajramedia.com',
+  siteUrl: 'https://balimoonartandspeace.com',
   adminEmail: 'admin.bajra@bajramedia.com',
   postsPerPage: 10,
   enableComments: true,

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 // Try multiple API endpoints
 const API_ENDPOINTS = [
-    'https://bajramedia.com',
+    'https://balimoonartandspeace.com',
     'https://www.bajramedia.com',
     // Add your direct server IP if needed
 ];

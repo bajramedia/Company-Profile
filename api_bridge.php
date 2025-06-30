@@ -180,10 +180,10 @@ function handleGet($pdo, $endpoint, $id) {
     
     // Block access to sensitive endpoints regardless of environment (except debug for troubleshooting)
     if (in_array($endpoint, $hiddenEndpoints) && $endpoint !== 'debug') {
-        http_response_code(404);
-        echo json_encode(['error' => 'Not Found']);
-        return;
-    }
+            http_response_code(404);
+            echo json_encode(['error' => 'Not Found']);
+            return;
+        }
     
     // Validate endpoint is in allowed list for public access (allow debug temporarily)
     if (!in_array($endpoint, $allowedPublicEndpoints) && !preg_match('/^admin/', $endpoint) && $endpoint !== 'debug') {
@@ -228,10 +228,10 @@ function handleGet($pdo, $endpoint, $id) {
                     error_log("API Bridge: Single post query result: " . ($result ? json_encode($result) : 'NULL'));
                     
                     if ($result) {
-                        // Add date field for compatibility
+                    // Add date field for compatibility
                         if ($dateCol !== 'date') {
-                            $result['date'] = $result[$dateCol] ?? date('Y-m-d H:i:s');
-                        }
+                        $result['date'] = $result[$dateCol] ?? date('Y-m-d H:i:s');
+                    }
                         
                         // Ensure all expected fields exist for admin panel
                         $result['published'] = $result['published'] ?? 0;
@@ -254,8 +254,8 @@ function handleGet($pdo, $endpoint, $id) {
                             error_log("API Bridge: Error fetching post tags: " . $tagError->getMessage());
                             $result['tags'] = [];
                         }
-                        
-                        echo json_encode($result);
+                    
+                    echo json_encode($result);
                     } else {
                         // Post not found, return null but log for debugging
                         error_log("API Bridge: Post not found for ID/slug: " . $id);
@@ -480,141 +480,43 @@ function handleGet($pdo, $endpoint, $id) {
             case 'stats':
                 $stats = [];
                 
-                // Posts count (try old table first since Portfolio works)
+                // Original stats
                 try {
                     $stmt = $pdo->query("SELECT COUNT(*) as count FROM post WHERE published = 1");
-                    $posts_count = $stmt->fetch()['count'];
+                    $stats['totalPosts'] = $stmt->fetch()['count'];
                 } catch (Exception $e) {
-                    try {
-                        $stmt = $pdo->query("SELECT COUNT(*) as count FROM post WHERE published = 1");
-                        $posts_count = $stmt->fetch()['count'];
-                    } catch (Exception $e2) {
-                        try {
-                            // Try without WHERE clause to see if any data exists
-                            $stmt = $pdo->query("SELECT COUNT(*) as count FROM post");
-                            $posts_count = $stmt->fetch()['count'];
-                        } catch (Exception $e3) {
-                            $posts_count = 0;
-                        }
-                    }
+                    $stats['totalPosts'] = 0;
                 }
-                $stats['posts'] = $posts_count;
                 
-                // Portfolio count (this works, keep as is)
+                try {
+                    $stmt = $pdo->query("SELECT COUNT(*) as count FROM portfolio WHERE published = 1");
+                    $stats['totalPortfolio'] = $stmt->fetch()['count'];
+                } catch (Exception $e) {
+                    $stats['totalPortfolio'] = 0;
+                }
+                
+                try {
+                    $stmt = $pdo->query("SELECT COUNT(*) as count FROM postview");
+                    $stats['totalViews'] = $stmt->fetch()['count'];
+                } catch (Exception $e) {
+                    $stats['totalViews'] = 0;
+                }
+                
+                // New stats for new tables
+                try {
+                    $stmt = $pdo->query("SELECT COUNT(*) as count FROM blog_posts WHERE is_published = 1");
+                    $stats['totalBlogPosts'] = $stmt->fetch()['count'];
+                } catch (Exception $e) {
+                    $stats['totalBlogPosts'] = 0;
+                }
+                
                 try {
                     $stmt = $pdo->query("SELECT COUNT(*) as count FROM portfolio_items WHERE is_published = 1");
-                    $portfolio_count = $stmt->fetch()['count'];
+                    $stats['totalPortfolioItems'] = $stmt->fetch()['count'];
                 } catch (Exception $e) {
-                    try {
-                        $stmt = $pdo->query("SELECT COUNT(*) as count FROM portfolio WHERE published = 1");
-                        $portfolio_count = $stmt->fetch()['count'];
-                    } catch (Exception $e2) {
-                        $portfolio_count = 0;
-                    }
+                    $stats['totalPortfolioItems'] = 0;
                 }
-                $stats['portfolio'] = $portfolio_count;
                 
-                // Authors count - try simpler approach
-                try {
-                    $stmt = $pdo->query("SELECT COUNT(*) as count FROM user WHERE active = 1");
-                    $authors_count = $stmt->fetch()['count'];
-                } catch (Exception $e) {
-                    try {
-                        $stmt = $pdo->query("SELECT COUNT(*) as count FROM authors WHERE is_active = 1");
-                        $authors_count = $stmt->fetch()['count'];
-                    } catch (Exception $e2) {
-                        try {
-                            $stmt = $pdo->query("SELECT COUNT(*) as count FROM team_members WHERE is_active = 1");
-                            $authors_count = $stmt->fetch()['count'];
-                        } catch (Exception $e3) {
-                            try {
-                                // Try just counting any users/authors
-                                $stmt = $pdo->query("SELECT COUNT(*) as count FROM user");
-                                $authors_count = $stmt->fetch()['count'];
-                            } catch (Exception $e4) {
-                                $authors_count = 0;
-                            }
-                        }
-                    }
-                }
-                $stats['authors'] = $authors_count;
-                
-                // Categories count - try simpler approach
-                try {
-                    $stmt = $pdo->query("SELECT COUNT(*) as count FROM category WHERE active = 1");
-                    $categories_count = $stmt->fetch()['count'];
-                } catch (Exception $e) {
-                    try {
-                        $stmt = $pdo->query("SELECT COUNT(*) as count FROM categories WHERE is_active = 1");
-                        $categories_count = $stmt->fetch()['count'];
-                    } catch (Exception $e2) {
-                        try {
-                            // Try without WHERE clause
-                            $stmt = $pdo->query("SELECT COUNT(*) as count FROM category");
-                            $categories_count = $stmt->fetch()['count'];
-                        } catch (Exception $e3) {
-                            try {
-                                $stmt = $pdo->query("SELECT COUNT(*) as count FROM categories");
-                                $categories_count = $stmt->fetch()['count'];
-                            } catch (Exception $e4) {
-                                $categories_count = 0;
-                            }
-                        }
-                    }
-                }
-                $stats['categories'] = $categories_count;
-                
-                // Tags count - try simpler approach
-                try {
-                    $stmt = $pdo->query("SELECT COUNT(*) as count FROM tag WHERE active = 1");
-                    $tags_count = $stmt->fetch()['count'];
-                } catch (Exception $e) {
-                    try {
-                        $stmt = $pdo->query("SELECT COUNT(*) as count FROM tags WHERE is_active = 1");
-                        $tags_count = $stmt->fetch()['count'];
-                    } catch (Exception $e2) {
-                        try {
-                            // Try without WHERE clause
-                            $stmt = $pdo->query("SELECT COUNT(*) as count FROM tag");
-                            $tags_count = $stmt->fetch()['count'];
-                        } catch (Exception $e3) {
-                            try {
-                                $stmt = $pdo->query("SELECT COUNT(*) as count FROM tags");
-                                $tags_count = $stmt->fetch()['count'];
-                            } catch (Exception $e4) {
-                                $tags_count = 0;
-                            }
-                        }
-                    }
-                }
-                $stats['tags'] = $tags_count;
-
-                // Partners count - try simpler approach
-                try {
-                    $stmt = $pdo->query("SELECT COUNT(*) as count FROM partner WHERE active = 1");
-                    $partners_count = $stmt->fetch()['count'];
-                } catch (Exception $e) {
-                    try {
-                        $stmt = $pdo->query("SELECT COUNT(*) as count FROM partners WHERE is_active = 1");
-                        $partners_count = $stmt->fetch()['count'];
-                    } catch (Exception $e2) {
-                        try {
-                            // Try without WHERE clause
-                            $stmt = $pdo->query("SELECT COUNT(*) as count FROM partner");
-                            $partners_count = $stmt->fetch()['count'];
-                        } catch (Exception $e3) {
-                            try {
-                                $stmt = $pdo->query("SELECT COUNT(*) as count FROM partners");
-                                $partners_count = $stmt->fetch()['count'];
-                            } catch (Exception $e4) {
-                                $partners_count = 0;
-                            }
-                        }
-                    }
-                }
-                $stats['partners'] = $partners_count;
-                
-                // Additional stats for reference
                 try {
                     $stmt = $pdo->query("SELECT COUNT(*) as count FROM team_members WHERE is_active = 1");
                     $stats['totalTeamMembers'] = $stmt->fetch()['count'];
@@ -661,12 +563,12 @@ function handleGet($pdo, $endpoint, $id) {
                         return;
                     } else {
                         // Get all active team members
-                        $stmt = $pdo->query("
-                            SELECT * FROM team_members 
-                            WHERE is_active = 1 
+                $stmt = $pdo->query("
+                    SELECT * FROM team_members 
+                    WHERE is_active = 1 
                             ORDER BY sort_order ASC, name ASC
-                        ");
-                        $results = $stmt->fetchAll();
+                ");
+                $results = $stmt->fetchAll();
                     }
                 } catch (Exception $e) {
                     http_response_code(500);
@@ -718,12 +620,12 @@ function handleGet($pdo, $endpoint, $id) {
                         throw new Exception("Table 'partners' does not exist in database");
                     }
                     
-                    $stmt = $pdo->query("
-                        SELECT * FROM partners 
-                        WHERE is_active = 1 
-                        ORDER BY sort_order ASC
-                    ");
-                    $results = $stmt->fetchAll();
+                $stmt = $pdo->query("
+                    SELECT * FROM partners 
+                    WHERE is_active = 1 
+                    ORDER BY sort_order ASC
+                ");
+                $results = $stmt->fetchAll();
                 } catch (Exception $e) {
                     http_response_code(500);
                     echo json_encode([
@@ -935,42 +837,42 @@ function handleGet($pdo, $endpoint, $id) {
 
             case 'technologies':
                 try {
-                    if ($id) {
-                        // Get specific technology by ID
+                if ($id) {
+                    // Get specific technology by ID
                         $stmt = $pdo->prepare("SELECT * FROM technologies WHERE id = ?");
-                        $stmt->execute([$id]);
-                        $result = $stmt->fetch();
-                        echo json_encode($result ?: null);
-                    } else {
+                    $stmt->execute([$id]);
+                    $result = $stmt->fetch();
+                    echo json_encode($result ?: null);
+                } else {
                         // Get all technologies
-                        $category = $_GET['category'] ?? '';
-                        $include_inactive = $_GET['include_inactive'] ?? false;
-                        
-                        $sql = "SELECT * FROM technologies";
-                        $params = [];
-                        $where = [];
-                        
+                    $category = $_GET['category'] ?? '';
+                    $include_inactive = $_GET['include_inactive'] ?? false;
+                    
+                    $sql = "SELECT * FROM technologies";
+                    $params = [];
+                    $where = [];
+                    
                         // Only filter by is_active if include_inactive is not set
-                        if (!$include_inactive) {
-                            $where[] = "is_active = 1";
-                        }
-                        
-                        if ($category) {
-                            $where[] = "category = ?";
-                            $params[] = $category;
-                        }
-                        
-                        if (!empty($where)) {
-                            $sql .= " WHERE " . implode(" AND ", $where);
-                        }
-                        
-                        $sql .= " ORDER BY category, sort_order ASC, name ASC";
-                        
-                        $stmt = $pdo->prepare($sql);
-                        $stmt->execute($params);
-                        $results = $stmt->fetchAll();
-                        
-                        echo json_encode($results);
+                    if (!$include_inactive) {
+                        $where[] = "is_active = 1";
+                    }
+                    
+                    if ($category) {
+                        $where[] = "category = ?";
+                        $params[] = $category;
+                    }
+                    
+                    if (!empty($where)) {
+                        $sql .= " WHERE " . implode(" AND ", $where);
+                    }
+                    
+                    $sql .= " ORDER BY category, sort_order ASC, name ASC";
+                    
+                    $stmt = $pdo->prepare($sql);
+                    $stmt->execute($params);
+                    $results = $stmt->fetchAll();
+                    
+                    echo json_encode($results);
                     }
                 } catch (Exception $e) {
                     http_response_code(500);
@@ -2178,5 +2080,3 @@ function handleDelete($pdo, $endpoint, $id) {
     }
 }
 ?> 
-
-

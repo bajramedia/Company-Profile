@@ -129,12 +129,12 @@ export default function HomePage() {
           { name: 'Home', url: 'https://bajramedia.com' }
         ]}
       />
-      <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
-        {/* Header - Use Navbar component instead of hardcoded */}
-        <Navbar activeTab="home" showDropdown={true} />
+    <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
+      {/* Header - Use Navbar component instead of hardcoded */}
+      <Navbar activeTab="home" showDropdown={true} />
 
-        {/* Main Content */}
-        <main>
+      {/* Main Content */}
+      <main>
           {/* Hero Section - Enhanced */}
           <section className="relative min-h-screen bg-gradient-to-br from-white via-gray-50 to-green-50/30 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 transition-all duration-300 pt-20">
             {/* Background Image */}
@@ -170,41 +170,41 @@ export default function HomePage() {
                     </div>
                   </AnimatedText>
 
-                  <AnimatedText as="div">
+                <AnimatedText as="div">
                     <Heading variant="h1" color="foreground" className="mb-8 text-[40px] md:text-[48px] lg:text-[56px] xl:text-[64px] font-extrabold leading-[1.1] tracking-tight">
                       {language === 'id' ? 'Kami Membangun ' : 'We Build '}
                       <span className="text-green-500 relative inline-block">
                         <span className="relative z-10">{language === 'id' ? 'Solusi Digital' : 'Digital Solutions'}</span>
                         <span className="absolute bottom-2 left-0 w-full h-4 bg-green-500/20 -z-0 transform -skew-x-12"></span>
-                      </span>
+                    </span>
                       <br />
                       {language === 'id' ? 'Yang Mendorong Kesuksesan' : 'That Drive Success'}
-                    </Heading>
-                  </AnimatedText>
+                  </Heading>
+                </AnimatedText>
 
-                  <AnimatedText as="div">
+                <AnimatedText as="div">
                     <Text color="secondary" className="mb-10 text-[18px] md:text-[20px] leading-relaxed max-w-2xl">
                       {language === 'id'
                         ? 'Transformasikan bisnis Anda dengan pengembangan web yang canggih, aplikasi mobile, dan solusi pemasaran digital yang disesuaikan dengan kebutuhan Anda.'
                         : 'Transform your business with cutting-edge web development, mobile apps, and digital marketing solutions tailored to your needs.'
                       }
-                    </Text>
-                  </AnimatedText>
+                  </Text>
+                </AnimatedText>
 
-                  <AnimatedText as="div">
-                    <div className="flex flex-col sm:flex-row gap-4 mb-12">
+                <AnimatedText as="div">
+                  <div className="flex flex-col sm:flex-row gap-4 mb-12">
                       <Link href="/about">
                         <Button variant="primary" size="lg" className="px-10 py-5 text-lg font-semibold w-full sm:w-auto bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 transform hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-2xl">
                           {language === 'id' ? 'Konsultasi Gratis' : 'Get Free Consultation'}
-                        </Button>
+                    </Button>
                       </Link>
                       <Link href="/portfolio">
                         <Button variant="outline" size="lg" className="px-10 py-5 text-lg font-semibold border-2 border-green-500 text-green-500 hover:bg-green-500 hover:text-white w-full sm:w-auto transform hover:scale-105 transition-all duration-300">
                           {language === 'id' ? 'Lihat Portfolio Kami' : 'View Our Portfolio'}
-                        </Button>
+                    </Button>
                       </Link>
-                    </div>
-                  </AnimatedText>
+                  </div>
+                </AnimatedText>
 
                   {/* Achievement Stats */}
                   <AnimatedText as="div">
@@ -225,9 +225,9 @@ export default function HomePage() {
                         <div className="text-3xl md:text-4xl font-bold text-green-500 mb-2">24/7</div>
                         <div className="text-sm md:text-base text-gray-600 dark:text-gray-400 font-medium">
                           {language === 'id' ? 'SUPPORT' : 'SUPPORT'}
-                        </div>
-                      </div>
-                    </div>
+              </div>
+            </div>
+          </div>
                   </AnimatedText>
                 </div>
 
@@ -270,9 +270,9 @@ export default function HomePage() {
                             <span className="text-sm font-semibold text-gray-900 dark:text-white">
                               {language === 'id' ? 'Tim Professional' : 'Professional Team'}
                             </span>
-                          </div>
-                        </div>
-                      </div>
+                  </div>
+                </div>
+              </div>
 
                       {/* Decorative Elements */}
                       <div className="absolute -top-6 -right-6 w-32 h-32 bg-green-500/10 rounded-full blur-2xl"></div>
@@ -281,7 +281,7 @@ export default function HomePage() {
                   </AnimatedText>
                 </div>
               </div>
-            </div>
+              </div>
 
             {/* Scroll indicator */}
             <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce z-10">
@@ -339,9 +339,9 @@ export default function HomePage() {
                       <div className="text-3xl font-bold text-green-500 mb-2">100%</div>
                       <div className="text-sm text-gray-600 dark:text-gray-400">
                         {language === 'id' ? 'Kepuasan Klien' : 'Client Satisfaction'}
-                      </div>
-                    </div>
-                  </div>
+              </div>
+            </div>
+          </div>
 
                   <div className="flex flex-col sm:flex-row gap-4">
                     <Link href="/about">
@@ -385,7 +385,7 @@ export default function HomePage() {
                   <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-blue-500/10 rounded-full blur-xl"></div>
                 </div>
               </div>
-            </div>
+                </div>
           </section>
 
           {/* Spacer */}
@@ -422,7 +422,7 @@ export default function HomePage() {
                     {[...Array(5)].map((_, i) => (
                       <svg key={i} className="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 20 20">
                         <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                      </svg>
+                  </svg>
                     ))}
                   </div>
                   <Text color="secondary" className="mb-6 italic text-[14px] leading-relaxed text-gray-600 dark:text-gray-300">
@@ -434,8 +434,8 @@ export default function HomePage() {
                   <div className="flex items-center">
                     <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-white font-bold mr-4">
                       A
-                    </div>
-                    <div>
+                </div>
+                <div>
                       <div className="font-semibold text-gray-900 dark:text-white">Andi Prasetyo</div>
                       <div className="text-sm text-gray-500 dark:text-gray-400">CEO, PT Maju Bersama</div>
                     </div>
@@ -464,9 +464,9 @@ export default function HomePage() {
                     <div>
                       <div className="font-semibold text-gray-900 dark:text-white">Sari Wijaya</div>
                       <div className="text-sm text-gray-500 dark:text-gray-400">Owner, Sari Beauty Clinic</div>
-                    </div>
-                  </div>
-                </div>
+              </div>
+            </div>
+          </div>
 
                 {/* Testimonial 3 */}
                 <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 border border-gray-200 dark:border-gray-600">
@@ -519,52 +519,52 @@ export default function HomePage() {
         {/* Footer */}
         {/* Footer will be handled by ClientLayout */}
 
-        {/* Floating Dark Mode Toggle Button */}
-        <div className="fixed bottom-6 left-6 z-50">
-          <button
-            onClick={toggleDarkMode}
+      {/* Floating Dark Mode Toggle Button */}
+      <div className="fixed bottom-6 left-6 z-50">
+        <button
+          onClick={toggleDarkMode}
             className="w-14 h-14 rounded-full bg-white dark:bg-gray-800 shadow-2xl transform hover:scale-105 transition-transform duration-700 border border-gray-200 dark:border-gray-600 flex items-center justify-center hover:shadow-xl transition-all duration-300 hover:scale-110 group dark-mode-button"
-            aria-label="Toggle dark mode"
-            title={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
-          >
-            {isDarkMode ? (
-              <svg
-                className="w-6 h-6 text-yellow-500 transform group-hover:rotate-180 transition-transform duration-300"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
-                />
-              </svg>
-            ) : (
-              <svg
-                className="w-6 h-6 text-gray-700 transform group-hover:rotate-12 transition-transform duration-300"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
-                />
-              </svg>
-            )}
-          </button>
-        </div>
-
-        {/* WhatsApp Chat */}
-        <WhatsAppChat
-          phoneNumber="6285739402436"
-          message="Halo! Saya tertarik dengan layanan Bajramedia. Bisa konsultasi gratis?"
-        />
+          aria-label="Toggle dark mode"
+          title={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+        >
+          {isDarkMode ? (
+            <svg
+              className="w-6 h-6 text-yellow-500 transform group-hover:rotate-180 transition-transform duration-300"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+              />
+            </svg>
+          ) : (
+            <svg
+              className="w-6 h-6 text-gray-700 transform group-hover:rotate-12 transition-transform duration-300"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+              />
+            </svg>
+          )}
+        </button>
       </div>
+
+      {/* WhatsApp Chat */}
+      <WhatsAppChat
+        phoneNumber="6285739402436"
+        message="Halo! Saya tertarik dengan layanan Bajramedia. Bisa konsultasi gratis?"
+      />
+    </div>
     </>
   );
 }
