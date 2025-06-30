@@ -101,18 +101,16 @@ export default function ServicesOverview() {
     <section className="py-16 bg-white dark:bg-gray-900 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <div className="mb-6 flex items-center justify-center space-x-2">
-            <div className="w-12 h-0.5 bg-green-500"></div>
+          <div className="mb-6">
             <span className="text-green-500 font-medium text-sm tracking-wider uppercase">
               {language === 'id' ? 'Layanan Kami' : 'Our Services'}
             </span>
-            <div className="w-12 h-0.5 bg-green-500"></div>
           </div>
-          
+
           <Heading variant="h2" color="foreground" className="mb-4 text-[28px] md:text-[32px] lg:text-[36px] font-extrabold">
             {language === 'id' ? 'Solusi Digital Komprehensif' : 'Comprehensive Digital Solutions'}
           </Heading>
-          
+
           <Text color="secondary" className="max-w-3xl mx-auto text-[16px] leading-relaxed">
             {language === 'id'
               ? 'Kami menyediakan berbagai layanan digital yang dirancang khusus untuk membantu bisnis Anda berkembang di era digital dengan teknologi terdepan dan strategi yang tepat.'
@@ -131,13 +129,13 @@ export default function ServicesOverview() {
             >
               {/* Gradient Background */}
               <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-blue-500/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              
+
               {/* Icon */}
               <div className="relative mb-6">
                 <div className="w-16 h-16 bg-green-500/10 rounded-2xl flex items-center justify-center text-green-500 group-hover:bg-green-500 group-hover:text-white transition-all duration-300 group-hover:scale-110">
                   {service.icon}
                 </div>
-                
+
                 {/* Floating dot */}
                 <div className="absolute -top-2 -right-2 w-4 h-4 bg-green-500 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 animate-pulse"></div>
               </div>
@@ -147,7 +145,7 @@ export default function ServicesOverview() {
                 <Heading variant="h3" color="foreground" className="mb-3 text-xl font-bold">
                   {language === 'id' ? service.titleId : service.titleEn}
                 </Heading>
-                
+
                 <Text color="secondary" className="mb-4 text-sm leading-relaxed">
                   {language === 'id' ? service.descriptionId : service.descriptionEn}
                 </Text>
