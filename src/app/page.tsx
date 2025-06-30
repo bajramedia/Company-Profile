@@ -382,7 +382,7 @@ export default function HomePage() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {/* Testimonial 1 */}
-                <div className="bg-white dark:bg-gray-900 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+                <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 border border-gray-200 dark:border-gray-600">
                   <div className="flex items-center mb-4">
                     {[...Array(5)].map((_, i) => (
                       <svg key={i} className="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 20 20">
@@ -390,7 +390,7 @@ export default function HomePage() {
                       </svg>
                     ))}
                   </div>
-                  <Text color="secondary" className="mb-6 italic text-[14px] leading-relaxed">
+                  <Text color="secondary" className="mb-6 italic text-[14px] leading-relaxed text-gray-600 dark:text-gray-300">
                     "{language === 'id'
                       ? 'Tim Bajramedia sangat profesional dalam mengembangkan website perusahaan kami. Hasilnya melebihi ekspektasi dan sangat membantu meningkatkan brand awareness.'
                       : 'Bajramedia team is very professional in developing our company website. The results exceeded expectations and really helped increase brand awareness.'
@@ -408,7 +408,7 @@ export default function HomePage() {
                 </div>
 
                 {/* Testimonial 2 */}
-                <div className="bg-white dark:bg-gray-900 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+                <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 border border-gray-200 dark:border-gray-600">
                   <div className="flex items-center mb-4">
                     {[...Array(5)].map((_, i) => (
                       <svg key={i} className="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 20 20">
@@ -416,7 +416,7 @@ export default function HomePage() {
                       </svg>
                     ))}
                   </div>
-                  <Text color="secondary" className="mb-6 italic text-[14px] leading-relaxed">
+                  <Text color="secondary" className="mb-6 italic text-[14px] leading-relaxed text-gray-600 dark:text-gray-300">
                     "{language === 'id'
                       ? 'Pelayanan yang luar biasa! Sistem manajemen yang dikembangkan Bajramedia sangat membantu operasional bisnis kami menjadi lebih efisien.'
                       : 'Extraordinary service! The management system developed by Bajramedia really helps our business operations become more efficient.'
@@ -434,7 +434,7 @@ export default function HomePage() {
                 </div>
 
                 {/* Testimonial 3 */}
-                <div className="bg-white dark:bg-gray-900 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+                <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 border border-gray-200 dark:border-gray-600">
                   <div className="flex items-center mb-4">
                     {[...Array(5)].map((_, i) => (
                       <svg key={i} className="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 20 20">
@@ -442,7 +442,7 @@ export default function HomePage() {
                       </svg>
                     ))}
                   </div>
-                  <Text color="secondary" className="mb-6 italic text-[14px] leading-relaxed">
+                  <Text color="secondary" className="mb-6 italic text-[14px] leading-relaxed text-gray-600 dark:text-gray-300">
                     "{language === 'id'
                       ? 'Aplikasi mobile yang dikembangkan sangat user-friendly dan sesuai dengan kebutuhan bisnis kami. Tim support juga sangat responsif.'
                       : 'The mobile application developed is very user-friendly and suits our business needs. The support team is also very responsive.'
