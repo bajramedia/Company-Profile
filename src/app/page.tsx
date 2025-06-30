@@ -506,6 +506,12 @@ export default function HomePage() {
           {/* Spacer */}
           <div className="py-8 bg-gradient-to-b from-gray-50/50 to-white dark:from-gray-800 dark:to-gray-900"></div>
 
+          {/* Portfolio Section */}
+          <Portfolio />
+
+          {/* Spacer */}
+          <div className="py-8 bg-gradient-to-b from-gray-50/50 to-white dark:from-gray-800 dark:to-gray-900"></div>
+
           {/* CTA Section */}
           <CTA />
         </main>

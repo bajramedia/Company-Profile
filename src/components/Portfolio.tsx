@@ -36,6 +36,8 @@ interface PortfolioCategory {
 }
 
 const Portfolio: React.FC = () => {
+  console.log('🎯 Portfolio component: Starting to render');
+
   const { t } = useLanguage();
   const [portfolioItems, setPortfolioItems] = useState<PortfolioItem[]>([]);
   const [categories, setCategories] = useState<PortfolioCategory[]>([]);
@@ -43,8 +45,17 @@ const Portfolio: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
+  console.log('🎯 Portfolio component: Current state -', {
+    portfolioItems: portfolioItems.length,
+    categories: categories.length,
+    loading,
+    error,
+    selectedCategory
+  });
+
   // Fetch portfolio data dan categories
   useEffect(() => {
+    console.log('🎯 Portfolio component: useEffect triggered');
     const fetchData = async () => {
       try {
         setLoading(true);
@@ -102,6 +113,7 @@ const Portfolio: React.FC = () => {
   };
 
   if (loading) {
+    console.log('🎯 Portfolio component: Rendering LOADING state');
     return (
       <section className="py-16 md:py-24 bg-white dark:bg-gray-900 relative overflow-hidden transition-colors duration-300">
         <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8">
@@ -123,6 +135,8 @@ const Portfolio: React.FC = () => {
       </section>
     );
   }
+
+  console.log('🎯 Portfolio component: Rendering MAIN component with', displayedItems.length, 'items');
 
   return (
     <section className="py-16 md:py-24 bg-white dark:bg-gray-900 relative overflow-hidden transition-colors duration-300">
@@ -172,11 +186,11 @@ const Portfolio: React.FC = () => {
         {/* Error Message */}
         {error && (
           <div className="text-center mb-8">
-            <div className="inline-flex items-center px-4 py-2 bg-orange-100 dark:bg-orange-900/20 text-orange-800 dark:text-orange-200 rounded-md">
+            <div className="inline-flex items-center px-4 py-2 bg-red-100 dark:bg-red-900/20 text-red-800 dark:text-red-200 rounded-md">
               <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
               </svg>
-              Using demo data - {error}
+              Portfolio data tidak tersedia - {error}
             </div>
           </div>
         )}
