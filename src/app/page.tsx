@@ -259,11 +259,211 @@ export default function HomePage() {
           {/* Spacer */}
           <div className="py-8 bg-gradient-to-b from-green-50/30 to-white dark:from-gray-800 dark:to-gray-900"></div>
 
-          {/* Portfolio Section */}
-          <Portfolio />
+          {/* About Section */}
+          <section className="py-16 bg-white dark:bg-gray-900 transition-colors duration-300">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                {/* Text Content */}
+                <div>
+                  <div className="mb-6 flex items-center space-x-2">
+                    <div className="w-12 h-0.5 bg-green-500"></div>
+                    <span className="text-green-500 font-medium text-sm tracking-wider uppercase">
+                      {language === 'id' ? 'Tentang Kami' : 'About Us'}
+                    </span>
+                  </div>
+
+                  <Heading variant="h2" color="foreground" className="mb-6 text-[28px] md:text-[32px] lg:text-[36px] font-extrabold leading-[1.3] tracking-tight">
+                    {language === 'id'
+                      ? 'Menghadirkan Solusi Digital Terdepan untuk Bisnis Anda'
+                      : 'Delivering Cutting-Edge Digital Solutions for Your Business'
+                    }
+                  </Heading>
+
+                  <Text color="secondary" className="mb-8 text-[16px] leading-relaxed">
+                    {language === 'id'
+                      ? 'Dengan pengalaman lebih dari 5 tahun di industri teknologi, Bajramedia telah membantu puluhan klien mengembangkan bisnis mereka melalui solusi digital yang inovatif. Kami berkomitmen memberikan layanan terbaik dengan teknologi terdepan.'
+                      : 'With over 5 years of experience in the technology industry, Bajramedia has helped dozens of clients grow their businesses through innovative digital solutions. We are committed to providing the best service with cutting-edge technology.'
+                    }
+                  </Text>
+
+                  {/* Achievement Stats */}
+                  <div className="grid grid-cols-3 gap-6 mb-8">
+                    <div className="text-center">
+                      <div className="text-3xl font-bold text-green-500 mb-2">50+</div>
+                      <div className="text-sm text-gray-600 dark:text-gray-400">
+                        {language === 'id' ? 'Proyek Selesai' : 'Projects Completed'}
+                      </div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-3xl font-bold text-green-500 mb-2">5+</div>
+                      <div className="text-sm text-gray-600 dark:text-gray-400">
+                        {language === 'id' ? 'Tahun Pengalaman' : 'Years Experience'}
+                      </div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-3xl font-bold text-green-500 mb-2">100%</div>
+                      <div className="text-sm text-gray-600 dark:text-gray-400">
+                        {language === 'id' ? 'Kepuasan Klien' : 'Client Satisfaction'}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row gap-4">
+                    <Link href="/about">
+                      <Button variant="primary" size="md" className="px-8 py-4 transform hover:scale-105 transition-all duration-300 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700">
+                        {language === 'id' ? 'Pelajari Lebih Lanjut' : 'Learn More'}
+                      </Button>
+                    </Link>
+                    <Link href="/portfolio">
+                      <Button variant="outline" size="md" className="px-8 py-4 border-2 border-green-500 text-green-500 hover:bg-green-500 hover:text-white transform hover:scale-105 transition-all duration-300">
+                        {language === 'id' ? 'Lihat Portfolio' : 'View Portfolio'}
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
+
+                {/* Image */}
+                <div className="relative">
+                  <div className="relative w-full h-[400px] rounded-2xl overflow-hidden shadow-2xl">
+                    <Image
+                      src="/images/team.jpg"
+                      alt={language === 'id' ? 'Tim Bajramedia' : 'Bajramedia Team'}
+                      fill
+                      style={{ objectFit: 'cover' }}
+                      className="rounded-2xl transform hover:scale-110 transition-transform duration-700"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-green-500/20 via-transparent to-transparent"></div>
+
+                    {/* Floating Card */}
+                    <div className="absolute bottom-6 left-6 right-6 bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm rounded-xl p-4 shadow-lg">
+                      <div className="flex items-center space-x-3">
+                        <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                        <span className="text-sm font-medium text-gray-900 dark:text-white">
+                          {language === 'id' ? 'Tim Professional Siap Membantu Anda' : 'Professional Team Ready to Help You'}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Decorative Elements */}
+                  <div className="absolute -top-4 -right-4 w-24 h-24 bg-green-500/10 rounded-full blur-xl"></div>
+                  <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-blue-500/10 rounded-full blur-xl"></div>
+                </div>
+              </div>
+            </div>
+          </section>
 
           {/* Spacer */}
           <div className="py-8 bg-gradient-to-b from-white to-gray-50/50 dark:from-gray-900 dark:to-gray-800"></div>
+
+          {/* Testimonials Section */}
+          <section className="py-16 bg-gray-50 dark:bg-gray-800 transition-colors duration-300">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="text-center mb-12">
+                <div className="mb-6 flex items-center justify-center space-x-2">
+                  <div className="w-12 h-0.5 bg-green-500"></div>
+                  <span className="text-green-500 font-medium text-sm tracking-wider uppercase">
+                    {language === 'id' ? 'Testimoni Klien' : 'Client Testimonials'}
+                  </span>
+                  <div className="w-12 h-0.5 bg-green-500"></div>
+                </div>
+
+                <Heading variant="h2" color="foreground" className="mb-4 text-[28px] md:text-[32px] lg:text-[36px] font-extrabold">
+                  {language === 'id' ? 'Kata Mereka Tentang Kami' : 'What They Say About Us'}
+                </Heading>
+
+                <Text color="secondary" className="max-w-2xl mx-auto text-[16px] leading-relaxed">
+                  {language === 'id'
+                    ? 'Kepercayaan klien adalah prioritas utama kami. Berikut testimoni dari klien yang telah merasakan layanan terbaik dari Bajramedia.'
+                    : 'Client trust is our top priority. Here are testimonials from clients who have experienced the best service from Bajramedia.'
+                  }
+                </Text>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {/* Testimonial 1 */}
+                <div className="bg-white dark:bg-gray-900 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+                  <div className="flex items-center mb-4">
+                    {[...Array(5)].map((_, i) => (
+                      <svg key={i} className="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 20 20">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                      </svg>
+                    ))}
+                  </div>
+                  <Text color="secondary" className="mb-6 italic text-[14px] leading-relaxed">
+                    "{language === 'id'
+                      ? 'Tim Bajramedia sangat profesional dalam mengembangkan website perusahaan kami. Hasilnya melebihi ekspektasi dan sangat membantu meningkatkan brand awareness.'
+                      : 'Bajramedia team is very professional in developing our company website. The results exceeded expectations and really helped increase brand awareness.'
+                    }"
+                  </Text>
+                  <div className="flex items-center">
+                    <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-white font-bold mr-4">
+                      A
+                    </div>
+                    <div>
+                      <div className="font-semibold text-gray-900 dark:text-white">Andi Prasetyo</div>
+                      <div className="text-sm text-gray-500 dark:text-gray-400">CEO, PT Maju Bersama</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Testimonial 2 */}
+                <div className="bg-white dark:bg-gray-900 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+                  <div className="flex items-center mb-4">
+                    {[...Array(5)].map((_, i) => (
+                      <svg key={i} className="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 20 20">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                      </svg>
+                    ))}
+                  </div>
+                  <Text color="secondary" className="mb-6 italic text-[14px] leading-relaxed">
+                    "{language === 'id'
+                      ? 'Pelayanan yang luar biasa! Sistem manajemen yang dikembangkan Bajramedia sangat membantu operasional bisnis kami menjadi lebih efisien.'
+                      : 'Extraordinary service! The management system developed by Bajramedia really helps our business operations become more efficient.'
+                    }"
+                  </Text>
+                  <div className="flex items-center">
+                    <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold mr-4">
+                      S
+                    </div>
+                    <div>
+                      <div className="font-semibold text-gray-900 dark:text-white">Sari Wijaya</div>
+                      <div className="text-sm text-gray-500 dark:text-gray-400">Owner, Sari Beauty Clinic</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Testimonial 3 */}
+                <div className="bg-white dark:bg-gray-900 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+                  <div className="flex items-center mb-4">
+                    {[...Array(5)].map((_, i) => (
+                      <svg key={i} className="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 20 20">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                      </svg>
+                    ))}
+                  </div>
+                  <Text color="secondary" className="mb-6 italic text-[14px] leading-relaxed">
+                    "{language === 'id'
+                      ? 'Aplikasi mobile yang dikembangkan sangat user-friendly dan sesuai dengan kebutuhan bisnis kami. Tim support juga sangat responsif.'
+                      : 'The mobile application developed is very user-friendly and suits our business needs. The support team is also very responsive.'
+                    }"
+                  </Text>
+                  <div className="flex items-center">
+                    <div className="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center text-white font-bold mr-4">
+                      R
+                    </div>
+                    <div>
+                      <div className="font-semibold text-gray-900 dark:text-white">Rudi Hartanto</div>
+                      <div className="text-sm text-gray-500 dark:text-gray-400">Director, RH Logistics</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Spacer */}
+          <div className="py-8 bg-gradient-to-b from-gray-50 to-white dark:from-gray-800 dark:to-gray-900"></div>
 
           {/* Blog Section */}
           <Blog />
