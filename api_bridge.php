@@ -539,6 +539,15 @@ function handleGet($pdo, $endpoint, $id) {
                     $tags_count = 0;
                 }
                 $stats['tags'] = $tags_count;
+
+                // Partners count
+                try {
+                    $stmt = $pdo->query("SELECT COUNT(*) as count FROM partners WHERE is_active = 1");
+                    $partners_count = $stmt->fetch()['count'];
+                } catch (Exception $e) {
+                    $partners_count = 0;
+                }
+                $stats['partners'] = $partners_count;
                 
                 // Additional stats for reference
                 try {
@@ -2104,3 +2113,4 @@ function handleDelete($pdo, $endpoint, $id) {
     }
 }
 ?> 
+

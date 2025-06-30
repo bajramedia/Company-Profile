@@ -50,7 +50,7 @@ export async function GET() {
     const publicSettings = {
       siteName: settings.siteName || 'Bajramedia',
       siteDescription: settings.siteDescription || 'Creative Digital Agency & Blog Platform',
-      siteUrl: settings.siteUrl || 'https://balimoonartandspeace.com',
+      siteUrl: settings.siteUrl || 'https://bajramedia.com',
       contactEmail: settings.contactEmail || 'contact@bajramedia.com',
       contactPhone: settings.contactPhone || '+6285739402436',
       contactAddress: settings.contactAddress || 'Bali, Indonesia',

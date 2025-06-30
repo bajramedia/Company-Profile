@@ -19,6 +19,8 @@ interface DashboardStats {
   categories: number;
   tags: number;
   portfolio: number;
+  partners: number;
+  partners: number;
 }
 
 export default function AdminDashboard() {
@@ -27,7 +29,8 @@ export default function AdminDashboard() {
     authors: 0,
     categories: 0,
     tags: 0,
-    portfolio: 0
+    portfolio: 0,
+    partners: 0
   });
   const [recentPosts, setRecentPosts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -73,7 +76,7 @@ export default function AdminDashboard() {
       <h1 className="text-2xl font-bold mb-8 text-gray-900 dark:text-white">Dashboard</h1>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6 mb-8">
         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow border border-gray-200 dark:border-gray-700">
           <div className="flex items-center">
             <div className="p-3 rounded-full bg-blue-100 dark:bg-blue-900/30 mr-4">
@@ -153,7 +156,7 @@ export default function AdminDashboard() {
       {/* Quick Actions */}
       <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow border border-gray-200 dark:border-gray-700 mb-8">
         <h2 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Quick Actions</h2>
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
           <Link href="/admin/posts/new">
             <div className="flex flex-col items-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
               <FiPlusCircle className="h-8 w-8 text-primary mb-2" />
@@ -275,3 +278,5 @@ export default function AdminDashboard() {
     </div>
   );
 }
+
+
