@@ -89,7 +89,7 @@ const SupportedBy: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 relative z-10">
         <div className="text-center mb-12">
           <AnimatedText as="div">
-            <Heading variant="h2" className="text-2xl md:text-3xl font-bold mb-4 text-gray-900 dark:text-white">
+            <Heading variant="h1" className="text-2xl md:text-3xl font-bold mb-4 text-gray-900 dark:text-white">
               {language === 'id' ? 'Partner Terpercaya' : 'Trusted Partners'}
             </Heading>
           </AnimatedText>
