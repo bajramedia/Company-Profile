@@ -28,10 +28,13 @@ export async function GET(request: NextRequest) {
     }
     
     const portfolios = await response.json();
-    console.log('Portfolio API: Database success, items:', portfolios.length);
+    console.log('Portfolio API: Database success, items:', Array.isArray(portfolios) ? portfolios.length : 'Not an array');
+    
+    // Handle both array response (direct from API bridge) and object response
+    const portfolioArray = Array.isArray(portfolios) ? portfolios : (portfolios.portfolios || []);
     
     // Apply filters on frontend since API bridge doesn't support all filtering yet
-    let filteredPortfolios = portfolios;
+    let filteredPortfolios = portfolioArray;
     
     if (published !== null) {
       const isPublished = published === 'true';
