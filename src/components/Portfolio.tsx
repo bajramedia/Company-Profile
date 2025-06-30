@@ -82,7 +82,9 @@ const Portfolio: React.FC = () => {
         setCategories(Array.isArray(categoriesData) ? categoriesData : (categoriesData.categories || []));
         setError(null);
 
-        console.log('Portfolio component: Final state - portfolios:', portfolioItems.length, 'categories:', categoriesData.length || 0);
+        console.log('🎯 Portfolio component: Final state - portfolios:', portfolioItems.length, 'categories:', categoriesData.length || 0);
+        console.log('🔍 DEBUG: Categories data received:', categoriesData);
+        console.log('🔍 DEBUG: Categories after processing:', Array.isArray(categoriesData) ? categoriesData : (categoriesData.categories || []));
       } catch (err) {
         console.error('Error fetching portfolio:', err);
         setError(err instanceof Error ? err.message : 'Failed to load portfolio');
@@ -157,23 +159,23 @@ const Portfolio: React.FC = () => {
         {/* Category Filter */}
         <AnimatedText as="div">
           <div className="flex justify-center mb-8">
-            <div className="inline-flex border border-gray-200 dark:border-gray-700 rounded-md overflow-hidden transition-colors duration-300">
+            <div className="flex flex-wrap justify-center gap-2 max-w-4xl">
               <button
                 onClick={() => handleCategoryFilter('all')}
-                className={`px-4 py-2 text-sm font-medium transition-colors duration-300 ${selectedCategory === 'all'
+                className={`px-4 py-2 text-sm font-medium rounded-md transition-colors duration-300 ${selectedCategory === 'all'
                   ? 'bg-primary text-white dark:bg-green-600'
-                  : 'text-secondary dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'
+                  : 'text-secondary dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 border border-gray-200 dark:border-gray-700'
                   }`}
               >
                 {t('portfolio.filter.all')}
               </button>
-              {categories.slice(0, 3).map((category) => (
+              {categories.map((category) => (
                 <button
                   key={category.id}
                   onClick={() => handleCategoryFilter(category.slug)}
-                  className={`px-4 py-2 text-sm font-medium transition-colors duration-300 ${selectedCategory === category.slug
+                  className={`px-4 py-2 text-sm font-medium rounded-md transition-colors duration-300 ${selectedCategory === category.slug
                     ? 'bg-primary text-white dark:bg-green-600'
-                    : 'text-secondary dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'
+                    : 'text-secondary dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 border border-gray-200 dark:border-gray-700'
                     }`}
                 >
                   {category.name}
