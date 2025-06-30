@@ -480,21 +480,27 @@ function handleGet($pdo, $endpoint, $id) {
             case 'stats':
                 $stats = [];
                 
-                // Posts count (prioritize new table, fallback to old)
+                // Posts count (try old table first since Portfolio works)
                 try {
-                    $stmt = $pdo->query("SELECT COUNT(*) as count FROM blog_posts WHERE is_published = 1");
+                    $stmt = $pdo->query("SELECT COUNT(*) as count FROM post WHERE published = 1");
                     $posts_count = $stmt->fetch()['count'];
                 } catch (Exception $e) {
                     try {
                         $stmt = $pdo->query("SELECT COUNT(*) as count FROM post WHERE published = 1");
                         $posts_count = $stmt->fetch()['count'];
                     } catch (Exception $e2) {
-                        $posts_count = 0;
+                        try {
+                            // Try without WHERE clause to see if any data exists
+                            $stmt = $pdo->query("SELECT COUNT(*) as count FROM post");
+                            $posts_count = $stmt->fetch()['count'];
+                        } catch (Exception $e3) {
+                            $posts_count = 0;
+                        }
                     }
                 }
                 $stats['posts'] = $posts_count;
                 
-                // Portfolio count (prioritize new table, fallback to old)
+                // Portfolio count (this works, keep as is)
                 try {
                     $stmt = $pdo->query("SELECT COUNT(*) as count FROM portfolio_items WHERE is_published = 1");
                     $portfolio_count = $stmt->fetch()['count'];
@@ -508,44 +514,103 @@ function handleGet($pdo, $endpoint, $id) {
                 }
                 $stats['portfolio'] = $portfolio_count;
                 
-                // Authors count (from authors table or team_members)
+                // Authors count - try simpler approach
                 try {
-                    $stmt = $pdo->query("SELECT COUNT(*) as count FROM authors WHERE is_active = 1");
+                    $stmt = $pdo->query("SELECT COUNT(*) as count FROM user WHERE active = 1");
                     $authors_count = $stmt->fetch()['count'];
                 } catch (Exception $e) {
                     try {
-                        $stmt = $pdo->query("SELECT COUNT(*) as count FROM team_members WHERE is_active = 1");
+                        $stmt = $pdo->query("SELECT COUNT(*) as count FROM authors WHERE is_active = 1");
                         $authors_count = $stmt->fetch()['count'];
                     } catch (Exception $e2) {
-                        $authors_count = 0;
+                        try {
+                            $stmt = $pdo->query("SELECT COUNT(*) as count FROM team_members WHERE is_active = 1");
+                            $authors_count = $stmt->fetch()['count'];
+                        } catch (Exception $e3) {
+                            try {
+                                // Try just counting any users/authors
+                                $stmt = $pdo->query("SELECT COUNT(*) as count FROM user");
+                                $authors_count = $stmt->fetch()['count'];
+                            } catch (Exception $e4) {
+                                $authors_count = 0;
+                            }
+                        }
                     }
                 }
                 $stats['authors'] = $authors_count;
                 
-                // Categories count
+                // Categories count - try simpler approach
                 try {
-                    $stmt = $pdo->query("SELECT COUNT(*) as count FROM categories WHERE is_active = 1");
+                    $stmt = $pdo->query("SELECT COUNT(*) as count FROM category WHERE active = 1");
                     $categories_count = $stmt->fetch()['count'];
                 } catch (Exception $e) {
-                    $categories_count = 0;
+                    try {
+                        $stmt = $pdo->query("SELECT COUNT(*) as count FROM categories WHERE is_active = 1");
+                        $categories_count = $stmt->fetch()['count'];
+                    } catch (Exception $e2) {
+                        try {
+                            // Try without WHERE clause
+                            $stmt = $pdo->query("SELECT COUNT(*) as count FROM category");
+                            $categories_count = $stmt->fetch()['count'];
+                        } catch (Exception $e3) {
+                            try {
+                                $stmt = $pdo->query("SELECT COUNT(*) as count FROM categories");
+                                $categories_count = $stmt->fetch()['count'];
+                            } catch (Exception $e4) {
+                                $categories_count = 0;
+                            }
+                        }
+                    }
                 }
                 $stats['categories'] = $categories_count;
                 
-                // Tags count
+                // Tags count - try simpler approach
                 try {
-                    $stmt = $pdo->query("SELECT COUNT(*) as count FROM tags WHERE is_active = 1");
+                    $stmt = $pdo->query("SELECT COUNT(*) as count FROM tag WHERE active = 1");
                     $tags_count = $stmt->fetch()['count'];
                 } catch (Exception $e) {
-                    $tags_count = 0;
+                    try {
+                        $stmt = $pdo->query("SELECT COUNT(*) as count FROM tags WHERE is_active = 1");
+                        $tags_count = $stmt->fetch()['count'];
+                    } catch (Exception $e2) {
+                        try {
+                            // Try without WHERE clause
+                            $stmt = $pdo->query("SELECT COUNT(*) as count FROM tag");
+                            $tags_count = $stmt->fetch()['count'];
+                        } catch (Exception $e3) {
+                            try {
+                                $stmt = $pdo->query("SELECT COUNT(*) as count FROM tags");
+                                $tags_count = $stmt->fetch()['count'];
+                            } catch (Exception $e4) {
+                                $tags_count = 0;
+                            }
+                        }
+                    }
                 }
                 $stats['tags'] = $tags_count;
 
-                // Partners count
+                // Partners count - try simpler approach
                 try {
-                    $stmt = $pdo->query("SELECT COUNT(*) as count FROM partners WHERE is_active = 1");
+                    $stmt = $pdo->query("SELECT COUNT(*) as count FROM partner WHERE active = 1");
                     $partners_count = $stmt->fetch()['count'];
                 } catch (Exception $e) {
-                    $partners_count = 0;
+                    try {
+                        $stmt = $pdo->query("SELECT COUNT(*) as count FROM partners WHERE is_active = 1");
+                        $partners_count = $stmt->fetch()['count'];
+                    } catch (Exception $e2) {
+                        try {
+                            // Try without WHERE clause
+                            $stmt = $pdo->query("SELECT COUNT(*) as count FROM partner");
+                            $partners_count = $stmt->fetch()['count'];
+                        } catch (Exception $e3) {
+                            try {
+                                $stmt = $pdo->query("SELECT COUNT(*) as count FROM partners");
+                                $partners_count = $stmt->fetch()['count'];
+                            } catch (Exception $e4) {
+                                $partners_count = 0;
+                            }
+                        }
+                    }
                 }
                 $stats['partners'] = $partners_count;
                 
@@ -2113,4 +2178,5 @@ function handleDelete($pdo, $endpoint, $id) {
     }
 }
 ?> 
+
 
