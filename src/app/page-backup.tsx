@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from 'react';
-import { Button, Heading, Text, Logo, LanguageSwitcher, AnimatedText, SupportedBy, CTA, Blog, Portfolio, Team, WhatsAppChat, PartnersSection, Navbar, Home } from "@/components";
+import { Button, Heading, Text, Logo, LanguageSwitcher, AnimatedText, SupportedBy, CTA, Blog, Portfolio, Team, WhatsAppChat, Navbar, Home } from "@/components";
 import { useLanguage } from "@/context/LanguageContext";
 import { usePublicSettings } from "@/hooks/useSettings";
 import EnhancedSEO from '@/components/EnhancedSEO';
@@ -150,17 +150,11 @@ export default function HomePage() {
               <div className="absolute inset-0 bg-white/85 dark:bg-gray-900/85"></div>
             </div>
 
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
-
             {/* Animated background elements */}
             <div className="absolute inset-0 overflow-hidden z-1">
               <div className="absolute -top-40 -right-40 w-80 h-80 bg-green-500/5 rounded-full blur-3xl animate-pulse"></div>
               <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-500/5 rounded-full blur-3xl animate-pulse delay-1000"></div>
             </div>
-
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
 
             {/* Content Container */}
             <div className="relative z-10 w-[95%] mx-auto px-4 sm:px-6 lg:px-8 h-full">
@@ -174,9 +168,6 @@ export default function HomePage() {
                         {language === 'id' ? 'Solusi Digital Terdepan' : 'Leading Digital Solutions'}
                       </span>
                     </div>
-
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
                   </AnimatedText>
 
                   <AnimatedText as="div">
@@ -213,9 +204,6 @@ export default function HomePage() {
                         </Button>
                       </Link>
                     </div>
-
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
                   </AnimatedText>
 
                   {/* Achievement Stats */}
@@ -226,46 +214,22 @@ export default function HomePage() {
                         <div className="text-sm md:text-base text-gray-600 dark:text-gray-400 font-medium">
                           {language === 'id' ? 'PROJECTS DONE' : 'PROJECTS DONE'}
                         </div>
-
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
                       </div>
-
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
                       <div className="text-center">
                         <div className="text-3xl md:text-4xl font-bold text-green-500 mb-2">5+</div>
                         <div className="text-sm md:text-base text-gray-600 dark:text-gray-400 font-medium">
                           {language === 'id' ? 'YEARS EXPERIENCE' : 'YEARS EXPERIENCE'}
                         </div>
-
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
                       </div>
-
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
                       <div className="text-center">
                         <div className="text-3xl md:text-4xl font-bold text-green-500 mb-2">24/7</div>
                         <div className="text-sm md:text-base text-gray-600 dark:text-gray-400 font-medium">
                           {language === 'id' ? 'SUPPORT' : 'SUPPORT'}
                         </div>
-
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
                       </div>
-
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
                     </div>
-
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
                   </AnimatedText>
                 </div>
-
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
 
                 {/* Hero Image */}
                 <div className="lg:col-span-5 order-1 lg:order-2">
@@ -296,9 +260,6 @@ export default function HomePage() {
                           />
                         </div>
 
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
-
                         {/* Gradient Overlay */}
                         <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent rounded-3xl"></div>
 
@@ -310,51 +271,24 @@ export default function HomePage() {
                               {language === 'id' ? 'Tim Professional' : 'Professional Team'}
                             </span>
                           </div>
-
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
                         </div>
-
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
                       </div>
-
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
 
                       {/* Decorative Elements */}
                       <div className="absolute -top-6 -right-6 w-32 h-32 bg-green-500/10 rounded-full blur-2xl"></div>
                       <div className="absolute -bottom-6 -left-6 w-40 h-40 bg-blue-500/10 rounded-full blur-2xl"></div>
                     </div>
-
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
                   </AnimatedText>
                 </div>
-
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
               </div>
-
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
             </div>
-
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
 
             {/* Scroll indicator */}
             <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce z-10">
               <div className="w-6 h-10 border-2 border-gray-400 dark:border-gray-600 rounded-full flex justify-center">
                 <div className="w-1 h-3 bg-gray-400 dark:bg-gray-600 rounded-full mt-2 animate-pulse"></div>
               </div>
-
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
             </div>
-
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
           </section>
 
           {/* Spacer */}
@@ -372,9 +306,6 @@ export default function HomePage() {
                       {language === 'id' ? 'Tentang Kami' : 'About Us'}
                     </span>
                   </div>
-
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
 
                   <Heading variant="h2" color="foreground" className="mb-6 text-[28px] md:text-[32px] lg:text-[36px] font-extrabold leading-[1.3] tracking-tight">
                     {language === 'id'
@@ -397,41 +328,20 @@ export default function HomePage() {
                       <div className="text-sm text-gray-600 dark:text-gray-400">
                         {language === 'id' ? 'Proyek Selesai' : 'Projects Completed'}
                       </div>
-
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
                     </div>
-
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
                     <div className="text-center">
                       <div className="text-3xl font-bold text-green-500 mb-2">5+</div>
                       <div className="text-sm text-gray-600 dark:text-gray-400">
                         {language === 'id' ? 'Tahun Pengalaman' : 'Years Experience'}
                       </div>
-
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
                     </div>
-
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
                     <div className="text-center">
                       <div className="text-3xl font-bold text-green-500 mb-2">100%</div>
                       <div className="text-sm text-gray-600 dark:text-gray-400">
                         {language === 'id' ? 'Kepuasan Klien' : 'Client Satisfaction'}
                       </div>
-
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
                     </div>
-
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
                   </div>
-
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
 
                   <div className="flex flex-col sm:flex-row gap-4">
                     <Link href="/about">
@@ -445,13 +355,7 @@ export default function HomePage() {
                       </Button>
                     </Link>
                   </div>
-
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
                 </div>
-
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
 
                 {/* Image */}
                 <div className="relative">
@@ -473,33 +377,15 @@ export default function HomePage() {
                           {language === 'id' ? 'Tim Professional Siap Membantu Anda' : 'Professional Team Ready to Help You'}
                         </span>
                       </div>
-
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
                     </div>
-
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
                   </div>
-
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
 
                   {/* Decorative Elements */}
                   <div className="absolute -top-4 -right-4 w-24 h-24 bg-green-500/10 rounded-full blur-xl"></div>
                   <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-blue-500/10 rounded-full blur-xl"></div>
                 </div>
-
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
               </div>
-
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
             </div>
-
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
           </section>
 
           {/* Spacer */}
@@ -517,9 +403,6 @@ export default function HomePage() {
 
                 </div>
 
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
-
                 <Heading variant="h2" color="foreground" className="mb-4 text-[28px] md:text-[32px] lg:text-[36px] font-extrabold">
                   {language === 'id' ? 'Kata Mereka Tentang Kami' : 'What They Say About Us'}
                 </Heading>
@@ -532,9 +415,6 @@ export default function HomePage() {
                 </Text>
               </div>
 
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
-
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {/* Testimonial 1 */}
                 <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 border border-gray-200 dark:border-gray-600">
@@ -545,9 +425,6 @@ export default function HomePage() {
                       </svg>
                     ))}
                   </div>
-
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
                   <Text color="secondary" className="mb-6 italic text-[14px] leading-relaxed text-gray-600 dark:text-gray-300">
                     "{language === 'id'
                       ? 'Tim Bajramedia sangat profesional dalam mengembangkan website perusahaan kami. Hasilnya melebihi ekspektasi dan sangat membantu meningkatkan brand awareness.'
@@ -558,24 +435,12 @@ export default function HomePage() {
                     <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-white font-bold mr-4">
                       A
                     </div>
-
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
                     <div>
                       <div className="font-semibold text-gray-900 dark:text-white">Andi Prasetyo</div>
                       <div className="text-sm text-gray-500 dark:text-gray-400">CEO, PT Maju Bersama</div>
                     </div>
-
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
                   </div>
-
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
                 </div>
-
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
 
                 {/* Testimonial 2 */}
                 <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 border border-gray-200 dark:border-gray-600">
@@ -586,9 +451,6 @@ export default function HomePage() {
                       </svg>
                     ))}
                   </div>
-
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
                   <Text color="secondary" className="mb-6 italic text-[14px] leading-relaxed text-gray-600 dark:text-gray-300">
                     "{language === 'id'
                       ? 'Pelayanan yang luar biasa! Sistem manajemen yang dikembangkan Bajramedia sangat membantu operasional bisnis kami menjadi lebih efisien.'
@@ -599,24 +461,12 @@ export default function HomePage() {
                     <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold mr-4">
                       S
                     </div>
-
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
                     <div>
                       <div className="font-semibold text-gray-900 dark:text-white">Sari Wijaya</div>
                       <div className="text-sm text-gray-500 dark:text-gray-400">Owner, Sari Beauty Clinic</div>
                     </div>
-
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
                   </div>
-
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
                 </div>
-
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
 
                 {/* Testimonial 3 */}
                 <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 border border-gray-200 dark:border-gray-600">
@@ -627,9 +477,6 @@ export default function HomePage() {
                       </svg>
                     ))}
                   </div>
-
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
                   <Text color="secondary" className="mb-6 italic text-[14px] leading-relaxed text-gray-600 dark:text-gray-300">
                     "{language === 'id'
                       ? 'Aplikasi mobile yang dikembangkan sangat user-friendly dan sesuai dengan kebutuhan bisnis kami. Tim support juga sangat responsif.'
@@ -640,32 +487,14 @@ export default function HomePage() {
                     <div className="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center text-white font-bold mr-4">
                       R
                     </div>
-
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
                     <div>
                       <div className="font-semibold text-gray-900 dark:text-white">Rudi Hartanto</div>
                       <div className="text-sm text-gray-500 dark:text-gray-400">Director, RH Logistics</div>
                     </div>
-
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
                   </div>
-
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
                 </div>
-
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
               </div>
-
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
             </div>
-
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
           </section>
 
           {/* Spacer */}
@@ -673,12 +502,6 @@ export default function HomePage() {
 
           {/* Blog Section */}
           <Blog />
-
-          {/* Spacer */}
-          <div className="py-8 bg-gradient-to-b from-gray-50/50 to-white dark:from-gray-800 dark:to-gray-900"></div>
-
-          {/* Portfolio Section */}
-          <Portfolio />
 
           {/* Spacer */}
           <div className="py-8 bg-gradient-to-b from-gray-50/50 to-white dark:from-gray-800 dark:to-gray-900"></div>
@@ -739,18 +562,12 @@ export default function HomePage() {
           </button>
         </div>
 
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
-
         {/* WhatsApp Chat */}
         <WhatsAppChat
           phoneNumber="6285739402436"
           message="Halo! Saya tertarik dengan layanan Bajramedia. Bisa konsultasi gratis?"
         />
       </div>
-
-        {/* Partners Section - Positioned at bottom center */}
-        <PartnersSection />
     </>
   );
 }

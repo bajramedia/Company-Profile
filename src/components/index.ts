@@ -26,3 +26,5 @@ export { default as BlogPostDetail } from './BlogPostDetail';
 export { default as BlogListingPage } from './BlogListingPage';
 export { default as BlogPostClient } from './BlogPostClient';
 export { default as WhatsAppChat } from './WhatsAppChat';
+export { default as SocialShare } from './SocialShare';
+export { default as PartnersSection } from './PartnersSection';
