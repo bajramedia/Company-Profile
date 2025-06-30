@@ -1,83 +1,165 @@
 "use client";
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useLanguage } from '@/context/LanguageContext';
-import { FiArrowRight } from 'react-icons/fi';
+import Heading from './Heading';
+import Text from './Text';
 import AnimatedText from './AnimatedText';
 
-interface SupportedByProps {
-  className?: string;
+interface Partner {
+  id: string;
+  name: string;
+  logo: string;
+  website: string;
+  type: string;
+  description: string;
 }
 
-export const SupportedBy: React.FC<SupportedByProps> = ({
-  className = ''
-}) => {
-  const { t } = useLanguage();
-  const primaryColor = "rgb(3, 177, 80)"; 
-  const lightPrimaryColor = "rgba(3, 177, 80, 0.1)";  
-    return (    <div className={`pt-6 mt-[-1px] pb-16 md:pb-24 relative bg-gray-50 dark:bg-gray-900 transition-colors duration-300 ${className}`} style={{
-      backgroundImage: `radial-gradient(${primaryColor}08 1.2px, transparent 1.2px)`,
-      backgroundSize: '28px 28px'
-    }}>      {/* Subtle decorative elements */}
-      <div className="absolute top-12 left-8 w-3 h-3 rounded-full" style={{ backgroundColor: primaryColor, opacity: 0.15 }}></div>
-      <div className="absolute bottom-12 right-10 w-4 h-4 rounded-full" style={{ backgroundColor: primaryColor, opacity: 0.15 }}></div>
-      <div className="absolute top-1/3 left-1/4 w-2 h-2 rounded-full" style={{ backgroundColor: primaryColor, opacity: 0.15 }}></div>
-      <div className="absolute bottom-1/4 right-1/3 w-2 h-2 rounded-full" style={{ backgroundColor: primaryColor, opacity: 0.15 }}></div>
-      
-      {/* Additional decorative elements */}
-      <div className="absolute top-32 right-1/5 w-16 h-16 rounded-full bg-primary/5 dark:bg-primary/10 blur-xl"></div>
-      <div className="absolute bottom-20 left-1/6 w-24 h-24 rounded-full bg-primary/5 dark:bg-primary/10 blur-xl"></div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 relative z-10">        <div className="bg-white dark:bg-gray-800 py-10 md:py-12 px-6 md:px-10 lg:px-14 rounded-2xl shadow-[0_10px_40px_-15px_rgba(0,0,0,0.1)] dark:shadow-[0_10px_40px_-15px_rgba(0,0,0,0.3)] border border-gray-50 dark:border-gray-700 transition-all duration-300 hover:shadow-[0_20px_50px_-15px_rgba(0,0,0,0.15)] dark:hover:shadow-[0_20px_50px_-15px_rgba(0,0,0,0.4)]">
-          <div className="lg:flex lg:items-center lg:justify-between">
-            <div className="flex flex-col items-center lg:items-start justify-center text-center lg:text-left space-y-6 lg:w-1/2 lg:pr-8">
-              <AnimatedText as="div" className="mb-1">
-                <div className="inline-flex items-center justify-center">
-                  <span 
-                    className="text-sm md:text-base font-bold px-6 py-3 rounded-full shadow-md inline-block"
-                    style={{ 
-                      color: "white", 
-                      backgroundColor: primaryColor,
-                      boxShadow: `0 4px 14px ${primaryColor}40`
-                    }}
-                  >
-                    {t('inbis.officialCollaboration')}
-                  </span>
-                </div>
-              </AnimatedText>
-              <AnimatedText as="div" className="text-sm md:text-base lg:text-lg text-gray-600 dark:text-gray-300 leading-relaxed lg:mt-4 transition-colors duration-300">
-                <span className="italic font-light">{t('inbis.partnershipDescription')}</span>
-              </AnimatedText>
+const SupportedBy: React.FC = () => {
+  const { t, language } = useLanguage();
+  const [partners, setPartners] = useState<Partner[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch partners from database
+  useEffect(() => {
+    const fetchPartners = async () => {
+      try {
+        const response = await fetch('/api/partners');
+        if (response.ok) {
+          const data = await response.json();
+          setPartners(data || []);
+        }
+      } catch (error) {
+        console.error('Error fetching partners:', error);
+        // Fallback to demo partners if API fails
+        setPartners([
+          {
+            id: '1',
+            name: 'INBIS Primakara',
+            logo: '/images/inbis-primakara-logo.svg',
+            website: '#',
+            type: 'Educational Partner',
+            description: 'Leading educational institution partner'
+          }
+        ]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPartners();
+  }, []);
+
+  if (loading) {
+    return (
+      <section className="py-16 md:py-20 bg-gray-50 dark:bg-gray-800 transition-colors duration-300">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+          <div className="text-center mb-12">
+            <AnimatedText as="div">
+              <Heading variant="h2" className="text-2xl md:text-3xl font-bold mb-4">
+                {language === 'id' ? 'Partner Kami' : 'Our Partners'}
+              </Heading>
+            </AnimatedText>
+          </div>
+          <div className="flex justify-center">
+            <div className="animate-pulse flex space-x-8">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="w-32 h-16 bg-gray-200 dark:bg-gray-700 rounded"></div>
+              ))}
             </div>
-            
-            <div className="mt-8 lg:mt-0 lg:w-1/2">
-              <AnimatedText as="div" className="flex items-center justify-center space-x-8 group">
-                <div className="relative w-16 h-16 md:w-20 md:h-20 flex-shrink-0 transition-all duration-300 group-hover:scale-110 rounded-full shadow-md overflow-hidden border-2 border-gray-100 dark:border-gray-600">
-                  <Image 
-                    src="/images/inbis-primakara-logo.jpg" 
-                    alt="Inbis Primakara" 
-                    fill
-                    style={{objectFit: 'cover'}}
-                    className="transform transition-transform duration-300 group-hover:scale-105"
-                  />
-                </div>              
-                <div className="flex items-center justify-center bg-gray-50 dark:bg-gray-700 rounded-full p-3 shadow-md w-12 h-12 md:w-14 md:h-14 transition-all duration-300 group-hover:bg-gray-100 dark:group-hover:bg-gray-600">
-                  <FiArrowRight className="w-6 h-6 text-primary transition-transform duration-300 group-hover:translate-x-1" />
-                </div>
-                <div className="relative w-16 h-16 md:w-20 md:h-20 flex-shrink-0 transition-all duration-300 group-hover:scale-110 rounded-full shadow-md overflow-hidden border-2 border-gray-100 dark:border-gray-600">
-                  <Image 
-                    src="/images/Bajra.png" 
-                    alt="Bajramedia" 
-                    fill
-                    style={{objectFit: 'contain'}}
-                    className="bg-white p-0.5 transform transition-transform duration-300 group-hover:scale-105"
-                  />
-                </div>
-              </AnimatedText>            </div>
           </div>
         </div>
+      </section>
+    );
+  }
+
+  if (partners.length === 0) {
+    return null; // Don't show section if no partners
+  }
+
+  return (
+    <section className="py-16 md:py-20 bg-gray-50 dark:bg-gray-800 transition-colors duration-300 relative overflow-hidden">
+      {/* Background decoration */}
+      <div className="absolute inset-0 opacity-30">
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-gray-300 dark:via-gray-600 to-transparent"></div>
+        <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-gray-300 dark:via-gray-600 to-transparent"></div>
       </div>
-    </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 relative z-10">
+        <div className="text-center mb-12">
+          <AnimatedText as="div">
+            <Heading variant="h2" className="text-2xl md:text-3xl font-bold mb-4 text-gray-900 dark:text-white">
+              {language === 'id' ? 'Partner Terpercaya' : 'Trusted Partners'}
+            </Heading>
+          </AnimatedText>
+          <AnimatedText as="div">
+            <Text color="secondary" className="max-w-2xl mx-auto">
+              {language === 'id'
+                ? 'Bekerjasama dengan partner terbaik untuk memberikan solusi digital berkualitas tinggi'
+                : 'Collaborating with the best partners to deliver high-quality digital solutions'
+              }
+            </Text>
+          </AnimatedText>
+        </div>
+
+        <AnimatedText as="div">
+          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
+            {partners.map((partner, index) => (
+              <a
+                key={partner.id}
+                href={partner.website}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center justify-center p-6 rounded-xl bg-white dark:bg-gray-700 shadow-sm hover:shadow-lg transition-all duration-300 hover:scale-105 min-w-[140px] h-20 border border-gray-100 dark:border-gray-600"
+                title={partner.description}
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
+                <div className="relative w-full h-full flex items-center justify-center">
+                  <Image
+                    src={partner.logo}
+                    alt={partner.name}
+                    width={100}
+                    height={50}
+                    style={{ objectFit: 'contain' }}
+                    className="max-w-full max-h-full filter grayscale group-hover:grayscale-0 transition-all duration-300 opacity-60 group-hover:opacity-100"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.style.display = 'none';
+                      const parent = target.parentElement;
+                      if (parent) {
+                        parent.innerHTML = `<span class="text-gray-600 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white font-semibold text-sm transition-colors">${partner.name}</span>`;
+                      }
+                    }}
+                  />
+                </div>
+              </a>
+            ))}
+          </div>
+        </AnimatedText>
+
+        {/* Call to action for partnerships */}
+        <AnimatedText as="div">
+          <div className="text-center mt-12">
+            <Text color="secondary" className="text-sm mb-4">
+              {language === 'id'
+                ? 'Tertarik untuk bermitra dengan kami?'
+                : 'Interested in partnering with us?'
+              }
+            </Text>
+            <a
+              href="/#contact"
+              className="inline-flex items-center text-green-500 hover:text-green-600 font-medium text-sm transition-colors duration-300"
+            >
+              {language === 'id' ? 'Hubungi Kami' : 'Contact Us'}
+              <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </a>
+          </div>
+        </AnimatedText>
+      </div>
+    </section>
   );
 };
 

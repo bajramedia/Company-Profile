@@ -135,9 +135,15 @@ export default function HomePage() {
 
         {/* Main Content */}
         <main>
-          {/* Hero Section */}
-          <section className="relative h-screen overflow-hidden pt-16 bg-white dark:bg-gray-900 transition-colors duration-300">
-            <div className="h-full flex flex-col md:flex-row">
+          {/* Hero Section - Enhanced */}
+          <section className="relative min-h-screen overflow-hidden pt-16 bg-gradient-to-br from-white via-gray-50 to-green-50/30 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 transition-all duration-300">
+            {/* Animated background elements */}
+            <div className="absolute inset-0 overflow-hidden">
+              <div className="absolute -top-40 -right-40 w-80 h-80 bg-green-500/5 rounded-full blur-3xl animate-pulse"></div>
+              <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-500/5 rounded-full blur-3xl animate-pulse delay-1000"></div>
+            </div>
+
+            <div className="h-full flex flex-col md:flex-row relative z-10">
               {/* Desktop Image */}
               <div className="md:w-3/5 h-full relative bg-white dark:bg-gray-900 overflow-hidden hidden md:block transition-colors duration-300">
                 <div className="absolute inset-0">
@@ -148,12 +154,12 @@ export default function HomePage() {
                       fill
                       style={{ objectFit: 'cover', objectPosition: 'center' }}
                       priority
-                      className="rounded-br-[120px] shadow-lg"
+                      className="rounded-br-[120px] shadow-2xl transform hover:scale-105 transition-transform duration-700"
                     />
-                    {/* Light gradient overlay only */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent transition-all duration-300"></div>
+                    {/* Modern gradient overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-white/10 dark:to-gray-900/20 transition-all duration-300"></div>
                     {/* Subtle primary color overlay */}
-                    <div className="absolute inset-0 transition-colors duration-300"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-green-500/10 via-transparent to-transparent transition-colors duration-300"></div>
                   </div>
                 </div>
               </div>
@@ -166,27 +172,36 @@ export default function HomePage() {
                   fill
                   style={{ objectFit: 'cover', objectPosition: 'center' }}
                   priority
-                  className="opacity-15"
+                  className="opacity-10"
                 />
-                <div className="absolute inset-0 bg-white/85 dark:bg-gray-900/80 transition-colors duration-300"></div>
+                <div className="absolute inset-0 bg-white/90 dark:bg-gray-900/85 transition-colors duration-300"></div>
               </div>
 
-              {/* Content Container */}
-              <div className="w-full md:w-2/5 flex items-center px-6 sm:px-8 md:px-12 lg:px-16 xl:px-20 relative bg-white dark:bg-gray-900 md:bg-transparent transition-colors duration-300 z-10">
+              {/* Content Container - Enhanced */}
+              <div className="w-full md:w-2/5 flex items-center px-6 sm:px-8 md:px-12 lg:px-16 xl:px-20 relative bg-white dark:bg-gray-900 md:bg-transparent transition-colors duration-300 z-10 py-20 md:py-0">
                 <div className="max-w-lg w-full">
                   <AnimatedText as="div">
-                    <Heading variant="h1" color="foreground" className="mb-6 mt-8 text-[28px] md:text-[34px] lg:text-[40px] xl:text-[44px] font-bold leading-[1.3] tracking-wide">
+                    <div className="mb-6 flex items-center space-x-2">
+                      <div className="w-12 h-0.5 bg-green-500"></div>
+                      <span className="text-green-500 font-medium text-sm tracking-wider uppercase">
+                        {language === 'id' ? 'Solusi Digital Terdepan' : 'Leading Digital Solutions'}
+                      </span>
+                    </div>
+                  </AnimatedText>
+
+                  <AnimatedText as="div">
+                    <Heading variant="h1" color="foreground" className="mb-8 text-[32px] md:text-[38px] lg:text-[44px] xl:text-[48px] font-extrabold leading-[1.2] tracking-tight">
                       {t('hero.title.part1')}{' '}
-                      <span className="text-green-500 relative">
+                      <span className="text-green-500 relative inline-block">
                         <span className="relative z-10">{t('hero.title.highlight')}</span>
-                        <span className="absolute bottom-0.5 left-0 w-full h-2.5 bg-green-500/10 -z-0"></span>
+                        <span className="absolute bottom-1 left-0 w-full h-3 bg-green-500/20 -z-0 transform -skew-x-12"></span>
                       </span>
                       {' '}{t('hero.title.part2')}
                     </Heading>
                   </AnimatedText>
 
                   <AnimatedText as="div">
-                    <Text color="secondary" className="mb-10 text-[15px] md:text-[16px] leading-loose tracking-wide max-w-md">
+                    <Text color="secondary" className="mb-10 text-[16px] md:text-[17px] leading-relaxed tracking-wide max-w-lg">
                       {t('hero.subtitle')}
                     </Text>
                   </AnimatedText>
@@ -194,27 +209,67 @@ export default function HomePage() {
                   <AnimatedText as="div">
                     <div className="flex flex-col sm:flex-row gap-4 mb-12">
                       <Link href="/about">
-                        <Button variant="primary" size="md" className="px-6 py-3 shadow-sm font-medium w-full sm:w-auto">
+                        <Button variant="primary" size="md" className="px-8 py-4 shadow-2xl transform hover:scale-105 transition-transform duration-700 hover:shadow-xl font-semibold w-full sm:w-auto transform hover:scale-105 transition-all duration-300 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700">
                           {t('hero.cta.consultation')}
                         </Button>
                       </Link>
                       <Link href="/portfolio">
-                        <Button variant="outline" size="md" className="px-6 py-3 border-green-500 text-green-500 hover:bg-green-500/5 font-medium w-full sm:w-auto">
+                        <Button variant="outline" size="md" className="px-8 py-4 border-2 border-green-500 text-green-500 hover:bg-green-500 hover:text-white font-semibold w-full sm:w-auto transform hover:scale-105 transition-all duration-300">
                           {t('hero.cta.portfolio')}
                         </Button>
                       </Link>
                     </div>
                   </AnimatedText>
+
+                  {/* Stats or features */}
+                  <AnimatedText as="div">
+                    <div className="grid grid-cols-3 gap-6 pt-8 border-t border-gray-200 dark:border-gray-700">
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-green-500 mb-1">50+</div>
+                        <div className="text-xs text-gray-600 dark:text-gray-400 uppercase tracking-wide">
+                          {language === 'id' ? 'Proyek Selesai' : 'Projects Done'}
+                        </div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-green-500 mb-1">5+</div>
+                        <div className="text-xs text-gray-600 dark:text-gray-400 uppercase tracking-wide">
+                          {language === 'id' ? 'Tahun Pengalaman' : 'Years Experience'}
+                        </div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-green-500 mb-1">24/7</div>
+                        <div className="text-xs text-gray-600 dark:text-gray-400 uppercase tracking-wide">
+                          {language === 'id' ? 'Dukungan' : 'Support'}
+                        </div>
+                      </div>
+                    </div>
+                  </AnimatedText>
                 </div>
+              </div>
+            </div>
+
+            {/* Scroll indicator */}
+            <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+              <div className="w-6 h-10 border-2 border-gray-400 dark:border-gray-600 rounded-full flex justify-center">
+                <div className="w-1 h-3 bg-gray-400 dark:bg-gray-600 rounded-full mt-2 animate-pulse"></div>
               </div>
             </div>
           </section>
 
+          {/* Spacer */}
+          <div className="py-8 bg-gradient-to-b from-green-50/30 to-white dark:from-gray-800 dark:to-gray-900"></div>
+
           {/* Portfolio Section */}
           <Portfolio />
 
+          {/* Spacer */}
+          <div className="py-8 bg-gradient-to-b from-white to-gray-50/50 dark:from-gray-900 dark:to-gray-800"></div>
+
           {/* Blog Section */}
           <Blog />
+
+          {/* Spacer */}
+          <div className="py-8 bg-gradient-to-b from-gray-50/50 to-white dark:from-gray-800 dark:to-gray-900"></div>
 
           {/* CTA Section */}
           <CTA />
@@ -227,7 +282,7 @@ export default function HomePage() {
         <div className="fixed bottom-6 left-6 z-50">
           <button
             onClick={toggleDarkMode}
-            className="w-14 h-14 rounded-full bg-white dark:bg-gray-800 shadow-lg border border-gray-200 dark:border-gray-600 flex items-center justify-center hover:shadow-xl transition-all duration-300 hover:scale-110 group dark-mode-button"
+            className="w-14 h-14 rounded-full bg-white dark:bg-gray-800 shadow-2xl transform hover:scale-105 transition-transform duration-700 border border-gray-200 dark:border-gray-600 flex items-center justify-center hover:shadow-xl transition-all duration-300 hover:scale-110 group dark-mode-button"
             aria-label="Toggle dark mode"
             title={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
           >
