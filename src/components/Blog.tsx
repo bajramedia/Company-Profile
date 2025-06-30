@@ -24,7 +24,7 @@ const formatDate = (dateString: string): string => {
 
 export const BlogPostCard: React.FC<{ post: BlogPost }> = ({ post }) => {
   const primaryColor = "rgb(3, 177, 80)";
-
+  
   // View tracking function
   const handlePostClick = async () => {
     try {
