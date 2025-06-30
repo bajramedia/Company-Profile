@@ -2049,8 +2049,8 @@ function handleDelete($pdo, $endpoint, $id) {
                     return;
                 }
                 
-                // Soft delete by setting is_active = 0 (safer for data integrity)
-                $stmt = $pdo->prepare("UPDATE technologies SET is_active = 0 WHERE id = ?");
+                // Hard delete - permanently remove technology from database
+                $stmt = $pdo->prepare("DELETE FROM technologies WHERE id = ?");
                 $stmt->execute([$id]);
                 
                 echo json_encode(['success' => true]);
