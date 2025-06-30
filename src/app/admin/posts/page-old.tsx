@@ -51,6 +51,7 @@ function AdminPostsContent() {
       setIsDeleting(postId);
       const result = await deletePost(postId);
       if (result.success) {
+        // Remove the deleted post from the list
         setPosts(posts.filter(post => post.id !== postId));
       } else {
         alert(`Failed to delete: ${result.error}`);
@@ -64,6 +65,7 @@ function AdminPostsContent() {
     setIsUpdating(postId);
     const result = await togglePublishPost(postId);
     if (result.success) {
+      // Update the post status in the list
       setPosts(posts.map(post =>
         post.id === postId
           ? { ...post, published: !currentStatus }
@@ -146,7 +148,7 @@ function AdminPostsContent() {
         </div>
       </form>
 
-      {/* Posts table dengan kolom Image */}
+      {/* Posts table */}
       <div className="overflow-x-auto bg-white dark:bg-gray-800 shadow rounded-lg border border-gray-200 dark:border-gray-700">
         <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-600">
           <thead className="bg-gray-50 dark:bg-gray-700">
@@ -163,7 +165,7 @@ function AdminPostsContent() {
           <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-600">
             {posts.length === 0 ? (
               <tr>
-                <td colSpan={7} className="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
+                <td colSpan={6} className="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
                   {loading ? 'Loading...' : 'No posts found'}
                 </td>
               </tr>
@@ -174,28 +176,18 @@ function AdminPostsContent() {
                     <div className="text-sm font-medium text-gray-900 dark:text-white">{post.title}</div>
                     <div className="text-sm text-gray-500 dark:text-gray-400">{`/blog/${post.slug}`}</div>
                   </td>
-                  {/* Kolom Image dengan thumbnail */}
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex items-center">
-                      {post.featuredImage && post.featuredImage.trim() !== '' ? (
-                        <div className="relative w-16 h-12 rounded-lg overflow-hidden shadow-sm border border-gray-200 dark:border-gray-600">
-                          <Image
-                            src={post.featuredImage}
-                            alt={post.title}
-                            fill
-                            className="object-cover"
-                            onError={(e) => {
-                              const target = e.target as HTMLImageElement;
-                              target.src = '/images/placeholder.jpg';
-                            }}
-                          />
-                        </div>
-                      ) : (
-                        <div className="w-16 h-12 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center border border-gray-200 dark:border-gray-600">
-                          <FiImage className="w-6 h-6 text-gray-400" />
-                        </div>
-                      )}
-                    </div>
+                    {post.image ? (
+                      <Image
+                        src={post.image}
+                        alt={post.title}
+                        width={50}
+                        height={50}
+                        className="h-12 w-12 rounded-full"
+                      />
+                    ) : (
+                      <div className="h-12 w-12 bg-gray-200 dark:bg-gray-700 rounded-full"></div>
+                    )}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     {post.published ? (
