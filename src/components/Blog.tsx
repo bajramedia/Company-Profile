@@ -24,18 +24,52 @@ const formatDate = (dateString: string): string => {
 
 export const BlogPostCard: React.FC<{ post: BlogPost }> = ({ post }) => {
   const primaryColor = "rgb(3, 177, 80)";
-  return (
 
+  // View tracking function
+  const handlePostClick = async () => {
+    try {
+      await fetch(`/api/posts/${post.slug}/views`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+    } catch (error) {
+      console.error('Failed to track view:', error);
+    }
+  };
+
+  return (
     <article className="bg-white dark:bg-gray-800 rounded-3xl shadow-lg overflow-hidden transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 group h-full flex flex-col border border-gray-100 dark:border-gray-700">
       {/* Enhanced Blog Image */}
       <div className="relative h-56 w-full overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"></div>
-        <Image
-          src={post.featuredImage}
-          alt={post.title}
-          fill
-          className="object-cover transition-transform duration-700 group-hover:scale-110"
-        />
+
+        {/* Improved image handling with fallback */}
+        {post.featuredImage && post.featuredImage.trim() !== '' ? (
+          <Image
+            src={post.featuredImage}
+            alt={post.title}
+            fill
+            className="object-cover transition-transform duration-700 group-hover:scale-110"
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              target.src = '/images/placeholder.jpg';
+            }}
+          />
+        ) : (
+          <div className="w-full h-full bg-gradient-to-br from-green-500/10 to-blue-500/10 flex items-center justify-center">
+            <div className="text-center p-6">
+              <div className="w-16 h-16 mx-auto mb-4 bg-green-500/20 rounded-full flex items-center justify-center">
+                <svg className="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <p className="text-sm text-gray-500 dark:text-gray-400">Blog Image</p>
+            </div>
+          </div>
+        )}
+
         {/* Enhanced category badge */}
         <div className="absolute top-4 left-4 z-20">
           <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm text-gray-700 dark:text-gray-200 shadow-lg transition-colors duration-300">
@@ -55,14 +89,16 @@ export const BlogPostCard: React.FC<{ post: BlogPost }> = ({ post }) => {
       </div>
 
       {/* Enhanced Content */}
-      <div className="px-6 pt-6 pb-8 flex flex-col flex-grow">        {/* Date and metadata */}
+      <div className="px-6 pt-6 pb-8 flex flex-col flex-grow">
+        {/* Date and metadata */}
         <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 mb-4 transition-colors duration-300">
           <span className="font-medium">{formatDate(post.date)}</span>
           <div className="flex items-center space-x-3">
             <div className="flex items-center space-x-1">
               <FiEye size={14} />
               <span>{post.views || 0}</span>
-            </div>            {post.readTime && (
+            </div>
+            {post.readTime && (
               <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded-full text-xs transition-colors duration-300">
                 {post.readTime} min
               </span>
@@ -81,22 +117,34 @@ export const BlogPostCard: React.FC<{ post: BlogPost }> = ({ post }) => {
         </p>
 
         {/* Enhanced Author and Read More */}
-        <div className="flex items-center justify-between mt-auto pt-6 border-t border-gray-100 dark:border-gray-700 transition-colors duration-300">          <div className="flex items-center">
-          {post.author.avatar && (
+        <div className="flex items-center justify-between mt-auto pt-6 border-t border-gray-100 dark:border-gray-700 transition-colors duration-300">
+          <div className="flex items-center">
+            {/* Improved author avatar with fallback */}
             <div className="relative w-10 h-10 rounded-full overflow-hidden mr-3 ring-2 ring-gray-100 dark:ring-gray-600 transition-colors duration-300">
-              <Image
-                src={post.author.avatar}
-                alt={post.author.name}
-                fill
-                className="object-cover"
-              />
+              {post.author.avatar && post.author.avatar.trim() !== '' ? (
+                <Image
+                  src={post.author.avatar}
+                  alt={post.author.name}
+                  fill
+                  className="object-cover"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src = '/images/team/default-avatar.jpg';
+                  }}
+                />
+              ) : (
+                <div className="w-full h-full bg-green-500 flex items-center justify-center text-white font-bold text-sm">
+                  {(post.author.name || 'A').charAt(0).toUpperCase()}
+                </div>
+              )}
             </div>
-          )}
-          <div>
-            <span className="text-sm font-semibold text-gray-900 dark:text-gray-100 block transition-colors duration-300">{post.author.name}</span>
-            <span className="text-xs text-gray-500 dark:text-gray-400 transition-colors duration-300">Author</span>
+            <div>
+              <span className="text-sm font-semibold text-gray-900 dark:text-gray-100 block transition-colors duration-300">
+                {post.author.name || 'Admin User'}
+              </span>
+              <span className="text-xs text-gray-500 dark:text-gray-400 transition-colors duration-300">Author</span>
+            </div>
           </div>
-        </div>
 
           {/* Enhanced read more button */}
           <div className="flex items-center text-primary font-semibold text-sm group-hover:translate-x-1 transition-transform duration-300">
