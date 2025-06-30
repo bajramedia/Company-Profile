@@ -1,6 +1,7 @@
 "use client";
 
 import React from 'react';
+import Link from 'next/link';
 import Button from './Button';
 import AnimatedText from './AnimatedText';
 import { useLanguage } from '@/context/LanguageContext';
@@ -66,32 +67,36 @@ const CTA: React.FC<CTAProps> = ({ className = '' }) => {
             </AnimatedText>
           </div>
             <div className="w-full lg:w-1/3 flex flex-col md:flex-row lg:flex-col items-center gap-4">
-            <Button 
-              variant="primary" 
-              size="lg" 
-              className="bg-[#f7d046] hover:bg-[#03b150] text-gray-800 hover:text-white py-5 px-8 rounded-xl font-bold shadow-xl w-full md:w-auto lg:w-full hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 group"
-            >
-              <span className="text-base font-semibold flex items-center justify-center">
-                {t('cta.primaryButton') || 'Start Your Project'}
-                <svg className="w-0 h-5 ml-0 opacity-0 group-hover:w-5 group-hover:ml-2 group-hover:opacity-100 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                </svg>
-              </span>
-            </Button>
-            
-            <Button 
-              variant="outline" 
-              size="lg" 
-              className="py-5 px-8 rounded-xl font-bold text-white border-2 border-white hover:bg-white/15 hover:-translate-y-1 w-full md:w-auto lg:w-full transition-all duration-300 group"
-            >
-              <span className="text-base font-semibold flex items-center justify-center">
-                {t('cta.secondaryButton') || 'Contact Us'}
-                <svg className="w-0 h-5 ml-0 opacity-0 group-hover:w-5 group-hover:ml-2 group-hover:opacity-100 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                </svg>
-              </span>
-            </Button>
-          </div>
+              <Link href="/about" className="w-full md:w-auto lg:w-full">
+                <Button 
+                  variant="primary" 
+                  size="lg" 
+                  className="bg-[#f7d046] hover:bg-[#03b150] text-gray-800 hover:text-white py-5 px-8 rounded-xl font-bold shadow-xl w-full hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 group"
+                >
+                  <span className="text-base font-semibold flex items-center justify-center">
+                    {t('cta.primaryButton') || 'Start Your Project'}
+                    <svg className="w-0 h-5 ml-0 opacity-0 group-hover:w-5 group-hover:ml-2 group-hover:opacity-100 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                    </svg>
+                  </span>
+                </Button>
+              </Link>
+              
+              <Link href="/about" className="w-full md:w-auto lg:w-full">
+                <Button 
+                  variant="outline" 
+                  size="lg" 
+                  className="py-5 px-8 rounded-xl font-bold text-white border-2 border-white hover:bg-white/15 hover:-translate-y-1 w-full transition-all duration-300 group"
+                >
+                  <span className="text-base font-semibold flex items-center justify-center">
+                    {t('cta.secondaryButton') || 'Contact Us'}
+                    <svg className="w-0 h-5 ml-0 opacity-0 group-hover:w-5 group-hover:ml-2 group-hover:opacity-100 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                    </svg>
+                  </span>
+                </Button>
+              </Link>
+            </div>
         </div>
       </div>
     </section>

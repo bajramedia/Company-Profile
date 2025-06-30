@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useState, useEffect } from 'react';
 import { Button, Heading, Text, Logo, LanguageSwitcher, AnimatedText, SupportedBy, CTA, Blog, Portfolio, Team, WhatsAppChat, Navbar, Home } from "@/components";
 import { useLanguage } from "@/context/LanguageContext";
@@ -192,12 +193,16 @@ export default function HomePage() {
 
                   <AnimatedText as="div">
                     <div className="flex flex-col sm:flex-row gap-4 mb-12">
-                      <Button variant="primary" size="md" className="px-6 py-3 shadow-sm font-medium w-full sm:w-auto">
-                        {t('hero.cta.consultation')}
-                      </Button>
-                      <Button variant="outline" size="md" className="px-6 py-3 border-green-500 text-green-500 hover:bg-green-500/5 font-medium w-full sm:w-auto">
-                        {t('hero.cta.portfolio')}
-                      </Button>
+                      <Link href="/about">
+                        <Button variant="primary" size="md" className="px-6 py-3 shadow-sm font-medium w-full sm:w-auto">
+                          {t('hero.cta.consultation')}
+                        </Button>
+                      </Link>
+                      <Link href="/portfolio">
+                        <Button variant="outline" size="md" className="px-6 py-3 border-green-500 text-green-500 hover:bg-green-500/5 font-medium w-full sm:w-auto">
+                          {t('hero.cta.portfolio')}
+                        </Button>
+                      </Link>
                     </div>
                   </AnimatedText>
                 </div>
