@@ -67,7 +67,7 @@ export default function AdminPortfolioPage() {
                 id: item.id,
                 title: item.title,
                 description: item.description,
-                clientName: item.clientName || item.client || 'Unknown Client',
+                clientName: item.clientName || item.client || '',
                 featuredImage: item.featuredImage || '/images/placeholder.jpg',
                 published: item.published === true || item.published === 1 || item.published === "1",
                 featured: item.featured === true || item.featured === 1 || item.featured === "1",

@@ -76,39 +76,8 @@ const Portfolio: React.FC = () => {
         console.error('Error fetching portfolio:', err);
         setError(err instanceof Error ? err.message : 'Failed to load portfolio');
 
-        // Fallback data untuk development/testing
-        setPortfolioItems([
-          {
-            id: 1,
-            slug: 'bajra-media-website',
-            title: 'Bajra Media Corporate Website',
-            excerpt: 'Modern corporate website with responsive design and powerful CMS features for easy content management.',
-            featured_image: '/images/team-meeting.jpg',
-            categoryName: 'Website',
-            published: true,
-            featured: true
-          },
-          {
-            id: 2,
-            slug: 'mobile-app-project',
-            title: 'E-Learning Mobile App',
-            excerpt: 'Interactive learning platform with gamification features and real-time progress tracking.',
-            featured_image: '/images/team-meeting-alt.jpg',
-            categoryName: 'Mobile App',
-            published: true,
-            featured: false
-          },
-          {
-            id: 3,
-            slug: 'ecommerce-platform',
-            title: 'E-Commerce Platform',
-            excerpt: 'Full-featured e-commerce solution with inventory management and payment integration.',
-            featured_image: '/images/team-meeting-2.jpg',
-            categoryName: 'Website',
-            published: true,
-            featured: true
-          }
-        ]);
+        // No fallback data - show real error to user
+        setPortfolioItems([]);
       } finally {
         setLoading(false);
       }

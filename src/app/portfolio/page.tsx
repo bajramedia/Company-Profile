@@ -73,7 +73,7 @@ export default function PortfolioPage() {
                 content: item.content,
                 featuredImage: item.featuredImage || '/images/placeholder.jpg',
                 images: item.images || [],
-                clientName: item.clientName || 'Unknown Client',
+                clientName: item.clientName || '',
                 projectUrl: item.projectUrl || '',
                 githubUrl: item.githubUrl || '',
                 featured: Boolean(item.featured),
