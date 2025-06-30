@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useState, useEffect } from 'react';
-import { Button, Heading, Text, Logo, LanguageSwitcher, AnimatedText, SupportedBy, CTA, Blog, Team, WhatsAppChat, Navbar, Home } from "@/components";
+import { Button, Heading, Text, Logo, LanguageSwitcher, AnimatedText, SupportedBy, CTA, Blog, Portfolio, Team, WhatsAppChat, Navbar, Home } from "@/components";
 import { useLanguage } from "@/context/LanguageContext";
 import { usePublicSettings } from "@/hooks/useSettings";
 import EnhancedSEO from '@/components/EnhancedSEO';
@@ -204,6 +204,9 @@ export default function HomePage() {
               </div>
             </div>
           </section>
+
+          {/* Portfolio Section */}
+          <Portfolio />
 
           {/* Blog Section */}
           <Blog />
