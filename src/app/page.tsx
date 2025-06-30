@@ -136,7 +136,7 @@ export default function HomePage() {
         {/* Main Content */}
         <main>
           {/* Hero Section - Enhanced */}
-          <section className="relative min-h-screen bg-gradient-to-br from-white via-gray-50 to-green-50/30 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 transition-all duration-300 pt-24">
+          <section className="relative min-h-screen bg-gradient-to-br from-white via-gray-50 to-green-50/30 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 transition-all duration-300 pt-20">
             {/* Background Image */}
             <div className="absolute inset-0 z-0">
               <Image
@@ -145,9 +145,9 @@ export default function HomePage() {
                 fill
                 style={{ objectFit: 'cover', objectPosition: 'center' }}
                 priority
-                className="opacity-20 dark:opacity-15"
+                className="opacity-10 dark:opacity-5"
               />
-              <div className="absolute inset-0 bg-white/70 dark:bg-gray-900/70"></div>
+              <div className="absolute inset-0 bg-white/85 dark:bg-gray-900/85"></div>
             </div>
 
             {/* Animated background elements */}
@@ -163,8 +163,7 @@ export default function HomePage() {
                 {/* Text Content */}
                 <div className="lg:col-span-7 order-2 lg:order-1">
                   <AnimatedText as="div">
-                    <div className="mb-6 flex items-center space-x-3">
-                      <div className="w-16 h-0.5 bg-green-500"></div>
+                    <div className="mb-6">
                       <span className="text-green-500 font-semibold text-sm tracking-wider uppercase">
                         {language === 'id' ? 'Solusi Digital Terdepan' : 'Leading Digital Solutions'}
                       </span>
@@ -278,17 +277,6 @@ export default function HomePage() {
                       {/* Decorative Elements */}
                       <div className="absolute -top-6 -right-6 w-32 h-32 bg-green-500/10 rounded-full blur-2xl"></div>
                       <div className="absolute -bottom-6 -left-6 w-40 h-40 bg-blue-500/10 rounded-full blur-2xl"></div>
-
-                      {/* Small floating images */}
-                      <div className="absolute -top-4 -left-4 w-20 h-20 rounded-2xl overflow-hidden shadow-lg hidden lg:block">
-                        <Image
-                          src="/images/logo.png"
-                          alt="Bajramedia Logo"
-                          fill
-                          style={{ objectFit: 'cover' }}
-                          className="rounded-2xl"
-                        />
-                      </div>
                     </div>
                   </AnimatedText>
                 </div>
@@ -313,7 +301,7 @@ export default function HomePage() {
                 {/* Text Content */}
                 <div>
                   <div className="mb-6 flex items-center space-x-2">
-                    <div className="w-12 h-0.5 bg-green-500"></div>
+                    
                     <span className="text-green-500 font-medium text-sm tracking-wider uppercase">
                       {language === 'id' ? 'Tentang Kami' : 'About Us'}
                     </span>
@@ -408,11 +396,11 @@ export default function HomePage() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center mb-12">
                 <div className="mb-6 flex items-center justify-center space-x-2">
-                  <div className="w-12 h-0.5 bg-green-500"></div>
+                  
                   <span className="text-green-500 font-medium text-sm tracking-wider uppercase">
                     {language === 'id' ? 'Testimoni Klien' : 'Client Testimonials'}
                   </span>
-                  <div className="w-12 h-0.5 bg-green-500"></div>
+                  
                 </div>
 
                 <Heading variant="h2" color="foreground" className="mb-4 text-[28px] md:text-[32px] lg:text-[36px] font-extrabold">
@@ -574,4 +562,5 @@ export default function HomePage() {
     </>
   );
 }
+
 
