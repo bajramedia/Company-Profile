@@ -20,7 +20,6 @@ interface DashboardStats {
   tags: number;
   portfolio: number;
   partners: number;
-  partners: number;
 }
 
 export default function AdminDashboard() {
@@ -151,6 +150,21 @@ export default function AdminDashboard() {
             Manage portfolio
           </Link>
         </div>
+
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow border border-gray-200 dark:border-gray-700">
+          <div className="flex items-center">
+            <div className="p-3 rounded-full bg-pink-100 dark:bg-pink-900/30 mr-4">
+              <FiUsers className="h-8 w-8 text-pink-500 dark:text-pink-400" />
+            </div>
+            <div>
+              <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Partners</p>
+              <p className="text-2xl font-semibold text-gray-900 dark:text-white">{stats.partners}</p>
+            </div>
+          </div>
+          <Link href="/admin/partners" className="block mt-4 text-sm text-pink-500 dark:text-pink-400 hover:underline">
+            Manage partners
+          </Link>
+        </div>
       </div>
 
       {/* Quick Actions */}
@@ -189,6 +203,13 @@ export default function AdminDashboard() {
             <div className="flex flex-col items-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
               <FiBriefcase className="h-8 w-8 text-primary mb-2" />
               <span className="text-sm font-medium text-center text-gray-900 dark:text-white">New Portfolio</span>
+            </div>
+          </Link>
+
+          <Link href="/admin/partners/new">
+            <div className="flex flex-col items-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
+              <FiUsers className="h-8 w-8 text-primary mb-2" />
+              <span className="text-sm font-medium text-center text-gray-900 dark:text-white">New Partner</span>
             </div>
           </Link>
         </div>
@@ -278,5 +299,8 @@ export default function AdminDashboard() {
     </div>
   );
 }
+
+
+
 
 
