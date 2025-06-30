@@ -480,43 +480,67 @@ function handleGet($pdo, $endpoint, $id) {
             case 'stats':
                 $stats = [];
                 
-                // Original stats
-                try {
-                    $stmt = $pdo->query("SELECT COUNT(*) as count FROM post WHERE published = 1");
-                    $stats['totalPosts'] = $stmt->fetch()['count'];
-                } catch (Exception $e) {
-                    $stats['totalPosts'] = 0;
-                }
-                
-                try {
-                    $stmt = $pdo->query("SELECT COUNT(*) as count FROM portfolio WHERE published = 1");
-                    $stats['totalPortfolio'] = $stmt->fetch()['count'];
-                } catch (Exception $e) {
-                    $stats['totalPortfolio'] = 0;
-                }
-                
-                try {
-                    $stmt = $pdo->query("SELECT COUNT(*) as count FROM postview");
-                    $stats['totalViews'] = $stmt->fetch()['count'];
-                } catch (Exception $e) {
-                    $stats['totalViews'] = 0;
-                }
-                
-                // New stats for new tables
+                // Posts count (prioritize new table, fallback to old)
                 try {
                     $stmt = $pdo->query("SELECT COUNT(*) as count FROM blog_posts WHERE is_published = 1");
-                    $stats['totalBlogPosts'] = $stmt->fetch()['count'];
+                    $posts_count = $stmt->fetch()['count'];
                 } catch (Exception $e) {
-                    $stats['totalBlogPosts'] = 0;
+                    try {
+                        $stmt = $pdo->query("SELECT COUNT(*) as count FROM post WHERE published = 1");
+                        $posts_count = $stmt->fetch()['count'];
+                    } catch (Exception $e2) {
+                        $posts_count = 0;
+                    }
                 }
+                $stats['posts'] = $posts_count;
                 
+                // Portfolio count (prioritize new table, fallback to old)
                 try {
                     $stmt = $pdo->query("SELECT COUNT(*) as count FROM portfolio_items WHERE is_published = 1");
-                    $stats['totalPortfolioItems'] = $stmt->fetch()['count'];
+                    $portfolio_count = $stmt->fetch()['count'];
                 } catch (Exception $e) {
-                    $stats['totalPortfolioItems'] = 0;
+                    try {
+                        $stmt = $pdo->query("SELECT COUNT(*) as count FROM portfolio WHERE published = 1");
+                        $portfolio_count = $stmt->fetch()['count'];
+                    } catch (Exception $e2) {
+                        $portfolio_count = 0;
+                    }
                 }
+                $stats['portfolio'] = $portfolio_count;
                 
+                // Authors count (from authors table or team_members)
+                try {
+                    $stmt = $pdo->query("SELECT COUNT(*) as count FROM authors WHERE is_active = 1");
+                    $authors_count = $stmt->fetch()['count'];
+                } catch (Exception $e) {
+                    try {
+                        $stmt = $pdo->query("SELECT COUNT(*) as count FROM team_members WHERE is_active = 1");
+                        $authors_count = $stmt->fetch()['count'];
+                    } catch (Exception $e2) {
+                        $authors_count = 0;
+                    }
+                }
+                $stats['authors'] = $authors_count;
+                
+                // Categories count
+                try {
+                    $stmt = $pdo->query("SELECT COUNT(*) as count FROM categories WHERE is_active = 1");
+                    $categories_count = $stmt->fetch()['count'];
+                } catch (Exception $e) {
+                    $categories_count = 0;
+                }
+                $stats['categories'] = $categories_count;
+                
+                // Tags count
+                try {
+                    $stmt = $pdo->query("SELECT COUNT(*) as count FROM tags WHERE is_active = 1");
+                    $tags_count = $stmt->fetch()['count'];
+                } catch (Exception $e) {
+                    $tags_count = 0;
+                }
+                $stats['tags'] = $tags_count;
+                
+                // Additional stats for reference
                 try {
                     $stmt = $pdo->query("SELECT COUNT(*) as count FROM team_members WHERE is_active = 1");
                     $stats['totalTeamMembers'] = $stmt->fetch()['count'];
