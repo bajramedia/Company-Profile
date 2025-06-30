@@ -29,20 +29,14 @@ const SupportedBy: React.FC = () => {
         if (response.ok) {
           const data = await response.json();
           setPartners(data || []);
+        } else {
+          // API failed, set empty partners array
+          setPartners([]);
         }
       } catch (error) {
         console.error('Error fetching partners:', error);
-        // Fallback to demo partners if API fails
-        setPartners([
-          {
-            id: '1',
-            name: 'INBIS Primakara',
-            logo: '/images/inbis-primakara-logo.svg',
-            website: '#',
-            type: 'Educational Partner',
-            description: 'Leading educational institution partner'
-          }
-        ]);
+        // No fallback data - set empty array instead
+        setPartners([]);
       } finally {
         setLoading(false);
       }

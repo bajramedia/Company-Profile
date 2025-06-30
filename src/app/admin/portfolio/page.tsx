@@ -88,16 +88,7 @@ export default function AdminPortfolioPage() {
                 }))
             ];
 
-            // Jika tidak ada categories dari API, pakai fallback
-            if (categoriesData.length === 0) {
-                transformedCategories.push(
-                    { value: 'web-development', label: 'Web Development' },
-                    { value: 'aset-game-development', label: 'Aset Game Development' },
-                    { value: 'uiux-design', label: 'UI/UX Design' },
-                    { value: 'sistem-development', label: 'Sistem Development' },
-                    { value: 'sosial-media-management', label: 'Social Media Management' }
-                );
-            }
+            // No fallback categories - use only what's available from API
 
             setPortfolios(transformedPortfolios);
             setCategories(transformedCategories);
