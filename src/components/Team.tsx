@@ -93,7 +93,7 @@ const Team = () => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 relative z-10">
+      <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 relative z-10">
         {/* Section Header - Tokopedia Style */}
         <div className="text-center mb-14">
           <AnimatedText as="div">

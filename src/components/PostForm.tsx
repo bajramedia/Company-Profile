@@ -394,11 +394,11 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
         )}
 
         {previewMode ? (
-          <div className="max-w-4xl mx-auto">
+          <div className="w-[90%] mx-auto">
             {renderPreview()}
           </div>
         ) : (
-          <div className="max-w-6xl mx-auto">
+          <div className="w-[95%] mx-auto">
             {/* Tab Navigation */}
             <div className="bg-white dark:bg-gray-800 rounded-t-lg border-b border-gray-200 dark:border-gray-700">
               <nav className="flex space-x-8 px-6">

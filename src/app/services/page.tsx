@@ -133,7 +133,7 @@ export default function ServicesPage() {
 
             {/* Breadcrumb */}
             <div className="pt-20 pb-6 bg-gray-50 dark:bg-gray-800 transition-colors duration-300">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+                <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8">
                     <nav className="flex items-center space-x-2 text-sm">
                         <Link href="/" className="text-gray-500 dark:text-gray-400 hover:text-primary transition-colors">
                             {t('nav.home') || 'Home'}
@@ -149,7 +149,7 @@ export default function ServicesPage() {
             {/* Main Content */}
             <main className="py-16">
                 {/* Hero Section */}
-                <section className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 mb-20">
+                <section className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 mb-20">
                     <div className="text-center">
                         <AnimatedText as="div">
                             <Heading variant="h1" color="foreground" className="mb-6 text-[32px] md:text-[40px] lg:text-[48px] font-bold" data-aos="fade-up">
@@ -171,7 +171,7 @@ export default function ServicesPage() {
                 </section>
 
                 {/* Services Grid */}
-                <section className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+                <section className="w-[95%] mx-auto px-4 sm:px-6 md:px-8">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {services.map((service, index) => (
                             <AnimatedText key={service.id} as="div">
@@ -223,7 +223,7 @@ export default function ServicesPage() {
                 </section>
 
                 {/* CTA Section */}
-                <section className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 mt-20">
+                <section className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 mt-20">
                     <div className="relative bg-gray-900 dark:bg-gray-800 rounded-3xl p-12 text-center text-white overflow-hidden" data-aos="zoom-in" data-aos-delay="400">
                         {/* Background Pattern */}
                         <div className="absolute inset-0 opacity-5 dark:opacity-10">

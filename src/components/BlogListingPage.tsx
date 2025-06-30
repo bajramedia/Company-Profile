@@ -263,12 +263,12 @@ export default function BlogListingPage() {
         {/* Main Content */}
         <div className="pt-24 pb-16">
           {/* Breadcrumb */}
-          <div className="max-w-7xl mx-auto px-4 pt-6">
+          <div className="w-[95%] mx-auto px-4 pt-6">
             <Breadcrumb />
           </div>
 
           {/* Modern Blog Header */}
-          <div className="max-w-7xl mx-auto px-4">
+          <div className="w-[95%] mx-auto px-4">
             <div className="text-center max-w-3xl mx-auto mb-12">
               <div className="inline-block bg-primary/10 dark:bg-primary/20 px-4 py-1.5 rounded-full mb-4">
                 <span className="text-sm font-medium text-primary">{t('blog.badge')}</span>

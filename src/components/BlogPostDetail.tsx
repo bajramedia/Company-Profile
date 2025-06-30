@@ -334,7 +334,7 @@ const BlogPostDetail: React.FC<BlogPostDetailProps> = ({ post }) => {
         </div>
 
         {/* Main article content */}
-        <article className="max-w-4xl mx-auto px-4 py-12">
+        <article className="w-[90%] mx-auto px-4 py-12">
           {/* Back button */}
           <Link href="/blog" className="inline-flex items-center text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary mb-8 transition-colors duration-300">
             <FiArrowLeft className="mr-2" /> Back to all posts
@@ -528,7 +528,7 @@ const BlogPostDetail: React.FC<BlogPostDetailProps> = ({ post }) => {
         {/* Related posts */}
         {relatedPosts.length > 0 && (
           <section className="bg-gray-50 dark:bg-gray-800 py-12">
-            <div className="max-w-6xl mx-auto px-4">
+            <div className="w-[95%] mx-auto px-4">
               <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-8">Related Articles</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {relatedPosts.map(relatedPost => (

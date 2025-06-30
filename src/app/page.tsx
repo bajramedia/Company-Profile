@@ -157,7 +157,7 @@ export default function HomePage() {
             </div>
 
             {/* Content Container */}
-            <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
+            <div className="relative z-10 w-[95%] mx-auto px-4 sm:px-6 lg:px-8 h-full">
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center min-h-screen py-20">
 
                 {/* Text Content */}
@@ -296,12 +296,12 @@ export default function HomePage() {
 
           {/* About Section */}
           <section className="py-16 bg-white dark:bg-gray-900 transition-colors duration-300">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="w-[95%] mx-auto px-4 sm:px-6 lg:px-8">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                 {/* Text Content */}
                 <div>
                   <div className="mb-6 flex items-center space-x-2">
-                    
+
                     <span className="text-green-500 font-medium text-sm tracking-wider uppercase">
                       {language === 'id' ? 'Tentang Kami' : 'About Us'}
                     </span>
@@ -393,14 +393,14 @@ export default function HomePage() {
 
           {/* Testimonials Section */}
           <section className="py-16 bg-gray-50 dark:bg-gray-800 transition-colors duration-300">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="w-[95%] mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center mb-12">
                 <div className="mb-6 flex items-center justify-center space-x-2">
-                  
+
                   <span className="text-green-500 font-medium text-sm tracking-wider uppercase">
                     {language === 'id' ? 'Testimoni Klien' : 'Client Testimonials'}
                   </span>
-                  
+
                 </div>
 
                 <Heading variant="h2" color="foreground" className="mb-4 text-[28px] md:text-[32px] lg:text-[36px] font-extrabold">

@@ -35,7 +35,7 @@ const Testimonials: React.FC = () => {
   ];
   return (
     <section className="py-16 md:py-24 bg-slate-50 dark:bg-gray-900 relative overflow-hidden transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+      <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8">
         <div className="text-center mb-14">
           <AnimatedText as="div">
             <Heading variant="h1" className="text-2xl md:text-3xl font-bold mb-3">

@@ -51,7 +51,7 @@ export default function Footer() {
                 }}></div>
             </div>
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 relative z-10">
+            <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 relative z-10">
                 {/* Partners Section */}
                 {!partnersLoading && partners.length > 0 && (
                     <div className="pt-12 pb-8 border-b border-gray-800">

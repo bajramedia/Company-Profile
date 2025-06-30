@@ -57,7 +57,7 @@ export default function NotFound() {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 transition-colors duration-300">
       {/* Header */}
       <header className="relative z-10 py-6">
-        <div className="max-w-7xl mx-auto flex justify-between items-center px-4 sm:px-6 md:px-8">
+        <div className="w-[95%] mx-auto flex justify-between items-center px-4 sm:px-6 md:px-8">
           <div className="flex items-center">
             <Logo size="md" />
           </div>
@@ -81,7 +81,7 @@ export default function NotFound() {
           <div className="absolute top-1/2 right-1/3 w-32 h-32 bg-purple-500/5 dark:bg-purple-500/10 rounded-full blur-xl animate-pulse delay-500"></div>
         </div>
 
-        <div className="max-w-4xl mx-auto text-center relative">
+        <div className="w-[90%] mx-auto text-center relative">
           {/* 404 Illustration */}
           <div className="mb-8 relative">
             <div className="text-[120px] md:text-[180px] font-bold text-gray-200 dark:text-gray-700 leading-none">

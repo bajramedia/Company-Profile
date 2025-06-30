@@ -95,8 +95,8 @@ export default function WebDevelopmentPage() {
 
             {/* Breadcrumb */}
             <div className="pt-20 pb-6 bg-gray-50 dark:bg-gray-800 transition-colors duration-300">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-                    <nav className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 mb-8" data-aos="fade-right">
+                <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8">
+                    <nav className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 mb-8" data-aos="fade-right">
                         <div className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
                             <Link href="/services" className="hover:text-green-500 transition-colors duration-300">
                                 Services
@@ -112,7 +112,7 @@ export default function WebDevelopmentPage() {
 
             <main className="py-16">
                 {/* Hero Section */}
-                <section className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 mb-20">
+                <section className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 mb-20">
                     <div className="text-center">
                         <AnimatedText as="div">
                             <Heading
@@ -138,7 +138,7 @@ export default function WebDevelopmentPage() {
                 </section>
 
                 {/* Technologies */}
-                <section className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 mb-20">
+                <section className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 mb-20">
                     <div className="text-center mb-12">
                         <h2
                             className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4"
@@ -208,7 +208,7 @@ export default function WebDevelopmentPage() {
                 </section>
 
                 {/* Pricing Section */}
-                <section className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 mb-20">
+                <section className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 mb-20">
                     <div className="text-center mb-12">
                         <h2
                             className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4"
@@ -267,7 +267,7 @@ export default function WebDevelopmentPage() {
                 </section>
 
                 {/* CTA Section */}
-                <section className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+                <section className="w-[95%] mx-auto px-4 sm:px-6 md:px-8">
                     <div
                         className="relative bg-gray-900 dark:bg-gray-800 rounded-3xl p-12 text-center text-white overflow-hidden"
                         data-aos="zoom-in"

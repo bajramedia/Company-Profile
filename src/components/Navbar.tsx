@@ -52,7 +52,7 @@ export default function Navbar({
 
     return (
         <header className={`fixed top-0 left-0 right-0 z-50 py-3 md:py-4 transition-colors duration-300 border-b border-gray-100/50 dark:border-gray-700/50 ${getNavbarStyles()} ${className}`}>
-            <div className="max-w-7xl mx-auto flex justify-between items-center px-4 sm:px-6 md:px-8">
+            <div className="w-[95%] mx-auto flex justify-between items-center px-4 sm:px-6 md:px-8">
                 <div className="flex items-center">
                     <Logo size="md" />
                 </div>

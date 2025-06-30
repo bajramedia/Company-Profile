@@ -183,7 +183,7 @@ const Blog: React.FC<BlogProps> = ({ className = '' }) => {
   }, []);
   return (
     <section className={`py-16 md:py-24 bg-white dark:bg-gray-900 transition-colors duration-300 ${className}`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+      <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8">
         {/* Section Header */}
         <div className="text-center mb-12 md:mb-16">
           <AnimatedText as="div">

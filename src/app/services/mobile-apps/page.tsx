@@ -98,7 +98,7 @@ export default function MobileAppsPage() {
         <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
             {/* Header */}
             <header className="fixed top-0 left-0 right-0 bg-white/95 dark:bg-gray-800/95 shadow-sm z-50 py-3 md:py-4 backdrop-blur-sm">
-                <div className="max-w-7xl mx-auto flex justify-between items-center px-4 sm:px-6 md:px-8">
+                <div className="w-[95%] mx-auto flex justify-between items-center px-4 sm:px-6 md:px-8">
                     <Logo size="md" />
                     <div className="hidden md:flex items-center space-x-7">
                         <nav className="flex space-x-6 md:space-x-8">
@@ -187,8 +187,8 @@ export default function MobileAppsPage() {
 
             {/* Breadcrumb */}
             <div className="pt-20 pb-6 bg-gray-50 dark:bg-gray-800">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-                    <nav className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 mb-8" data-aos="fade-right">
+                <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8">
+                    <nav className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 mb-8" data-aos="fade-right">
                         <div className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
                             <Link href="/services" className="hover:text-green-500 transition-colors duration-300">
                                 Services
@@ -204,7 +204,7 @@ export default function MobileAppsPage() {
 
             <main className="py-16">
                 {/* Hero Section */}
-                <section className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 mb-20">
+                <section className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 mb-20">
                     <div className="text-center">
                         <Heading
                             variant="h1"
@@ -240,7 +240,7 @@ export default function MobileAppsPage() {
                 </section>
 
                 {/* Features Section */}
-                <section className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 mb-20">
+                <section className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 mb-20">
                     <div className="text-center mb-12">
                         <h2
                             className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4"
@@ -290,7 +290,7 @@ export default function MobileAppsPage() {
                 </section>
 
                 {/* Pricing Section */}
-                <section className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 mb-20">
+                <section className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 mb-20">
                     <div className="text-center mb-12">
                         <h2
                             className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4"
@@ -307,7 +307,7 @@ export default function MobileAppsPage() {
                         </p>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-[90%] mx-auto">
                         {pricingPlans.map((plan, index) => (
                             <div
                                 key={plan.name}
@@ -346,7 +346,7 @@ export default function MobileAppsPage() {
                 </section>
 
                 {/* CTA Section */}
-                <section className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+                <section className="w-[95%] mx-auto px-4 sm:px-6 md:px-8">
                     <div
                         className="relative bg-gray-900 dark:bg-gray-800 rounded-3xl p-12 text-center text-white overflow-hidden"
                         data-aos="zoom-in"

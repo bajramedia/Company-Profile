@@ -53,7 +53,7 @@ const CTA: React.FC<CTAProps> = ({ className = '' }) => {
         </div>
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 md:px-8">        <div className="flex flex-col lg:flex-row items-center justify-between gap-10">
+      <div className="relative z-10 w-[95%] mx-auto px-4 sm:px-6 md:px-8">        <div className="flex flex-col lg:flex-row items-center justify-between gap-10">
           <div className="w-full lg:w-2/3">
             <AnimatedText as="div">
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white dark:text-gray-100 mb-4 transition-colors duration-300">

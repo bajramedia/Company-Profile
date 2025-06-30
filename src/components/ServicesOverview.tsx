@@ -99,7 +99,7 @@ export default function ServicesOverview() {
 
   return (
     <section className="py-16 bg-white dark:bg-gray-900 transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-[95%] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <div className="mb-6">
             <span className="text-green-500 font-medium text-sm tracking-wider uppercase">

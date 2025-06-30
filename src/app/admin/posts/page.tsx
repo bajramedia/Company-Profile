@@ -110,14 +110,14 @@ function AdminPostsContent() {
 
   if (loading && posts.length === 0) {
     return (
-      <div className="container mx-auto px-4 py-8">
+      <div className="w-[95%] mx-auto px-4 py-8">
         <div className="text-center text-gray-500 dark:text-gray-400">Loading...</div>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="w-[95%] mx-auto px-4 py-8">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Manage Blog Posts</h1>
         <Link href="/admin/posts/new">

@@ -266,7 +266,7 @@ export default function AboutPage() {
 
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 bg-white/95 dark:bg-gray-800/95 shadow-sm z-50 py-3 md:py-4 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto flex justify-between items-center px-4 sm:px-6 md:px-8">
+        <div className="w-[95%] mx-auto flex justify-between items-center px-4 sm:px-6 md:px-8">
           <Logo size="md" />
 
           {/* Desktop Menu */}
@@ -509,7 +509,7 @@ export default function AboutPage() {
 
       {/* Breadcrumb */}
       <div className="pt-20 pb-6 bg-gray-50 dark:bg-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+        <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8">
           <nav className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400" data-aos="fade-right">
             <Link href="/" className="hover:text-primary transition-colors">
               {t('nav.home')}
@@ -525,7 +525,7 @@ export default function AboutPage() {
       <main>
         {/* Hero Section */}
         <section className="py-16 md:py-24">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+          <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8">
             <div className="text-center mb-16" data-aos="fade-up">
               <Heading variant="h1" className="text-[32px] md:text-[44px] lg:text-[52px] font-bold mb-6">
                 {t('about.title.main')} <span className="text-primary">{t('about.title.highlight')}</span>
@@ -554,7 +554,7 @@ export default function AboutPage() {
 
         {/* Background Story */}
         <section className="py-16 bg-gray-50 dark:bg-gray-800">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 md:px-8">
+          <div className="w-[90%] mx-auto px-4 sm:px-6 md:px-8">
             <div className="text-center mb-12" data-aos="fade-up">
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
                 {t('about.background.title')}
@@ -578,7 +578,7 @@ export default function AboutPage() {
 
         {/* Vision & Mission */}
         <section className="py-16">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+          <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
               {/* Vision */}
               <div className="bg-white dark:bg-gray-800/80 dark:backdrop-blur-sm dark:border dark:border-gray-700/50 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300" data-aos="fade-right">
@@ -631,7 +631,7 @@ export default function AboutPage() {
 
         {/* Our Team */}
         <section className="py-16 bg-gray-50 dark:bg-gray-800">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+          <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8">
             <div className="text-center mb-16" data-aos="fade-up">
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
                 {t('about.team.title')} <span className="text-primary">{t('about.team.titleHighlight')}</span>
@@ -810,7 +810,7 @@ export default function AboutPage() {
 
         {/* Our Partners */}
         <section className="py-16">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+          <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8">
             <div className="text-center mb-16" data-aos="fade-up">
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
                 {t('about.partners.title')} <span className="text-primary">{t('about.partners.titleHighlight')}</span>

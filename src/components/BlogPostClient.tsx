@@ -254,7 +254,7 @@ export default function BlogPostClient({ initialPost, slug }: BlogPostClientProp
     if (loading) {
         return (
             <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-24 pb-16 transition-colors duration-300">
-                <div className="max-w-4xl mx-auto px-4 sm:px-6 md:px-8">
+                <div className="w-[90%] mx-auto px-4 sm:px-6 md:px-8">
                     <div className="animate-pulse">
                         <div className="mb-5">
                             <div className="h-6 w-24 bg-gray-200 dark:bg-gray-700 rounded-full"></div>
@@ -284,7 +284,7 @@ export default function BlogPostClient({ initialPost, slug }: BlogPostClientProp
     if (!post) {
         return (
             <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-28 pb-16 transition-colors duration-300">
-                <div className="max-w-4xl mx-auto px-4 sm:px-6 md:px-8">
+                <div className="w-[90%] mx-auto px-4 sm:px-6 md:px-8">
                     <div className="text-center py-16 md:py-20">
                         <div className="mb-6 relative">
                             <div className="w-24 h-24 mx-auto bg-primary/5 dark:bg-primary/10 rounded-full flex items-center justify-center">
@@ -353,7 +353,7 @@ export default function BlogPostClient({ initialPost, slug }: BlogPostClientProp
                 </div>
             )}
 
-            <div className="max-w-4xl mx-auto px-4 sm:px-6 md:px-8">
+            <div className="w-[90%] mx-auto px-4 sm:px-6 md:px-8">
                 {/* Back to blog link */}
                 <div className="mb-6">
                     <Link

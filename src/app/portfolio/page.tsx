@@ -206,21 +206,21 @@ export default function PortfolioPage() {
             <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
                 <Navbar variant="solid" activeTab="portfolio" />
                 <div className="pt-20 pb-6 bg-gray-50 dark:bg-gray-800 transition-colors duration-300">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+                    <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8">
                         <div className="animate-pulse">
                             <div className="h-4 bg-gray-300 rounded w-1/4"></div>
                         </div>
                     </div>
                 </div>
                 <main className="py-16">
-                    <section className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 mb-20">
+                    <section className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 mb-20">
                         <div className="text-center animate-pulse">
                             <div className="h-12 bg-gray-300 rounded w-3/4 mx-auto mb-6"></div>
                             <div className="h-6 bg-gray-200 rounded w-1/2 mx-auto"></div>
                         </div>
                     </section>
                     <section className="py-16">
-                        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+                        <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8">
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                                 {[...Array(6)].map((_, i) => (
                                     <div key={i} className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-sm border border-gray-100 dark:border-gray-700 animate-pulse">
@@ -273,7 +273,7 @@ export default function PortfolioPage() {
 
             {/* Breadcrumb */}
             <div className="pt-20 pb-6 bg-gray-50 dark:bg-gray-800 transition-colors duration-300">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+                <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8">
                     <nav className="flex items-center space-x-2 text-sm">
                         <Link href="/" className="text-gray-500 dark:text-gray-400 hover:text-primary transition-colors">
                             {t('nav.home') || 'Home'}
@@ -289,7 +289,7 @@ export default function PortfolioPage() {
             {/* Main Content */}
             <main className="py-16">
                 {/* Hero Section */}
-                <section className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 mb-20">
+                <section className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 mb-20">
                     <div className="text-center">
                         <Heading
                             variant="h1"
@@ -316,7 +316,7 @@ export default function PortfolioPage() {
 
                 {/* Filter Categories */}
                 <section className="py-8 border-b border-gray-200 dark:border-gray-700">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+                    <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8">
                         <div className="flex flex-wrap justify-center gap-4" data-aos="fade-up">
                             {categories.map((category) => (
                                 <button
@@ -340,7 +340,7 @@ export default function PortfolioPage() {
 
                 {/* Portfolio Grid */}
                 <section className="py-16">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+                    <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8">
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                             {filteredItems.map((item, index) => (
                                 <article
@@ -477,7 +477,7 @@ export default function PortfolioPage() {
                 </section>
 
                 {/* CTA Section */}
-                <section className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 mt-20">
+                <section className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 mt-20">
                     <div
                         className="relative bg-gray-900 dark:bg-gray-800 rounded-3xl p-12 text-center text-white overflow-hidden"
                         data-aos="zoom-in"

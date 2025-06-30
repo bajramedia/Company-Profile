@@ -96,7 +96,7 @@ export default function PartnersAdminPage() {
     if (loading) {
         return (
             <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-8">
-                <div className="max-w-6xl mx-auto">
+                <div className="w-[95%] mx-auto">
                     <div className="animate-pulse">
                         <div className="h-8 bg-gray-300 dark:bg-gray-600 rounded mb-6"></div>
                         <div className="h-32 bg-gray-300 dark:bg-gray-600 rounded"></div>
@@ -108,7 +108,7 @@ export default function PartnersAdminPage() {
 
     return (
         <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-8">
-            <div className="max-w-6xl mx-auto">
+            <div className="w-[95%] mx-auto">
                 {/* Header */}
                 <div className="flex justify-between items-center mb-8">
                     <div>

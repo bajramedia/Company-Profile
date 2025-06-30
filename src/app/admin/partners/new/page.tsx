@@ -68,7 +68,7 @@ export default function NewPartnerPage() {
 
     return (
         <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-8">
-            <div className="max-w-4xl mx-auto">
+            <div className="w-[90%] mx-auto">
                 {/* Header */}
                 <div className="mb-8">
                     <div className="flex items-center space-x-4 mb-4">
