@@ -2,7 +2,7 @@ import React from 'react';
 
 interface HeadingProps {
   children: React.ReactNode;
-  variant: 'h1' | 'h4';
+  variant: 'h1' | 'h2' | 'h3' | 'h4';
   color?: 'primary' | 'secondary' | 'accent' | 'foreground' | 'muted' | 'success' | 'warning' | 'error';
   className?: string;
 }
@@ -14,9 +14,11 @@ const Heading: React.FC<HeadingProps> = ({
   className = '',
 }) => {
   const baseClasses = 'font-poppins font-bold transition-colors duration-300';
-  
+
   const variantClasses = {
     h1: 'text-4xl md:text-5xl lg:text-6xl leading-tight',
+    h2: 'text-2xl md:text-3xl lg:text-4xl leading-tight',
+    h3: 'text-xl md:text-2xl lg:text-3xl leading-relaxed',
     h4: 'text-lg md:text-xl lg:text-2xl leading-relaxed',
   };
 
