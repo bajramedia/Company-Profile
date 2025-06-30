@@ -204,7 +204,7 @@ export default function Navbar({
                             size="sm"
                             className="px-5 py-2 rounded-md font-medium shadow-sm hover:shadow-lg hover:bg-green-600 transition-all duration-300"
                         >
-                            {t('nav.contact')}
+                            <Link href="https://wa.me/6285739402436?text=Halo%20Bajramedia!%20Saya%20ingin%20berkonsultasi%20tentang%20layanan%20digital.%20Bisa%20dibantu?" target="_blank">{t('nav.contact')}</Link>
                         </Button>
                     </AnimatedText>
                 </div>
@@ -271,7 +271,7 @@ export default function Navbar({
                             className="w-full justify-center"
                             onClick={() => setIsMobileMenuOpen(false)}
                         >
-                            {t('nav.contact')}
+                            <Link href="https://wa.me/6285739402436?text=Halo%20Bajramedia!%20Saya%20ingin%20berkonsultasi%20tentang%20layanan%20digital.%20Bisa%20dibantu?" target="_blank">{t('nav.contact')}</Link>
                         </Button>
                     </div>
                 </div>
