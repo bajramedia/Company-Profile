@@ -1,13 +1,45 @@
 "use client";
 
 import Link from 'next/link';
+import Image from 'next/image';
+import { useState, useEffect } from 'react';
 import { Logo } from "@/components";
 import { useLanguage } from "@/context/LanguageContext";
 import { usePublicSettings } from "@/hooks/useSettings";
 
+interface Partner {
+    id: string;
+    name: string;
+    logo: string;
+    website: string;
+    type: string;
+    description: string;
+}
+
 export default function Footer() {
-    const { t } = useLanguage();
+    const { t, language } = useLanguage();
     const { settings: publicSettings, loading } = usePublicSettings();
+    const [partners, setPartners] = useState<Partner[]>([]);
+    const [partnersLoading, setPartnersLoading] = useState(true);
+
+    // Fetch partners from database
+    useEffect(() => {
+        const fetchPartners = async () => {
+            try {
+                const response = await fetch('/api/partners');
+                if (response.ok) {
+                    const data = await response.json();
+                    setPartners(data || []);
+                }
+            } catch (error) {
+                console.error('Error fetching partners:', error);
+            } finally {
+                setPartnersLoading(false);
+            }
+        };
+
+        fetchPartners();
+    }, []);
 
     return (
         <footer className="bg-gray-900 dark:bg-gray-950 text-white relative overflow-hidden transition-colors duration-300">
@@ -20,6 +52,53 @@ export default function Footer() {
             </div>
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 relative z-10">
+                {/* Partners Section */}
+                {!partnersLoading && partners.length > 0 && (
+                    <div className="pt-12 pb-8 border-b border-gray-800">
+                        <div className="text-center mb-8">
+                            <h3 className="text-xl font-bold text-white mb-2">
+                                {language === 'id' ? 'Partner Kami' : 'Our Partners'}
+                            </h3>
+                            <p className="text-gray-400 text-sm">
+                                {language === 'id'
+                                    ? 'Dipercaya oleh partner terbaik untuk memberikan solusi digital berkualitas'
+                                    : 'Trusted by the best partners to deliver quality digital solutions'}
+                            </p>
+                        </div>
+                        <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
+                            {partners.map((partner) => (
+                                <a
+                                    key={partner.id}
+                                    href={partner.website}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="group flex items-center justify-center p-4 rounded-lg bg-white/5 hover:bg-white/10 transition-all duration-300 hover:scale-105 min-w-[120px] h-16"
+                                    title={partner.description}
+                                >
+                                    <div className="relative w-full h-full flex items-center justify-center">
+                                        <Image
+                                            src={partner.logo}
+                                            alt={partner.name}
+                                            width={80}
+                                            height={40}
+                                            style={{ objectFit: 'contain' }}
+                                            className="max-w-full max-h-full filter grayscale group-hover:grayscale-0 transition-all duration-300 opacity-70 group-hover:opacity-100"
+                                            onError={(e) => {
+                                                const target = e.target as HTMLImageElement;
+                                                target.style.display = 'none';
+                                                const parent = target.parentElement;
+                                                if (parent) {
+                                                    parent.innerHTML = `<span class="text-white/70 group-hover:text-white font-medium text-sm transition-colors">${partner.name}</span>`;
+                                                }
+                                            }}
+                                        />
+                                    </div>
+                                </a>
+                            ))}
+                        </div>
+                    </div>
+                )}
+
                 {/* Main Footer Content */}
                 <div className="pt-16 pb-12">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
@@ -79,8 +158,6 @@ export default function Footer() {
                                             </svg>
                                         </a>
                                     )}
-
-
                                 </div>
                             </div>
                         </div>
