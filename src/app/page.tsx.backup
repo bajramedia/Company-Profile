@@ -136,7 +136,7 @@ export default function HomePage() {
         {/* Main Content */}
         <main>
           {/* Hero Section - Enhanced */}
-          <section className="relative min-h-screen bg-gradient-to-br from-white via-gray-50 to-green-50/30 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 transition-all duration-300 pt-24">
+          <section className="relative min-h-screen bg-gradient-to-br from-white via-gray-50 to-green-50/30 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 transition-all duration-300 pt-20">
             {/* Background Image */}
             <div className="absolute inset-0 z-0">
               <Image
@@ -145,9 +145,9 @@ export default function HomePage() {
                 fill
                 style={{ objectFit: 'cover', objectPosition: 'center' }}
                 priority
-                className="opacity-20 dark:opacity-15"
+                className="opacity-10 dark:opacity-5"
               />
-              <div className="absolute inset-0 bg-white/70 dark:bg-gray-900/70"></div>
+              <div className="absolute inset-0 bg-white/85 dark:bg-gray-900/85"></div>
             </div>
 
             {/* Animated background elements */}
@@ -237,35 +237,25 @@ export default function HomePage() {
                   <AnimatedText as="div">
                     <div className="relative">
                       {/* Main Image Container */}
-                      <div className="relative w-full h-[450px] md:h-[550px] lg:h-[650px] rounded-3xl overflow-hidden shadow-2xl bg-gradient-to-br from-green-500/10 to-blue-500/10">
-                        <div className="absolute inset-0">
-                          <Image
-                            src="/images/team-meeting-2.jpg"
-                            alt={language === 'id' ? 'Tim Bajramedia - Profesional Digital Agency' : 'Bajramedia Team - Professional Digital Agency'}
-                            fill
-                            style={{ objectFit: 'cover', objectPosition: 'center' }}
-                            priority
-                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 40vw"
-                            className="rounded-3xl transform hover:scale-105 transition-transform duration-700"
-                            onError={(e) => {
-                              // Multiple fallback images
-                              const target = e.target as HTMLImageElement;
-                              if (target.src.includes('team-meeting-2.jpg')) {
-                                target.src = '/images/team-meeting.jpg';
-                              } else if (target.src.includes('team-meeting.jpg')) {
-                                target.src = '/images/team-meeting-alt.jpg';
-                              } else if (target.src.includes('team-meeting-alt.jpg')) {
-                                target.src = '/images/team.jpg';
-                              }
-                            }}
-                          />
-                        </div>
-
+                      <div className="relative w-full h-[400px] md:h-[500px] lg:h-[600px] rounded-3xl overflow-hidden shadow-2xl bg-gradient-to-br from-green-500/10 to-blue-500/10">
+                        <Image
+                          src="/images/team-meeting-2.jpg"
+                          alt={language === 'id' ? 'Tim Bajramedia - Profesional Digital Agency' : 'Bajramedia Team - Professional Digital Agency'}
+                          fill
+                          style={{ objectFit: 'cover', objectPosition: 'center' }}
+                          priority
+                          className="rounded-3xl transform hover:scale-105 transition-transform duration-700"
+                          onError={(e) => {
+                            // Fallback to alternative image
+                            const target = e.target as HTMLImageElement;
+                            target.src = '/images/team-meeting.jpg';
+                          }}
+                        />
                         {/* Gradient Overlay */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent rounded-3xl"></div>
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent rounded-3xl"></div>
 
                         {/* Floating Badge */}
-                        <div className="absolute top-6 left-6 bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm rounded-xl px-4 py-3 shadow-lg">
+                        <div className="absolute top-6 left-6 bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm rounded-xl px-4 py-2 shadow-lg">
                           <div className="flex items-center space-x-2">
                             <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
                             <span className="text-sm font-semibold text-gray-900 dark:text-white">
