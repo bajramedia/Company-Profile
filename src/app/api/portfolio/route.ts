@@ -27,11 +27,26 @@ export async function GET(request: NextRequest) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     
-    const portfolios = await response.json();
-    console.log('Portfolio API: Database success, items:', Array.isArray(portfolios) ? portfolios.length : 'Not an array');
+    const rawData = await response.json();
+    console.log('Portfolio API: Raw response:', JSON.stringify(rawData, null, 2));
     
-    // Handle both array response (direct from API bridge) and object response
-    const portfolioArray = Array.isArray(portfolios) ? portfolios : (portfolios.portfolios || []);
+    // Handle different response formats:
+    // 1. PowerShell format: { value: [...], Count: 1 }
+    // 2. Direct array: [...]
+    // 3. Object with portfolios key: { portfolios: [...] }
+    let portfolioArray = [];
+    if (rawData.value && Array.isArray(rawData.value)) {
+      portfolioArray = rawData.value;
+    } else if (Array.isArray(rawData)) {
+      portfolioArray = rawData;
+    } else if (rawData.portfolios && Array.isArray(rawData.portfolios)) {
+      portfolioArray = rawData.portfolios;
+    } else {
+      console.error('Portfolio API: Unexpected response format:', rawData);
+      portfolioArray = [];
+    }
+    
+    console.log('Portfolio API: Extracted array length:', portfolioArray.length);
     
     // Apply filters on frontend since API bridge doesn't support all filtering yet
     let filteredPortfolios = portfolioArray;
@@ -68,7 +83,7 @@ export async function GET(request: NextRequest) {
 
     const formattedPortfolios = filteredPortfolios.map((portfolio: any) => ({
       ...portfolio,
-      images: portfolio.images ? JSON.parse(portfolio.images) : [],
+      images: portfolio.images ? (typeof portfolio.images === 'string' ? JSON.parse(portfolio.images) : portfolio.images) : [],
       featured: portfolio.featured === 1 || portfolio.featured === "1" || portfolio.featured === true,
       published: portfolio.published === 1 || portfolio.published === "1" || portfolio.published === true,
       category: {
@@ -78,8 +93,14 @@ export async function GET(request: NextRequest) {
         icon: portfolio.categoryIcon || ''
       },
       tags: portfolio.tags || [],
-      viewCount: portfolio.views || 0
+      viewCount: portfolio.views || 0,
+      // Map untuk compatibility dengan Portfolio component
+      featured_image: portfolio.featuredImage,
+      excerpt: portfolio.description,
+      client_name: portfolio.clientName
     }));
+
+    console.log('Portfolio API: Final formatted portfolios:', formattedPortfolios.length);
 
     return NextResponse.json({
       portfolios: formattedPortfolios,
