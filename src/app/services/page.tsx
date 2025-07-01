@@ -210,7 +210,7 @@ export default function ServicesPage() {
 
                                         {/* CTA */}
                                         <div className="flex items-center text-primary font-medium group-hover:gap-3 transition-all duration-300 mt-auto">
-                                            <span>Pelajari Lebih Lanjut</span>
+                                            <span>{language === 'id' ? 'Pelajari Lebih Lanjut' : 'Learn More'}</span>
                                             <svg className="w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
                                             </svg>
@@ -240,17 +240,20 @@ export default function ServicesPage() {
 
                         <div className="relative z-10">
                             <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">
-                                Siap Memulai Proyek Impian Kamu?
+                                {language === 'id' ? 'Siap Memulai Proyek Impian Kamu?' : 'Ready to Start Your Dream Project?'}
                             </h2>
                             <p className="text-xl opacity-90 mb-8 max-w-2xl mx-auto leading-relaxed">
-                                Konsultasi gratis untuk membahas kebutuhan digital kamu. Tim expert kami siap membantu!
+                                {language === 'id'
+                                    ? 'Konsultasi gratis untuk membahas kebutuhan digital kamu. Tim expert kami siap membantu!'
+                                    : 'Free consultation to discuss your digital needs. Our expert team is ready to help!'
+                                }
                             </p>
                             <div className="flex flex-col sm:flex-row gap-4 justify-center">
                                 <Button variant="outline" size="lg" className="bg-white text-gray-900 border-white hover:bg-gray-50 hover:scale-105 transition-all duration-300 px-8 py-4 font-semibold shadow-lg">
-                                    Konsultasi Gratis
+                                    {language === 'id' ? 'Konsultasi Gratis' : 'Free Consultation'}
                                 </Button>
                                 <Button variant="outline" size="lg" className="border-white/60 text-white hover:bg-white/10 dark:hover:bg-white/15 hover:scale-105 transition-all duration-300 px-8 py-4 font-semibold backdrop-blur-sm">
-                                    Lihat Portfolio
+                                    {language === 'id' ? 'Lihat Portfolio' : 'View Portfolio'}
                                 </Button>
                             </div>
                         </div>

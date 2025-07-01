@@ -83,7 +83,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 
   return (
     <SecurityWrapper>
-      <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
+      <div className="min-h-screen bg-gray-100 dark:bg-gray-900 overflow-x-hidden">
         {/* Top Navigation Bar */}
         <div className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
           <div className="px-4 sm:px-6 lg:px-8">
@@ -116,7 +116,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                 {/* Mobile menu button */}
                 <button
                   onClick={() => setMenuOpen(!menuOpen)}
-                  className="md:hidden p-2 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="lg:hidden p-2 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-primary"
                 >
                   {menuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
                 </button>
@@ -129,7 +129,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           {/* Sidebar Navigation */}
           <aside
             className={`${menuOpen ? 'translate-x-0' : '-translate-x-full'
-              } md:translate-x-0 fixed md:static top-16 left-0 z-30 w-64 h-[calc(100vh-4rem)] bg-white dark:bg-gray-800 shadow-lg border-r border-gray-200 dark:border-gray-700 transition-transform duration-300 ease-in-out`}
+              } lg:translate-x-0 fixed lg:static top-16 left-0 z-30 w-64 lg:w-56 xl:w-64 h-[calc(100vh-4rem)] bg-white dark:bg-gray-800 shadow-lg border-r border-gray-200 dark:border-gray-700 transition-transform duration-300 ease-in-out`}
           >
             <div className="h-full px-3 py-4 overflow-y-auto">
               <ul className="space-y-2 font-medium">
@@ -176,15 +176,17 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           {/* Backdrop */}
           {menuOpen && (
             <div
-              className="fixed inset-0 bg-black bg-opacity-50 z-20 md:hidden transition-opacity duration-300"
+              className="fixed inset-0 bg-black bg-opacity-50 z-20 lg:hidden transition-opacity duration-300"
               onClick={() => setMenuOpen(false)}
             />
           )}
 
           {/* Main Content */}
-          <main className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 bg-gray-50 dark:bg-gray-900">
-            <div className="w-[95%] mx-auto">
-              {children}
+          <main className="flex-1 overflow-y-auto overflow-x-hidden p-3 sm:p-4 lg:p-6 xl:p-8 bg-gray-50 dark:bg-gray-900">
+            <div className="w-full max-w-full px-2 sm:px-4 lg:px-0">
+              <div className="max-w-7xl mx-auto">
+                {children}
+              </div>
             </div>
           </main>
         </div>

@@ -253,7 +253,7 @@ export default function AboutPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
+    <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300 overflow-x-hidden">
       {/* DEBUG Panel - TEMPORARY */}
       {DEBUG_MODE && (
         <div className="fixed top-0 right-0 w-80 h-32 bg-black/90 text-white text-xs p-2 z-50 overflow-auto">

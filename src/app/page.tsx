@@ -129,7 +129,7 @@ export default function HomePage() {
           { name: 'Home', url: 'https://bajramedia.com' }
         ]}
       />
-      <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
+      <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300 overflow-x-hidden">
         {/* Header - Use Navbar component instead of hardcoded */}
         <Navbar activeTab="home" showDropdown={true} />
 
@@ -285,8 +285,7 @@ export default function HomePage() {
 
           </section>
 
-          {/* Spacer */}
-          <div className="py-8 bg-gradient-to-b from-green-50/30 to-white dark:from-gray-800 dark:to-gray-900"></div>
+
 
           {/* About Section */}
           <section className="py-16 bg-white dark:bg-gray-900 transition-colors duration-300">
@@ -382,8 +381,7 @@ export default function HomePage() {
             </div>
           </section>
 
-          {/* Spacer */}
-          <div className="py-8 bg-gradient-to-b from-white to-gray-50/50 dark:from-gray-900 dark:to-gray-800"></div>
+
 
           {/* Testimonials Section */}
           <section className="py-16 bg-gray-50 dark:bg-gray-800 transition-colors duration-300">
@@ -491,20 +489,13 @@ export default function HomePage() {
             </div>
           </section>
 
-          {/* Spacer */}
-          <div className="py-8 bg-gradient-to-b from-gray-50 to-white dark:from-gray-800 dark:to-gray-900"></div>
+
 
           {/* Blog Section */}
           <Blog />
 
-          {/* Spacer */}
-          <div className="py-8 bg-gradient-to-b from-gray-50/50 to-white dark:from-gray-800 dark:to-gray-900"></div>
-
           {/* Portfolio Section */}
           <Portfolio />
-
-          {/* Spacer */}
-          <div className="py-8 bg-gradient-to-b from-gray-50/50 to-white dark:from-gray-800 dark:to-gray-900"></div>
 
           {/* CTA Section */}
           <CTA />

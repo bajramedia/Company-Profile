@@ -620,3 +620,132 @@ html {
 .border-gray-200 {
   border-color: var(--card-border) !important;
 }
+
+/* Additional responsive improvements */
+@media (max-width: 640px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .w-\[95\%\] {
+    width: 100%;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+/* Tablet specific improvements */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .w-\[95\%\] {
+    width: 92%;
+  }
+  
+  .lg\:w-56 {
+    width: 12rem;
+  }
+  
+  .grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Small laptop improvements */
+@media (min-width: 1025px) and (max-width: 1280px) {
+  .w-\[95\%\] {
+    width: 90%;
+  }
+  
+  .max-w-7xl {
+    max-width: 70rem;
+  }
+}
+
+/* Prevent horizontal overflow globally */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+.container, .max-w-screen-xl, .max-w-7xl, .w-\[95\%\], .w-\[90\%\] {
+  overflow-x: hidden;
+}
+
+/* Improved touch targets for tablets */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .touch-target {
+    min-height: 48px;
+    min-width: 48px;
+  }
+  
+  button, 
+  [type="button"],
+  [type="reset"],
+  [type="submit"],
+  [role="button"],
+  a.btn,
+  .btn {
+    padding: 0.625rem 1rem;
+    min-height: 44px;
+  }
+}
+
+/* Grid responsive improvements */
+@media (max-width: 640px) {
+  .grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3 {
+    gap: 1rem;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3 {
+    gap: 1.5rem;
+  }
+}
+
+/* Typography responsive improvements */
+@media (max-width: 640px) {
+  .text-\[32px\].md\:text-\[40px\].lg\:text-\[48px\] {
+    font-size: 1.875rem;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .text-\[32px\].md\:text-\[40px\].lg\:text-\[48px\] {
+    font-size: 2.25rem;
+  }
+}
+
+/* Spacing responsive improvements */
+@media (max-width: 640px) {
+  .py-16 {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+  
+  .mb-20 {
+    margin-bottom: 3rem;
+  }
+  
+  .mt-20 {
+    margin-top: 3rem;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .py-16 {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+  
+  .mb-20 {
+    margin-bottom: 4rem;
+  }
+  
+  .mt-20 {
+    margin-top: 4rem;
+  }
+}
