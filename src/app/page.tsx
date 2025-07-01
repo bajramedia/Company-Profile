@@ -290,18 +290,22 @@ export default function HomePage() {
                     <section className="py-20 bg-gray-50 dark:bg-gray-800 transition-colors duration-300">
                         <div className="w-[95%] mx-auto px-4 sm:px-6 lg:px-8">
                             <div className="text-center mb-16">
-                                <AnimatedText as={Heading} variant="h2" color="foreground" className="text-3xl md:text-4xl font-bold mb-4">
-                                    {language === 'id' ? 'Artikel & Insights Terbaru' : 'Latest Articles & Insights'}
+                                <AnimatedText as="h2">
+                                    <Heading variant="h2" color="foreground" className="text-3xl md:text-4xl font-bold mb-4">
+                                        {language === 'id' ? 'Artikel & Insights Terbaru' : 'Latest Articles & Insights'}
+                                    </Heading>
                                 </AnimatedText>
-                                <AnimatedText as={Text} color="secondary" className="text-lg md:text-xl max-w-2xl mx-auto">
-                                    {language === 'id'
-                                        ? 'Pelajari tips, tren, dan insight terbaru dari dunia teknologi dan digital marketing'
-                                        : 'Learn the latest tips, trends, and insights from the world of technology and digital marketing'
-                                    }
+                                <AnimatedText as="p">
+                                    <Text color="secondary" className="text-lg md:text-xl max-w-2xl mx-auto">
+                                        {language === 'id'
+                                            ? 'Pelajari tips, tren, dan insight terbaru dari dunia teknologi dan digital marketing'
+                                            : 'Learn the latest tips, trends, and insights from the world of technology and digital marketing'
+                                        }
+                                    </Text>
                                 </AnimatedText>
                             </div>
 
-                            <Blog maxPosts={3} showPagination={false} />
+                            <Blog />
 
                             <div className="text-center mt-12">
                                 <Link href="/blog">
@@ -316,18 +320,22 @@ export default function HomePage() {
                     <section className="py-20 bg-white dark:bg-gray-900 transition-colors duration-300">
                         <div className="w-[95%] mx-auto px-4 sm:px-6 lg:px-8">
                             <div className="text-center mb-16">
-                                <AnimatedText as={Heading} variant="h2" color="foreground" className="text-3xl md:text-4xl font-bold mb-4">
-                                    {language === 'id' ? 'Portfolio Kami' : 'Our Portfolio'}
+                                <AnimatedText as="h2">
+                                    <Heading variant="h2" color="foreground" className="text-3xl md:text-4xl font-bold mb-4">
+                                        {language === 'id' ? 'Portfolio Kami' : 'Our Portfolio'}
+                                    </Heading>
                                 </AnimatedText>
-                                <AnimatedText as={Text} color="secondary" className="text-lg md:text-xl max-w-2xl mx-auto">
-                                    {language === 'id'
-                                        ? 'Lihat beberapa karya terbaik yang telah kami buat untuk klien-klien kami'
-                                        : 'See some of the best work we have created for our clients'
-                                    }
+                                <AnimatedText as="p">
+                                    <Text color="secondary" className="text-lg md:text-xl max-w-2xl mx-auto">
+                                        {language === 'id'
+                                            ? 'Lihat beberapa karya terbaik yang telah kami buat untuk klien-klien kami'
+                                            : 'See some of the best work we have created for our clients'
+                                        }
+                                    </Text>
                                 </AnimatedText>
                             </div>
 
-                            <Portfolio maxItems={6} showPagination={false} />
+                            <Portfolio />
 
                             <div className="text-center mt-12">
                                 <Link href="/portfolio">
@@ -341,14 +349,18 @@ export default function HomePage() {
 
                     <section className="py-20 bg-gradient-to-r from-green-500 to-green-600 text-white">
                         <div className="w-[95%] mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                            <AnimatedText as={Heading} variant="h2" className="text-3xl md:text-4xl font-bold mb-6 text-white">
-                                {language === 'id' ? 'Siap Mengembangkan Bisnis Anda?' : 'Ready to Grow Your Business?'}
+                            <AnimatedText as="h2">
+                                <Heading variant="h2" className="text-3xl md:text-4xl font-bold mb-6 text-white">
+                                    {language === 'id' ? 'Siap Mengembangkan Bisnis Anda?' : 'Ready to Grow Your Business?'}
+                                </Heading>
                             </AnimatedText>
-                            <AnimatedText as={Text} className="text-xl mb-8 max-w-2xl mx-auto opacity-90">
-                                {language === 'id'
-                                    ? 'Mari diskusikan bagaimana kami dapat membantu mewujudkan visi digital Anda'
-                                    : 'Let\'s discuss how we can help bring your digital vision to life'
-                                }
+                            <AnimatedText as="p">
+                                <Text className="text-xl mb-8 max-w-2xl mx-auto opacity-90">
+                                    {language === 'id'
+                                        ? 'Mari diskusikan bagaimana kami dapat membantu mewujudkan visi digital Anda'
+                                        : 'Let\'s discuss how we can help bring your digital vision to life'
+                                    }
+                                </Text>
                             </AnimatedText>
 
                             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
