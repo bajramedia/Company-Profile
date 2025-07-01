@@ -112,12 +112,13 @@ function PortfolioDetailPageContent({ slug }: { slug: string }) {
                 const response = await fetch('/api/portfolio');
 
                 if (response.ok) {
-                    const allProjects = await response.json();
+                    const data = await response.json();
+                    const allProjects = data.portfolios || data || [];
 
                     // Filter projects: same category but different ID, max 3 items
                     const related = allProjects
                         .filter((project: any) =>
-                            project.categorySlug === categorySlug &&
+                            (project.categorySlug === categorySlug || project.category?.slug === categorySlug) &&
                             project.id !== currentId
                         )
                         .slice(0, 3)
@@ -125,26 +126,26 @@ function PortfolioDetailPageContent({ slug }: { slug: string }) {
                             id: project.id,
                             slug: project.slug,
                             title: project.title,
-                            description: project.description,
+                            description: project.description || project.excerpt,
                             content: project.content,
-                            featuredImage: project.featuredImage || '/images/placeholder.jpg',
+                            featuredImage: project.featuredImage || project.featured_image || '/images/placeholder.jpg',
                             images: project.images || [],
-                            clientName: project.client || project.clientName,
-                            client: project.client,
+                            clientName: project.clientName || project.client_name || project.client,
+                            client: project.client || project.clientName,
                             projectUrl: project.projectUrl,
                             githubUrl: project.githubUrl,
-                            category: {
+                            category: project.category || {
                                 name: project.categoryName || 'Uncategorized',
                                 slug: project.categorySlug || 'uncategorized',
                                 icon: project.categoryIcon || '🌐',
                                 color: project.categoryColor || '#3B82F6'
                             },
-                            tags: project.tags || [],
+                            tags: Array.isArray(project.tags) ? project.tags : [],
                             featured: project.featured || false,
                             startDate: project.startDate,
                             endDate: project.endDate,
                             createdAt: project.createdAt || project.date,
-                            viewCount: project.viewCount || 0
+                            viewCount: project.viewCount || project.views || 0
                         }));
 
                     setRelatedProjects(related);
