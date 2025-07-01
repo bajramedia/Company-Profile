@@ -491,6 +491,45 @@ html {
   box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
 }
 
+/* Navbar dropdown fix */
+.navbar-dropdown {
+  position: absolute !important;
+  z-index: 9999 !important;
+  top: 100% !important;
+  left: 0 !important;
+  margin-top: 0.5rem !important;
+  width: 16rem !important;
+  background: white !important;
+  border-radius: 0.75rem !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+  border: 1px solid #e5e7eb !important;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4px) translateZ(0);
+  transition: all 200ms ease-out;
+}
+
+.dark .navbar-dropdown {
+  background: #1f2937 !important;
+  border-color: #374151 !important;
+}
+
+.group:hover .navbar-dropdown {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: translateY(0) translateZ(0) !important;
+}
+
+/* Navbar overflow fix */
+.navbar-container {
+  overflow-x: hidden !important;
+  overflow-y: visible !important;
+}
+
+.navbar-nav {
+  position: static !important;
+}
+
 /* Enhanced search bar */
 .search-enhanced {
   background: rgba(255, 255, 255, 0.95);

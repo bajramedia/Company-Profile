@@ -109,49 +109,65 @@ function PortfolioDetailPageContent({ slug }: { slug: string }) {
         const fetchRelatedProjects = async (categorySlug: string, currentId: string) => {
             try {
                 setRelatedLoading(true);
+                console.log('🔍 Fetching related projects for category:', categorySlug, 'current ID:', currentId);
+
                 const response = await fetch('/api/portfolio');
+                console.log('📡 API Response status:', response.status);
 
                 if (response.ok) {
                     const data = await response.json();
+                    console.log('📄 Raw API data:', data);
+
                     const allProjects = data.portfolios || data || [];
+                    console.log('📋 All projects count:', allProjects.length);
+                    console.log('📋 Sample project structure:', allProjects[0]);
 
                     // Filter projects: same category but different ID, max 3 items
                     const related = allProjects
-                        .filter((project: any) =>
-                            (project.categorySlug === categorySlug || project.category?.slug === categorySlug) &&
-                            project.id !== currentId
-                        )
+                        .filter((project: any) => {
+                            const matches = (project.categorySlug === categorySlug || project.category?.slug === categorySlug) &&
+                                project.id !== currentId;
+                            console.log(`🔍 Project "${project.title}" - Category: ${project.categorySlug || project.category?.slug}, Match: ${matches}`);
+                            return matches;
+                        })
                         .slice(0, 3)
-                        .map((project: any) => ({
-                            id: project.id,
-                            slug: project.slug,
-                            title: project.title,
-                            description: project.description || project.excerpt,
-                            content: project.content,
-                            featuredImage: project.featuredImage || project.featured_image || '/images/placeholder.jpg',
-                            images: project.images || [],
-                            clientName: project.clientName || project.client_name || project.client,
-                            client: project.client || project.clientName,
-                            projectUrl: project.projectUrl,
-                            githubUrl: project.githubUrl,
-                            category: project.category || {
-                                name: project.categoryName || 'Uncategorized',
-                                slug: project.categorySlug || 'uncategorized',
-                                icon: project.categoryIcon || '🌐',
-                                color: project.categoryColor || '#3B82F6'
-                            },
-                            tags: Array.isArray(project.tags) ? project.tags : [],
-                            featured: project.featured || false,
-                            startDate: project.startDate,
-                            endDate: project.endDate,
-                            createdAt: project.createdAt || project.date,
-                            viewCount: project.viewCount || project.views || 0
-                        }));
+                        .map((project: any) => {
+                            console.log('🎯 Mapping project:', project.title);
+                            return {
+                                id: project.id,
+                                slug: project.slug,
+                                title: project.title,
+                                description: project.description || project.excerpt,
+                                content: project.content,
+                                featuredImage: project.featuredImage || project.featured_image || '/images/placeholder.jpg',
+                                images: project.images || [],
+                                clientName: project.clientName || project.client_name || project.client,
+                                client: project.client || project.clientName,
+                                projectUrl: project.projectUrl,
+                                githubUrl: project.githubUrl,
+                                category: project.category || {
+                                    name: project.categoryName || 'Uncategorized',
+                                    slug: project.categorySlug || 'uncategorized',
+                                    icon: project.categoryIcon || '🌐',
+                                    color: project.categoryColor || '#3B82F6'
+                                },
+                                tags: Array.isArray(project.tags) ? project.tags : [],
+                                featured: project.featured || false,
+                                startDate: project.startDate,
+                                endDate: project.endDate,
+                                createdAt: project.createdAt || project.date,
+                                viewCount: project.viewCount || project.views || 0
+                            };
+                        });
 
+                    console.log('✅ Related projects found:', related.length);
+                    console.log('✅ Related projects:', related);
                     setRelatedProjects(related);
+                } else {
+                    console.error('❌ API response not OK:', response.status, response.statusText);
                 }
             } catch (err) {
-                console.error('Failed to fetch related projects:', err);
+                console.error('💥 Failed to fetch related projects:', err);
             } finally {
                 setRelatedLoading(false);
             }

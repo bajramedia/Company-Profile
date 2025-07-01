@@ -51,8 +51,8 @@ export default function Navbar({
     };
 
     return (
-        <header className={`fixed top-0 left-0 right-0 z-50 py-3 md:py-4 transition-colors duration-300 border-b border-gray-100/50 dark:border-gray-700/50 overflow-x-hidden ${getNavbarStyles()} ${className}`}>
-            <div className="w-full max-w-7xl mx-auto flex justify-between items-center px-4 sm:px-6 lg:px-8 overflow-x-hidden">
+        <header className={`fixed top-0 left-0 right-0 z-50 py-3 md:py-4 transition-colors duration-300 border-b border-gray-100/50 dark:border-gray-700/50 navbar-container ${getNavbarStyles()} ${className}`}>
+            <div className="w-full max-w-7xl mx-auto flex justify-between items-center px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center">
                     <Logo size="md" />
                 </div>
@@ -79,7 +79,7 @@ export default function Navbar({
                         </AnimatedText>
 
                         <AnimatedText as="span">
-                            <div className="relative group">
+                            <div className="relative group navbar-nav">
                                 <Link
                                     href="/services"
                                     className={`transition-colors duration-300 text-[15px] font-medium relative group flex items-center ${getLinkStyles(currentTab === 'services')}`}
@@ -96,7 +96,7 @@ export default function Navbar({
 
                                 {/* Dropdown Menu */}
                                 {showDropdown && (
-                                    <div className="absolute top-full left-0 mt-2 w-64 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-[200]">
+                                    <div className="navbar-dropdown">
                                         <div className="p-2">
                                             <Link
                                                 href="/services/web-development"
