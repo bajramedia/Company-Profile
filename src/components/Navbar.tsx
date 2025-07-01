@@ -22,7 +22,6 @@ export default function Navbar({
     const { t } = useLanguage();
     const pathname = usePathname();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
     // Determine active tab based on current path or prop
     const currentTab = activeTab || (() => {
@@ -52,15 +51,15 @@ export default function Navbar({
     };
 
     return (
-        <header className={`fixed top-0 left-0 right-0 z-50 py-3 md:py-4 transition-colors duration-300 border-b border-gray-100/50 dark:border-gray-700/50 ${getNavbarStyles()} ${className}`}>
-            <div className="w-full max-w-7xl mx-auto flex justify-between items-center px-4 sm:px-6 lg:px-8">
+        <header className={`fixed top-0 left-0 right-0 z-50 py-3 md:py-4 transition-colors duration-300 border-b border-gray-100/50 dark:border-gray-700/50 overflow-hidden ${getNavbarStyles()} ${className}`}>
+            <div className="w-full max-w-7xl mx-auto flex justify-between items-center px-4 sm:px-6 lg:px-8 overflow-hidden">
                 <div className="flex items-center">
                     <Logo size="md" />
                 </div>
 
                 {/* Desktop Navigation */}
-                <div className="hidden md:flex items-center space-x-7">
-                    <nav className="flex space-x-6 md:space-x-8">
+                <div className="hidden md:flex items-center space-x-7 overflow-hidden">
+                    <nav className="flex space-x-6 md:space-x-8 overflow-hidden">
                         <AnimatedText as="span">
                             <Link
                                 href="/"
@@ -80,18 +79,14 @@ export default function Navbar({
                         </AnimatedText>
 
                         <AnimatedText as="span">
-                            <div
-                                className="relative"
-                                onMouseEnter={() => setIsDropdownOpen(true)}
-                                onMouseLeave={() => setIsDropdownOpen(false)}
-                            >
+                            <div className="relative group">
                                 <Link
                                     href="/services"
-                                    className={`transition-colors duration-300 text-[15px] font-medium flex items-center ${getLinkStyles(currentTab === 'services')}`}
+                                    className={`transition-colors duration-300 text-[15px] font-medium relative group flex items-center ${getLinkStyles(currentTab === 'services')}`}
                                 >
                                     {t('nav.services')}
                                     {showDropdown && (
-                                        <span className={`inline-block ml-1 transform transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`}>
+                                        <span className="inline-block ml-1 transform group-hover:rotate-180 transition-transform duration-200">
                                             <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                             </svg>
@@ -100,9 +95,9 @@ export default function Navbar({
                                 </Link>
 
                                 {/* Dropdown Menu */}
-                                {showDropdown && isDropdownOpen && (
-                                    <div className="absolute top-full left-0 mt-2 w-64 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 transition-all duration-200 z-[100]">
-                                        <div className="p-2">
+                                {showDropdown && (
+                                    <div className="absolute top-full left-0 mt-2 w-64 max-w-[90vw] bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 overflow-hidden">
+                                        <div className="p-2 overflow-y-auto max-h-[70vh]">
                                             <Link
                                                 href="/services/web-development"
                                                 className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200"

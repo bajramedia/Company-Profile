@@ -463,7 +463,7 @@ export default function PortfolioPage() {
                             <div className="text-center py-20" data-aos="fade-up">
                                 <div className="relative mb-8">
                                     <div className="text-8xl mb-4 animate-pulse">🚀</div>
-                                    <div className="absolute -top-2 -right-2 text-2xl">✨</div>
+                                    <div className="absolute -top-2 -right-2 text-2xl animate-bounce">✨</div>
                                 </div>
                                 <h3 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
                                     {t('portfolio.comingSoon.title')}

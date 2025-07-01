@@ -12,8 +12,8 @@ export default function HeroSection() {
         <section className="relative min-h-screen bg-gradient-to-br from-white via-gray-50 to-green-50/30 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 transition-all duration-300 pt-20 overflow-hidden">
             {/* Background Decorations */}
             <div className="absolute inset-0 overflow-hidden z-0">
-                <div className="absolute -top-40 -right-40 w-80 h-80 bg-green-500/5 rounded-full blur-3xl"></div>
-                <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-500/5 rounded-full blur-3xl"></div>
+                <div className="absolute -top-40 -right-40 w-80 h-80 bg-green-500/5 rounded-full blur-3xl animate-pulse"></div>
+                <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-500/5 rounded-full blur-3xl animate-pulse delay-1000"></div>
             </div>
 
             {/* Content Container */}
@@ -135,7 +135,7 @@ export default function HeroSection() {
                                     {/* Floating Badge */}
                                     <div className="absolute top-6 left-6 bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm rounded-xl px-4 py-3 shadow-lg">
                                         <div className="flex items-center space-x-2">
-                                            <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                                            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
                                             <span className="text-sm font-semibold text-gray-900 dark:text-white">
                                                 {language === 'id' ? 'Tim Professional' : 'Professional Team'}
                                             </span>
