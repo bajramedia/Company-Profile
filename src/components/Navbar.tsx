@@ -101,7 +101,7 @@ export default function Navbar({
 
                                 {/* Dropdown Menu */}
                                 {showDropdown && (
-                                    <div className={`absolute top-full left-0 mt-2 w-64 max-w-[90vw] bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 transition-all duration-200 z-[60] ${isDropdownOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
+                                    <div className={`absolute top-full left-0 mt-2 w-64 max-w-[90vw] bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 transition-all duration-200 z-[60] ${isDropdownOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}>
                                         <div className="p-2 overflow-y-auto max-h-[70vh]">
                                             <Link
                                                 href="/services/web-development"
@@ -179,108 +179,108 @@ export default function Navbar({
                                         </div>
                                     </div>
                                 )}
-                        </div>
-                    </AnimatedText>
+                            </div>
+                        </AnimatedText>
+
+                        <AnimatedText as="span">
+                            <Link
+                                href="/portfolio"
+                                className={`transition-colors duration-300 text-[15px] font-medium ${getLinkStyles(currentTab === 'portfolio')}`}
+                            >
+                                {t('nav.portfolio')}
+                            </Link>
+                        </AnimatedText>
+
+                        <AnimatedText as="span">
+                            <Link
+                                href="/blog"
+                                className={`transition-colors duration-300 text-[15px] font-medium ${getLinkStyles(currentTab === 'blog')}`}
+                            >
+                                {t('nav.blog')}
+                            </Link>
+                        </AnimatedText>
+                    </nav>
+
+                    <LanguageSwitcher className="mr-4 text-white-700 dark:text-white-300" />
 
                     <AnimatedText as="span">
-                        <Link
-                            href="/portfolio"
-                            className={`transition-colors duration-300 text-[15px] font-medium ${getLinkStyles(currentTab === 'portfolio')}`}
+                        <Button
+                            variant="primary"
+                            size="sm"
+                            className="px-5 py-2 rounded-md font-medium shadow-sm hover:shadow-lg hover:bg-green-600 transition-all duration-300"
                         >
-                            {t('nav.portfolio')}
-                        </Link>
+                            <Link href="https://wa.me/6285739402436?text=Halo%20Bajramedia!%20Saya%20ingin%20berkonsultasi%20tentang%20layanan%20digital.%20Bisa%20dibantu?" target="_blank">{t('nav.contact')}</Link>
+                        </Button>
                     </AnimatedText>
+                </div>
 
-                    <AnimatedText as="span">
-                        <Link
-                            href="/blog"
-                            className={`transition-colors duration-300 text-[15px] font-medium ${getLinkStyles(currentTab === 'blog')}`}
-                        >
-                            {t('nav.blog')}
-                        </Link>
-                    </AnimatedText>
-                </nav>
-
-                <LanguageSwitcher className="mr-4 text-white-700 dark:text-white-300" />
-
-                <AnimatedText as="span">
-                    <Button
-                        variant="primary"
-                        size="sm"
-                        className="px-5 py-2 rounded-md font-medium shadow-sm hover:shadow-lg hover:bg-green-600 transition-all duration-300"
+                {/* Mobile Menu Button */}
+                <div className="flex items-center space-x-4 md:hidden">
+                    <LanguageSwitcher className="text-foreground" />
+                    <button
+                        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                        className="text-foreground p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
                     >
-                        <Link href="https://wa.me/6285739402436?text=Halo%20Bajramedia!%20Saya%20ingin%20berkonsultasi%20tentang%20layanan%20digital.%20Bisa%20dibantu?" target="_blank">{t('nav.contact')}</Link>
-                    </Button>
-                </AnimatedText>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
             </div>
 
-            {/* Mobile Menu Button */}
-            <div className="flex items-center space-x-4 md:hidden">
-                <LanguageSwitcher className="text-foreground" />
-                <button
-                    onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                    className="text-foreground p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
-                >
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6h16M4 12h16M4 18h16" />
-                    </svg>
-                </button>
+            {/* Mobile Menu */}
+            <div className={`md:hidden transition-all duration-300 ease-in-out overflow-hidden ${isMobileMenuOpen
+                ? 'max-h-[100vh] opacity-100'
+                : 'max-h-0 opacity-0'
+                } bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700`}>
+                <div className="px-4 py-6 space-y-4 max-w-full overflow-y-auto">
+                    <Link
+                        href="/"
+                        className={`block py-2 text-base font-medium transition-colors ${getLinkStyles(currentTab === 'home')}`}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                        {t('nav.home')}
+                    </Link>
+                    <Link
+                        href="/about"
+                        className={`block py-2 text-base font-medium transition-colors ${getLinkStyles(currentTab === 'about')}`}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                        {t('nav.about')}
+                    </Link>
+                    <Link
+                        href="/services"
+                        className={`block py-2 text-base font-medium transition-colors ${getLinkStyles(currentTab === 'services')}`}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                        {t('nav.services')}
+                    </Link>
+                    <Link
+                        href="/portfolio"
+                        className={`block py-2 text-base font-medium transition-colors ${getLinkStyles(currentTab === 'portfolio')}`}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                        {t('nav.portfolio')}
+                    </Link>
+                    <Link
+                        href="/blog"
+                        className={`block py-2 text-base font-medium transition-colors ${getLinkStyles(currentTab === 'blog')}`}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                        {t('nav.blog')}
+                    </Link>
+                    <div className="pt-4">
+                        <Button
+                            variant="primary"
+                            size="sm"
+                            className="w-full justify-center"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                        >
+                            <Link href="https://wa.me/6285739402436?text=Halo%20Bajramedia!%20Saya%20ingin%20berkonsultasi%20tentang%20layanan%20digital.%20Bisa%20dibantu?" target="_blank">{t('nav.contact')}</Link>
+                        </Button>
+                    </div>
+                </div>
             </div>
-        </div>
-
-            {/* Mobile Menu */ }
-    <div className={`md:hidden transition-all duration-300 ease-in-out overflow-hidden ${isMobileMenuOpen
-        ? 'max-h-[100vh] opacity-100'
-        : 'max-h-0 opacity-0'
-        } bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700`}>
-        <div className="px-4 py-6 space-y-4 max-w-full overflow-y-auto">
-            <Link
-                href="/"
-                className={`block py-2 text-base font-medium transition-colors ${getLinkStyles(currentTab === 'home')}`}
-                onClick={() => setIsMobileMenuOpen(false)}
-            >
-                {t('nav.home')}
-            </Link>
-            <Link
-                href="/about"
-                className={`block py-2 text-base font-medium transition-colors ${getLinkStyles(currentTab === 'about')}`}
-                onClick={() => setIsMobileMenuOpen(false)}
-            >
-                {t('nav.about')}
-            </Link>
-            <Link
-                href="/services"
-                className={`block py-2 text-base font-medium transition-colors ${getLinkStyles(currentTab === 'services')}`}
-                onClick={() => setIsMobileMenuOpen(false)}
-            >
-                {t('nav.services')}
-            </Link>
-            <Link
-                href="/portfolio"
-                className={`block py-2 text-base font-medium transition-colors ${getLinkStyles(currentTab === 'portfolio')}`}
-                onClick={() => setIsMobileMenuOpen(false)}
-            >
-                {t('nav.portfolio')}
-            </Link>
-            <Link
-                href="/blog"
-                className={`block py-2 text-base font-medium transition-colors ${getLinkStyles(currentTab === 'blog')}`}
-                onClick={() => setIsMobileMenuOpen(false)}
-            >
-                {t('nav.blog')}
-            </Link>
-            <div className="pt-4">
-                <Button
-                    variant="primary"
-                    size="sm"
-                    className="w-full justify-center"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                >
-                    <Link href="https://wa.me/6285739402436?text=Halo%20Bajramedia!%20Saya%20ingin%20berkonsultasi%20tentang%20layanan%20digital.%20Bisa%20dibantu?" target="_blank">{t('nav.contact')}</Link>
-                </Button>
-            </div>
-        </div>
-    </div>
-        </header >
+        </header>
     );
 } 
