@@ -100,9 +100,9 @@ export default function Navbar({
                                 </Link>
 
                                 {/* Dropdown Menu */}
-                                {showDropdown && (
-                                    <div className={`absolute top-full left-0 mt-2 w-64 max-w-[90vw] bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 transition-all duration-200 z-[60] ${isDropdownOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}>
-                                        <div className="p-2 overflow-y-auto max-h-[70vh]">
+                                {showDropdown && isDropdownOpen && (
+                                    <div className="absolute top-full left-0 mt-2 w-64 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 transition-all duration-200 z-[100]">
+                                        <div className="p-2">
                                             <Link
                                                 href="/services/web-development"
                                                 className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200"

@@ -151,19 +151,20 @@ export default function HomePage() {
             </div>
 
             {/* Animated background elements */}
-            <div className="absolute inset-0 overflow-hidden z-1">
-              <div className="absolute -top-40 -right-40 w-80 h-80 bg-green-500/5 rounded-full blur-3xl animate-pulse"></div>
-              <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-500/5 rounded-full blur-3xl animate-pulse delay-1000"></div>
+            <div className="absolute inset-0 overflow-hidden z-0">
+              <div className="absolute -top-40 -right-40 w-80 h-80 bg-green-500/5 rounded-full blur-3xl"></div>
+              <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-500/5 rounded-full blur-3xl"></div>
             </div>
 
             {/* Content Container */}
-            <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center min-h-screen py-20">
+            <div className="relative z-10 w-[95%] mx-auto px-4 sm:px-6 lg:px-8 h-full">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center min-h-screen py-20">
 
                 {/* Text Content */}
-                <div className="lg:col-span-7 order-2 lg:order-1">
+                <div className="order-2 lg:order-1 space-y-8">
                   <AnimatedText as="div">
-                    <div className="mb-6">
+                    <div className="flex items-center space-x-3 mb-6">
+                      <div className="w-16 h-0.5 bg-green-500"></div>
                       <span className="text-green-500 font-semibold text-sm tracking-wider uppercase">
                         {language === 'id' ? 'Solusi Digital Terdepan' : 'Leading Digital Solutions'}
                       </span>
@@ -171,18 +172,24 @@ export default function HomePage() {
                   </AnimatedText>
 
                   <AnimatedText as="div">
-                    <Heading variant="h1" color="foreground" className="mb-8 text-[40px] md:text-[48px] lg:text-[56px] xl:text-[64px] font-extrabold leading-[1.1] tracking-tight">
+                    <Heading variant="h1" color="foreground" className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight">
                       {language === 'id' ? 'Kami Membangun ' : 'We Build '}
                       <span className="text-green-500 relative inline-block">
-                        <span className="relative z-10">{language === 'id' ? 'Solusi Digital' : 'Digital Solutions'}</span>
+                        <span className="relative z-10">
+                          {language === 'id' ? 'Solusi Digital' : 'Digital Solutions'}
+                        </span>
                       </span>
                       <br />
-                      {language === 'id' ? 'Yang Mendorong Kesuksesan' : 'That Drive Success'}
+                      {language === 'id' ? 'Yang Mendorong' : 'That Drive'}
+                      <br />
+                      <span className="text-gray-900 dark:text-white">
+                        {language === 'id' ? 'Kesuksesan' : 'Success'}
+                      </span>
                     </Heading>
                   </AnimatedText>
 
                   <AnimatedText as="div">
-                    <Text color="secondary" className="mb-10 text-[18px] md:text-[20px] leading-relaxed max-w-2xl">
+                    <Text color="secondary" className="text-lg md:text-xl leading-relaxed max-w-xl">
                       {language === 'id'
                         ? 'Transformasikan bisnis Anda dengan pengembangan web yang canggih, aplikasi mobile, dan solusi pemasaran digital yang disesuaikan dengan kebutuhan Anda.'
                         : 'Transform your business with cutting-edge web development, mobile apps, and digital marketing solutions tailored to your needs.'
@@ -191,39 +198,47 @@ export default function HomePage() {
                   </AnimatedText>
 
                   <AnimatedText as="div">
-                    <div className="flex flex-col sm:flex-row gap-4 mb-12">
+                    <div className="flex flex-col sm:flex-row gap-4">
                       <Link href="/about">
-                        <Button variant="primary" size="lg" className="px-10 py-5 text-lg font-semibold w-full sm:w-auto bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 transform hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-2xl">
+                        <Button
+                          variant="primary"
+                          size="lg"
+                          className="px-8 py-4 text-lg font-semibold w-full sm:w-auto bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 transform hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-2xl"
+                        >
                           {language === 'id' ? 'Konsultasi Gratis' : 'Get Free Consultation'}
                         </Button>
                       </Link>
                       <Link href="/portfolio">
-                        <Button variant="outline" size="lg" className="px-10 py-5 text-lg font-semibold border-2 border-green-500 text-green-500 hover:bg-green-500 hover:text-white w-full sm:w-auto transform hover:scale-105 transition-all duration-300">
+                        <Button
+                          variant="outline"
+                          size="lg"
+                          className="px-8 py-4 text-lg font-semibold border-2 border-green-500 text-green-500 hover:bg-green-500 hover:text-white w-full sm:w-auto transform hover:scale-105 transition-all duration-300"
+                        >
                           {language === 'id' ? 'Lihat Portfolio Kami' : 'View Our Portfolio'}
                         </Button>
                       </Link>
                     </div>
                   </AnimatedText>
 
-                  {/* Achievement Stats */}
+                  {/* Stats */}
                   <AnimatedText as="div">
                     <div className="grid grid-cols-3 gap-8 pt-8 border-t border-gray-200 dark:border-gray-700">
                       <div className="text-center">
-                        <div className="text-3xl md:text-4xl font-bold text-green-500 mb-2">50+</div>
-                        <div className="text-sm md:text-base text-gray-600 dark:text-gray-400 font-medium">
-                          {language === 'id' ? 'PROJECTS DONE' : 'PROJECTS DONE'}
+                        <div className="text-3xl font-bold text-green-500 mb-2">50+</div>
+                        <div className="text-sm font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide">
+                          {language === 'id' ? 'Projects Done' : 'Projects Done'}
                         </div>
                       </div>
                       <div className="text-center">
-                        <div className="text-3xl md:text-4xl font-bold text-green-500 mb-2">5+</div>
-                        <div className="text-sm md:text-base text-gray-600 dark:text-gray-400 font-medium">
-                          {language === 'id' ? 'YEARS EXPERIENCE' : 'YEARS EXPERIENCE'}
+                        <div className="text-3xl font-bold text-green-500 mb-2">5+</div>
+                        <div className="text-sm font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide">
+                          {language === 'id' ? 'Years Experience' : 'Years Experience'}
                         </div>
                       </div>
                       <div className="text-center">
-                        <div className="text-3xl md:text-4xl font-bold text-green-500 mb-2">24/7</div>
-                        <div className="text-sm md:text-base text-gray-600 dark:text-gray-400 font-medium">
-                          {language === 'id' ? 'SUPPORT' : 'SUPPORT'}
+                        <div className="text-3xl font-bold text-green-500 mb-2">24/7</div>
+                        <div className="text-sm font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide">
+                          {language === 'id' ? 'Support' : 'Support'}
                         </div>
                       </div>
                     </div>
@@ -231,41 +246,36 @@ export default function HomePage() {
                 </div>
 
                 {/* Hero Image */}
-                <div className="lg:col-span-5 order-1 lg:order-2">
+                <div className="order-1 lg:order-2">
                   <AnimatedText as="div">
                     <div className="relative">
                       {/* Main Image Container */}
-                      <div className="relative w-full h-[450px] md:h-[550px] lg:h-[650px] rounded-3xl overflow-hidden shadow-2xl bg-gradient-to-br from-green-500/10 to-blue-500/10">
-                        <div className="absolute inset-0">
-                          <Image
-                            src="/images/team-meeting-2.jpg"
-                            alt={language === 'id' ? 'Tim Bajramedia - Profesional Digital Agency' : 'Bajramedia Team - Professional Digital Agency'}
-                            fill
-                            style={{ objectFit: 'cover', objectPosition: 'center' }}
-                            priority
-                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 40vw"
-                            className="rounded-3xl transform hover:scale-105 transition-transform duration-700"
-                            onError={(e) => {
-                              // Multiple fallback images
-                              const target = e.target as HTMLImageElement;
-                              if (target.src.includes('team-meeting-2.jpg')) {
-                                target.src = '/images/team-meeting.jpg';
-                              } else if (target.src.includes('team-meeting.jpg')) {
-                                target.src = '/images/team-meeting-alt.jpg';
-                              } else if (target.src.includes('team-meeting-alt.jpg')) {
-                                target.src = '/images/team.jpg';
-                              }
-                            }}
-                          />
-                        </div>
+                      <div className="relative w-full h-[400px] md:h-[500px] lg:h-[600px] rounded-3xl overflow-hidden shadow-2xl">
+                        <Image
+                          src="/images/team-meeting-2.jpg"
+                          alt={language === 'id' ? 'Tim Bajramedia - Profesional Digital Agency' : 'Bajramedia Team - Professional Digital Agency'}
+                          fill
+                          style={{ objectFit: 'cover', objectPosition: 'center' }}
+                          priority
+                          className="rounded-3xl transform hover:scale-105 transition-transform duration-700"
+                          onError={(e) => {
+                            // Fallback ke gambar lain jika yang pertama gagal
+                            const target = e.target as HTMLImageElement;
+                            if (target.src.includes('team-meeting-2.jpg')) {
+                              target.src = '/images/team-meeting.jpg';
+                            } else if (target.src.includes('team-meeting.jpg')) {
+                              target.src = '/images/team.jpg';
+                            }
+                          }}
+                        />
 
                         {/* Gradient Overlay */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent rounded-3xl"></div>
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent rounded-3xl"></div>
 
                         {/* Floating Badge */}
                         <div className="absolute top-6 left-6 bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm rounded-xl px-4 py-3 shadow-lg">
                           <div className="flex items-center space-x-2">
-                            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                            <div className="w-2 h-2 bg-green-500 rounded-full"></div>
                             <span className="text-sm font-semibold text-gray-900 dark:text-white">
                               {language === 'id' ? 'Tim Professional' : 'Professional Team'}
                             </span>
@@ -276,229 +286,111 @@ export default function HomePage() {
                       {/* Decorative Elements */}
                       <div className="absolute -top-6 -right-6 w-32 h-32 bg-green-500/10 rounded-full blur-2xl"></div>
                       <div className="absolute -bottom-6 -left-6 w-40 h-40 bg-blue-500/10 rounded-full blur-2xl"></div>
+
+                      {/* Logo Float */}
+                      <div className="absolute -top-4 -left-4 w-20 h-20 rounded-2xl overflow-hidden shadow-lg bg-white dark:bg-gray-800 p-2 hidden lg:block">
+                        <Image
+                          src="/images/Bajra.png"
+                          alt="Bajramedia Logo"
+                          fill
+                          style={{ objectFit: 'contain' }}
+                          className="rounded-xl"
+                        />
+                      </div>
                     </div>
                   </AnimatedText>
                 </div>
               </div>
             </div>
 
+            {/* WhatsApp Chat Button */}
+            <WhatsAppChat />
 
-          </section>
+            {/* Supported By Section */}
+            <SupportedBy />
 
+            {/* Blog section - showing 3 latest posts */}
+            <section className="py-20 bg-gray-50 dark:bg-gray-800 transition-colors duration-300">
+              <div className="w-[95%] mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="text-center mb-16">
+                  <AnimatedText as={Heading} variant="h2" color="foreground" className="text-3xl md:text-4xl font-bold mb-4">
+                    {language === 'id' ? 'Artikel & Insights Terbaru' : 'Latest Articles & Insights'}
+                  </AnimatedText>
+                  <AnimatedText as={Text} color="secondary" className="text-lg md:text-xl max-w-2xl mx-auto">
+                    {language === 'id'
+                      ? 'Pelajari tips, tren, dan insight terbaru dari dunia teknologi dan digital marketing'
+                      : 'Learn the latest tips, trends, and insights from the world of technology and digital marketing'
+                    }
+                  </AnimatedText>
+                </div>
 
+                <Blog maxPosts={3} showPagination={false} />
 
-          {/* About Section */}
-          <section className="py-16 bg-white dark:bg-gray-900 transition-colors duration-300">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                {/* Text Content */}
-                <div>
-                  <div className="mb-6 flex items-center space-x-2">
+                <div className="text-center mt-12">
+                  <Link href="/blog">
+                    <Button variant="outline" size="lg" className="px-8 py-4">
+                      {language === 'id' ? 'Lihat Semua Artikel' : 'View All Articles'}
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            </section>
 
-                    <span className="text-green-500 font-medium text-sm tracking-wider uppercase">
-                      {language === 'id' ? 'Tentang Kami' : 'About Us'}
+            {/* Our Portfolio section */}
+            <section className="py-20 bg-white dark:bg-gray-900 transition-colors duration-300">
+              <div className="w-[95%] mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="text-center mb-16">
+                  <AnimatedText as={Heading} variant="h2" color="foreground" className="text-3xl md:text-4xl font-bold mb-4">
+                    {language === 'id' ? 'Portfolio Kami' : 'Our Portfolio'}
+                  </AnimatedText>
+                  <AnimatedText as={Text} color="secondary" className="text-lg md:text-xl max-w-2xl mx-auto">
+                    {language === 'id'
+                      ? 'Lihat beberapa karya terbaik yang telah kami buat untuk klien-klien kami'
+                      : 'See some of the best work we have created for our clients'
+                    }
+                  </AnimatedText>
+                </div>
+
+                <Portfolio maxItems={6} showPagination={false} />
+
+                <div className="text-center mt-12">
+                  <Link href="/portfolio">
+                    <Button variant="outline" size="lg" className="px-8 py-4">
+                      {language === 'id' ? 'Lihat Portfolio Lengkap' : 'View Complete Portfolio'}
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            </section>
+
+            {/* CTA Section */}
+            <section className="py-20 bg-gradient-to-r from-green-500 to-green-600 text-white">
+              <div className="w-[95%] mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <AnimatedText as={Heading} variant="h2" className="text-3xl md:text-4xl font-bold mb-6 text-white">
+                  {language === 'id' ? 'Siap Mengembangkan Bisnis Anda?' : 'Ready to Grow Your Business?'}
+                </AnimatedText>
+                <AnimatedText as={Text} className="text-xl mb-8 max-w-2xl mx-auto opacity-90">
+                  {language === 'id'
+                    ? 'Mari diskusikan bagaimana kami dapat membantu mewujudkan visi digital Anda'
+                    : 'Let\'s discuss how we can help bring your digital vision to life'
+                  }
+                </AnimatedText>
+
+                <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                  <Link href="/about">
+                    <Button variant="outline" size="lg" className="bg-white text-green-600 border-white hover:bg-gray-50 px-8 py-4">
+                      {language === 'id' ? 'Konsultasi Gratis' : 'Free Consultation'}
+                    </Button>
+                  </Link>
+                  <div className="flex items-center space-x-2 text-white/90">
+                    <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                    <span className="text-sm font-medium">
+                      {language === 'id' ? 'Response dalam 24 jam' : '24h Response Time'}
                     </span>
                   </div>
-
-                  <Heading variant="h2" color="foreground" className="mb-6 text-[28px] md:text-[32px] lg:text-[36px] font-extrabold leading-[1.3] tracking-tight">
-                    {language === 'id'
-                      ? 'Menghadirkan Solusi Digital Terdepan untuk Bisnis Anda'
-                      : 'Delivering Cutting-Edge Digital Solutions for Your Business'
-                    }
-                  </Heading>
-
-                  <Text color="secondary" className="mb-8 text-[16px] leading-relaxed">
-                    {language === 'id'
-                      ? 'Dengan pengalaman lebih dari 5 tahun di industri teknologi, Bajramedia telah membantu puluhan klien mengembangkan bisnis mereka melalui solusi digital yang inovatif. Kami berkomitmen memberikan layanan terbaik dengan teknologi terdepan.'
-                      : 'With over 5 years of experience in the technology industry, Bajramedia has helped dozens of clients grow their businesses through innovative digital solutions. We are committed to providing the best service with cutting-edge technology.'
-                    }
-                  </Text>
-
-                  {/* Achievement Stats */}
-                  <div className="grid grid-cols-3 gap-6 mb-8">
-                    <div className="text-center">
-                      <div className="text-3xl font-bold text-green-500 mb-2">50+</div>
-                      <div className="text-sm text-gray-600 dark:text-gray-400">
-                        {language === 'id' ? 'Proyek Selesai' : 'Projects Completed'}
-                      </div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-3xl font-bold text-green-500 mb-2">5+</div>
-                      <div className="text-sm text-gray-600 dark:text-gray-400">
-                        {language === 'id' ? 'Tahun Pengalaman' : 'Years Experience'}
-                      </div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-3xl font-bold text-green-500 mb-2">100%</div>
-                      <div className="text-sm text-gray-600 dark:text-gray-400">
-                        {language === 'id' ? 'Kepuasan Klien' : 'Client Satisfaction'}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex flex-col sm:flex-row gap-4">
-                    <Link href="/about">
-                      <Button variant="primary" size="md" className="px-8 py-4 transform hover:scale-105 transition-all duration-300 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700">
-                        {language === 'id' ? 'Pelajari Lebih Lanjut' : 'Learn More'}
-                      </Button>
-                    </Link>
-                    <Link href="/portfolio">
-                      <Button variant="outline" size="md" className="px-8 py-4 border-2 border-green-500 text-green-500 hover:bg-green-500 hover:text-white transform hover:scale-105 transition-all duration-300">
-                        {language === 'id' ? 'Lihat Portfolio' : 'View Portfolio'}
-                      </Button>
-                    </Link>
-                  </div>
-                </div>
-
-                {/* Image */}
-                <div className="relative">
-                  <div className="relative w-full h-[400px] rounded-2xl overflow-hidden shadow-2xl">
-                    <Image
-                      src="/images/team.jpg"
-                      alt={language === 'id' ? 'Tim Bajramedia' : 'Bajramedia Team'}
-                      fill
-                      style={{ objectFit: 'cover' }}
-                      className="rounded-2xl transform hover:scale-110 transition-transform duration-700"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-green-500/20 via-transparent to-transparent"></div>
-
-                    {/* Floating Card */}
-                    <div className="absolute bottom-6 left-6 right-6 bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm rounded-xl p-4 shadow-lg">
-                      <div className="flex items-center space-x-3">
-                        <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-                        <span className="text-sm font-medium text-gray-900 dark:text-white">
-                          {language === 'id' ? 'Tim Professional Siap Membantu Anda' : 'Professional Team Ready to Help You'}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Decorative Elements */}
-                  <div className="absolute -top-4 -right-4 w-24 h-24 bg-green-500/10 rounded-full blur-xl"></div>
-                  <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-blue-500/10 rounded-full blur-xl"></div>
                 </div>
               </div>
-            </div>
-          </section>
-
-
-
-          {/* Testimonials Section */}
-          <section className="py-16 bg-gray-50 dark:bg-gray-800 transition-colors duration-300">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="text-center mb-12">
-                <div className="mb-6 flex items-center justify-center space-x-2">
-
-                  <span className="text-green-500 font-medium text-sm tracking-wider uppercase">
-                    {language === 'id' ? 'Testimoni Klien' : 'Client Testimonials'}
-                  </span>
-
-                </div>
-
-                <Heading variant="h2" color="foreground" className="mb-4 text-[28px] md:text-[32px] lg:text-[36px] font-extrabold">
-                  {language === 'id' ? 'Kata Mereka Tentang Kami' : 'What They Say About Us'}
-                </Heading>
-
-                <Text color="secondary" className="max-w-2xl mx-auto text-[16px] leading-relaxed">
-                  {language === 'id'
-                    ? 'Kepercayaan klien adalah prioritas utama kami. Berikut testimoni dari klien yang telah merasakan layanan terbaik dari Bajramedia.'
-                    : 'Client trust is our top priority. Here are testimonials from clients who have experienced the best service from Bajramedia.'
-                  }
-                </Text>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {/* Testimonial 1 */}
-                <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 border border-gray-200 dark:border-gray-600">
-                  <div className="flex items-center mb-4">
-                    {[...Array(5)].map((_, i) => (
-                      <svg key={i} className="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 20 20">
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                      </svg>
-                    ))}
-                  </div>
-                  <Text color="secondary" className="mb-6 italic text-[14px] leading-relaxed text-gray-600 dark:text-gray-300">
-                    "{language === 'id'
-                      ? 'Tim Bajramedia sangat profesional dalam mengembangkan website perusahaan kami. Hasilnya melebihi ekspektasi dan sangat membantu meningkatkan brand awareness.'
-                      : 'Bajramedia team is very professional in developing our company website. The results exceeded expectations and really helped increase brand awareness.'
-                    }"
-                  </Text>
-                  <div className="flex items-center">
-                    <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-white font-bold mr-4">
-                      A
-                    </div>
-                    <div>
-                      <div className="font-semibold text-gray-900 dark:text-white">Andi Prasetyo</div>
-                      <div className="text-sm text-gray-500 dark:text-gray-400">CEO, PT Maju Bersama</div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Testimonial 2 */}
-                <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 border border-gray-200 dark:border-gray-600">
-                  <div className="flex items-center mb-4">
-                    {[...Array(5)].map((_, i) => (
-                      <svg key={i} className="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 20 20">
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                      </svg>
-                    ))}
-                  </div>
-                  <Text color="secondary" className="mb-6 italic text-[14px] leading-relaxed text-gray-600 dark:text-gray-300">
-                    "{language === 'id'
-                      ? 'Pelayanan yang luar biasa! Sistem manajemen yang dikembangkan Bajramedia sangat membantu operasional bisnis kami menjadi lebih efisien.'
-                      : 'Extraordinary service! The management system developed by Bajramedia really helps our business operations become more efficient.'
-                    }"
-                  </Text>
-                  <div className="flex items-center">
-                    <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold mr-4">
-                      S
-                    </div>
-                    <div>
-                      <div className="font-semibold text-gray-900 dark:text-white">Sari Wijaya</div>
-                      <div className="text-sm text-gray-500 dark:text-gray-400">Owner, Sari Beauty Clinic</div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Testimonial 3 */}
-                <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 border border-gray-200 dark:border-gray-600">
-                  <div className="flex items-center mb-4">
-                    {[...Array(5)].map((_, i) => (
-                      <svg key={i} className="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 20 20">
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                      </svg>
-                    ))}
-                  </div>
-                  <Text color="secondary" className="mb-6 italic text-[14px] leading-relaxed text-gray-600 dark:text-gray-300">
-                    "{language === 'id'
-                      ? 'Aplikasi mobile yang dikembangkan sangat user-friendly dan sesuai dengan kebutuhan bisnis kami. Tim support juga sangat responsif.'
-                      : 'The mobile application developed is very user-friendly and suits our business needs. The support team is also very responsive.'
-                    }"
-                  </Text>
-                  <div className="flex items-center">
-                    <div className="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center text-white font-bold mr-4">
-                      R
-                    </div>
-                    <div>
-                      <div className="font-semibold text-gray-900 dark:text-white">Rudi Hartanto</div>
-                      <div className="text-sm text-gray-500 dark:text-gray-400">Director, RH Logistics</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-
-
-
-          {/* Blog Section */}
-          <Blog />
-
-          {/* Portfolio Section */}
-          <Portfolio />
-
-          {/* CTA Section */}
-          <CTA />
+            </section>
         </main>
 
         {/* Footer */}
@@ -543,12 +435,6 @@ export default function HomePage() {
             )}
           </button>
         </div>
-
-        {/* WhatsApp Chat */}
-        <WhatsAppChat
-          phoneNumber="6285739402436"
-          message="Halo! Saya tertarik dengan layanan Bajramedia. Bisa konsultasi gratis?"
-        />
       </div>
     </>
   );
