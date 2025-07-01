@@ -51,15 +51,15 @@ export default function Navbar({
     };
 
     return (
-        <header className={`fixed top-0 left-0 right-0 z-50 py-3 md:py-4 transition-colors duration-300 border-b border-gray-100/50 dark:border-gray-700/50 overflow-x-hidden ${getNavbarStyles()} ${className}`}>
-            <div className="w-full max-w-7xl mx-auto flex justify-between items-center px-4 sm:px-6 lg:px-8">
+        <header className={`fixed top-0 left-0 right-0 z-50 py-3 md:py-4 transition-colors duration-300 border-b border-gray-100/50 dark:border-gray-700/50 overflow-hidden ${getNavbarStyles()} ${className}`}>
+            <div className="w-full max-w-7xl mx-auto flex justify-between items-center px-4 sm:px-6 lg:px-8 overflow-hidden">
                 <div className="flex items-center">
                     <Logo size="md" />
                 </div>
 
                 {/* Desktop Navigation */}
-                <div className="hidden md:flex items-center space-x-7">
-                    <nav className="flex space-x-6 md:space-x-8">
+                <div className="hidden md:flex items-center space-x-7 overflow-hidden">
+                    <nav className="flex space-x-6 md:space-x-8 overflow-hidden">
                         <AnimatedText as="span">
                             <Link
                                 href="/"
@@ -96,8 +96,8 @@ export default function Navbar({
 
                                 {/* Dropdown Menu */}
                                 {showDropdown && (
-                                    <div className="absolute top-full left-0 mt-2 w-64 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                                        <div className="p-2">
+                                    <div className="absolute top-full left-0 mt-2 w-64 max-w-[90vw] bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 overflow-hidden">
+                                        <div className="p-2 overflow-y-auto max-h-[70vh]">
                                             <Link
                                                 href="/services/web-development"
                                                 className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200"
@@ -224,11 +224,11 @@ export default function Navbar({
             </div>
 
             {/* Mobile Menu */}
-            <div className={`md:hidden transition-all duration-300 ease-in-out overflow-x-hidden ${isMobileMenuOpen
-                ? 'max-h-96 opacity-100'
-                : 'max-h-0 opacity-0 overflow-hidden'
+            <div className={`md:hidden transition-all duration-300 ease-in-out overflow-hidden ${isMobileMenuOpen
+                ? 'max-h-[100vh] opacity-100'
+                : 'max-h-0 opacity-0'
                 } bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700`}>
-                <div className="px-4 py-6 space-y-4 max-w-full">
+                <div className="px-4 py-6 space-y-4 max-w-full overflow-y-auto">
                     <Link
                         href="/"
                         className={`block py-2 text-base font-medium transition-colors ${getLinkStyles(currentTab === 'home')}`}
