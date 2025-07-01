@@ -51,7 +51,7 @@ export default function Navbar({
     };
 
     return (
-        <header className={`navbar fixed top-0 left-0 right-0 z-50 py-3 md:py-4 transition-colors duration-300 border-b border-gray-100/50 dark:border-gray-700/50 navbar-container ${getNavbarStyles()} ${className}`}>
+        <header className={`fixed top-0 left-0 right-0 z-50 py-3 md:py-4 transition-colors duration-300 border-b border-gray-100/50 dark:border-gray-700/50 ${getNavbarStyles()} ${className}`}>
             <div className="w-full max-w-7xl mx-auto flex justify-between items-center px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center">
                     <Logo size="md" />
@@ -79,7 +79,7 @@ export default function Navbar({
                         </AnimatedText>
 
                         <AnimatedText as="span">
-                            <div className="relative group navbar-nav">
+                            <div className="relative group">
                                 <Link
                                     href="/services"
                                     className={`transition-colors duration-300 text-[15px] font-medium relative group flex items-center ${getLinkStyles(currentTab === 'services')}`}
