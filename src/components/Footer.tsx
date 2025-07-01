@@ -1,13 +1,43 @@
 "use client";
 
 import Link from 'next/link';
+import Image from 'next/image';
+import { useState, useEffect } from 'react';
 import { Logo } from "@/components";
 import { useLanguage } from "@/context/LanguageContext";
 import { usePublicSettings } from "@/hooks/useSettings";
 
+interface Partner {
+    id: string | number;
+    name: string;
+    logo: string;
+    website: string;
+}
+
 export default function Footer() {
     const { t, language } = useLanguage();
     const { settings: publicSettings, loading } = usePublicSettings();
+    const [partners, setPartners] = useState<Partner[]>([]);
+    const [partnersLoading, setPartnersLoading] = useState(true);
+
+    // Fetch partners from database
+    useEffect(() => {
+        const fetchPartners = async () => {
+            try {
+                const response = await fetch('/api/partners');
+                if (response.ok) {
+                    const data = await response.json();
+                    setPartners(data || []);
+                }
+            } catch (error) {
+                console.error('Error fetching partners:', error);
+            } finally {
+                setPartnersLoading(false);
+            }
+        };
+
+        fetchPartners();
+    }, []);
 
     return (
         <footer className="bg-gray-900 dark:bg-gray-950 text-white relative overflow-hidden transition-colors duration-300">
@@ -114,7 +144,7 @@ export default function Footer() {
 
                 {/* Contact Info Bar */}
                 <div className="py-8 border-t border-gray-800">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                         <div className="flex items-center space-x-3">
                             <div className="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center flex-shrink-0">
                                 <svg className="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -157,6 +187,38 @@ export default function Footer() {
                                 </p>
                             </div>
                         </div>
+
+                        {/* Partners Logos */}
+                        {!partnersLoading && partners.length > 0 && (
+                            <div className="flex items-center space-x-3">
+                                <div className="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+                                    <svg className="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                                    </svg>
+                                </div>
+                                <div className="flex-1">
+                                    <p className="text-gray-400 text-sm mb-2">{language === 'id' ? 'Partner Terpercaya' : 'Trusted Partners'}</p>
+                                    <div className="flex items-center space-x-3 flex-wrap gap-2">
+                                        {partners.slice(0, 4).map((partner) => (
+                                            <div key={partner.id} className="relative">
+                                                <Image
+                                                    src={partner.logo}
+                                                    alt={partner.name}
+                                                    width={32}
+                                                    height={32}
+                                                    className="w-8 h-8 object-contain filter brightness-0 invert opacity-60"
+                                                />
+                                            </div>
+                                        ))}
+                                        {partners.length > 4 && (
+                                            <div className="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center">
+                                                <span className="text-xs text-gray-300 font-medium">+{partners.length - 4}</span>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
 
