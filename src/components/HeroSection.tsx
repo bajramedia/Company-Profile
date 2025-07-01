@@ -38,7 +38,6 @@ export default function HeroSection() {
                                     <span className="relative z-10">
                                         {language === 'id' ? 'Solusi Digital' : 'Digital Solutions'}
                                     </span>
-                                    <span className="absolute bottom-2 left-0 w-full h-4 bg-green-500/20 -z-0 transform -skew-x-12"></span>
                                 </span>
                                 <br />
                                 {language === 'id' ? 'Yang Mendorong' : 'That Drive'}
@@ -161,13 +160,6 @@ export default function HeroSection() {
                             </div>
                         </AnimatedText>
                     </div>
-                </div>
-            </div>
-
-            {/* Scroll Indicator */}
-            <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce z-10">
-                <div className="w-6 h-10 border-2 border-gray-400 dark:border-gray-600 rounded-full flex justify-center">
-                    <div className="w-1 h-3 bg-gray-400 dark:bg-gray-600 rounded-full mt-2 animate-pulse"></div>
                 </div>
             </div>
         </section>
