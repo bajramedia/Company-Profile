@@ -590,15 +590,15 @@ function PortfolioDetailPageContent({ slug }: { slug: string }) {
             </section>
         </main>
 
-            {/* Dark Mode Toggle */ }
-    <div className="fixed bottom-6 left-6 z-50">
-        <button
-            onClick={toggleDarkMode}
-            className="w-14 h-14 rounded-full bg-white dark:bg-gray-800 shadow-lg border border-gray-200 dark:border-gray-600 flex items-center justify-center hover:shadow-xl transition-all duration-300"
-        >
-            {isDarkMode ? <span className="text-2xl">☀️</span> : <span className="text-2xl">🌙</span>}
-        </button>
-    </div>
-        </div >
+            {/* Dark Mode Toggle */}
+            <div className="fixed bottom-6 left-6 z-50">
+                <button
+                    onClick={toggleDarkMode}
+                    className="w-14 h-14 rounded-full bg-white dark:bg-gray-800 shadow-lg border border-gray-200 dark:border-gray-600 flex items-center justify-center hover:shadow-xl transition-all duration-300"
+                >
+                    {isDarkMode ? <span className="text-2xl">☀️</span> : <span className="text-2xl">🌙</span>}
+                </button>
+            </div>
+        </div>
     );
 } 
