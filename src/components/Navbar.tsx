@@ -79,7 +79,7 @@ export default function Navbar({
                         </AnimatedText>
 
                         <AnimatedText as="span">
-                            <div className="relative group">
+                            <div className="relative group static md:relative">
                                 <Link
                                     href="/services"
                                     className={`transition-colors duration-300 text-[15px] font-medium relative group flex items-center ${getLinkStyles(currentTab === 'services')}`}
@@ -96,7 +96,7 @@ export default function Navbar({
 
                                 {/* Dropdown Menu */}
                                 {showDropdown && (
-                                    <div className="absolute top-full left-0 mt-2 w-64 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                                    <div className="absolute top-full left-0 mt-2 w-64 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-[100]">
                                         <div className="p-2">
                                             <Link
                                                 href="/services/web-development"
