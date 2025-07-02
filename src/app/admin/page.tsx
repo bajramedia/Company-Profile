@@ -9,22 +9,27 @@ import {
   FiTag,
   FiFolder,
   FiPlusCircle,
-  FiEye
+  FiEye,
+  FiBriefcase
 } from 'react-icons/fi';
 
 interface DashboardStats {
   posts: number;
   authors: number;
+  portfolios: number;
   categories: number;
   tags: number;
+  totalContent?: number;
 }
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState<DashboardStats>({
     posts: 0,
     authors: 0,
+    portfolios: 0,
     categories: 0,
-    tags: 0
+    tags: 0,
+    totalContent: 0
   });
   const [recentPosts, setRecentPosts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -70,7 +75,7 @@ export default function AdminDashboard() {
       <h1 className="text-2xl font-bold mb-8 text-gray-900 dark:text-white">Dashboard</h1>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow border border-gray-200 dark:border-gray-700">
           <div className="flex items-center">
             <div className="p-3 rounded-full bg-blue-100 dark:bg-blue-900/30 mr-4">
@@ -98,6 +103,21 @@ export default function AdminDashboard() {
           </div>
           <Link href="/admin/authors" className="block mt-4 text-sm text-green-500 dark:text-green-400 hover:underline">
             Manage authors
+          </Link>
+        </div>
+
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow border border-gray-200 dark:border-gray-700">
+          <div className="flex items-center">
+            <div className="p-3 rounded-full bg-indigo-100 dark:bg-indigo-900/30 mr-4">
+              <FiBriefcase className="h-8 w-8 text-indigo-500 dark:text-indigo-400" />
+            </div>
+            <div>
+              <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Portfolio</p>
+              <p className="text-2xl font-semibold text-gray-900 dark:text-white">{stats.portfolios}</p>
+            </div>
+          </div>
+          <Link href="/admin/portfolio" className="block mt-4 text-sm text-indigo-500 dark:text-indigo-400 hover:underline">
+            Manage portfolio
           </Link>
         </div>
 
@@ -135,7 +155,7 @@ export default function AdminDashboard() {
       {/* Quick Actions */}
       <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow border border-gray-200 dark:border-gray-700 mb-8">
         <h2 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Quick Actions</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
           <Link href="/admin/posts/new">
             <div className="flex flex-col items-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
               <FiPlusCircle className="h-8 w-8 text-primary mb-2" />
@@ -147,6 +167,13 @@ export default function AdminDashboard() {
             <div className="flex flex-col items-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
               <FiUsers className="h-8 w-8 text-primary mb-2" />
               <span className="text-sm font-medium text-center text-gray-900 dark:text-white">New Author</span>
+            </div>
+          </Link>
+
+          <Link href="/admin/portfolio/new">
+            <div className="flex flex-col items-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
+              <FiBriefcase className="h-8 w-8 text-primary mb-2" />
+              <span className="text-sm font-medium text-center text-gray-900 dark:text-white">New Portfolio</span>
             </div>
           </Link>
 
