@@ -109,9 +109,9 @@ function PortfolioDetailPageContent({ slug }: { slug: string }) {
         const fetchRelatedProjects = async (categorySlug: string, currentId: string) => {
             try {
                 setRelatedLoading(true);
-                console.log('🔍 Fetching related projects for category:', categorySlug, 'current ID:', currentId);
+                console.log('🔍 Mencari related projects untuk kategori:', categorySlug, 'current ID:', currentId);
 
-                const response = await fetch('/api/portfolio');
+                const response = await fetch('/api/portfolio?published=true');
                 console.log('📡 API Response status:', response.status);
 
                 if (response.ok) {
@@ -119,17 +119,50 @@ function PortfolioDetailPageContent({ slug }: { slug: string }) {
                     console.log('📄 Raw API data:', data);
 
                     const allProjects = data.portfolios || data || [];
-                    console.log('📋 All projects count:', allProjects.length);
-                    console.log('📋 Sample project structure:', allProjects[0]);
+                    console.log('📋 Total portfolio ditemukan:', allProjects.length);
 
-                    // Filter projects: same category but different ID, max 3 items
-                    const related = allProjects
-                        .filter((project: any) => {
-                            const matches = (project.categorySlug === categorySlug || project.category?.slug === categorySlug) &&
-                                project.id !== currentId;
-                            console.log(`🔍 Project "${project.title}" - Category: ${project.categorySlug || project.category?.slug}, Match: ${matches}`);
-                            return matches;
-                        })
+                    if (allProjects.length > 0) {
+                        console.log('📋 Sample project structure:', allProjects[0]);
+                    }
+
+                    // Filter portfolio yang bukan yang sedang dibuka
+                    const otherProjects = allProjects.filter((project: any) =>
+                        project.id !== currentId && project.id != currentId
+                    );
+
+                    console.log('📋 Portfolio lain (bukan current):', otherProjects.length);
+
+                    // Cari portfolio dengan kategori yang sama dulu
+                    let relatedByCategory = otherProjects.filter((project: any) => {
+                        const projectCategory = project.categorySlug || project.category?.slug || project.categoryName?.toLowerCase().replace(/\s+/g, '-');
+                        const matches = projectCategory === categorySlug;
+                        console.log(`🔍 Project "${project.title}" - Category: ${projectCategory}, Target: ${categorySlug}, Match: ${matches}`);
+                        return matches;
+                    });
+
+                    console.log('🎯 Portfolio dengan kategori sama:', relatedByCategory.length);
+
+                    // Kalau ga ada yang sama kategorinya, ambil portfolio lain secara random
+                    if (relatedByCategory.length === 0) {
+                        console.log('⚠️ Tidak ada portfolio dengan kategori sama, mengambil portfolio lain secara random');
+                        relatedByCategory = otherProjects
+                            .sort(() => Math.random() - 0.5) // Random shuffle
+                            .slice(0, 3);
+                    } else {
+                        // Kalau ada yang sama kategorinya tapi kurang dari 3, tambahkan portfolio lain
+                        if (relatedByCategory.length < 3) {
+                            console.log('⚠️ Portfolio kategori sama kurang dari 3, menambahkan portfolio lain');
+                            const additionalProjects = otherProjects
+                                .filter(project => !relatedByCategory.some(related => related.id === project.id))
+                                .sort(() => Math.random() - 0.5)
+                                .slice(0, 3 - relatedByCategory.length);
+
+                            relatedByCategory = [...relatedByCategory, ...additionalProjects];
+                        }
+                    }
+
+                    // Ambil maksimal 3 portfolio
+                    const related = relatedByCategory
                         .slice(0, 3)
                         .map((project: any) => {
                             console.log('🎯 Mapping project:', project.title);
@@ -160,14 +193,14 @@ function PortfolioDetailPageContent({ slug }: { slug: string }) {
                             };
                         });
 
-                    console.log('✅ Related projects found:', related.length);
-                    console.log('✅ Related projects:', related);
+                    console.log('✅ Related projects berhasil ditemukan:', related.length);
+                    console.log('✅ Related projects:', related.map(p => ({ title: p.title, category: p.category.name })));
                     setRelatedProjects(related);
                 } else {
-                    console.error('❌ API response not OK:', response.status, response.statusText);
+                    console.error('❌ API response tidak OK:', response.status, response.statusText);
                 }
             } catch (err) {
-                console.error('💥 Failed to fetch related projects:', err);
+                console.error('💥 Gagal fetch related projects:', err);
             } finally {
                 setRelatedLoading(false);
             }
@@ -503,7 +536,7 @@ function PortfolioDetailPageContent({ slug }: { slug: string }) {
                 {/* Related Projects */}
                 <section className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
                     <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-8" data-aos="fade-up">
-                        {t('portfolio.detail.relatedProjects')}
+                        Portfolio Terkait
                     </h2>
 
                     {relatedLoading ? (
@@ -591,14 +624,14 @@ function PortfolioDetailPageContent({ slug }: { slug: string }) {
                         <div className="text-center py-16" data-aos="fade-up">
                             <div className="text-6xl mb-4">🚀</div>
                             <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                                No Related Projects Yet
+                                Belum Ada Portfolio Terkait
                             </h3>
                             <p className="text-gray-600 dark:text-gray-400 mb-6">
-                                We're working on adding more awesome projects in this category!
+                                Kami sedang mengembangkan lebih banyak project keren di kategori ini!
                             </p>
                             <Link href="/portfolio">
                                 <Button variant="primary">
-                                    {t('portfolio.detail.viewAll')}
+                                    Lihat Semua Portfolio
                                 </Button>
                             </Link>
                         </div>
