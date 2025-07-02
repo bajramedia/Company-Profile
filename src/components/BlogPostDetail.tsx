@@ -26,7 +26,11 @@ const BlogPostDetail: React.FC<BlogPostDetailProps> = ({ post }) => {
 
   // Initialize view tracking and counter
   const viewCounter = useViewCounter(post?.views || 0);
-  const viewTracker = useViewTracker({ slug: post?.slug || '', delay: 3000 });
+  const { viewCount: trackedViewCount, hasTracked } = useViewTracker({
+    type: 'blog',
+    slug: post?.slug || '',
+    title: post?.title
+  });
   const [shareMessage, setShareMessage] = useState<string>("");
   const [showBackToTop, setShowBackToTop] = useState(false);
 
