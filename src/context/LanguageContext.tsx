@@ -296,11 +296,12 @@ const translations = {
   "portfolio.detail.client": { en: "Client", id: "Klien" },
   "portfolio.detail.duration": { en: "Duration", id: "Durasi" },
   "portfolio.detail.technologies": { en: "Technologies Used", id: "Teknologi yang Digunakan" },
-  "portfolio.detail.relatedProjects": { en: "Related Projects", id: "Project Lainnya" },
+  "portfolio.detail.relatedProjects": { en: "Related Projects", id: "Project Terkait" },
   "portfolio.detail.comingSoon": { en: "Coming Soon", id: "Segera Hadir" },
   "portfolio.detail.comingSoonDesc": { en: "We're adding more awesome projects", id: "Kami sedang menambahkan project-project keren lainnya" },
   "portfolio.detail.viewAll": { en: "View All Portfolio", id: "Lihat Semua Portfolio" },
   "portfolio.detail.featured": { en: "Featured", id: "Unggulan" },
+  "portfolio.detail.projectInfo": { en: "Project Information", id: "Informasi Proyek" },
 
   // About Us Page
   "about.title.main": { en: "About", id: "Tentang" },

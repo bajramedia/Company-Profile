@@ -60,47 +60,61 @@ function PortfolioDetailPageContent({ slug }: { slug: string }) {
         const fetchPortfolioItem = async () => {
             try {
                 setLoading(true);
+                setError(null);
+                console.log('🔄 Fetching portfolio item untuk slug:', slug);
+
                 const response = await fetch(`/api/portfolio/${slug}`);
+                console.log('📡 Portfolio API response status:', response.status);
 
                 if (!response.ok) {
-                    throw new Error('Portfolio item not found');
+                    const errorText = await response.text();
+                    console.error('❌ Portfolio API error:', response.status, errorText);
+                    throw new Error(`Portfolio item not found (${response.status})`);
                 }
 
                 const data = await response.json();
+                console.log('📄 Portfolio data received:', data);
+
+                if (!data || !data.id) {
+                    throw new Error('Portfolio data is invalid or empty');
+                }
 
                 // Format data untuk komponen
                 const formattedItem: PortfolioItem = {
                     id: data.id,
                     slug: data.slug,
-                    title: data.title,
-                    description: data.description,
-                    content: data.content,
-                    featuredImage: data.featuredImage || '/images/placeholder.jpg',
-                    images: data.images || [],
-                    clientName: data.client || data.clientName,
-                    client: data.client,
-                    projectUrl: data.projectUrl,
-                    githubUrl: data.githubUrl,
+                    title: data.title || 'Untitled Project',
+                    description: data.description || 'No description available',
+                    content: data.content || '',
+                    featuredImage: data.featuredImage || data.featured_image || '/images/placeholder.jpg',
+                    images: Array.isArray(data.images) ? data.images : (data.images ? JSON.parse(data.images) : []),
+                    clientName: data.client || data.clientName || data.client_name,
+                    client: data.client || data.clientName,
+                    projectUrl: data.projectUrl || data.project_url,
+                    githubUrl: data.githubUrl || data.github_url,
                     category: {
-                        name: data.categoryName || 'Uncategorized',
-                        slug: data.categorySlug || 'uncategorized',
-                        icon: data.categoryIcon || '🌐',
-                        color: data.categoryColor || '#3B82F6'
+                        name: data.categoryName || data.category?.name || 'Uncategorized',
+                        slug: data.categorySlug || data.category?.slug || 'uncategorized',
+                        icon: data.categoryIcon || data.category?.icon || '🌐',
+                        color: data.categoryColor || data.category?.color || '#3B82F6'
                     },
-                    tags: data.tags || [],
-                    featured: data.featured || false,
-                    startDate: data.startDate,
-                    endDate: data.endDate,
-                    createdAt: data.createdAt || data.date,
-                    viewCount: data.viewCount || 0
+                    tags: Array.isArray(data.tags) ? data.tags : [],
+                    featured: data.featured === true || data.featured === 1 || data.featured === "1",
+                    startDate: data.startDate || data.start_date,
+                    endDate: data.endDate || data.end_date,
+                    createdAt: data.createdAt || data.created_at || data.date || new Date().toISOString(),
+                    viewCount: data.viewCount || data.view_count || data.views || 0
                 };
 
+                console.log('✅ Portfolio item berhasil diformat:', formattedItem);
                 setPortfolioItem(formattedItem);
 
                 // Fetch related projects after getting current item
                 fetchRelatedProjects(formattedItem.category.slug, formattedItem.id);
             } catch (err) {
-                setError(err instanceof Error ? err.message : 'Failed to load portfolio item');
+                const errorMessage = err instanceof Error ? err.message : 'Failed to load portfolio item';
+                console.error('💥 Error loading portfolio:', errorMessage, err);
+                setError(errorMessage);
             } finally {
                 setLoading(false);
             }
@@ -276,20 +290,36 @@ function PortfolioDetailPageContent({ slug }: { slug: string }) {
     }
 
     // Error state
-    if (error || !portfolioItem) {
+    if (error || (!loading && !portfolioItem)) {
         return (
             <div className="min-h-screen bg-white dark:bg-gray-900 flex items-center justify-center">
-                <div className="text-center">
+                <div className="text-center max-w-md mx-auto px-4">
                     <div className="text-6xl mb-4">😔</div>
                     <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-                        Portfolio Not Found
+                        Portfolio Tidak Ditemukan
                     </h1>
                     <p className="text-gray-600 dark:text-gray-400 mb-6">
-                        {error || 'The portfolio item you are looking for does not exist.'}
+                        {error || 'Portfolio yang kamu cari tidak ditemukan atau belum tersedia.'}
                     </p>
-                    <Link href="/portfolio">
-                        <Button variant="primary">Back to Portfolio</Button>
-                    </Link>
+                    <div className="space-y-3">
+                        <Link href="/portfolio">
+                            <Button variant="primary" className="w-full">
+                                Kembali ke Portfolio
+                            </Button>
+                        </Link>
+                        <Link href="/">
+                            <Button variant="outline" className="w-full">
+                                Ke Halaman Utama
+                            </Button>
+                        </Link>
+                    </div>
+                    {process.env.NODE_ENV === 'development' && error && (
+                        <div className="mt-6 p-4 bg-red-50 dark:bg-red-900/20 rounded-lg text-left">
+                            <p className="text-xs text-red-600 dark:text-red-400 font-mono">
+                                Debug: {error}
+                            </p>
+                        </div>
+                    )}
                 </div>
             </div>
         );
@@ -536,7 +566,7 @@ function PortfolioDetailPageContent({ slug }: { slug: string }) {
                 {/* Related Projects */}
                 <section className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
                     <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-8" data-aos="fade-up">
-                        Portfolio Terkait
+                        {t('portfolio.detail.relatedProjects')}
                     </h2>
 
                     {relatedLoading ? (
