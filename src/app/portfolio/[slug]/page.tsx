@@ -153,7 +153,7 @@ function PortfolioDetailPageContent({ slug }: { slug: string }) {
                         if (relatedByCategory.length < 3) {
                             console.log('⚠️ Portfolio kategori sama kurang dari 3, menambahkan portfolio lain');
                             const additionalProjects = otherProjects
-                                .filter(project => !relatedByCategory.some(related => related.id === project.id))
+                                .filter((project: any) => !relatedByCategory.some((related: any) => related.id === project.id))
                                 .sort(() => Math.random() - 0.5)
                                 .slice(0, 3 - relatedByCategory.length);
 
@@ -194,7 +194,7 @@ function PortfolioDetailPageContent({ slug }: { slug: string }) {
                         });
 
                     console.log('✅ Related projects berhasil ditemukan:', related.length);
-                    console.log('✅ Related projects:', related.map(p => ({ title: p.title, category: p.category.name })));
+                    console.log('✅ Related projects:', related.map((p: any) => ({ title: p.title, category: p.category.name })));
                     setRelatedProjects(related);
                 } else {
                     console.error('❌ API response tidak OK:', response.status, response.statusText);
