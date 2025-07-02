@@ -1,56 +1,77 @@
 import { useEffect, useState } from 'react';
 
-interface UseViewTrackerOptions {
+interface ViewTrackerOptions {
+  type: 'portfolio' | 'blog';
   slug: string;
-  delay?: number; // Delay before tracking view (default 3 seconds)
+  title?: string;
 }
 
-interface ViewTrackerReturn {
-  views: number;
-  isTracking: boolean;
-}
-
-export const useViewTracker = ({ 
-  slug, 
-  delay = 3000 
-}: UseViewTrackerOptions): ViewTrackerReturn => {
-  const [views, setViews] = useState(0);
-  const [isTracking, setIsTracking] = useState(false);
+export const useViewTracker = ({ type, slug, title }: ViewTrackerOptions) => {
+  const [viewCount, setViewCount] = useState<number>(0);
   const [hasTracked, setHasTracked] = useState(false);
 
   useEffect(() => {
-    if (!slug || hasTracked) return;
+    let timeoutId: NodeJS.Timeout;
+    let hasViewed = false;
 
     const trackView = async () => {
+      if (hasTracked || hasViewed) return;
+      
       try {
-        setIsTracking(true);
+        console.log(`📊 Tracking view untuk ${type}:`, slug);
         
-        const response = await fetch(`/api/posts/${slug}/views`, {
+        const endpoint = type === 'portfolio' 
+          ? `/api/portfolio/${slug}/views` 
+          : `/api/posts/${slug}/views`;
+        
+        const response = await fetch(endpoint, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
+          body: JSON.stringify({
+            userAgent: navigator.userAgent,
+            timestamp: new Date().toISOString(),
+            title: title
+          })
         });
 
         if (response.ok) {
-          const data = await response.json();
-          setViews(data.views);
+          const result = await response.json();
+          console.log(`✅ View berhasil di-track untuk ${type}:`, slug);
+          
+          // Update view count if returned from API
+          if (result.viewCount) {
+            setViewCount(result.viewCount);
+          }
+          
           setHasTracked(true);
+          hasViewed = true;
+        } else {
+          console.error(`❌ Gagal track view untuk ${type}:`, response.status);
         }
       } catch (error) {
-        console.error('Failed to track view:', error);
-      } finally {
-        setIsTracking(false);
+        console.error(`💥 Error tracking view untuk ${type}:`, error);
       }
     };
 
-    // Track view after specified delay
-    const timer = setTimeout(trackView, delay);
+    // Track view after user stays on page for 3 seconds
+    timeoutId = setTimeout(() => {
+      trackView();
+    }, 3000);
 
-    return () => clearTimeout(timer);
-  }, [slug, delay, hasTracked]);
+    // Cleanup
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [type, slug, title, hasTracked]);
 
-  return { views, isTracking };
+  return {
+    viewCount,
+    hasTracked
+  };
 };
 
 // Hook for real-time view updates (optional)

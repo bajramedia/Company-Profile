@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Button, Heading, Logo, LanguageSwitcher } from '@/components';
 import { useLanguage } from '@/context/LanguageContext';
+import { useViewTracker } from '@/hooks/useViewTracker';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
@@ -54,6 +55,13 @@ function PortfolioDetailPageContent({ slug }: { slug: string }) {
     const [loading, setLoading] = useState(true);
     const [relatedLoading, setRelatedLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+
+    // Track views untuk portfolio ini
+    const { viewCount: trackedViewCount, hasTracked } = useViewTracker({
+        type: 'portfolio',
+        slug,
+        title: portfolioItem?.title
+    });
 
     // Fetch portfolio item dari database
     useEffect(() => {
@@ -320,6 +328,18 @@ function PortfolioDetailPageContent({ slug }: { slug: string }) {
                             </p>
                         </div>
                     )}
+                </div>
+            </div>
+        );
+    }
+
+    // Null guard untuk portfolioItem
+    if (!portfolioItem) {
+        return (
+            <div className="min-h-screen bg-white dark:bg-gray-900 flex items-center justify-center">
+                <div className="text-center">
+                    <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-primary mx-auto mb-4"></div>
+                    <p className="text-gray-600 dark:text-gray-400">Loading portfolio...</p>
                 </div>
             </div>
         );
