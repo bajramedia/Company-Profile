@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { Button, Heading, Logo, LanguageSwitcher } from '@/components';
 import { useLanguage } from '@/context/LanguageContext';
 import { useViewTracker } from '@/hooks/useViewTracker';
+import { Star, Check, Zap, Frown, Rocket, Sun, Moon, Calendar, Eye } from 'lucide-react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
@@ -316,7 +317,9 @@ function PortfolioDetailPageContent({ slug }: { slug: string }) {
         return (
             <div className="min-h-screen bg-white dark:bg-gray-900 flex items-center justify-center">
                 <div className="text-center max-w-md mx-auto px-4">
-                    <div className="text-6xl mb-4">😔</div>
+                    <div className="text-6xl mb-4 text-gray-400">
+                        <Frown size={64} className="mx-auto" />
+                    </div>
                     <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
                         Portfolio Tidak Ditemukan
                     </h1>
@@ -428,8 +431,9 @@ function PortfolioDetailPageContent({ slug }: { slug: string }) {
                                         <span>{portfolioItem.category.name}</span>
                                     </span>
                                     {portfolioItem.featured && (
-                                        <span className="bg-gradient-to-r from-primary to-secondary text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg">
-                                            ⭐ Featured Project
+                                        <span className="bg-gradient-to-r from-primary to-secondary text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg flex items-center space-x-1">
+                                            <Star size={16} className="fill-current" />
+                                            <span>Featured Project</span>
                                         </span>
                                     )}
                                 </div>
@@ -459,7 +463,9 @@ function PortfolioDetailPageContent({ slug }: { slug: string }) {
                                         <div className="text-sm text-gray-600 dark:text-gray-400 font-medium">Duration</div>
                                     </div>
                                     <div className="text-center p-4 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 dark:border-gray-700/50 hover:shadow-xl transition-all duration-300">
-                                        <div className="text-2xl md:text-3xl font-bold text-green-500 mb-1">✓</div>
+                                        <div className="text-2xl md:text-3xl font-bold text-green-500 mb-1 flex justify-center">
+                                            <Check size={32} />
+                                        </div>
                                         <div className="text-sm text-gray-600 dark:text-gray-400 font-medium">{portfolioItem.projectStatus || 'Done'}</div>
                                     </div>
                                 </div>
@@ -574,7 +580,7 @@ function PortfolioDetailPageContent({ slug }: { slug: string }) {
                                         borderColor: `${tech.color || '#6B7280'}30`
                                     }}
                                 >
-                                    <span className="mr-2">⚡</span>
+                                    <Zap size={16} className="mr-2" />
                                     {tech.name}
                                 </span>
                             ))}
@@ -838,8 +844,8 @@ function PortfolioDetailPageContent({ slug }: { slug: string }) {
                                                     <span>{project.category.name}</span>
                                                 </span>
                                                 {project.featured && (
-                                                    <span className="bg-primary text-white px-2 py-1 rounded-full text-xs font-semibold">
-                                                        ⭐
+                                                    <span className="bg-primary text-white px-2 py-1 rounded-full text-xs font-semibold flex items-center">
+                                                        <Star size={12} className="fill-current" />
                                                     </span>
                                                 )}
                                             </div>
@@ -877,7 +883,9 @@ function PortfolioDetailPageContent({ slug }: { slug: string }) {
                         </div>
                     ) : (
                         <div className="text-center py-16" data-aos="fade-up">
-                            <div className="text-6xl mb-4">🚀</div>
+                            <div className="text-6xl mb-4 text-primary flex justify-center">
+                                <Rocket size={64} />
+                            </div>
                             <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
                                 Belum Ada Portfolio Terkait
                             </h3>
@@ -898,9 +906,13 @@ function PortfolioDetailPageContent({ slug }: { slug: string }) {
             <div className="fixed bottom-6 left-6 z-50">
                 <button
                     onClick={toggleDarkMode}
-                    className="w-14 h-14 rounded-full bg-white dark:bg-gray-800 shadow-lg border border-gray-200 dark:border-gray-600 flex items-center justify-center hover:shadow-xl transition-all duration-300"
+                    className="w-14 h-14 rounded-full bg-white dark:bg-gray-800 shadow-lg border border-gray-200 dark:border-gray-600 flex items-center justify-center hover:shadow-xl transition-all duration-300 hover:scale-110"
                 >
-                    {isDarkMode ? <span className="text-2xl">☀️</span> : <span className="text-2xl">🌙</span>}
+                    {isDarkMode ? (
+                        <Sun size={24} className="text-yellow-500" />
+                    ) : (
+                        <Moon size={24} className="text-blue-500" />
+                    )}
                 </button>
             </div>
         </div>
