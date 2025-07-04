@@ -117,17 +117,17 @@ const Portfolio: React.FC = () => {
   if (loading) {
     console.log('🎯 Portfolio component: Rendering LOADING state');
     return (
-      <section className="py-16 md:py-24 bg-white dark:bg-gray-900 relative overflow-hidden transition-colors duration-300">
+      <section className="py-16 md:py-20 bg-white dark:bg-gray-900 relative overflow-hidden transition-colors duration-300">
         <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8">
-          <div className="text-center mb-14">
-            <Heading variant="h1" className="text-2xl md:text-3xl font-bold mb-3">
+          <div className="text-center mb-12">
+            <Heading variant="h2" className="text-2xl md:text-3xl font-bold mb-3">
               {t('portfolio.title.main')} <span className="text-primary">{t('portfolio.title.highlight')}</span>
             </Heading>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[1, 2, 3, 4, 5, 6].map((i) => (
               <div key={i} className="animate-pulse">
-                <div className="bg-gray-200 dark:bg-gray-700 aspect-[4/3] rounded-lg mb-4"></div>
+                <div className="bg-gray-200 dark:bg-gray-700 h-48 rounded-lg mb-4"></div>
                 <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded mb-2"></div>
                 <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
               </div>
@@ -141,16 +141,16 @@ const Portfolio: React.FC = () => {
   console.log('🎯 Portfolio component: Rendering MAIN component with', displayedItems.length, 'items');
 
   return (
-    <section className="py-16 md:py-24 bg-white dark:bg-gray-900 relative overflow-hidden transition-colors duration-300">
+    <section className="py-16 md:py-20 bg-white dark:bg-gray-900 relative overflow-hidden transition-colors duration-300">
       <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8">
-        <div className="text-center mb-14">
+        <div className="text-center mb-12">
           <AnimatedText as="div">
-            <Heading variant="h1" className="text-2xl md:text-3xl font-bold mb-3">
+            <Heading variant="h2" className="text-2xl md:text-3xl font-bold mb-3">
               {t('portfolio.title.main')} <span className="text-primary">{t('portfolio.title.highlight')}</span>
             </Heading>
           </AnimatedText>
           <AnimatedText as="div">
-            <Text color="secondary" className="max-w-2xl mx-auto text-sm md:text-base">
+            <Text color="secondary" className="max-w-2xl mx-auto text-base">
               {t('portfolio.subtitle')}
             </Text>
           </AnimatedText>
@@ -162,7 +162,7 @@ const Portfolio: React.FC = () => {
             <div className="flex flex-wrap justify-center gap-2 max-w-4xl">
               <button
                 onClick={() => handleCategoryFilter('all')}
-                className={`px-4 py-2 text-sm font-medium rounded-md transition-colors duration-300 ${selectedCategory === 'all'
+                className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-300 ${selectedCategory === 'all'
                   ? 'bg-primary text-white dark:bg-green-600'
                   : 'text-secondary dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 border border-gray-200 dark:border-gray-700'
                   }`}
@@ -173,7 +173,7 @@ const Portfolio: React.FC = () => {
                 <button
                   key={category.id}
                   onClick={() => handleCategoryFilter(category.slug)}
-                  className={`px-4 py-2 text-sm font-medium rounded-md transition-colors duration-300 ${selectedCategory === category.slug
+                  className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-300 ${selectedCategory === category.slug
                     ? 'bg-primary text-white dark:bg-green-600'
                     : 'text-secondary dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 border border-gray-200 dark:border-gray-700'
                     }`}
@@ -188,7 +188,7 @@ const Portfolio: React.FC = () => {
         {/* Error Message */}
         {error && (
           <div className="text-center mb-8">
-            <div className="inline-flex items-center px-4 py-2 bg-red-100 dark:bg-red-900/20 text-red-800 dark:text-red-200 rounded-md">
+            <div className="inline-flex items-center px-4 py-2 bg-red-100 dark:bg-red-900/20 text-red-800 dark:text-red-200 rounded-lg">
               <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
               </svg>
@@ -197,7 +197,7 @@ const Portfolio: React.FC = () => {
           </div>
         )}
 
-        {/* Portfolio Grid */}
+        {/* Portfolio Grid - Smaller Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {displayedItems.map((item) => {
             // Parse images if it's a string
@@ -217,9 +217,10 @@ const Portfolio: React.FC = () => {
               <Link
                 key={item.id}
                 href={`/portfolio/${item.slug}`}
-                className="group relative overflow-hidden rounded-lg shadow-md dark:shadow-lg hover:shadow-xl dark:hover:shadow-2xl transition-all duration-300 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 block"
+                className="group relative overflow-hidden rounded-xl shadow-md dark:shadow-lg hover:shadow-xl dark:hover:shadow-2xl transition-all duration-300 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 block"
               >
-                <div className="relative aspect-[4/3] overflow-hidden">
+                {/* Smaller Image Container */}
+                <div className="relative h-48 overflow-hidden">
                   <Image
                     src={displayImage}
                     alt={item.title}
@@ -235,14 +236,14 @@ const Portfolio: React.FC = () => {
 
                   {/* Featured Badge */}
                   {item.featured && (
-                    <div className="absolute top-4 right-4">
-                      <span className="inline-flex items-center px-2 py-1 text-xs font-medium bg-primary text-white rounded-full">
+                    <div className="absolute top-3 right-3">
+                      <span className="inline-flex items-center px-2 py-1 text-xs font-medium bg-primary text-white rounded-lg">
                         Featured
                       </span>
                     </div>
                   )}
 
-                  <div className="absolute bottom-4 left-4 right-4 transform translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                  <div className="absolute bottom-3 left-3 right-3 transform translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
                     <h3 className="text-white dark:text-gray-100 font-semibold text-lg mb-1 transition-colors duration-300">
                       {item.title}
                     </h3>
@@ -252,11 +253,12 @@ const Portfolio: React.FC = () => {
                   </div>
                 </div>
 
+                {/* Compact Content */}
                 <div className="p-4 bg-white dark:bg-gray-800 transition-colors duration-300">
-                  <h3 className="font-semibold text-lg mb-2 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+                  <h3 className="font-semibold text-lg mb-2 text-gray-900 dark:text-gray-100 transition-colors duration-300 line-clamp-1">
                     {item.title}
                   </h3>
-                  <p className="text-secondary dark:text-gray-400 text-sm mb-3 transition-colors duration-300">
+                  <p className="text-secondary dark:text-gray-400 text-sm mb-3 transition-colors duration-300 line-clamp-2">
                     {item.excerpt}
                   </p>
                   <div className="flex items-center justify-between">
@@ -280,7 +282,7 @@ const Portfolio: React.FC = () => {
           <div className="text-center py-12">
             <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center">
               <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012 2v2M7 7h10" />
               </svg>
             </div>
             <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">

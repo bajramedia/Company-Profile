@@ -171,7 +171,7 @@ export default function HomePage() {
                                     </AnimatedText>
 
                                     <AnimatedText as="div">
-                                        <Heading variant="h1" color="foreground" className="mb-8 text-[40px] md:text-[48px] lg:text-[56px] xl:text-[64px] font-extrabold leading-[1.1] tracking-tight">
+                                        <Heading variant="h1" color="foreground" className="mb-8 text-[36px] md:text-[44px] lg:text-[52px] xl:text-[56px] font-extrabold leading-[1.1] tracking-tight">
                                             {language === 'id' ? 'Kami Membangun ' : 'We Build '}
                                             <span className="text-green-500 relative inline-block">
                                                 <span className="relative z-10">{language === 'id' ? 'Solusi Digital' : 'Digital Solutions'}</span>
@@ -182,7 +182,7 @@ export default function HomePage() {
                                     </AnimatedText>
 
                                     <AnimatedText as="div">
-                                        <Text color="secondary" className="mb-10 text-[18px] md:text-[20px] leading-relaxed max-w-2xl">
+                                        <Text color="secondary" className="mb-10 text-[16px] md:text-[18px] leading-relaxed max-w-2xl">
                                             {language === 'id'
                                                 ? 'Transformasikan bisnis Anda dengan pengembangan web yang canggih, aplikasi mobile, dan solusi pemasaran digital yang disesuaikan dengan kebutuhan Anda.'
                                                 : 'Transform your business with cutting-edge web development, mobile apps, and digital marketing solutions tailored to your needs.'
@@ -193,12 +193,12 @@ export default function HomePage() {
                                     <AnimatedText as="div">
                                         <div className="flex flex-col sm:flex-row gap-4 mb-12">
                                             <Link href="/about">
-                                                <Button variant="primary" size="lg" className="px-10 py-5 text-lg font-semibold w-full sm:w-auto bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 transform hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-2xl">
+                                                <Button variant="primary" size="lg" className="px-8 py-4 text-base font-semibold w-full sm:w-auto bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 transform hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-2xl">
                                                     {language === 'id' ? 'Konsultasi Gratis' : 'Get Free Consultation'}
                                                 </Button>
                                             </Link>
                                             <Link href="/portfolio">
-                                                <Button variant="outline" size="lg" className="px-10 py-5 text-lg font-semibold border-2 border-green-500 text-green-500 hover:bg-green-500 hover:text-white w-full sm:w-auto transform hover:scale-105 transition-all duration-300">
+                                                <Button variant="outline" size="lg" className="px-8 py-4 text-base font-semibold border-2 border-green-500 text-green-500 hover:bg-green-500 hover:text-white w-full sm:w-auto transform hover:scale-105 transition-all duration-300">
                                                     {language === 'id' ? 'Lihat Portfolio Kami' : 'View Our Portfolio'}
                                                 </Button>
                                             </Link>
@@ -210,19 +210,19 @@ export default function HomePage() {
                                         <div className="grid grid-cols-3 gap-8 pt-8 border-t border-gray-200 dark:border-gray-700">
                                             <div className="text-center">
                                                 <div className="text-3xl md:text-4xl font-bold text-green-500 mb-2">50+</div>
-                                                <div className="text-sm md:text-base text-gray-600 dark:text-gray-400 font-medium">
+                                                <div className="text-sm text-gray-600 dark:text-gray-400 font-medium">
                                                     {language === 'id' ? 'PROJECTS DONE' : 'PROJECTS DONE'}
                                                 </div>
                                             </div>
                                             <div className="text-center">
                                                 <div className="text-3xl md:text-4xl font-bold text-green-500 mb-2">5+</div>
-                                                <div className="text-sm md:text-base text-gray-600 dark:text-gray-400 font-medium">
+                                                <div className="text-sm text-gray-600 dark:text-gray-400 font-medium">
                                                     {language === 'id' ? 'YEARS EXPERIENCE' : 'YEARS EXPERIENCE'}
                                                 </div>
                                             </div>
                                             <div className="text-center">
                                                 <div className="text-3xl md:text-4xl font-bold text-green-500 mb-2">24/7</div>
-                                                <div className="text-sm md:text-base text-gray-600 dark:text-gray-400 font-medium">
+                                                <div className="text-sm text-gray-600 dark:text-gray-400 font-medium">
                                                     {language === 'id' ? 'SUPPORT' : 'SUPPORT'}
                                                 </div>
                                             </div>
@@ -235,7 +235,7 @@ export default function HomePage() {
                                     <AnimatedText as="div">
                                         <div className="relative">
                                             {/* Main Image Container */}
-                                            <div className="relative w-full h-[450px] md:h-[550px] lg:h-[650px] rounded-3xl overflow-hidden shadow-2xl bg-gradient-to-br from-green-500/10 to-blue-500/10">
+                                            <div className="relative w-full h-[400px] md:h-[500px] lg:h-[600px] rounded-3xl overflow-hidden shadow-2xl bg-gradient-to-br from-green-500/10 to-blue-500/10">
                                                 <div className="absolute inset-0">
                                                     <Image
                                                         src="/images/team-meeting-2.jpg"
@@ -281,11 +281,7 @@ export default function HomePage() {
                                 </div>
                             </div>
                         </div>
-
-
                     </section>
-
-
 
                     {/* About Section */}
                     <section className="py-16 bg-white dark:bg-gray-900 transition-colors duration-300">
@@ -294,7 +290,6 @@ export default function HomePage() {
                                 {/* Text Content */}
                                 <div>
                                     <div className="mb-6 flex items-center space-x-2">
-
                                         <span className="text-green-500 font-medium text-sm tracking-wider uppercase">
                                             {language === 'id' ? 'Tentang Kami' : 'About Us'}
                                         </span>
@@ -307,7 +302,7 @@ export default function HomePage() {
                                         }
                                     </Heading>
 
-                                    <Text color="secondary" className="mb-8 text-[16px] leading-relaxed">
+                                    <Text color="secondary" className="mb-8 text-base leading-relaxed">
                                         {language === 'id'
                                             ? 'Dengan pengalaman lebih dari 5 tahun di industri teknologi, Bajramedia telah membantu puluhan klien mengembangkan bisnis mereka melalui solusi digital yang inovatif. Kami berkomitmen memberikan layanan terbaik dengan teknologi terdepan.'
                                             : 'With over 5 years of experience in the technology industry, Bajramedia has helped dozens of clients grow their businesses through innovative digital solutions. We are committed to providing the best service with cutting-edge technology.'
@@ -381,25 +376,21 @@ export default function HomePage() {
                         </div>
                     </section>
 
-
-
                     {/* Testimonials Section */}
                     <section className="py-16 bg-gray-50 dark:bg-gray-800 transition-colors duration-300">
                         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                             <div className="text-center mb-12">
                                 <div className="mb-6 flex items-center justify-center space-x-2">
-
                                     <span className="text-green-500 font-medium text-sm tracking-wider uppercase">
                                         {language === 'id' ? 'Testimoni Klien' : 'Client Testimonials'}
                                     </span>
-
                                 </div>
 
                                 <Heading variant="h2" color="foreground" className="mb-4 text-[28px] md:text-[32px] lg:text-[36px] font-extrabold">
                                     {language === 'id' ? 'Kata Mereka Tentang Kami' : 'What They Say About Us'}
                                 </Heading>
 
-                                <Text color="secondary" className="max-w-2xl mx-auto text-[16px] leading-relaxed">
+                                <Text color="secondary" className="max-w-2xl mx-auto text-base leading-relaxed">
                                     {language === 'id'
                                         ? 'Kepercayaan klien adalah prioritas utama kami. Berikut testimoni dari klien yang telah merasakan layanan terbaik dari Bajramedia.'
                                         : 'Client trust is our top priority. Here are testimonials from clients who have experienced the best service from Bajramedia.'
@@ -417,7 +408,7 @@ export default function HomePage() {
                                             </svg>
                                         ))}
                                     </div>
-                                    <Text color="secondary" className="mb-6 italic text-[14px] leading-relaxed text-gray-600 dark:text-gray-300">
+                                    <Text color="secondary" className="mb-6 italic text-sm leading-relaxed text-gray-600 dark:text-gray-300">
                                         "{language === 'id'
                                             ? 'Tim Bajramedia sangat profesional dalam mengembangkan website perusahaan kami. Hasilnya melebihi ekspektasi dan sangat membantu meningkatkan brand awareness.'
                                             : 'Bajramedia team is very professional in developing our company website. The results exceeded expectations and really helped increase brand awareness.'
@@ -443,7 +434,7 @@ export default function HomePage() {
                                             </svg>
                                         ))}
                                     </div>
-                                    <Text color="secondary" className="mb-6 italic text-[14px] leading-relaxed text-gray-600 dark:text-gray-300">
+                                    <Text color="secondary" className="mb-6 italic text-sm leading-relaxed text-gray-600 dark:text-gray-300">
                                         "{language === 'id'
                                             ? 'Pelayanan yang luar biasa! Sistem manajemen yang dikembangkan Bajramedia sangat membantu operasional bisnis kami menjadi lebih efisien.'
                                             : 'Extraordinary service! The management system developed by Bajramedia really helps our business operations become more efficient.'
@@ -469,7 +460,7 @@ export default function HomePage() {
                                             </svg>
                                         ))}
                                     </div>
-                                    <Text color="secondary" className="mb-6 italic text-[14px] leading-relaxed text-gray-600 dark:text-gray-300">
+                                    <Text color="secondary" className="mb-6 italic text-sm leading-relaxed text-gray-600 dark:text-gray-300">
                                         "{language === 'id'
                                             ? 'Aplikasi mobile yang dikembangkan sangat user-friendly dan sesuai dengan kebutuhan bisnis kami. Tim support juga sangat responsif.'
                                             : 'The mobile application developed is very user-friendly and suits our business needs. The support team is also very responsive.'
@@ -488,8 +479,6 @@ export default function HomePage() {
                             </div>
                         </div>
                     </section>
-
-
 
                     {/* Blog Section */}
                     <Blog />
