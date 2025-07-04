@@ -5,10 +5,11 @@ import Link from "next/link";
 import { useState, useEffect } from 'react';
 import { Button, Heading, Navbar, AnimatedText, WhatsAppChat } from "@/components";
 import { useLanguage } from "@/context/LanguageContext";
+import { Globe, Smartphone, Palette, BarChart3, Cpu, Lightbulb } from 'lucide-react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
-// Data services
+// Data services - Updated to match homepage
 const services = [
     {
         id: 'web-development',
@@ -16,19 +17,19 @@ const services = [
         titleId: 'Website Modern & Responsif',
         description: 'Bangun website profesional dengan teknologi terbaru yang cepat, aman, dan mobile-friendly.',
         descriptionEn: 'Build professional websites with the latest technology that are fast, secure, and mobile-friendly.',
-        icon: '🌐',
-        color: 'from-blue-500 to-blue-600',
+        icon: Globe,
+        color: 'from-green-500 to-green-600',
         features: ['Responsive Design', 'SEO Optimized', 'Fast Loading', 'Mobile First']
     },
     {
-        id: 'aset-game-development',
-        title: 'Game Asset Development',
-        titleId: 'Aset Game Development',
-        description: 'Ciptakan karakter, environment, dan asset game yang memukau untuk game modern.',
-        descriptionEn: 'Create stunning characters, environments, and game assets for modern games.',
-        icon: '🎮',
-        color: 'from-purple-500 to-purple-600',
-        features: ['2D Sprites', '3D Models', 'Environment Design', 'Audio Assets']
+        id: 'mobile-apps',
+        title: 'Mobile Apps',
+        titleId: 'Aplikasi Mobile Modern',
+        description: 'Pengembangan aplikasi mobile native dan cross-platform untuk iOS dan Android dengan performa optimal.',
+        descriptionEn: 'Native and cross-platform mobile app development for iOS and Android with optimal performance.',
+        icon: Smartphone,
+        color: 'from-blue-500 to-blue-600',
+        features: ['Native Development', 'Cross Platform', 'Performance Optimized', 'App Store Ready']
     },
     {
         id: 'uiux-design',
@@ -36,9 +37,19 @@ const services = [
         titleId: 'Desain Interface yang Memukau',
         description: 'Ciptakan pengalaman pengguna yang luar biasa dengan desain yang intuitif dan menarik.',
         descriptionEn: 'Create extraordinary user experiences with intuitive and attractive designs.',
-        icon: '🎨',
-        color: 'from-pink-500 to-pink-600',
+        icon: Palette,
+        color: 'from-purple-500 to-purple-600',
         features: ['User Research', 'Wireframing', 'Prototyping', 'Design System']
+    },
+    {
+        id: 'digital-marketing',
+        title: 'Digital Marketing',
+        titleId: 'Digital Marketing Terpadu',
+        description: 'Strategi pemasaran digital yang komprehensif untuk meningkatkan brand awareness dan penjualan.',
+        descriptionEn: 'Comprehensive digital marketing strategies to increase brand awareness and sales.',
+        icon: BarChart3,
+        color: 'from-red-500 to-red-600',
+        features: ['SEO/SEM', 'Social Media Ads', 'Content Marketing', 'Analytics & Reporting']
     },
     {
         id: 'sistem-development',
@@ -46,19 +57,19 @@ const services = [
         titleId: 'Sistem Development Enterprise',
         description: 'Bangun sistem enterprise yang scalable untuk workflow bisnis yang kompleks.',
         descriptionEn: 'Build scalable enterprise systems for complex business workflows.',
-        icon: '⚙️',
-        color: 'from-green-500 to-green-600',
+        icon: Cpu,
+        color: 'from-indigo-500 to-indigo-600',
         features: ['ERP System', 'CRM System', 'Custom Development', 'Integration Support']
     },
     {
-        id: 'sosial-media-management',
-        title: 'Social Media Management',
-        titleId: 'Social Media Management',
-        description: 'Tingkatkan engagement dan brand awareness dengan strategi social media yang tepat.',
-        descriptionEn: 'Increase engagement and brand awareness with effective social media strategies.',
-        icon: '📱',
-        color: 'from-orange-500 to-orange-600',
-        features: ['Content Creation', 'Community Management', 'Analytics & Insights', 'Multi-platform']
+        id: 'consulting',
+        title: 'Consulting',
+        titleId: 'Konsultasi Teknologi & Strategi',
+        description: 'Konsultasi teknologi dan strategi digital untuk mengoptimalkan proses bisnis dan transformasi digital.',
+        descriptionEn: 'Technology consulting and digital strategy to optimize business processes and digital transformation.',
+        icon: Lightbulb,
+        color: 'from-yellow-500 to-yellow-600',
+        features: ['Digital Strategy', 'Tech Consultation', 'Process Optimization', 'Business Analysis']
     }
 ];
 
@@ -182,8 +193,8 @@ export default function ServicesPage() {
                                         data-aos-delay={index * 100}
                                     >
                                         {/* Icon dengan gradient background */}
-                                        <div className={`inline-flex items-center justify-center w-16 h-16 rounded-xl bg-gradient-to-r ${service.color} text-white text-2xl mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                                            {service.icon}
+                                        <div className={`inline-flex items-center justify-center w-16 h-16 rounded-xl bg-gradient-to-r ${service.color} text-white mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                                            <service.icon className="w-8 h-8" />
                                         </div>
 
                                         {/* Title */}
