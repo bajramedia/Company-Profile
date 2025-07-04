@@ -792,8 +792,6 @@ export default function HomePage() {
                                                 : 'In-depth discussion about your project needs, goals, and vision.'
                                             }
                                         </p>
-                                        {/* Connection Line */}
-                                        <div className="hidden lg:block absolute top-8 left-full w-full h-0.5 bg-gray-200 dark:bg-gray-700 -translate-x-8"></div>
                                     </div>
                                 </AnimatedText>
 
@@ -812,8 +810,6 @@ export default function HomePage() {
                                                 : 'Creating detailed roadmap, timeline, and technical specifications.'
                                             }
                                         </p>
-                                        {/* Connection Line */}
-                                        <div className="hidden lg:block absolute top-8 left-full w-full h-0.5 bg-gray-200 dark:bg-gray-700 -translate-x-8"></div>
                                     </div>
                                 </AnimatedText>
 
@@ -832,8 +828,6 @@ export default function HomePage() {
                                                 : 'Project execution with regular updates and transparent communication.'
                                             }
                                         </p>
-                                        {/* Connection Line */}
-                                        <div className="hidden lg:block absolute top-8 left-full w-full h-0.5 bg-gray-200 dark:bg-gray-700 -translate-x-8"></div>
                                     </div>
                                 </AnimatedText>
 
