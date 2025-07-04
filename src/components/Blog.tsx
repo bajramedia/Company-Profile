@@ -107,12 +107,12 @@ export const BlogPostCard: React.FC<{ post: BlogPost }> = ({ post }) => {
           </div>
         </div>
 
-        {/* Compact title */}
-        <h3 className="font-bold text-lg mb-2 line-clamp-2 group-hover:text-primary transition-colors duration-300 leading-tight text-gray-900 dark:text-gray-100">
+        {/* Compact title - Match Portfolio sizing */}
+        <h3 className="font-semibold text-lg mb-2 line-clamp-2 group-hover:text-primary transition-colors duration-300 leading-tight text-gray-900 dark:text-gray-100">
           {post.title}
         </h3>
 
-        {/* Compact excerpt */}
+        {/* Compact excerpt - Match Portfolio sizing */}
         <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-2 flex-grow leading-relaxed transition-colors duration-300">
           {post.excerpt}
         </p>
@@ -199,12 +199,12 @@ const Blog: React.FC<BlogProps> = ({ className = '' }) => {
             </div>
           </AnimatedText>
           <AnimatedText as="div">
-            <h2 className="text-3xl md:text-4xl font-bold mb-3 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+            <h2 className="text-2xl md:text-3xl font-bold mb-3 text-gray-900 dark:text-gray-100 transition-colors duration-300">
               {t('blog.title') || 'Latest Insights & Articles'}
             </h2>
           </AnimatedText>
           <AnimatedText as="div">
-            <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto text-lg transition-colors duration-300">
+            <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto text-base transition-colors duration-300">
               {t('blog.description') || 'Stay updated with our latest thinking on digital strategy, design trends, technology innovations, and more.'}
             </p>
           </AnimatedText>
@@ -230,7 +230,7 @@ const Blog: React.FC<BlogProps> = ({ className = '' }) => {
           ) : (
             posts.map(post => (
               <AnimatedText key={post.id} as="div" className="h-full">
-                <Link href={`/blog/${post.slug}`} className="block h-full cursor-pointer">
+                <Link href={`/blog/${post.slug}`} className="block h-full">
                   <BlogPostCard post={post} />
                 </Link>
               </AnimatedText>

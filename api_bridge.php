@@ -30,6 +30,8 @@ header('Access-Control-Allow-Credentials: true');
 error_log("API Bridge called: " . $_SERVER['REQUEST_URI']);
 error_log("Origin: " . ($_SERVER['HTTP_ORIGIN'] ?? 'none'));
 error_log("User Agent: " . ($_SERVER['HTTP_USER_AGENT'] ?? 'none'));
+error_log("Query String: " . ($_SERVER['QUERY_STRING'] ?? 'none'));
+error_log("Method: " . $_SERVER['REQUEST_METHOD']);
 
 // Handle preflight OPTIONS request
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
@@ -101,6 +103,8 @@ $id = $_GET['id'] ?? null;
     
     if (!empty($endpoint)) {
         error_log("Query Route detected: endpoint='$endpoint', id='$id'");
+    } else {
+        error_log("API Bridge: No endpoint found in query parameters. _GET: " . print_r($_GET, true));
     }
 }
 
@@ -108,6 +112,9 @@ $id = $_GET['id'] ?? null;
 if ($endpoint === 'category') {
     $endpoint = 'categories';
 }
+
+// Log final endpoint before routing
+error_log("API Bridge: Final endpoint determined: '$endpoint'");
 
 // Route requests
 switch ($method) {
@@ -187,8 +194,9 @@ function handleGet($pdo, $endpoint, $id) {
     
     // Validate endpoint is in allowed list for public access (allow debug temporarily)
     if (!in_array($endpoint, $allowedPublicEndpoints) && !preg_match('/^admin/', $endpoint) && $endpoint !== 'debug') {
+        error_log("API Bridge: Access denied for endpoint: " . $endpoint . " | Available endpoints: " . implode(', ', $allowedPublicEndpoints));
         http_response_code(403);
-        echo json_encode(['error' => 'Access Denied']);
+        echo json_encode(['error' => 'Access Denied', 'endpoint' => $endpoint]);
         return;
     }
     
