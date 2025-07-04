@@ -107,13 +107,13 @@ export const BlogPostCard: React.FC<{ post: BlogPost }> = ({ post }) => {
           </div>
         </div>
 
-        {/* Compact title - Match Portfolio sizing */}
-        <h3 className="font-semibold text-lg mb-2 line-clamp-2 group-hover:text-primary transition-colors duration-300 leading-tight text-gray-900 dark:text-gray-100">
+        {/* Title - Bigger than Portfolio for better visibility */}
+        <h3 className="font-semibold text-xl mb-2 line-clamp-2 group-hover:text-primary transition-colors duration-300 leading-tight text-gray-900 dark:text-gray-100">
           {post.title}
         </h3>
 
-        {/* Compact excerpt - Match Portfolio sizing */}
-        <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-2 flex-grow leading-relaxed transition-colors duration-300">
+        {/* Excerpt - Bigger for better readability */}
+        <p className="text-gray-600 dark:text-gray-300 text-base mb-4 line-clamp-2 flex-grow leading-relaxed transition-colors duration-300">
           {post.excerpt}
         </p>
 

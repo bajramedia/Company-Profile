@@ -441,7 +441,7 @@ function PortfolioDetailPageContent({ slug }: { slug: string }) {
                                 {/* Client & Project Info */}
                                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                                     <div className="text-center p-4 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
-                                        <div className="text-2xl font-bold text-primary mb-1">{portfolioItem.viewCount || 0}</div>
+                                        <div className="text-2xl font-bold text-primary mb-1">{trackedViewCount || portfolioItem.viewCount || 0}</div>
                                         <div className="text-sm text-gray-600 dark:text-gray-400 font-medium">Views</div>
                                     </div>
                                     <div className="text-center p-4 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
