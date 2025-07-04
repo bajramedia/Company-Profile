@@ -35,6 +35,7 @@ interface PortfolioItem {
     endDate?: string;
     createdAt: string;
     viewCount?: number;
+    views?: number; // Alternative name for view count in database
     projectStatus?: string;
     projectType?: string;
     teamSize?: number;
