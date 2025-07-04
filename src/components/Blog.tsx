@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useLanguage } from '@/context/LanguageContext';
 import AnimatedText from './AnimatedText';
 import { FiCalendar, FiArrowRight, FiTag, FiEye } from 'react-icons/fi';
@@ -24,7 +25,7 @@ const formatDate = (dateString: string): string => {
 
 export const BlogPostCard: React.FC<{ post: BlogPost }> = ({ post }) => {
   const primaryColor = "rgb(3, 177, 80)";
-  
+
   // View tracking function
   const handlePostClick = async () => {
     try {
@@ -181,7 +182,7 @@ const Blog: React.FC<BlogProps> = ({ className = '' }) => {
 
     fetchPosts();
   }, []);
-  
+
   return (
     <section className={`py-16 md:py-20 bg-white dark:bg-gray-900 transition-colors duration-300 ${className}`}>
       <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8">
@@ -198,12 +199,12 @@ const Blog: React.FC<BlogProps> = ({ className = '' }) => {
             </div>
           </AnimatedText>
           <AnimatedText as="div">
-            <h2 className="text-2xl md:text-3xl font-bold mb-3 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+            <h2 className="text-3xl md:text-4xl font-bold mb-3 text-gray-900 dark:text-gray-100 transition-colors duration-300">
               {t('blog.title') || 'Latest Insights & Articles'}
             </h2>
           </AnimatedText>
           <AnimatedText as="div">
-            <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto text-base transition-colors duration-300">
+            <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto text-lg transition-colors duration-300">
               {t('blog.description') || 'Stay updated with our latest thinking on digital strategy, design trends, technology innovations, and more.'}
             </p>
           </AnimatedText>
@@ -229,14 +230,14 @@ const Blog: React.FC<BlogProps> = ({ className = '' }) => {
           ) : (
             posts.map(post => (
               <AnimatedText key={post.id} as="div" className="h-full">
-                <a href={`/blog/${post.slug}`} className="block h-full">
+                <Link href={`/blog/${post.slug}`} className="block h-full cursor-pointer">
                   <BlogPostCard post={post} />
-                </a>
+                </Link>
               </AnimatedText>
             ))
           )}
         </div>
-        
+
         {/* View All Button */}
         <div className="mt-10 text-center">
           <AnimatedText as="div">
