@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { useState, useEffect } from 'react';
-import { Button, Heading, Logo, LanguageSwitcher } from "@/components";
+import { Button, Heading, Logo, LanguageSwitcher, WhatsAppChat } from "@/components";
 import { useLanguage } from "@/context/LanguageContext";
+import { Globe, Palette, Rocket, Sun, Moon } from 'lucide-react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
@@ -88,7 +89,7 @@ export default function ConsultingPage() {
                                     <div className="p-2">
                                         <Link href="/services/web-development" className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
                                             <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center text-white text-sm">
-                                                🌐
+                                                <Globe size={20} className="text-blue-500" />
                                             </div>
                                             <div>
                                                 <div className="font-medium text-gray-900 dark:text-white text-sm">Web Development</div>
@@ -98,7 +99,7 @@ export default function ConsultingPage() {
 
                                         <Link href="/services/mobile-apps" className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
                                             <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-green-500 to-green-600 flex items-center justify-center text-white text-sm">
-                                                📱
+                                                <Palette size={20} className="text-pink-500" />
                                             </div>
                                             <div>
                                                 <div className="font-medium text-gray-900 dark:text-white text-sm">Mobile Apps</div>
@@ -108,7 +109,7 @@ export default function ConsultingPage() {
 
                                         <Link href="/services/uiux-design" className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
                                             <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-purple-500 to-purple-600 flex items-center justify-center text-white text-sm">
-                                                🎨
+                                                <Palette size={20} className="text-pink-500" />
                                             </div>
                                             <div>
                                                 <div className="font-medium text-gray-900 dark:text-white text-sm">UI/UX Design</div>
@@ -118,7 +119,7 @@ export default function ConsultingPage() {
 
                                         <Link href="/services/digital-marketing" className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
                                             <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-orange-500 to-orange-600 flex items-center justify-center text-white text-sm">
-                                                📢
+                                                <Globe size={20} className="text-blue-500" />
                                             </div>
                                             <div>
                                                 <div className="font-medium text-gray-900 dark:text-white text-sm">Digital Marketing</div>
@@ -128,7 +129,7 @@ export default function ConsultingPage() {
 
                                         <Link href="/services/consulting" className="flex items-center space-x-3 px-3 py-2 rounded-lg bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400">
                                             <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-red-500 to-red-600 flex items-center justify-center text-white text-sm">
-                                                💼
+                                                <Globe size={20} className="text-blue-500" />
                                             </div>
                                             <div>
                                                 <div className="font-medium text-sm">Business Consulting</div>
@@ -171,7 +172,7 @@ export default function ConsultingPage() {
                 <section className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 mb-20">
                     <div className="text-center">
                         <div className="inline-flex items-center justify-center w-16 h-16 rounded-xl bg-gradient-to-r from-red-500 to-red-600 text-white text-2xl mb-6">
-                            💼
+                            <Globe size={24} className="text-blue-500" />
                         </div>
                         <Heading variant="h1" color="foreground" className="mb-6 text-[32px] md:text-[40px] lg:text-[48px] font-bold">
                             {t('service.consulting.title')}
@@ -200,22 +201,30 @@ export default function ConsultingPage() {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                         <div className="bg-white dark:bg-gray-800 rounded-xl p-6 text-center border border-gray-100 dark:border-gray-700">
-                            <div className="text-3xl mb-3">📊</div>
+                            <div className="text-3xl mb-3">
+                                <Globe size={24} className="text-blue-500" />
+                            </div>
                             <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Digital Strategy</h3>
                             <p className="text-gray-600 dark:text-gray-400 text-sm">Roadmap transformasi digital</p>
                         </div>
                         <div className="bg-white dark:bg-gray-800 rounded-xl p-6 text-center border border-gray-100 dark:border-gray-700">
-                            <div className="text-3xl mb-3">⚙️</div>
+                            <div className="text-3xl mb-3">
+                                <Palette size={24} className="text-pink-500" />
+                            </div>
                             <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Process Optimization</h3>
                             <p className="text-gray-600 dark:text-gray-400 text-sm">Efisiensi operasional</p>
                         </div>
                         <div className="bg-white dark:bg-gray-800 rounded-xl p-6 text-center border border-gray-100 dark:border-gray-700">
-                            <div className="text-3xl mb-3">🛠️</div>
+                            <div className="text-3xl mb-3">
+                                <Palette size={24} className="text-pink-500" />
+                            </div>
                             <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Technology Roadmap</h3>
                             <p className="text-gray-600 dark:text-gray-400 text-sm">Pemilihan teknologi tepat</p>
                         </div>
                         <div className="bg-white dark:bg-gray-800 rounded-xl p-6 text-center border border-gray-100 dark:border-gray-700">
-                            <div className="text-3xl mb-3">📈</div>
+                            <div className="text-3xl mb-3">
+                                <Globe size={24} className="text-blue-500" />
+                            </div>
                             <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Growth Planning</h3>
                             <p className="text-gray-600 dark:text-gray-400 text-sm">Strategi pertumbuhan</p>
                         </div>
@@ -262,17 +271,23 @@ export default function ConsultingPage() {
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                         <div className="text-center">
-                            <div className="text-4xl mb-4">🎯</div>
+                            <div className="text-4xl mb-4">
+                                <Rocket size={48} className="text-primary mx-auto" />
+                            </div>
                             <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">Expert Team</h3>
                             <p className="text-gray-600 dark:text-gray-400">Tim berpengalaman dengan track record terbukti di berbagai industri.</p>
                         </div>
                         <div className="text-center">
-                            <div className="text-4xl mb-4">📊</div>
+                            <div className="text-4xl mb-4">
+                                <Palette size={24} className="text-pink-500" />
+                            </div>
                             <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">Data-Driven</h3>
                             <p className="text-gray-600 dark:text-gray-400">Keputusan berdasarkan data dan analisis mendalam, bukan asumsi.</p>
                         </div>
                         <div className="text-center">
-                            <div className="text-4xl mb-4">🚀</div>
+                            <div className="text-4xl mb-4">
+                                <Rocket size={48} className="text-primary mx-auto" />
+                            </div>
                             <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">Actionable Results</h3>
                             <p className="text-gray-600 dark:text-gray-400">Solusi praktis yang bisa langsung diimplementasikan.</p>
                         </div>
@@ -323,7 +338,7 @@ export default function ConsultingPage() {
                     onClick={toggleDarkMode}
                     className="w-14 h-14 rounded-full bg-white dark:bg-gray-800 shadow-lg border border-gray-200 dark:border-gray-600 flex items-center justify-center hover:shadow-xl transition-all duration-300"
                 >
-                    {isDarkMode ? <span className="text-2xl">☀️</span> : <span className="text-2xl">🌙</span>}
+                    {isDarkMode ? <Sun size={24} className="text-yellow-500" /> : <Moon size={24} className="text-blue-500" />}
                 </button>
             </div>
         </div>

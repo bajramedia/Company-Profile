@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { useState, useEffect } from 'react';
-import { Button, Heading, Logo, LanguageSwitcher } from "@/components";
+import { Button, Heading, Logo, LanguageSwitcher, WhatsAppChat } from "@/components";
 import { useLanguage } from "@/context/LanguageContext";
+import { Globe, Palette, Sun, Moon } from 'lucide-react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
@@ -120,7 +121,7 @@ export default function MobileAppsPage() {
                                     <div className="p-2">
                                         <Link href="/services/web-development" className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
                                             <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center text-white text-sm">
-                                                🌐
+                                                <Globe size={20} className="text-blue-500" />
                                             </div>
                                             <div>
                                                 <div className="font-medium text-gray-900 dark:text-white text-sm">Web Development</div>
@@ -130,7 +131,7 @@ export default function MobileAppsPage() {
 
                                         <Link href="/services/mobile-apps" className="flex items-center space-x-3 px-3 py-2 rounded-lg bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400">
                                             <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-green-500 to-green-600 flex items-center justify-center text-white text-sm">
-                                                📱
+                                                <Palette size={20} className="text-pink-500" />
                                             </div>
                                             <div>
                                                 <div className="font-medium text-sm">Mobile Apps</div>
@@ -391,7 +392,7 @@ export default function MobileAppsPage() {
                     onClick={toggleDarkMode}
                     className="w-14 h-14 rounded-full bg-white dark:bg-gray-800 shadow-lg border border-gray-200 dark:border-gray-600 flex items-center justify-center hover:shadow-xl transition-all duration-300"
                 >
-                    {isDarkMode ? <span className="text-2xl">☀️</span> : <span className="text-2xl">🌙</span>}
+                    {isDarkMode ? <Sun size={24} className="text-yellow-500" /> : <Moon size={24} className="text-blue-500" />}
                 </button>
             </div>
         </div>

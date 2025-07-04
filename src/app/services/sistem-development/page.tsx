@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { useState, useEffect } from 'react';
-import { Button, Heading, Logo, LanguageSwitcher } from "@/components";
+import { Button, Heading, Logo, LanguageSwitcher, WhatsAppChat } from "@/components";
 import { useLanguage } from "@/context/LanguageContext";
+import { Check, Globe, Gamepad2, Palette, Sun, Moon } from 'lucide-react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
@@ -240,15 +241,15 @@ export default function SistemDevelopmentPage() {
                                 </div>
                                 <ul className="space-y-2 mb-8 text-sm">
                                     <li className="flex items-center">
-                                        <span className="text-green-500 mr-2">✓</span>
+                                        <Check size={16} className="text-green-500 mr-2" />
                                         <span className="text-gray-700 dark:text-gray-300">Customer Database</span>
                                     </li>
                                     <li className="flex items-center">
-                                        <span className="text-green-500 mr-2">✓</span>
+                                        <Check size={16} className="text-green-500 mr-2" />
                                         <span className="text-gray-700 dark:text-gray-300">Sales Pipeline</span>
                                     </li>
                                     <li className="flex items-center">
-                                        <span className="text-green-500 mr-2">✓</span>
+                                        <Check size={16} className="text-green-500 mr-2" />
                                         <span className="text-gray-700 dark:text-gray-300">Reporting & Analytics</span>
                                     </li>
                                 </ul>
@@ -269,19 +270,19 @@ export default function SistemDevelopmentPage() {
                                 </div>
                                 <ul className="space-y-2 mb-8 text-sm">
                                     <li className="flex items-center">
-                                        <span className="text-green-500 mr-2">✓</span>
+                                        <Check size={16} className="text-green-500 mr-2" />
                                         <span className="text-gray-700 dark:text-gray-300">Semua fitur CRM</span>
                                     </li>
                                     <li className="flex items-center">
-                                        <span className="text-green-500 mr-2">✓</span>
+                                        <Check size={16} className="text-green-500 mr-2" />
                                         <span className="text-gray-700 dark:text-gray-300">Inventory Management</span>
                                     </li>
                                     <li className="flex items-center">
-                                        <span className="text-green-500 mr-2">✓</span>
+                                        <Check size={16} className="text-green-500 mr-2" />
                                         <span className="text-gray-700 dark:text-gray-300">Financial Management</span>
                                     </li>
                                     <li className="flex items-center">
-                                        <span className="text-green-500 mr-2">✓</span>
+                                        <Check size={16} className="text-green-500 mr-2" />
                                         <span className="text-gray-700 dark:text-gray-300">HR Management</span>
                                     </li>
                                 </ul>
@@ -298,19 +299,19 @@ export default function SistemDevelopmentPage() {
                                 </div>
                                 <ul className="space-y-2 mb-8 text-sm">
                                     <li className="flex items-center">
-                                        <span className="text-green-500 mr-2">✓</span>
+                                        <Check size={16} className="text-green-500 mr-2" />
                                         <span className="text-gray-700 dark:text-gray-300">Analysis & Design</span>
                                     </li>
                                     <li className="flex items-center">
-                                        <span className="text-green-500 mr-2">✓</span>
+                                        <Check size={16} className="text-green-500 mr-2" />
                                         <span className="text-gray-700 dark:text-gray-300">Custom Features</span>
                                     </li>
                                     <li className="flex items-center">
-                                        <span className="text-green-500 mr-2">✓</span>
+                                        <Check size={16} className="text-green-500 mr-2" />
                                         <span className="text-gray-700 dark:text-gray-300">Integration Support</span>
                                     </li>
                                     <li className="flex items-center">
-                                        <span className="text-green-500 mr-2">✓</span>
+                                        <Check size={16} className="text-green-500 mr-2" />
                                         <span className="text-gray-700 dark:text-gray-300">Dedicated Support</span>
                                     </li>
                                 </ul>
@@ -364,7 +365,7 @@ export default function SistemDevelopmentPage() {
                     onClick={toggleDarkMode}
                     className="w-14 h-14 rounded-full bg-white dark:bg-gray-800 shadow-lg border border-gray-200 dark:border-gray-600 flex items-center justify-center hover:shadow-xl transition-all duration-300"
                 >
-                    {isDarkMode ? <span className="text-2xl">☀️</span> : <span className="text-2xl">🌙</span>}
+                    {isDarkMode ? <Sun size={24} className="text-yellow-500" /> : <Moon size={24} className="text-blue-500" />}
                 </button>
             </div>
         </div>

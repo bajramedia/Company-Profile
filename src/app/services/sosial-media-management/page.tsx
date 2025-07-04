@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { useState, useEffect } from 'react';
-import { Button, Heading, Logo, LanguageSwitcher } from "@/components";
+import { Button, Heading, Logo, LanguageSwitcher, WhatsAppChat } from "@/components";
 import { useLanguage } from "@/context/LanguageContext";
+import { MessageCircle, Check, Globe, Gamepad2, Palette, Rocket, Sun, Moon } from 'lucide-react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
@@ -215,7 +216,7 @@ export default function SosialMediaManagementPage() {
                             <p className="text-gray-600 dark:text-gray-400 text-sm">Professional networking</p>
                         </div>
                         <div className="bg-white dark:bg-gray-800 rounded-xl p-6 text-center border border-gray-100 dark:border-gray-700">
-                            <div className="text-3xl mb-3">💬</div>
+                            <div className="text-3xl mb-3"><MessageCircle size={32} className="text-blue-500 mx-auto" /></div>
                             <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Facebook</h3>
                             <p className="text-gray-600 dark:text-gray-400 text-sm">Community & engagement</p>
                         </div>
@@ -239,19 +240,19 @@ export default function SosialMediaManagementPage() {
                                 </div>
                                 <ul className="space-y-2 mb-8 text-sm">
                                     <li className="flex items-center">
-                                        <span className="text-green-500 mr-2">✓</span>
+                                        <Check size={16} className="text-green-500 mr-2" />
                                         <span className="text-gray-700 dark:text-gray-300">2 Platform (IG + Facebook)</span>
                                     </li>
                                     <li className="flex items-center">
-                                        <span className="text-green-500 mr-2">✓</span>
+                                        <Check size={16} className="text-green-500 mr-2" />
                                         <span className="text-gray-700 dark:text-gray-300">12 Post per bulan</span>
                                     </li>
                                     <li className="flex items-center">
-                                        <span className="text-green-500 mr-2">✓</span>
+                                        <Check size={16} className="text-green-500 mr-2" />
                                         <span className="text-gray-700 dark:text-gray-300">Content Creation</span>
                                     </li>
                                     <li className="flex items-center">
-                                        <span className="text-green-500 mr-2">✓</span>
+                                        <Check size={16} className="text-green-500 mr-2" />
                                         <span className="text-gray-700 dark:text-gray-300">Basic Analytics</span>
                                     </li>
                                 </ul>
@@ -272,23 +273,23 @@ export default function SosialMediaManagementPage() {
                                 </div>
                                 <ul className="space-y-2 mb-8 text-sm">
                                     <li className="flex items-center">
-                                        <span className="text-green-500 mr-2">✓</span>
+                                        <Check size={16} className="text-green-500 mr-2" />
                                         <span className="text-gray-700 dark:text-gray-300">4 Platform (IG, TikTok, FB, LinkedIn)</span>
                                     </li>
                                     <li className="flex items-center">
-                                        <span className="text-green-500 mr-2">✓</span>
+                                        <Check size={16} className="text-green-500 mr-2" />
                                         <span className="text-gray-700 dark:text-gray-300">20 Post per bulan</span>
                                     </li>
                                     <li className="flex items-center">
-                                        <span className="text-green-500 mr-2">✓</span>
+                                        <Check size={16} className="text-green-500 mr-2" />
                                         <span className="text-gray-700 dark:text-gray-300">Video Content & Reels</span>
                                     </li>
                                     <li className="flex items-center">
-                                        <span className="text-green-500 mr-2">✓</span>
+                                        <Check size={16} className="text-green-500 mr-2" />
                                         <span className="text-gray-700 dark:text-gray-300">Community Management</span>
                                     </li>
                                     <li className="flex items-center">
-                                        <span className="text-green-500 mr-2">✓</span>
+                                        <Check size={16} className="text-green-500 mr-2" />
                                         <span className="text-gray-700 dark:text-gray-300">Detailed Analytics</span>
                                     </li>
                                 </ul>
@@ -306,23 +307,23 @@ export default function SosialMediaManagementPage() {
                                 </div>
                                 <ul className="space-y-2 mb-8 text-sm">
                                     <li className="flex items-center">
-                                        <span className="text-green-500 mr-2">✓</span>
+                                        <Check size={16} className="text-green-500 mr-2" />
                                         <span className="text-gray-700 dark:text-gray-300">Semua fitur Professional</span>
                                     </li>
                                     <li className="flex items-center">
-                                        <span className="text-green-500 mr-2">✓</span>
+                                        <Check size={16} className="text-green-500 mr-2" />
                                         <span className="text-gray-700 dark:text-gray-300">40 Post per bulan</span>
                                     </li>
                                     <li className="flex items-center">
-                                        <span className="text-green-500 mr-2">✓</span>
+                                        <Check size={16} className="text-green-500 mr-2" />
                                         <span className="text-gray-700 dark:text-gray-300">Influencer Collaboration</span>
                                     </li>
                                     <li className="flex items-center">
-                                        <span className="text-green-500 mr-2">✓</span>
+                                        <Check size={16} className="text-green-500 mr-2" />
                                         <span className="text-gray-700 dark:text-gray-300">Paid Ads Management</span>
                                     </li>
                                     <li className="flex items-center">
-                                        <span className="text-green-500 mr-2">✓</span>
+                                        <Check size={16} className="text-green-500 mr-2" />
                                         <span className="text-gray-700 dark:text-gray-300">Dedicated Account Manager</span>
                                     </li>
                                 </ul>
@@ -340,7 +341,7 @@ export default function SosialMediaManagementPage() {
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                         <div className="text-center">
-                            <div className="text-4xl mb-4">🎯</div>
+                            <div className="text-4xl mb-4"><Rocket size={48} className="text-primary mx-auto" /></div>
                             <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">Expert Team</h3>
                             <p className="text-gray-600 dark:text-gray-400">Tim berpengalaman dengan track record terbukti di berbagai industri.</p>
                         </div>
@@ -401,7 +402,7 @@ export default function SosialMediaManagementPage() {
                     onClick={toggleDarkMode}
                     className="w-14 h-14 rounded-full bg-white dark:bg-gray-800 shadow-lg border border-gray-200 dark:border-gray-600 flex items-center justify-center hover:shadow-xl transition-all duration-300"
                 >
-                    {isDarkMode ? <span className="text-2xl">☀️</span> : <span className="text-2xl">🌙</span>}
+                    {isDarkMode ? <Sun size={24} className="text-yellow-500" /> : <Moon size={24} className="text-blue-500" />}
                 </button>
             </div>
         </div>

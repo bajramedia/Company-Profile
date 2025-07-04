@@ -2,8 +2,9 @@
 
 import React, { useState, Suspense, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import Button from '@/components/Button';
+import { Button } from '@/components';
 import Logo from '@/components/Logo';
+import { Sun, Moon } from 'lucide-react';
 
 function LoginForm() {
   const [username, setUsername] = useState('');
@@ -186,9 +187,9 @@ function LoginForm() {
           title={isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
         >
           {isDarkMode ? (
-            <span className="text-3xl filter drop-shadow-lg">☀️</span>
+            <Sun size={24} className="text-yellow-500" />
           ) : (
-            <span className="text-3xl filter drop-shadow-lg">🌙</span>
+            <Moon size={24} className="text-blue-500" />
           )}
         </button>
       </div>

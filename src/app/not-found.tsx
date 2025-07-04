@@ -3,8 +3,9 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Button, Logo, LanguageSwitcher, WhatsAppChat } from '@/components';
+import { Button, Logo, LanguageSwitcher, WhatsAppChat, Navbar } from '@/components';
 import { useLanguage } from '@/context/LanguageContext';
+import { Rocket, Globe } from 'lucide-react';
 
 export default function NotFound() {
   const { t } = useLanguage();
@@ -136,7 +137,9 @@ export default function NotFound() {
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <Link href="/services" className="group p-4 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-primary dark:hover:border-primary transition-all duration-300 hover:shadow-lg">
-                <div className="text-primary text-2xl mb-2">🚀</div>
+                <div className="text-primary text-2xl mb-2">
+                  <Rocket size={32} className="text-primary mx-auto" />
+                </div>
                 <h3 className="font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors">
                   {t('404.ourServices')}
                 </h3>
@@ -146,7 +149,9 @@ export default function NotFound() {
               </Link>
 
               <Link href="/services/web-development" className="group p-4 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-primary dark:hover:border-primary transition-all duration-300 hover:shadow-lg">
-                <div className="text-primary text-2xl mb-2">🌐</div>
+                <div className="text-primary text-2xl mb-2">
+                  <Globe size={32} className="text-primary mx-auto" />
+                </div>
                 <h3 className="font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors">
                   {t('services.website.title')}
                 </h3>

@@ -3,8 +3,9 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Button } from '@/components';
+import { Button, Heading } from '@/components';
 import { logger } from '@/utils/logger';
+import { Star, Eye } from 'lucide-react';
 
 // Interface untuk portfolio item
 interface PortfolioItem {
@@ -451,8 +452,8 @@ export default function AdminPortfolioPage() {
                                                             {portfolio.title}
                                                         </div>
                                                         {portfolio.featured && (
-                                                            <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-400">
-                                                                ⭐ Featured
+                                                            <span className="bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 px-2 py-1 rounded-full text-xs font-semibold flex items-center">
+                                                                <Star size={12} className="mr-1" /> Featured
                                                             </span>
                                                         )}
                                                     </div>
@@ -474,8 +475,8 @@ export default function AdminPortfolioPage() {
                                             </span>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                                            <div className="flex items-center space-x-1">
-                                                <span>👁️</span>
+                                            <div className="text-sm text-gray-500 dark:text-gray-400 flex items-center space-x-1">
+                                                <Eye size={16} />
                                                 <span>{portfolio.views}</span>
                                             </div>
                                         </td>

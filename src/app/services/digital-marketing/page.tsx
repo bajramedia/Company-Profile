@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { useState, useEffect } from 'react';
-import { Button, Heading, Logo, LanguageSwitcher } from "@/components";
+import { Button, Heading, Logo, LanguageSwitcher, WhatsAppChat } from "@/components";
 import { useLanguage } from "@/context/LanguageContext";
+import { Check } from 'lucide-react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
@@ -239,15 +240,15 @@ export default function DigitalMarketingPage() {
                                 </div>
                                 <ul className="space-y-2 mb-8 text-sm">
                                     <li className="flex items-center">
-                                        <span className="text-green-500 mr-2">✓</span>
+                                        <Check size={16} className="text-green-500 mr-2" />
                                         <span className="text-gray-700 dark:text-gray-300">Social Media Management</span>
                                     </li>
                                     <li className="flex items-center">
-                                        <span className="text-green-500 mr-2">✓</span>
+                                        <Check size={16} className="text-green-500 mr-2" />
                                         <span className="text-gray-700 dark:text-gray-300">Content Creation</span>
                                     </li>
                                     <li className="flex items-center">
-                                        <span className="text-green-500 mr-2">✓</span>
+                                        <Check size={16} className="text-green-500 mr-2" />
                                         <span className="text-gray-700 dark:text-gray-300">Monthly Report</span>
                                     </li>
                                 </ul>
@@ -268,19 +269,19 @@ export default function DigitalMarketingPage() {
                                 </div>
                                 <ul className="space-y-2 mb-8 text-sm">
                                     <li className="flex items-center">
-                                        <span className="text-green-500 mr-2">✓</span>
+                                        <Check size={16} className="text-green-500 mr-2" />
                                         <span className="text-gray-700 dark:text-gray-300">Semua fitur Starter</span>
                                     </li>
                                     <li className="flex items-center">
-                                        <span className="text-green-500 mr-2">✓</span>
+                                        <Check size={16} className="text-green-500 mr-2" />
                                         <span className="text-gray-700 dark:text-gray-300">Google Ads Management</span>
                                     </li>
                                     <li className="flex items-center">
-                                        <span className="text-green-500 mr-2">✓</span>
+                                        <Check size={16} className="text-green-500 mr-2" />
                                         <span className="text-gray-700 dark:text-gray-300">SEO Optimization</span>
                                     </li>
                                     <li className="flex items-center">
-                                        <span className="text-green-500 mr-2">✓</span>
+                                        <Check size={16} className="text-green-500 mr-2" />
                                         <span className="text-gray-700 dark:text-gray-300">Email Marketing</span>
                                     </li>
                                 </ul>
@@ -298,19 +299,19 @@ export default function DigitalMarketingPage() {
                                 </div>
                                 <ul className="space-y-2 mb-8 text-sm">
                                     <li className="flex items-center">
-                                        <span className="text-green-500 mr-2">✓</span>
+                                        <Check size={16} className="text-green-500 mr-2" />
                                         <span className="text-gray-700 dark:text-gray-300">Semua fitur Professional</span>
                                     </li>
                                     <li className="flex items-center">
-                                        <span className="text-green-500 mr-2">✓</span>
+                                        <Check size={16} className="text-green-500 mr-2" />
                                         <span className="text-gray-700 dark:text-gray-300">Dedicated Account Manager</span>
                                     </li>
                                     <li className="flex items-center">
-                                        <span className="text-green-500 mr-2">✓</span>
+                                        <Check size={16} className="text-green-500 mr-2" />
                                         <span className="text-gray-700 dark:text-gray-300">Custom Strategy</span>
                                     </li>
                                     <li className="flex items-center">
-                                        <span className="text-green-500 mr-2">✓</span>
+                                        <Check size={16} className="text-green-500 mr-2" />
                                         <span className="text-gray-700 dark:text-gray-300">Priority Support</span>
                                     </li>
                                 </ul>

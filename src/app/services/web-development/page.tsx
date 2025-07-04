@@ -2,11 +2,12 @@
 
 import Link from "next/link";
 import { useState, useEffect } from 'react';
-import { Button, Heading, Navbar, AnimatedText } from "@/components";
+import { Button, Heading, Navbar, AnimatedText, Logo, LanguageSwitcher, WhatsAppChat } from "@/components";
 import { useLanguage } from "@/context/LanguageContext";
 import { technologiesService, Technology } from "@/services/TechnologiesService";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import { Sun, Moon } from 'lucide-react';
 
 export default function WebDevelopmentPage() {
     const { t, language } = useLanguage();
@@ -312,7 +313,7 @@ export default function WebDevelopmentPage() {
                     onClick={toggleDarkMode}
                     className="w-14 h-14 rounded-full bg-white dark:bg-gray-800 shadow-lg border border-gray-200 dark:border-gray-600 flex items-center justify-center hover:shadow-xl transition-all duration-300 hover:scale-110 group"
                 >
-                    {isDarkMode ? <span className="text-2xl">☀️</span> : <span className="text-2xl">🌙</span>}
+                    {isDarkMode ? <Sun size={24} className="text-yellow-500" /> : <Moon size={24} className="text-blue-500" />}
                 </button>
             </div>
         </div>

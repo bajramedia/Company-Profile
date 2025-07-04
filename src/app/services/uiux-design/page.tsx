@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { useState, useEffect } from 'react';
-import { Button, Heading, Logo, LanguageSwitcher } from "@/components";
+import { Button, Heading, Logo, LanguageSwitcher, WhatsAppChat } from "@/components";
 import { useLanguage } from "@/context/LanguageContext";
+import { Globe, Gamepad2, Palette, Sparkles, Sun, Moon } from 'lucide-react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
@@ -88,7 +89,7 @@ export default function UIUXDesignPage() {
                                     <div className="p-2">
                                         <Link href="/services/web-development" className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
                                             <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center text-white text-sm">
-                                                🌐
+                                                <Globe size={20} className="text-blue-500" />
                                             </div>
                                             <div>
                                                 <div className="font-medium text-gray-900 dark:text-white text-sm">Web Development</div>
@@ -98,7 +99,7 @@ export default function UIUXDesignPage() {
 
                                         <Link href="/services/aset-game-development" className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
                                             <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-purple-500 to-purple-600 flex items-center justify-center text-white text-sm">
-                                                🎮
+                                                <Gamepad2 size={20} className="text-purple-500" />
                                             </div>
                                             <div>
                                                 <div className="font-medium text-gray-900 dark:text-white text-sm">Aset Game Development</div>
@@ -108,7 +109,7 @@ export default function UIUXDesignPage() {
 
                                         <Link href="/services/uiux-design" className="flex items-center space-x-3 px-3 py-2 rounded-lg bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400">
                                             <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-purple-500 to-purple-600 flex items-center justify-center text-white text-sm">
-                                                🎨
+                                                <Palette size={20} className="text-pink-500" />
                                             </div>
                                             <div>
                                                 <div className="font-medium text-sm">UI/UX Design</div>
@@ -227,7 +228,9 @@ export default function UIUXDesignPage() {
                             data-aos="fade-up"
                             data-aos-delay="100"
                         >
-                            <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">🔍</div>
+                            <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
+                                <Globe size={48} className="text-blue-500 mx-auto" />
+                            </div>
                             <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Research</h3>
                             <p className="text-gray-600 dark:text-gray-400 text-sm">Analisis user & kompetitor</p>
                         </div>
@@ -245,7 +248,9 @@ export default function UIUXDesignPage() {
                             data-aos="fade-up"
                             data-aos-delay="300"
                         >
-                            <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">🎨</div>
+                            <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
+                                <Palette size={48} className="text-pink-500 mx-auto" />
+                            </div>
                             <h3 className="font-semibold text-gray-900 dark:text-white mb-2">Visual Design</h3>
                             <p className="text-gray-600 dark:text-gray-400 text-sm">UI yang menarik</p>
                         </div>
@@ -286,7 +291,9 @@ export default function UIUXDesignPage() {
                             data-aos-delay="200"
                         >
                             <div className="flex-grow">
-                                <div className="text-4xl mb-4">🌐</div>
+                                <div className="text-4xl mb-4">
+                                    <Globe size={48} className="text-blue-500 mx-auto" />
+                                </div>
                                 <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">Web Design</h3>
                                 <p className="text-gray-600 dark:text-gray-400 mb-6">Design website modern dan responsif</p>
                                 <div className="mb-6">
@@ -357,7 +364,9 @@ export default function UIUXDesignPage() {
                             data-aos="fade-up"
                             data-aos-delay="100"
                         >
-                            <div className="text-2xl mb-2 group-hover:scale-110 transition-transform duration-300">🎨</div>
+                            <div className="text-2xl mb-2 group-hover:scale-110 transition-transform duration-300">
+                                <Palette size={32} className="text-pink-500 mx-auto" />
+                            </div>
                             <p className="text-xs text-gray-600 dark:text-gray-400">Figma</p>
                         </div>
                         <div
@@ -365,7 +374,9 @@ export default function UIUXDesignPage() {
                             data-aos="fade-up"
                             data-aos-delay="150"
                         >
-                            <div className="text-2xl mb-2 group-hover:scale-110 transition-transform duration-300">✨</div>
+                            <div className="text-2xl mb-2 group-hover:scale-110 transition-transform duration-300">
+                                <Sparkles size={32} className="text-yellow-500 mx-auto" />
+                            </div>
                             <p className="text-xs text-gray-600 dark:text-gray-400">Adobe XD</p>
                         </div>
                         <div
@@ -449,7 +460,7 @@ export default function UIUXDesignPage() {
                     onClick={toggleDarkMode}
                     className="w-14 h-14 rounded-full bg-white dark:bg-gray-800 shadow-lg border border-gray-200 dark:border-gray-600 flex items-center justify-center hover:shadow-xl transition-all duration-300"
                 >
-                    {isDarkMode ? <span className="text-2xl">☀️</span> : <span className="text-2xl">🌙</span>}
+                    {isDarkMode ? <Sun size={24} className="text-yellow-500" /> : <Moon size={24} className="text-blue-500" />}
                 </button>
             </div>
         </div>
