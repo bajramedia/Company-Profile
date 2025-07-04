@@ -97,6 +97,20 @@ function PortfolioDetailPageContent({ slug }: { slug: string }) {
                     throw new Error('Portfolio data is invalid or empty');
                 }
 
+                // Calculate duration if not provided but startDate and endDate exist
+                let calculatedDuration = data.duration;
+                if (!calculatedDuration && data.startDate && data.endDate) {
+                    try {
+                        const start = new Date(data.startDate);
+                        const end = new Date(data.endDate);
+                        const diffTime = Math.abs(end.getTime() - start.getTime());
+                        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                        calculatedDuration = `${diffDays} days`;
+                    } catch (error) {
+                        console.warn('Failed to calculate duration from dates:', error);
+                    }
+                }
+
                 // Format data untuk komponen
                 const formattedItem: PortfolioItem = {
                     id: data.id,
@@ -126,7 +140,7 @@ function PortfolioDetailPageContent({ slug }: { slug: string }) {
                     projectStatus: data.projectStatus || data.project_status || 'Completed',
                     projectType: data.projectType || data.project_type,
                     teamSize: data.teamSize || data.team_size,
-                    duration: data.duration
+                    duration: calculatedDuration
                 };
 
                 console.log('✅ Portfolio item berhasil diformat:', formattedItem);
@@ -445,7 +459,7 @@ function PortfolioDetailPageContent({ slug }: { slug: string }) {
                                         <div className="text-sm text-gray-600 dark:text-gray-400 font-medium">Views</div>
                                     </div>
                                     <div className="text-center p-4 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
-                                        <div className="text-2xl font-bold text-primary mb-1">{portfolioItem.teamSize || 1}</div>
+                                        <div className="text-2xl font-bold text-primary mb-1">{portfolioItem.teamSize || 3}</div>
                                         <div className="text-sm text-gray-600 dark:text-gray-400 font-medium">Team</div>
                                     </div>
                                     <div className="text-center p-4 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
