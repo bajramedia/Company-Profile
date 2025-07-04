@@ -1341,6 +1341,44 @@ function handlePost($pdo, $endpoint) {
                 }
                 break;
                 
+            case 'incrementPortfolioView':
+                // Increment portfolio view count
+                try {
+                    $slug = $data['slug'] ?? '';
+                    if (empty($slug)) {
+                        http_response_code(400);
+                        echo json_encode(['error' => 'Slug is required']);
+                        return;
+                    }
+                    
+                    // Get current portfolio item by slug
+                    $stmt = $pdo->prepare("SELECT id, viewCount FROM portfolio WHERE slug = ?");
+                    $stmt->execute([$slug]);
+                    $portfolio = $stmt->fetch();
+                    
+                    if (!$portfolio) {
+                        http_response_code(404);
+                        echo json_encode(['error' => 'Portfolio not found']);
+                        return;
+                    }
+                    
+                    // Increment view count
+                    $newViewCount = ($portfolio['viewCount'] ?? 0) + 1;
+                    $updateStmt = $pdo->prepare("UPDATE portfolio SET viewCount = ? WHERE id = ?");
+                    $updateStmt->execute([$newViewCount, $portfolio['id']]);
+                    
+                    echo json_encode([
+                        'success' => true,
+                        'viewCount' => $newViewCount,
+                        'slug' => $slug
+                    ]);
+                } catch (Exception $e) {
+                    error_log('Error incrementing portfolio view: ' . $e->getMessage());
+                    http_response_code(500);
+                    echo json_encode(['error' => 'Failed to increment view count']);
+                }
+                break;
+                
             case 'about-content':
                 // Create new about content
                 $section_key = $data['section_key'] ?? '';

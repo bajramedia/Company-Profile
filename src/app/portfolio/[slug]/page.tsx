@@ -449,7 +449,14 @@ function PortfolioDetailPageContent({ slug }: { slug: string }) {
                                         <div className="text-sm text-gray-600 dark:text-gray-400 font-medium">Team</div>
                                     </div>
                                     <div className="text-center p-4 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
-                                        <div className="text-2xl font-bold text-primary mb-1">{portfolioItem.duration?.split(' ')[0] || 'N/A'}</div>
+                                        <div className="text-2xl font-bold text-primary mb-1">
+                                            {portfolioItem.duration
+                                                ? portfolioItem.duration.includes(' ')
+                                                    ? portfolioItem.duration.split(' ')[0]
+                                                    : portfolioItem.duration
+                                                : 'N/A'
+                                            }
+                                        </div>
                                         <div className="text-sm text-gray-600 dark:text-gray-400 font-medium">Duration</div>
                                     </div>
                                     <div className="text-center p-4 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
@@ -521,8 +528,8 @@ function PortfolioDetailPageContent({ slug }: { slug: string }) {
                                                     key={index}
                                                     onClick={() => setSelectedImageIndex(index)}
                                                     className={`w-3 h-3 rounded-full transition-all duration-300 ${selectedImageIndex === index
-                                                            ? 'bg-primary scale-125'
-                                                            : 'bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-500'
+                                                        ? 'bg-primary scale-125'
+                                                        : 'bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-500'
                                                         }`}
                                                 />
                                             ))}
