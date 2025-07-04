@@ -189,16 +189,6 @@ const Blog: React.FC<BlogProps> = ({ className = '' }) => {
         {/* Section Header - Consistent with Portfolio */}
         <div className="text-center mb-12">
           <AnimatedText as="div">
-            <div className="inline-block mb-3">
-              <span
-                className="px-4 py-1.5 rounded-full text-sm font-semibold dark:bg-primary/20 dark:text-primary transition-colors duration-300"
-                style={{ backgroundColor: `${primaryColor}15`, color: primaryColor }}
-              >
-                {t('blog.label') || 'Our Blog'}
-              </span>
-            </div>
-          </AnimatedText>
-          <AnimatedText as="div">
             <h2 className="text-2xl md:text-3xl font-bold mb-3 text-gray-900 dark:text-gray-100 transition-colors duration-300">
               {t('blog.title') || 'Latest Insights & Articles'}
             </h2>
