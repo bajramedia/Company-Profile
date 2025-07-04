@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { API_BASE_URL } from '@/config/api';
 
 export async function POST(
   request: NextRequest,
@@ -15,8 +16,15 @@ export async function POST(
       );
     }
 
-    // Implementasi view tracking yang sederhana - mirip dengan portfolio
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api_bridge.php`, {
+    // Debug logging for production
+    console.log('📰 Blog View Tracking:', {
+      slug,
+      apiBaseUrl: API_BASE_URL,
+      timestamp: new Date().toISOString()
+    });
+
+    // Use configured API base URL for production compatibility
+    const response = await fetch(API_BASE_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -27,11 +35,21 @@ export async function POST(
       })
     });
 
+    console.log('📰 API Response Status:', response.status, response.statusText);
+
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      const errorText = await response.text();
+      console.error('❌ Blog API Error:', {
+        status: response.status,
+        statusText: response.statusText,
+        responseBody: errorText,
+        url: API_BASE_URL
+      });
+      throw new Error(`HTTP error! status: ${response.status}, body: ${errorText}`);
     }
 
     const result = await response.json();
+    console.log('✅ Blog API Success:', result);
     
     if (result.success) {
       return NextResponse.json({
@@ -44,9 +62,9 @@ export async function POST(
       throw new Error(result.error || 'Failed to increment view count');
     }
   } catch (error) {
-    console.error('Error tracking blog view:', error);
+    console.error('💥 Error tracking blog view:', error);
     return NextResponse.json(
-      { success: false, error: 'Failed to track view' },
+      { success: false, error: 'Failed to track view', details: error.message },
       { status: 500 }
     );
   }
