@@ -4,10 +4,11 @@ interface ViewTrackerOptions {
   type: 'portfolio' | 'blog';
   slug: string;
   title?: string;
+  initialViews?: number;
 }
 
-export const useViewTracker = ({ type, slug, title }: ViewTrackerOptions) => {
-  const [viewCount, setViewCount] = useState<number>(0);
+export const useViewTracker = ({ type, slug, title, initialViews = 0 }: ViewTrackerOptions) => {
+  const [viewCount, setViewCount] = useState<number>(initialViews);
   const [hasTracked, setHasTracked] = useState(false);
 
   useEffect(() => {
@@ -15,52 +16,83 @@ export const useViewTracker = ({ type, slug, title }: ViewTrackerOptions) => {
     let hasViewed = false;
 
     const trackView = async () => {
-      if (hasTracked || hasViewed) return;
+      if (hasTracked || hasViewed || typeof window === 'undefined') return;
       
       try {
-        console.log(`📊 Tracking view untuk ${type}:`, slug);
+        // Client-side view tracking using localStorage
+        const storageKey = `${type}_views_${slug}`;
+        const viewsKey = `${type}_viewed_${slug}`;
         
-        const endpoint = type === 'portfolio' 
-          ? `/api/portfolio/${slug}/views` 
-          : `/api/posts/${slug}/views`;
-        
-        const response = await fetch(endpoint, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            userAgent: navigator.userAgent,
-            timestamp: new Date().toISOString(),
-            title: title
-          })
-        });
-
-        if (response.ok) {
-          const result = await response.json();
-          console.log(`✅ View berhasil di-track untuk ${type}:`, slug, result);
-          
-          // Update view count if returned from API
-          if (result.viewCount !== undefined) {
-            setViewCount(result.viewCount);
-            console.log(`📊 View count updated untuk ${type}:`, slug, result.viewCount);
+        // Check if already viewed this session
+        const alreadyViewed = sessionStorage.getItem(viewsKey);
+        if (alreadyViewed) {
+          // Get stored view count
+          const storedViews = localStorage.getItem(storageKey);
+          if (storedViews) {
+            setViewCount(parseInt(storedViews));
           }
-          
           setHasTracked(true);
-          hasViewed = true;
-        } else {
-          console.error(`❌ Gagal track view untuk ${type}:`, response.status, response.statusText);
-          
-          // Try to get error details
-          try {
-            const errorData = await response.json();
-            console.error(`💥 Error details:`, errorData);
-          } catch (e) {
-            console.error(`💥 Could not parse error response`);
-          }
+          return;
         }
+
+        // Get current view count from localStorage or start with initial
+        let currentViews = initialViews;
+        const storedViews = localStorage.getItem(storageKey);
+        if (storedViews) {
+          currentViews = parseInt(storedViews);
+        }
+
+        // Increment view count
+        const newViewCount = currentViews + 1;
+        
+        // Store in localStorage (persistent)
+        localStorage.setItem(storageKey, newViewCount.toString());
+        
+        // Mark as viewed this session (prevents double counting)
+        sessionStorage.setItem(viewsKey, 'true');
+        
+        // Update state
+        setViewCount(newViewCount);
+        setHasTracked(true);
+        hasViewed = true;
+
+        // Also try to track on server (optional, fails silently)
+        try {
+          const endpoint = type === 'portfolio' 
+            ? `/api/portfolio/${slug}/views` 
+            : `/api/posts/${slug}/views`;
+          
+          const response = await fetch(endpoint, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              userAgent: navigator.userAgent,
+              timestamp: new Date().toISOString(),
+              title: title,
+              clientViewCount: newViewCount
+            })
+          });
+
+          if (response.ok) {
+            const result = await response.json();
+            // Use server count if available and higher than client count
+            if (result.viewCount && result.viewCount > newViewCount) {
+              setViewCount(result.viewCount);
+              localStorage.setItem(storageKey, result.viewCount.toString());
+            }
+          }
+        } catch (serverError) {
+          // Server tracking failed, but client tracking still works
+          console.log(`Server tracking unavailable for ${type}: ${slug}`);
+        }
+        
       } catch (error) {
-        console.error(`💥 Error tracking view untuk ${type}:`, error);
+        // Even if error, try to show some view count
+        const fallbackViews = initialViews || 1;
+        setViewCount(fallbackViews);
+        setHasTracked(true);
       }
     };
 
@@ -75,7 +107,7 @@ export const useViewTracker = ({ type, slug, title }: ViewTrackerOptions) => {
         clearTimeout(timeoutId);
       }
     };
-  }, [type, slug, title, hasTracked]);
+  }, [type, slug, title, hasTracked, initialViews]);
 
   return {
     viewCount,

@@ -70,7 +70,8 @@ function PortfolioDetailPageContent({ slug }: { slug: string }) {
     const { viewCount: trackedViewCount, hasTracked } = useViewTracker({
         type: 'portfolio',
         slug,
-        title: portfolioItem?.title
+        title: portfolioItem?.title,
+        initialViews: portfolioItem?.viewCount || portfolioItem?.views || 0
     });
 
     // Fetch portfolio item dari database

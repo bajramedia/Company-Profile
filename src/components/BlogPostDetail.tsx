@@ -24,12 +24,12 @@ const BlogPostDetail: React.FC<BlogPostDetailProps> = ({ post }) => {
   const [readingProgress, setReadingProgress] = useState(0);
   const [isShowingMobileToc, setIsShowingMobileToc] = useState(false);
 
-  // Initialize view tracking and counter
-  const viewCounter = useViewCounter(post?.views || 0);
+  // Initialize view tracking
   const { viewCount: trackedViewCount, hasTracked } = useViewTracker({
     type: 'blog',
     slug: post?.slug || '',
-    title: post?.title
+    title: post?.title,
+    initialViews: post?.views || 0
   });
   const [shareMessage, setShareMessage] = useState<string>("");
   const [showBackToTop, setShowBackToTop] = useState(false);
@@ -356,7 +356,7 @@ const BlogPostDetail: React.FC<BlogPostDetailProps> = ({ post }) => {
                 </span>
               )}
               <span className="inline-flex items-center">
-                <FiEye className="mr-1" /> {viewCounter.views} {viewCounter.views === 1 ? 'view' : 'views'}
+                <FiEye className="mr-1" /> {trackedViewCount} {trackedViewCount === 1 ? 'view' : 'views'}
               </span>
             </div>
 
