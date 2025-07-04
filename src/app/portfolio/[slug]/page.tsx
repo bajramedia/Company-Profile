@@ -67,14 +67,6 @@ function PortfolioDetailPageContent({ slug }: { slug: string }) {
     const [relatedLoading, setRelatedLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    // Track views untuk portfolio ini
-    const { viewCount: trackedViewCount, hasTracked } = useViewTracker({
-        type: 'portfolio',
-        slug,
-        title: portfolioItem?.title,
-        initialViews: portfolioItem?.viewCount || portfolioItem?.views || 0
-    });
-
     // Fetch portfolio item dari database
     useEffect(() => {
         const fetchPortfolioItem = async () => {
@@ -139,6 +131,7 @@ function PortfolioDetailPageContent({ slug }: { slug: string }) {
                     endDate: data.endDate || data.end_date,
                     createdAt: data.createdAt || data.created_at || data.date || new Date().toISOString(),
                     viewCount: data.viewCount || data.view_count || data.views || 0,
+                    views: data.views || data.viewCount || data.view_count || 0,
                     projectStatus: data.projectStatus || data.project_status || 'Completed',
                     projectType: data.projectType || data.project_type,
                     teamSize: data.teamSize || data.team_size,
@@ -146,6 +139,15 @@ function PortfolioDetailPageContent({ slug }: { slug: string }) {
                 };
 
                 console.log('✅ Portfolio item berhasil diformat:', formattedItem);
+                console.log('🎯 View count data:', {
+                    viewCount: formattedItem.viewCount,
+                    views: formattedItem.views,
+                    rawData: {
+                        viewCount: data.viewCount,
+                        view_count: data.view_count,
+                        views: data.views
+                    }
+                });
                 setPortfolioItem(formattedItem);
 
                 // Fetch related projects after getting current item
@@ -377,6 +379,59 @@ function PortfolioDetailPageContent({ slug }: { slug: string }) {
             </div>
         );
     }
+
+    // Render portfolio content with view tracking
+    return (
+        <PortfolioContent
+            portfolioItem={portfolioItem}
+            relatedProjects={relatedProjects}
+            relatedLoading={relatedLoading}
+            selectedImageIndex={selectedImageIndex}
+            setSelectedImageIndex={setSelectedImageIndex}
+            isDarkMode={isDarkMode}
+            toggleDarkMode={toggleDarkMode}
+            slug={slug}
+        />
+    );
+}
+
+// Separate component for portfolio content with view tracking
+function PortfolioContent({
+    portfolioItem,
+    relatedProjects,
+    relatedLoading,
+    selectedImageIndex,
+    setSelectedImageIndex,
+    isDarkMode,
+    toggleDarkMode,
+    slug
+}: {
+    portfolioItem: PortfolioItem;
+    relatedProjects: PortfolioItem[];
+    relatedLoading: boolean;
+    selectedImageIndex: number;
+    setSelectedImageIndex: (index: number) => void;
+    isDarkMode: boolean;
+    toggleDarkMode: () => void;
+    slug: string;
+}) {
+    const { t } = useLanguage();
+
+    // Track views untuk portfolio ini - sekarang dipanggil setelah portfolioItem tersedia
+    const { viewCount: trackedViewCount, hasTracked } = useViewTracker({
+        type: 'portfolio',
+        slug,
+        title: portfolioItem.title,
+        initialViews: portfolioItem.viewCount || portfolioItem.views || 0
+    });
+
+    console.log('🔍 PortfolioContent - View tracking info:', {
+        trackedViewCount,
+        hasTracked,
+        portfolioItemViewCount: portfolioItem.viewCount,
+        portfolioItemViews: portfolioItem.views,
+        initialViews: portfolioItem.viewCount || portfolioItem.views || 0
+    });
 
     const allImages = portfolioItem.images && portfolioItem.images.length > 0
         ? [portfolioItem.featuredImage, ...portfolioItem.images]
