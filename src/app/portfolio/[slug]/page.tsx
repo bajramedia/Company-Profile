@@ -27,12 +27,17 @@ interface PortfolioItem {
         icon?: string;
         color?: string;
     };
-    tags: Array<{ name: string; color: string }>;
+    tags: Array<{ id?: string; name: string; color?: string; slug?: string }>;
+    technologies?: Array<{ id?: string; name: string; color?: string; slug?: string }>;
     featured: boolean;
     startDate?: string;
     endDate?: string;
     createdAt: string;
     viewCount?: number;
+    projectStatus?: string;
+    projectType?: string;
+    teamSize?: number;
+    duration?: string;
 }
 
 interface PortfolioDetailPageProps {
@@ -106,12 +111,17 @@ function PortfolioDetailPageContent({ slug }: { slug: string }) {
                         icon: data.categoryIcon || data.category?.icon || '🌐',
                         color: data.categoryColor || data.category?.color || '#3B82F6'
                     },
-                    tags: Array.isArray(data.tags) ? data.tags : [],
+                    tags: Array.isArray(data.tags) ? data.tags : (data.tags ? JSON.parse(data.tags) : []),
+                    technologies: Array.isArray(data.technologies) ? data.technologies : (data.technologies ? JSON.parse(data.technologies) : []),
                     featured: data.featured === true || data.featured === 1 || data.featured === "1",
                     startDate: data.startDate || data.start_date,
                     endDate: data.endDate || data.end_date,
                     createdAt: data.createdAt || data.created_at || data.date || new Date().toISOString(),
-                    viewCount: data.viewCount || data.view_count || data.views || 0
+                    viewCount: data.viewCount || data.view_count || data.views || 0,
+                    projectStatus: data.projectStatus || data.project_status || 'Completed',
+                    projectType: data.projectType || data.project_type,
+                    teamSize: data.teamSize || data.team_size,
+                    duration: data.duration
                 };
 
                 console.log('✅ Portfolio item berhasil diformat:', formattedItem);
@@ -441,7 +451,7 @@ function PortfolioDetailPageContent({ slug }: { slug: string }) {
                                     <svg className="w-5 h-5 mr-2 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg>
-                                    {t('portfolio.detail.projectInfo')}
+                                    Informasi Project
                                 </h4>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     {portfolioItem.clientName && (
@@ -452,12 +462,51 @@ function PortfolioDetailPageContent({ slug }: { slug: string }) {
                                                 </svg>
                                             </div>
                                             <div>
-                                                <h5 className="font-medium text-gray-900 dark:text-white mb-1">{t('portfolio.detail.client')}</h5>
+                                                <h5 className="font-medium text-gray-900 dark:text-white mb-1">Klien</h5>
                                                 <p className="text-gray-600 dark:text-gray-400">{portfolioItem.clientName}</p>
                                             </div>
                                         </div>
                                     )}
-                                    {portfolioItem.startDate && portfolioItem.endDate && (
+                                    {portfolioItem.projectType && (
+                                        <div className="flex items-start space-x-3">
+                                            <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                                                <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <h5 className="font-medium text-gray-900 dark:text-white mb-1">Tipe Project</h5>
+                                                <p className="text-gray-600 dark:text-gray-400">{portfolioItem.projectType}</p>
+                                            </div>
+                                        </div>
+                                    )}
+                                    {portfolioItem.projectStatus && (
+                                        <div className="flex items-start space-x-3">
+                                            <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                                                <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <h5 className="font-medium text-gray-900 dark:text-white mb-1">Status Project</h5>
+                                                <p className="text-gray-600 dark:text-gray-400">{portfolioItem.projectStatus}</p>
+                                            </div>
+                                        </div>
+                                    )}
+                                    {portfolioItem.teamSize && (
+                                        <div className="flex items-start space-x-3">
+                                            <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                                                <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <h5 className="font-medium text-gray-900 dark:text-white mb-1">Tim Size</h5>
+                                                <p className="text-gray-600 dark:text-gray-400">{portfolioItem.teamSize} orang</p>
+                                            </div>
+                                        </div>
+                                    )}
+                                    {portfolioItem.duration && (
                                         <div className="flex items-start space-x-3">
                                             <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
                                                 <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -465,7 +514,20 @@ function PortfolioDetailPageContent({ slug }: { slug: string }) {
                                                 </svg>
                                             </div>
                                             <div>
-                                                <h5 className="font-medium text-gray-900 dark:text-white mb-1">{t('portfolio.detail.duration')}</h5>
+                                                <h5 className="font-medium text-gray-900 dark:text-white mb-1">Durasi</h5>
+                                                <p className="text-gray-600 dark:text-gray-400">{portfolioItem.duration}</p>
+                                            </div>
+                                        </div>
+                                    )}
+                                    {portfolioItem.startDate && portfolioItem.endDate && (
+                                        <div className="flex items-start space-x-3">
+                                            <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                                                <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <h5 className="font-medium text-gray-900 dark:text-white mb-1">Timeline</h5>
                                                 <p className="text-gray-600 dark:text-gray-400">
                                                     {new Date(portfolioItem.startDate).toLocaleDateString()} - {new Date(portfolioItem.endDate).toLocaleDateString()}
                                                 </p>
@@ -549,26 +611,47 @@ function PortfolioDetailPageContent({ slug }: { slug: string }) {
                 </section>
 
                 {/* Technologies Used */}
-                {portfolioItem.tags && portfolioItem.tags.length > 0 && (
+                {((portfolioItem.technologies && portfolioItem.technologies.length > 0) || (portfolioItem.tags && portfolioItem.tags.length > 0)) && (
                     <section className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 mb-16">
                         <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-8" data-aos="fade-up">
-                            {t('portfolio.detail.technologies')}
+                            Teknologi yang Digunakan
                         </h2>
                         <div className="flex flex-wrap gap-3" data-aos="fade-up" data-aos-delay="200">
-                            {portfolioItem.tags.map((tag, index) => (
+                            {/* Prioritas technologies dulu, kalau ga ada baru pake tags */}
+                            {(portfolioItem.technologies && portfolioItem.technologies.length > 0 ? portfolioItem.technologies : portfolioItem.tags).map((tech, index) => (
                                 <span
                                     key={index}
-                                    className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium border transition-all duration-300 hover:scale-105"
+                                    className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium border transition-all duration-300 hover:scale-105 hover:shadow-md"
                                     style={{
-                                        backgroundColor: `${tag.color || '#6B7280'}15`,
-                                        color: tag.color || '#6B7280',
-                                        borderColor: `${tag.color || '#6B7280'}30`
+                                        backgroundColor: `${tech.color || '#6B7280'}15`,
+                                        color: tech.color || '#6B7280',
+                                        borderColor: `${tech.color || '#6B7280'}30`
                                     }}
                                 >
-                                    {tag.name}
+                                    <span className="mr-2">⚡</span>
+                                    {tech.name}
                                 </span>
                             ))}
                         </div>
+
+                        {/* Kalau ada kedua technologies dan tags, tampilkan tags sebagai skills tambahan */}
+                        {portfolioItem.technologies && portfolioItem.technologies.length > 0 && portfolioItem.tags && portfolioItem.tags.length > 0 && (
+                            <div className="mt-8">
+                                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                                    Skills & Tools Lainnya
+                                </h3>
+                                <div className="flex flex-wrap gap-2">
+                                    {portfolioItem.tags.map((tag, index) => (
+                                        <span
+                                            key={index}
+                                            className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                                        >
+                                            {tag.name}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
                     </section>
                 )}
 
