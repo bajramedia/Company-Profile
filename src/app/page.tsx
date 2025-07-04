@@ -480,11 +480,480 @@ export default function HomePage() {
                         </div>
                     </section>
 
+                    {/* Services Section */}
+                    <section className="py-20 bg-white dark:bg-gray-900 transition-colors duration-300">
+                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                            <div className="text-center mb-16">
+                                <AnimatedText as="div">
+                                    <span className="text-green-500 font-medium text-sm tracking-wider uppercase mb-6 block">
+                                        {language === 'id' ? 'Layanan Kami' : 'Our Services'}
+                                    </span>
+                                    <Heading variant="h2" color="foreground" className="mb-4 text-[28px] md:text-[32px] lg:text-[36px] font-extrabold">
+                                        {language === 'id' ? 'Solusi Digital Komprehensif' : 'Comprehensive Digital Solutions'}
+                                    </Heading>
+                                    <Text color="secondary" className="max-w-3xl mx-auto text-base leading-relaxed">
+                                        {language === 'id'
+                                            ? 'Kami menawarkan berbagai layanan digital yang terintegrasi untuk membantu bisnis Anda berkembang di era digital.'
+                                            : 'We offer various integrated digital services to help your business thrive in the digital era.'
+                                        }
+                                    </Text>
+                                </AnimatedText>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                                {/* Service 1 - Web Development */}
+                                <AnimatedText as="div">
+                                    <Link href="/services/web-development" className="block group">
+                                        <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-200 dark:border-gray-700">
+                                            <div className="w-16 h-16 bg-green-500/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-green-500/20 transition-colors">
+                                                <svg className="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                                </svg>
+                                            </div>
+                                            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-green-500 transition-colors">
+                                                {language === 'id' ? 'Web Development' : 'Web Development'}
+                                            </h3>
+                                            <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                                                {language === 'id'
+                                                    ? 'Pembuatan website dan aplikasi web yang responsif, cepat, dan user-friendly dengan teknologi terkini.'
+                                                    : 'Creating responsive, fast, and user-friendly websites and web applications with the latest technology.'
+                                                }
+                                            </p>
+                                        </div>
+                                    </Link>
+                                </AnimatedText>
+
+                                {/* Service 2 - Mobile Apps */}
+                                <AnimatedText as="div">
+                                    <Link href="/services/mobile-apps" className="block group">
+                                        <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-200 dark:border-gray-700">
+                                            <div className="w-16 h-16 bg-blue-500/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-blue-500/20 transition-colors">
+                                                <svg className="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                                                </svg>
+                                            </div>
+                                            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-blue-500 transition-colors">
+                                                {language === 'id' ? 'Mobile Apps' : 'Mobile Apps'}
+                                            </h3>
+                                            <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                                                {language === 'id'
+                                                    ? 'Pengembangan aplikasi mobile native dan cross-platform untuk iOS dan Android dengan performa optimal.'
+                                                    : 'Native and cross-platform mobile app development for iOS and Android with optimal performance.'
+                                                }
+                                            </p>
+                                        </div>
+                                    </Link>
+                                </AnimatedText>
+
+                                {/* Service 3 - UI/UX Design */}
+                                <AnimatedText as="div">
+                                    <Link href="/services/uiux-design" className="block group">
+                                        <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-200 dark:border-gray-700">
+                                            <div className="w-16 h-16 bg-purple-500/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-purple-500/20 transition-colors">
+                                                <svg className="w-8 h-8 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v12a4 4 0 004 4h4a2 2 0 002-2V5z" />
+                                                </svg>
+                                            </div>
+                                            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-purple-500 transition-colors">
+                                                {language === 'id' ? 'UI/UX Design' : 'UI/UX Design'}
+                                            </h3>
+                                            <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                                                {language === 'id'
+                                                    ? 'Desain antarmuka yang menarik dan pengalaman pengguna yang intuitif untuk meningkatkan engagement.'
+                                                    : 'Attractive interface design and intuitive user experience to increase engagement.'
+                                                }
+                                            </p>
+                                        </div>
+                                    </Link>
+                                </AnimatedText>
+
+                                {/* Service 4 - Digital Marketing */}
+                                <AnimatedText as="div">
+                                    <Link href="/services/digital-marketing" className="block group">
+                                        <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-200 dark:border-gray-700">
+                                            <div className="w-16 h-16 bg-red-500/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-red-500/20 transition-colors">
+                                                <svg className="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                                </svg>
+                                            </div>
+                                            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-red-500 transition-colors">
+                                                {language === 'id' ? 'Digital Marketing' : 'Digital Marketing'}
+                                            </h3>
+                                            <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                                                {language === 'id'
+                                                    ? 'Strategi pemasaran digital yang komprehensif untuk meningkatkan brand awareness dan penjualan.'
+                                                    : 'Comprehensive digital marketing strategies to increase brand awareness and sales.'
+                                                }
+                                            </p>
+                                        </div>
+                                    </Link>
+                                </AnimatedText>
+
+                                {/* Service 5 - System Development */}
+                                <AnimatedText as="div">
+                                    <Link href="/services/sistem-development" className="block group">
+                                        <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-200 dark:border-gray-700">
+                                            <div className="w-16 h-16 bg-indigo-500/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-indigo-500/20 transition-colors">
+                                                <svg className="w-8 h-8 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+                                                </svg>
+                                            </div>
+                                            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-indigo-500 transition-colors">
+                                                {language === 'id' ? 'System Development' : 'System Development'}
+                                            </h3>
+                                            <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                                                {language === 'id'
+                                                    ? 'Pengembangan sistem informasi dan enterprise solution yang scalable dan secure untuk bisnis Anda.'
+                                                    : 'Developing scalable and secure information systems and enterprise solutions for your business.'
+                                                }
+                                            </p>
+                                        </div>
+                                    </Link>
+                                </AnimatedText>
+
+                                {/* Service 6 - Consulting */}
+                                <AnimatedText as="div">
+                                    <Link href="/services/consulting" className="block group">
+                                        <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-200 dark:border-gray-700">
+                                            <div className="w-16 h-16 bg-yellow-500/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-yellow-500/20 transition-colors">
+                                                <svg className="w-8 h-8 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                                                </svg>
+                                            </div>
+                                            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-yellow-500 transition-colors">
+                                                {language === 'id' ? 'Consulting' : 'Consulting'}
+                                            </h3>
+                                            <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                                                {language === 'id'
+                                                    ? 'Konsultasi teknologi dan strategi digital untuk mengoptimalkan proses bisnis dan transformasi digital.'
+                                                    : 'Technology consulting and digital strategy to optimize business processes and digital transformation.'
+                                                }
+                                            </p>
+                                        </div>
+                                    </Link>
+                                </AnimatedText>
+                            </div>
+
+                            <div className="text-center mt-12">
+                                <AnimatedText as="div">
+                                    <Link href="/services">
+                                        <Button variant="outline" size="lg" className="px-8 py-4 border-2 border-green-500 text-green-500 hover:bg-green-500 hover:text-white transform hover:scale-105 transition-all duration-300">
+                                            {language === 'id' ? 'Lihat Semua Layanan' : 'View All Services'}
+                                        </Button>
+                                    </Link>
+                                </AnimatedText>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Why Choose Us Section */}
+                    <section className="py-20 bg-gray-50 dark:bg-gray-800 transition-colors duration-300">
+                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                            <div className="text-center mb-16">
+                                <AnimatedText as="div">
+                                    <span className="text-green-500 font-medium text-sm tracking-wider uppercase mb-6 block">
+                                        {language === 'id' ? 'Mengapa Memilih Kami' : 'Why Choose Us'}
+                                    </span>
+                                    <Heading variant="h2" color="foreground" className="mb-4 text-[28px] md:text-[32px] lg:text-[36px] font-extrabold">
+                                        {language === 'id' ? 'Keunggulan Bajramedia' : 'Bajramedia Advantages'}
+                                    </Heading>
+                                    <Text color="secondary" className="max-w-3xl mx-auto text-base leading-relaxed">
+                                        {language === 'id'
+                                            ? 'Kami memberikan nilai lebih dengan kombinasi keahlian teknis, kreativitas, dan komitmen untuk kesuksesan proyek Anda.'
+                                            : 'We provide added value with a combination of technical expertise, creativity, and commitment to your project success.'
+                                        }
+                                    </Text>
+                                </AnimatedText>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                                {/* Advantage 1 */}
+                                <AnimatedText as="div">
+                                    <div className="text-center">
+                                        <div className="w-20 h-20 bg-green-500/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                                            <svg className="w-10 h-10 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                        </div>
+                                        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
+                                            {language === 'id' ? 'Kualitas Terjamin' : 'Quality Guaranteed'}
+                                        </h3>
+                                        <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                                            {language === 'id'
+                                                ? 'Setiap proyek dikerjakan dengan standar kualitas tinggi dan testing menyeluruh sebelum delivery.'
+                                                : 'Every project is executed with high quality standards and comprehensive testing before delivery.'
+                                            }
+                                        </p>
+                                    </div>
+                                </AnimatedText>
+
+                                {/* Advantage 2 */}
+                                <AnimatedText as="div">
+                                    <div className="text-center">
+                                        <div className="w-20 h-20 bg-blue-500/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                                            <svg className="w-10 h-10 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                        </div>
+                                        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
+                                            {language === 'id' ? 'Tepat Waktu' : 'On Time Delivery'}
+                                        </h3>
+                                        <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                                            {language === 'id'
+                                                ? 'Kami berkomitmen menyelesaikan proyek sesuai timeline yang telah disepakati dengan manajemen waktu yang baik.'
+                                                : 'We are committed to completing projects according to agreed timelines with good time management.'
+                                            }
+                                        </p>
+                                    </div>
+                                </AnimatedText>
+
+                                {/* Advantage 3 */}
+                                <AnimatedText as="div">
+                                    <div className="text-center">
+                                        <div className="w-20 h-20 bg-purple-500/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                                            <svg className="w-10 h-10 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" />
+                                            </svg>
+                                        </div>
+                                        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
+                                            {language === 'id' ? 'Support 24/7' : '24/7 Support'}
+                                        </h3>
+                                        <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                                            {language === 'id'
+                                                ? 'Tim support kami siap membantu Anda kapan saja untuk memastikan sistem berjalan dengan lancar.'
+                                                : 'Our support team is ready to help you anytime to ensure the system runs smoothly.'
+                                            }
+                                        </p>
+                                    </div>
+                                </AnimatedText>
+
+                                {/* Advantage 4 */}
+                                <AnimatedText as="div">
+                                    <div className="text-center">
+                                        <div className="w-20 h-20 bg-red-500/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                                            <svg className="w-10 h-10 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                            </svg>
+                                        </div>
+                                        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
+                                            {language === 'id' ? 'Harga Terjangkau' : 'Affordable Price'}
+                                        </h3>
+                                        <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                                            {language === 'id'
+                                                ? 'Solusi digital berkualitas tinggi dengan harga yang kompetitif dan sesuai dengan budget Anda.'
+                                                : 'High-quality digital solutions at competitive prices that fit your budget.'
+                                            }
+                                        </p>
+                                    </div>
+                                </AnimatedText>
+                            </div>
+                        </div>
+                    </section>
+
                     {/* Blog Section */}
                     <Blog />
 
                     {/* Portfolio Section */}
                     <Portfolio />
+
+                    {/* Process Section */}
+                    <section className="py-20 bg-white dark:bg-gray-900 transition-colors duration-300">
+                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                            <div className="text-center mb-16">
+                                <AnimatedText as="div">
+                                    <span className="text-green-500 font-medium text-sm tracking-wider uppercase mb-6 block">
+                                        {language === 'id' ? 'Proses Kerja' : 'Work Process'}
+                                    </span>
+                                    <Heading variant="h2" color="foreground" className="mb-4 text-[28px] md:text-[32px] lg:text-[36px] font-extrabold">
+                                        {language === 'id' ? 'Bagaimana Kami Bekerja' : 'How We Work'}
+                                    </Heading>
+                                    <Text color="secondary" className="max-w-3xl mx-auto text-base leading-relaxed">
+                                        {language === 'id'
+                                            ? 'Proses kerja yang terstruktur dan transparan untuk memastikan hasil terbaik bagi proyek Anda.'
+                                            : 'Structured and transparent work process to ensure the best results for your project.'
+                                        }
+                                    </Text>
+                                </AnimatedText>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                                {/* Step 1 */}
+                                <AnimatedText as="div">
+                                    <div className="text-center relative">
+                                        <div className="w-16 h-16 bg-green-500 rounded-2xl flex items-center justify-center mx-auto mb-6 text-white font-bold text-xl">
+                                            1
+                                        </div>
+                                        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
+                                            {language === 'id' ? 'Konsultasi' : 'Consultation'}
+                                        </h3>
+                                        <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                                            {language === 'id'
+                                                ? 'Diskusi mendalam tentang kebutuhan, tujuan, dan visi proyek Anda.'
+                                                : 'In-depth discussion about your project needs, goals, and vision.'
+                                            }
+                                        </p>
+                                        {/* Connection Line */}
+                                        <div className="hidden lg:block absolute top-8 left-full w-full h-0.5 bg-gray-200 dark:bg-gray-700 -translate-x-8"></div>
+                                    </div>
+                                </AnimatedText>
+
+                                {/* Step 2 */}
+                                <AnimatedText as="div">
+                                    <div className="text-center relative">
+                                        <div className="w-16 h-16 bg-blue-500 rounded-2xl flex items-center justify-center mx-auto mb-6 text-white font-bold text-xl">
+                                            2
+                                        </div>
+                                        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
+                                            {language === 'id' ? 'Perencanaan' : 'Planning'}
+                                        </h3>
+                                        <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                                            {language === 'id'
+                                                ? 'Pembuatan roadmap detail, timeline, dan spesifikasi teknis proyek.'
+                                                : 'Creating detailed roadmap, timeline, and technical specifications.'
+                                            }
+                                        </p>
+                                        {/* Connection Line */}
+                                        <div className="hidden lg:block absolute top-8 left-full w-full h-0.5 bg-gray-200 dark:bg-gray-700 -translate-x-8"></div>
+                                    </div>
+                                </AnimatedText>
+
+                                {/* Step 3 */}
+                                <AnimatedText as="div">
+                                    <div className="text-center relative">
+                                        <div className="w-16 h-16 bg-purple-500 rounded-2xl flex items-center justify-center mx-auto mb-6 text-white font-bold text-xl">
+                                            3
+                                        </div>
+                                        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
+                                            {language === 'id' ? 'Pengembangan' : 'Development'}
+                                        </h3>
+                                        <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                                            {language === 'id'
+                                                ? 'Eksekusi proyek dengan update berkala dan komunikasi yang transparan.'
+                                                : 'Project execution with regular updates and transparent communication.'
+                                            }
+                                        </p>
+                                        {/* Connection Line */}
+                                        <div className="hidden lg:block absolute top-8 left-full w-full h-0.5 bg-gray-200 dark:bg-gray-700 -translate-x-8"></div>
+                                    </div>
+                                </AnimatedText>
+
+                                {/* Step 4 */}
+                                <AnimatedText as="div">
+                                    <div className="text-center">
+                                        <div className="w-16 h-16 bg-red-500 rounded-2xl flex items-center justify-center mx-auto mb-6 text-white font-bold text-xl">
+                                            4
+                                        </div>
+                                        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
+                                            {language === 'id' ? 'Delivery & Support' : 'Delivery & Support'}
+                                        </h3>
+                                        <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                                            {language === 'id'
+                                                ? 'Penyerahan proyek yang telah teruji dan dukungan berkelanjutan.'
+                                                : 'Delivery of tested project and ongoing support.'
+                                            }
+                                        </p>
+                                    </div>
+                                </AnimatedText>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* FAQ Section */}
+                    <section className="py-20 bg-gray-50 dark:bg-gray-800 transition-colors duration-300">
+                        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                            <div className="text-center mb-16">
+                                <AnimatedText as="div">
+                                    <span className="text-green-500 font-medium text-sm tracking-wider uppercase mb-6 block">
+                                        {language === 'id' ? 'Pertanyaan Umum' : 'FAQ'}
+                                    </span>
+                                    <Heading variant="h2" color="foreground" className="mb-4 text-[28px] md:text-[32px] lg:text-[36px] font-extrabold">
+                                        {language === 'id' ? 'Pertanyaan yang Sering Diajukan' : 'Frequently Asked Questions'}
+                                    </Heading>
+                                    <Text color="secondary" className="max-w-3xl mx-auto text-base leading-relaxed">
+                                        {language === 'id'
+                                            ? 'Temukan jawaban untuk pertanyaan-pertanyaan yang paling sering diajukan tentang layanan kami.'
+                                            : 'Find answers to the most frequently asked questions about our services.'
+                                        }
+                                    </Text>
+                                </AnimatedText>
+                            </div>
+
+                            <div className="space-y-6">
+                                {/* FAQ 1 */}
+                                <AnimatedText as="div">
+                                    <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-gray-700">
+                                        <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-3">
+                                            {language === 'id' ? 'Berapa lama waktu pengerjaan proyek website?' : 'How long does it take to complete a website project?'}
+                                        </h3>
+                                        <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                                            {language === 'id'
+                                                ? 'Waktu pengerjaan bervariasi tergantung kompleksitas proyek. Website company profile biasanya 2-4 minggu, sedangkan web aplikasi kompleks bisa 2-6 bulan. Kami akan memberikan estimasi waktu yang akurat setelah analisis kebutuhan.'
+                                                : 'Development time varies depending on project complexity. Company profile websites typically take 2-4 weeks, while complex web applications can take 2-6 months. We will provide accurate time estimates after requirements analysis.'
+                                            }
+                                        </p>
+                                    </div>
+                                </AnimatedText>
+
+                                {/* FAQ 2 */}
+                                <AnimatedText as="div">
+                                    <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-gray-700">
+                                        <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-3">
+                                            {language === 'id' ? 'Apakah ada garansi untuk proyek yang dikerjakan?' : 'Is there a warranty for completed projects?'}
+                                        </h3>
+                                        <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                                            {language === 'id'
+                                                ? 'Ya, kami memberikan garansi 3 bulan untuk bug fixing dan 1 tahun untuk maintenance support. Kami juga menyediakan paket maintenance berkelanjutan dengan harga yang kompetitif.'
+                                                : 'Yes, we provide a 3-month warranty for bug fixing and 1 year for maintenance support. We also offer ongoing maintenance packages at competitive prices.'
+                                            }
+                                        </p>
+                                    </div>
+                                </AnimatedText>
+
+                                {/* FAQ 3 */}
+                                <AnimatedText as="div">
+                                    <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-gray-700">
+                                        <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-3">
+                                            {language === 'id' ? 'Bagaimana sistem pembayaran dan apakah bisa dicicil?' : 'How is the payment system and can it be paid in installments?'}
+                                        </h3>
+                                        <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                                            {language === 'id'
+                                                ? 'Kami menerima pembayaran dengan sistem cicilan: 30% di awal, 40% saat development, dan 30% saat selesai. Pembayaran bisa melalui transfer bank, e-wallet, atau payment gateway lainnya.'
+                                                : 'We accept payments with installment system: 30% at the start, 40% during development, and 30% upon completion. Payment can be made via bank transfer, e-wallet, or other payment gateways.'
+                                            }
+                                        </p>
+                                    </div>
+                                </AnimatedText>
+
+                                {/* FAQ 4 */}
+                                <AnimatedText as="div">
+                                    <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-gray-700">
+                                        <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-3">
+                                            {language === 'id' ? 'Apakah bisa request revisi setelah proyek selesai?' : 'Can I request revisions after the project is completed?'}
+                                        </h3>
+                                        <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                                            {language === 'id'
+                                                ? 'Tentu saja! Kami memberikan 2 kali revisi gratis dalam periode garansi. Revisi tambahan akan dikenakan biaya sesuai dengan kompleksitas perubahan yang diminta.'
+                                                : 'Of course! We provide 2 free revisions during the warranty period. Additional revisions will be charged according to the complexity of the requested changes.'
+                                            }
+                                        </p>
+                                    </div>
+                                </AnimatedText>
+                            </div>
+
+                            <div className="text-center mt-12">
+                                <AnimatedText as="div">
+                                    <Text color="secondary" className="mb-6 text-base">
+                                        {language === 'id' ? 'Masih ada pertanyaan lain?' : 'Still have other questions?'}
+                                    </Text>
+                                    <Link href="/about">
+                                        <Button variant="primary" size="lg" className="px-8 py-4 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 transform hover:scale-105 transition-all duration-300">
+                                            {language === 'id' ? 'Hubungi Kami' : 'Contact Us'}
+                                        </Button>
+                                    </Link>
+                                </AnimatedText>
+                            </div>
+                        </div>
+                    </section>
 
                     {/* CTA Section */}
                     <CTA />
