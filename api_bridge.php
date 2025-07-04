@@ -1359,10 +1359,32 @@ function handlePost($pdo, $endpoint) {
                         return;
                     }
                     
-                    // Get current portfolio item by slug
-                    $stmt = $pdo->prepare("SELECT id, viewCount FROM portfolio WHERE slug = ?");
-                    $stmt->execute([$slug]);
-                    $portfolio = $stmt->fetch();
+                    // Get current portfolio item by slug - with fallback for different column names
+                    try {
+                        $stmt = $pdo->prepare("SELECT id, viewCount FROM portfolio WHERE slug = ?");
+                        $stmt->execute([$slug]);
+                        $portfolio = $stmt->fetch();
+                        $viewColumnName = 'viewCount';
+                    } catch (Exception $e) {
+                        // Try alternative column name 'views'
+                        try {
+                            $stmt = $pdo->prepare("SELECT id, views as viewCount FROM portfolio WHERE slug = ?");
+                            $stmt->execute([$slug]);
+                            $portfolio = $stmt->fetch();
+                            $viewColumnName = 'views';
+                        } catch (Exception $e2) {
+                            // If both fail, create the column
+                            try {
+                                $pdo->exec("ALTER TABLE portfolio ADD COLUMN viewCount INT DEFAULT 0");
+                                $stmt = $pdo->prepare("SELECT id, viewCount FROM portfolio WHERE slug = ?");
+                                $stmt->execute([$slug]);
+                                $portfolio = $stmt->fetch();
+                                $viewColumnName = 'viewCount';
+                            } catch (Exception $e3) {
+                                throw new Exception('Could not access or create view count column');
+                            }
+                        }
+                    }
                     
                     if (!$portfolio) {
                         http_response_code(404);
@@ -1372,7 +1394,7 @@ function handlePost($pdo, $endpoint) {
                     
                     // Increment view count
                     $newViewCount = ($portfolio['viewCount'] ?? 0) + 1;
-                    $updateStmt = $pdo->prepare("UPDATE portfolio SET viewCount = ? WHERE id = ?");
+                    $updateStmt = $pdo->prepare("UPDATE portfolio SET $viewColumnName = ? WHERE id = ?");
                     $updateStmt->execute([$newViewCount, $portfolio['id']]);
                     
                     echo json_encode([
@@ -1382,6 +1404,66 @@ function handlePost($pdo, $endpoint) {
                     ]);
                 } catch (Exception $e) {
                     error_log('Error incrementing portfolio view: ' . $e->getMessage());
+                    http_response_code(500);
+                    echo json_encode(['error' => 'Failed to increment view count']);
+                }
+                break;
+                
+            case 'incrementBlogView':
+                // Increment blog view count
+                try {
+                    $slug = $data['slug'] ?? '';
+                    if (empty($slug)) {
+                        http_response_code(400);
+                        echo json_encode(['error' => 'Slug is required']);
+                        return;
+                    }
+                    
+                    // Get current blog post by slug - with fallback for different column names
+                    try {
+                        $stmt = $pdo->prepare("SELECT id, views FROM post WHERE slug = ?");
+                        $stmt->execute([$slug]);
+                        $post = $stmt->fetch();
+                        $viewColumnName = 'views';
+                    } catch (Exception $e) {
+                        // Try alternative column name 'viewCount'
+                        try {
+                            $stmt = $pdo->prepare("SELECT id, viewCount as views FROM post WHERE slug = ?");
+                            $stmt->execute([$slug]);
+                            $post = $stmt->fetch();
+                            $viewColumnName = 'viewCount';
+                        } catch (Exception $e2) {
+                            // If both fail, create the column
+                            try {
+                                $pdo->exec("ALTER TABLE post ADD COLUMN views INT DEFAULT 0");
+                                $stmt = $pdo->prepare("SELECT id, views FROM post WHERE slug = ?");
+                                $stmt->execute([$slug]);
+                                $post = $stmt->fetch();
+                                $viewColumnName = 'views';
+                            } catch (Exception $e3) {
+                                throw new Exception('Could not access or create view count column');
+                            }
+                        }
+                    }
+                    
+                    if (!$post) {
+                        http_response_code(404);
+                        echo json_encode(['error' => 'Blog post not found']);
+                        return;
+                    }
+                    
+                    // Increment view count
+                    $newViewCount = ($post['views'] ?? 0) + 1;
+                    $updateStmt = $pdo->prepare("UPDATE post SET $viewColumnName = ? WHERE id = ?");
+                    $updateStmt->execute([$newViewCount, $post['id']]);
+                    
+                    echo json_encode([
+                        'success' => true,
+                        'viewCount' => $newViewCount,
+                        'slug' => $slug
+                    ]);
+                } catch (Exception $e) {
+                    error_log('Error incrementing blog view: ' . $e->getMessage());
                     http_response_code(500);
                     echo json_encode(['error' => 'Failed to increment view count']);
                 }

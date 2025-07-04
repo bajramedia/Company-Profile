@@ -38,17 +38,26 @@ export const useViewTracker = ({ type, slug, title }: ViewTrackerOptions) => {
 
         if (response.ok) {
           const result = await response.json();
-          console.log(`✅ View berhasil di-track untuk ${type}:`, slug);
+          console.log(`✅ View berhasil di-track untuk ${type}:`, slug, result);
           
           // Update view count if returned from API
-          if (result.viewCount) {
+          if (result.viewCount !== undefined) {
             setViewCount(result.viewCount);
+            console.log(`📊 View count updated untuk ${type}:`, slug, result.viewCount);
           }
           
           setHasTracked(true);
           hasViewed = true;
         } else {
-          console.error(`❌ Gagal track view untuk ${type}:`, response.status);
+          console.error(`❌ Gagal track view untuk ${type}:`, response.status, response.statusText);
+          
+          // Try to get error details
+          try {
+            const errorData = await response.json();
+            console.error(`💥 Error details:`, errorData);
+          } catch (e) {
+            console.error(`💥 Could not parse error response`);
+          }
         }
       } catch (error) {
         console.error(`💥 Error tracking view untuk ${type}:`, error);
