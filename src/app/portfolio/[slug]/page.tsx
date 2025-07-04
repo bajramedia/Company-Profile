@@ -433,12 +433,59 @@ function PortfolioContent({
         initialViews: portfolioItem.viewCount || portfolioItem.views || 0
     });
 
+    // Debug localStorage function (for testing)
+    const debugStorage = () => {
+        if (typeof window !== 'undefined') {
+            const storageKey = `portfolio_views_${slug}`;
+            const sessionKey = `portfolio_viewed_${slug}`;
+
+            console.log('🧪 [MANUAL DEBUG] Storage Test:');
+            console.log('📦 localStorage key:', storageKey);
+            console.log('💾 localStorage value:', localStorage.getItem(storageKey));
+            console.log('🎭 sessionStorage key:', sessionKey);
+            console.log('🎯 sessionStorage value:', sessionStorage.getItem(sessionKey));
+            console.log('📊 Current trackedViewCount:', trackedViewCount);
+            console.log('📈 Database viewCount:', portfolioItem.viewCount);
+            console.log('🔥 Database views:', portfolioItem.views);
+
+            // Manual increment test
+            const current = localStorage.getItem(storageKey);
+            const newValue = current ? parseInt(current) + 1 : 1;
+            localStorage.setItem(storageKey, newValue.toString());
+            console.log('🚀 Manual increment test - new value:', newValue);
+
+            // Show in alert for easy viewing
+            alert(`Debug Info:
+localStorage: ${localStorage.getItem(storageKey)}
+sessionStorage: ${sessionStorage.getItem(sessionKey)}
+trackedViewCount: ${trackedViewCount}
+portfolioItem.viewCount: ${portfolioItem.viewCount}
+portfolioItem.views: ${portfolioItem.views}`);
+        }
+    };
+
+    // Add debug button in development
+    const isDev = process.env.NODE_ENV === 'development';
+
     const allImages = portfolioItem.images && portfolioItem.images.length > 0
         ? [portfolioItem.featuredImage, ...portfolioItem.images]
         : [portfolioItem.featuredImage];
 
     return (
         <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
+            {/* Debug Button for Development */}
+            {isDev && (
+                <div className="fixed bottom-4 right-4 z-50">
+                    <button
+                        onClick={debugStorage}
+                        className="bg-red-500 text-white px-4 py-2 rounded-lg text-sm font-mono shadow-lg hover:bg-red-600 transition-colors"
+                        title="Debug localStorage (DEV only)"
+                    >
+                        🧪 DEBUG STORAGE
+                    </button>
+                </div>
+            )}
+
             {/* Header */}
             <header className="fixed top-0 left-0 right-0 bg-white/95 dark:bg-gray-800/95 shadow-sm z-50 py-3 md:py-4 backdrop-blur-sm">
                 <div className="max-w-7xl mx-auto flex justify-between items-center px-4 sm:px-6 md:px-8">
@@ -512,7 +559,10 @@ function PortfolioContent({
                                 {/* Client & Project Info */}
                                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                                     <div className="text-center p-4 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
-                                        <div className="text-2xl font-bold text-primary mb-1">{trackedViewCount || portfolioItem.viewCount || 0}</div>
+                                        <div className="text-2xl font-bold text-primary mb-1">
+                                            {trackedViewCount || portfolioItem.viewCount || portfolioItem.views || 0}
+                                            {isDev && <span className="text-xs block text-gray-500">tracked: {trackedViewCount}</span>}
+                                        </div>
                                         <div className="text-sm text-gray-600 dark:text-gray-400 font-medium">Views</div>
                                     </div>
                                     <div className="text-center p-4 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
