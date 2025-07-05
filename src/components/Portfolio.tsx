@@ -270,7 +270,7 @@ const Portfolio: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {displayedItems.map((item, index) => {
             // Parse images if it's a string
-            let displayImage = getFieldValue(item, 'image');
+            let displayImage = String(getFieldValue(item, 'image'));
             if (item.images && typeof item.images === 'string') {
               try {
                 const parsedImages = JSON.parse(item.images);
