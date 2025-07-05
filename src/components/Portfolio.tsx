@@ -12,7 +12,9 @@ interface PortfolioItem {
   id: number;
   slug: string;
   title: string;
-  excerpt: string;
+  description?: string;
+  excerpt?: string;
+  featuredImage?: string;
   featured_image?: string;
   images?: string;
   categoryId?: number;
@@ -21,11 +23,15 @@ interface PortfolioItem {
   categoryIcon?: string;
   published: boolean;
   featured: boolean;
+  clientName?: string;
   client_name?: string;
+  projectUrl?: string;
   project_url?: string;
   technologies?: string;
+  createdAt?: string;
   date?: string;
   views?: number;
+  viewCount?: number;
 }
 
 interface PortfolioCategory {
@@ -119,6 +125,26 @@ const Portfolio: React.FC = () => {
     setSelectedCategory(categorySlug);
   };
 
+  // Helper function to get the correct field value
+  const getFieldValue = (item: PortfolioItem, field: 'image' | 'description' | 'client' | 'projectUrl' | 'date' | 'views') => {
+    switch (field) {
+      case 'image':
+        return item.featuredImage || item.featured_image || '/images/placeholder.jpg';
+      case 'description':
+        return item.description || item.excerpt || '';
+      case 'client':
+        return item.clientName || item.client_name || '';
+      case 'projectUrl':
+        return item.projectUrl || item.project_url || '';
+      case 'date':
+        return item.createdAt || item.date || '';
+      case 'views':
+        return item.viewCount || item.views || 0;
+      default:
+        return '';
+    }
+  };
+
   if (loading) {
     console.log('🎯 Portfolio component: Rendering LOADING state');
     return (
@@ -129,7 +155,7 @@ const Portfolio: React.FC = () => {
           <div className="absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-tl from-green-400/20 to-blue-600/20 rounded-full blur-3xl"></div>
         </div>
         
-        <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 relative z-10">
+        <div className="w-[80%] mx-auto px-4 sm:px-6 md:px-8 relative z-10">
           <div className="text-center mb-16">
             <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mx-auto mb-4 animate-pulse"></div>
             <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mx-auto animate-pulse"></div>
@@ -182,7 +208,7 @@ const Portfolio: React.FC = () => {
         <div className="absolute bottom-1/3 left-1/4 w-24 h-24 bg-gradient-to-r from-green-400/10 to-blue-600/10 rounded-lg rotate-45"></div>
       </div>
       
-      <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 relative z-10">
+      <div className="w-[80%] mx-auto px-4 sm:px-6 md:px-8 relative z-10">
         {/* Header Section */}
         <div className="text-center mb-16">
           <AnimatedText as="div">
@@ -244,7 +270,7 @@ const Portfolio: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {displayedItems.map((item, index) => {
             // Parse images if it's a string
-            let displayImage = item.featured_image || '/images/placeholder.jpg';
+            let displayImage = getFieldValue(item, 'image');
             if (item.images && typeof item.images === 'string') {
               try {
                 const parsedImages = JSON.parse(item.images);
@@ -312,29 +338,29 @@ const Portfolio: React.FC = () => {
                       </h3>
                       
                       <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 line-clamp-2 leading-relaxed">
-                        {item.excerpt}
+                        {getFieldValue(item, 'description')}
                       </p>
                       
                       {/* Meta Info */}
                       <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 mb-4">
                         <div className="flex items-center gap-4">
-                          {item.client_name && (
+                          {getFieldValue(item, 'client') && (
                             <div className="flex items-center gap-1">
                               <User className="w-3 h-3" />
-                              <span>{item.client_name}</span>
+                              <span>{getFieldValue(item, 'client')}</span>
                             </div>
                           )}
-                          {item.date && (
+                          {getFieldValue(item, 'date') && (
                             <div className="flex items-center gap-1">
                               <Calendar className="w-3 h-3" />
-                              <span>{new Date(item.date).getFullYear()}</span>
+                              <span>{new Date(getFieldValue(item, 'date') as string).getFullYear()}</span>
                             </div>
                           )}
                         </div>
                         
                         <div className="flex items-center gap-1">
                           <Eye className="w-3 h-3" />
-                          <span>{item.views || 0}</span>
+                          <span>{getFieldValue(item, 'views')}</span>
                         </div>
                       </div>
                       
