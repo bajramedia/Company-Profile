@@ -4,11 +4,9 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useLanguage } from '@/context/LanguageContext';
-import Heading from './Heading';
-import Text from './Text';
-import Button from './Button';
 import AnimatedText from './AnimatedText';
 import { getFallbackData, formatPortfolioForDisplay } from '@/utils/fallback-data';
+import { ArrowUpRight, Eye, Calendar, User, Sparkles } from 'lucide-react';
 
 interface PortfolioItem {
   id: number;
@@ -27,6 +25,7 @@ interface PortfolioItem {
   project_url?: string;
   technologies?: string;
   date?: string;
+  views?: number;
 }
 
 interface PortfolioCategory {
@@ -84,20 +83,18 @@ const Portfolio: React.FC = () => {
         setError(null);
 
         console.log('🎯 Portfolio component: Final state - portfolios:', portfolioItems.length, 'categories:', categoriesData.length || 0);
-        console.log('🔍 DEBUG: Categories data received:', categoriesData);
-        console.log('🔍 DEBUG: Categories after processing:', Array.isArray(categoriesData) ? categoriesData : (categoriesData.categories || []));
       } catch (err) {
         console.error('Error fetching portfolio:', err);
         console.log('🔄 API connection failed, loading fallback data...');
-
+        
         // Use fallback dummy data instead of showing error
         const fallbackData = getFallbackData();
         const formattedPortfolioItems = formatPortfolioForDisplay(fallbackData.portfolioItems);
-
+        
         setPortfolioItems(formattedPortfolioItems);
         setCategories(fallbackData.portfolioCategories);
         setError(null); // Clear error since we have fallback data
-
+        
         console.log('✅ Fallback data loaded successfully:', formattedPortfolioItems.length, 'items');
       } finally {
         setLoading(false);
@@ -125,19 +122,44 @@ const Portfolio: React.FC = () => {
   if (loading) {
     console.log('🎯 Portfolio component: Rendering LOADING state');
     return (
-      <section className="py-16 md:py-20 bg-white dark:bg-gray-900 relative overflow-hidden transition-colors duration-300">
-        <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8">
-          <div className="text-center mb-12">
-            <Heading variant="h2" className="text-2xl md:text-3xl font-bold mb-3">
-              {t('portfolio.title.main')} <span className="text-primary">{t('portfolio.title.highlight')}</span>
-            </Heading>
+      <section className="py-20 md:py-28 bg-gradient-to-br from-gray-50 via-white to-blue-50 dark:from-gray-900 dark:via-gray-900 dark:to-blue-900/20 relative overflow-hidden transition-colors duration-300">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-30">
+          <div className="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-blue-400/20 to-purple-600/20 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-tl from-green-400/20 to-blue-600/20 rounded-full blur-3xl"></div>
+        </div>
+        
+        <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 relative z-10">
+          <div className="text-center mb-16">
+            <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mx-auto mb-4 animate-pulse"></div>
+            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mx-auto animate-pulse"></div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          
+          {/* Filter skeleton */}
+          <div className="flex justify-center mb-12">
+            <div className="flex gap-3">
+              {[1, 2, 3, 4, 5].map((i) => (
+                <div key={i} className="h-10 w-24 bg-gray-200 dark:bg-gray-700 rounded-full animate-pulse"></div>
+              ))}
+            </div>
+          </div>
+          
+          {/* Cards skeleton */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[1, 2, 3, 4, 5, 6].map((i) => (
-              <div key={i} className="animate-pulse">
-                <div className="bg-gray-200 dark:bg-gray-700 h-48 rounded-lg mb-4"></div>
-                <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded mb-2"></div>
-                <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
+              <div key={i} className="group animate-pulse">
+                <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-lg overflow-hidden border border-gray-100 dark:border-gray-700">
+                  <div className="h-64 bg-gray-200 dark:bg-gray-700"></div>
+                  <div className="p-6">
+                    <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded mb-3"></div>
+                    <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded mb-3"></div>
+                    <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-4"></div>
+                    <div className="flex justify-between items-center">
+                      <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-1/4"></div>
+                      <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-1/4"></div>
+                    </div>
+                  </div>
+                </div>
               </div>
             ))}
           </div>
@@ -149,65 +171,78 @@ const Portfolio: React.FC = () => {
   console.log('🎯 Portfolio component: Rendering MAIN component with', displayedItems.length, 'items');
 
   return (
-    <section className="py-16 md:py-20 bg-white dark:bg-gray-900 relative overflow-hidden transition-colors duration-300">
-      <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8">
-        <div className="text-center mb-12">
+    <section className="py-20 md:py-28 bg-gradient-to-br from-gray-50 via-white to-blue-50 dark:from-gray-900 dark:via-gray-900 dark:to-blue-900/20 relative overflow-hidden transition-colors duration-300">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 opacity-30">
+        <div className="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-blue-400/20 to-purple-600/20 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-gradient-to-tl from-green-400/20 to-blue-600/20 rounded-full blur-3xl"></div>
+        
+        {/* Geometric patterns */}
+        <div className="absolute top-1/4 right-1/4 w-32 h-32 border border-gray-200/40 dark:border-gray-700/40 rounded-full"></div>
+        <div className="absolute bottom-1/3 left-1/4 w-24 h-24 bg-gradient-to-r from-green-400/10 to-blue-600/10 rounded-lg rotate-45"></div>
+      </div>
+      
+      <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 relative z-10">
+        {/* Header Section */}
+        <div className="text-center mb-16">
           <AnimatedText as="div">
-            <Heading variant="h2" className="text-2xl md:text-3xl font-bold mb-3">
-              {t('portfolio.title.main')} <span className="text-primary">{t('portfolio.title.highlight')}</span>
-            </Heading>
+            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600/10 to-purple-600/10 backdrop-blur-sm border border-blue-200/20 dark:border-blue-700/20 rounded-full px-4 py-2 mb-6">
+              <Sparkles className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+              <span className="text-sm font-medium text-blue-700 dark:text-blue-300">Our Portfolio</span>
+            </div>
           </AnimatedText>
+          
           <AnimatedText as="div">
-            <Text color="secondary" className="max-w-2xl mx-auto text-base">
-              {t('portfolio.subtitle')}
-            </Text>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 bg-gradient-to-r from-gray-900 via-blue-800 to-purple-800 dark:from-white dark:via-blue-200 dark:to-purple-200 bg-clip-text text-transparent leading-tight">
+              {t('portfolio.title.main') || 'Creative'} <span className="relative">
+                {t('portfolio.title.highlight') || 'Works'}
+                <div className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
+              </span>
+            </h2>
+          </AnimatedText>
+          
+          <AnimatedText as="div">
+            <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
+              {t('portfolio.subtitle') || 'Explore our latest projects and see how we turn innovative ideas into stunning digital experiences that make a difference.'}
+            </p>
           </AnimatedText>
         </div>
 
-        {/* Category Filter */}
+        {/* Modern Category Filter */}
         <AnimatedText as="div">
-          <div className="flex justify-center mb-8">
-            <div className="flex flex-wrap justify-center gap-2 max-w-4xl">
+          <div className="flex justify-center mb-12">
+            <div className="flex flex-wrap justify-center gap-3 p-2 bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl border border-gray-200/50 dark:border-gray-700/50 shadow-lg">
               <button
                 onClick={() => handleCategoryFilter('all')}
-                className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-300 ${selectedCategory === 'all'
-                  ? 'bg-primary text-white dark:bg-green-600'
-                  : 'text-secondary dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 border border-gray-200 dark:border-gray-700'
-                  }`}
+                className={`px-6 py-3 rounded-xl text-sm font-medium transition-all duration-300 ${
+                  selectedCategory === 'all'
+                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/25 transform scale-105'
+                    : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50 hover:text-gray-900 dark:hover:text-white'
+                }`}
               >
-                {t('portfolio.filter.all')}
+                {t('portfolio.filter.all') || 'All Projects'}
               </button>
               {categories.map((category) => (
                 <button
                   key={category.id}
                   onClick={() => handleCategoryFilter(category.slug)}
-                  className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-300 ${selectedCategory === category.slug
-                    ? 'bg-primary text-white dark:bg-green-600'
-                    : 'text-secondary dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 border border-gray-200 dark:border-gray-700'
-                    }`}
+                  className={`px-6 py-3 rounded-xl text-sm font-medium transition-all duration-300 flex items-center gap-2 ${
+                    selectedCategory === category.slug
+                      ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/25 transform scale-105'
+                      : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50 hover:text-gray-900 dark:hover:text-white'
+                  }`}
                 >
-                  {category.name}
+                  <span>{category.icon}</span>
+                  <span>{category.name}</span>
                 </button>
               ))}
             </div>
           </div>
         </AnimatedText>
 
-        {/* Error Message */}
-        {error && (
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center px-4 py-2 bg-red-100 dark:bg-red-900/20 text-red-800 dark:text-red-200 rounded-lg">
-              <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-              </svg>
-              Portfolio data tidak tersedia - {error}
-            </div>
-          </div>
-        )}
-
-        {/* Portfolio Grid - Smaller Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {displayedItems.map((item) => {
+        {/* Modern Portfolio Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {displayedItems.map((item, index) => {
             // Parse images if it's a string
             let displayImage = item.featured_image || '/images/placeholder.jpg';
             if (item.images && typeof item.images === 'string') {
@@ -222,112 +257,155 @@ const Portfolio: React.FC = () => {
             }
 
             return (
-              <Link
-                key={item.id}
-                href={`/portfolio/${item.slug}`}
-                className="group relative overflow-hidden rounded-xl shadow-md dark:shadow-lg hover:shadow-xl dark:hover:shadow-2xl transition-all duration-300 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 block"
-              >
-                {/* Smaller Image Container */}
-                <div className="relative h-48 overflow-hidden">
-                  <Image
-                    src={displayImage}
-                    alt={item.title}
-                    fill
-                    style={{ objectFit: 'cover' }}
-                    className="group-hover:scale-105 transition-transform duration-300"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.src = '/images/placeholder.jpg';
-                    }}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-
-                  {/* Featured Badge */}
-                  {item.featured && (
-                    <div className="absolute top-3 right-3">
-                      <span className="inline-flex items-center px-2 py-1 text-xs font-medium bg-primary text-white rounded-lg">
-                        Featured
-                      </span>
+              <AnimatedText key={item.id} as="div" className="h-full">
+                <Link
+                  href={`/portfolio/${item.slug}`}
+                  className="group block h-full"
+                >
+                  <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden border border-gray-100 dark:border-gray-700 h-full transform hover:-translate-y-2">
+                    {/* Image Container with Overlay */}
+                    <div className="relative h-64 overflow-hidden">
+                      <Image
+                        src={displayImage}
+                        alt={item.title}
+                        fill
+                        className="object-cover transition-transform duration-700 group-hover:scale-110"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.src = '/images/placeholder.jpg';
+                        }}
+                      />
+                      
+                      {/* Gradient Overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                      
+                      {/* Category Badge */}
+                      <div className="absolute top-4 left-4">
+                        <span className="inline-flex items-center gap-1 px-3 py-1 bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm rounded-full text-xs font-medium text-gray-700 dark:text-gray-300 border border-gray-200/20 dark:border-gray-700/20">
+                          <span>{item.categoryIcon || '📁'}</span>
+                          {item.categoryName || 'Portfolio'}
+                        </span>
+                      </div>
+                      
+                      {/* Featured Badge */}
+                      {item.featured && (
+                        <div className="absolute top-4 right-4">
+                          <span className="inline-flex items-center gap-1 px-3 py-1 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full text-xs font-bold text-white shadow-lg">
+                            <Sparkles className="w-3 h-3" />
+                            Featured
+                          </span>
+                        </div>
+                      )}
+                      
+                      {/* Hover Action */}
+                      <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0">
+                        <div className="w-12 h-12 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center shadow-lg">
+                          <ArrowUpRight className="w-5 h-5 text-gray-700 dark:text-gray-300" />
+                        </div>
+                      </div>
                     </div>
-                  )}
 
-                  <div className="absolute bottom-3 left-3 right-3 transform translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                    <h3 className="text-white dark:text-gray-100 font-semibold text-lg mb-1 transition-colors duration-300">
-                      {item.title}
-                    </h3>
-                    <p className="text-white/80 dark:text-gray-300 text-sm transition-colors duration-300">
-                      {item.categoryName || 'Portfolio'}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Compact Content */}
-                <div className="p-4 bg-white dark:bg-gray-800 transition-colors duration-300">
-                  <h3 className="font-semibold text-lg mb-2 text-gray-900 dark:text-gray-100 transition-colors duration-300 line-clamp-1">
-                    {item.title}
-                  </h3>
-                  <p className="text-secondary dark:text-gray-400 text-sm mb-3 transition-colors duration-300 line-clamp-2">
-                    {item.excerpt}
-                  </p>
-                  <div className="flex items-center justify-between">
-                    <p className="text-primary dark:text-green-400 text-xs font-medium transition-colors duration-300">
-                      {item.categoryName || 'Portfolio'}
-                    </p>
-                    {item.client_name && (
-                      <p className="text-xs text-gray-500 dark:text-gray-400">
-                        {item.client_name}
+                    {/* Content */}
+                    <div className="p-6">
+                      <h3 className="font-bold text-xl mb-3 text-gray-900 dark:text-gray-100 line-clamp-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">
+                        {item.title}
+                      </h3>
+                      
+                      <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 line-clamp-2 leading-relaxed">
+                        {item.excerpt}
                       </p>
-                    )}
+                      
+                      {/* Meta Info */}
+                      <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 mb-4">
+                        <div className="flex items-center gap-4">
+                          {item.client_name && (
+                            <div className="flex items-center gap-1">
+                              <User className="w-3 h-3" />
+                              <span>{item.client_name}</span>
+                            </div>
+                          )}
+                          {item.date && (
+                            <div className="flex items-center gap-1">
+                              <Calendar className="w-3 h-3" />
+                              <span>{new Date(item.date).getFullYear()}</span>
+                            </div>
+                          )}
+                        </div>
+                        
+                        <div className="flex items-center gap-1">
+                          <Eye className="w-3 h-3" />
+                          <span>{item.views || 0}</span>
+                        </div>
+                      </div>
+                      
+                      {/* Technologies */}
+                      {item.technologies && (
+                        <div className="flex flex-wrap gap-1 mb-4">
+                          {item.technologies.split(',').slice(0, 3).map((tech, techIndex) => (
+                            <span
+                              key={techIndex}
+                              className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-xs rounded-md text-gray-600 dark:text-gray-400"
+                            >
+                              {tech.trim()}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                      
+                      {/* Action Button */}
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-medium text-blue-600 dark:text-blue-400 group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors duration-300">
+                          View Project
+                        </span>
+                        <div className="w-8 h-8 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-all duration-300 transform group-hover:rotate-45">
+                          <ArrowUpRight className="w-4 h-4" />
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </Link>
+                </Link>
+              </AnimatedText>
             );
           })}
         </div>
 
         {/* Show message if no items */}
         {filteredPortfolio.length === 0 && !loading && (
-          <div className="text-center py-12">
-            <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center">
-              <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012 2v2M7 7h10" />
+          <div className="text-center py-16">
+            <div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 rounded-2xl flex items-center justify-center">
+              <svg className="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2v2M7 7h10" />
               </svg>
             </div>
-            <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">
-              No portfolio items found
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
+              No Projects Found
             </h3>
             <p className="text-gray-500 dark:text-gray-400">
               {selectedCategory === 'all'
                 ? 'No portfolio items are currently available.'
-                : `No portfolio items found in ${selectedCategory} category.`}
+                : `No projects found in ${selectedCategory} category.`}
             </p>
           </div>
         )}
 
-        {/* View All Button */}
-        <div className="text-center mt-10">
-          <Link href="/portfolio">
-            <Button variant="outline" size="md" className="px-6 py-3 border-primary text-primary hover:bg-primary/5 dark:border-green-600 dark:text-green-400 dark:hover:bg-green-600/10 transition-colors duration-300">
-              {t('portfolio.viewAll')} {portfolioItems.length > 0 && `(${portfolioItems.filter(p => p.published).length})`}
-            </Button>
-          </Link>
-        </div>
-      </div>
-
-      {/* Decorative elements */}
-      <div className="absolute top-0 right-0 w-[15%] h-[25%] opacity-50 pointer-events-none">
-        <div className="grid grid-cols-4 gap-1.5 h-full">
-          {Array(20).fill(0).map((_, i) => (
-            <div key={`portfolio-decor-tr-${i}`} className="w-1.5 h-1.5 rounded-full bg-primary opacity-30"></div>
-          ))}
-        </div>
-      </div>
-
-      <div className="absolute bottom-0 left-0 w-[10%] h-[20%] opacity-50 pointer-events-none">
-        <div className="grid grid-cols-3 gap-1.5 h-full">
-          {Array(15).fill(0).map((_, i) => (
-            <div key={`portfolio-decor-bl-${i}`} className="w-1.5 h-1.5 rounded-full bg-primary opacity-30"></div>
-          ))}
+        {/* Modern View All Button */}
+        <div className="text-center mt-12">
+          <AnimatedText as="div">
+            <Link href="/portfolio">
+              <button className="group relative inline-flex items-center gap-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 rounded-2xl font-semibold transition-all duration-300 transform hover:-translate-y-1 hover:shadow-2xl hover:shadow-blue-500/25">
+                <span>Explore All Projects</span>
+                {portfolioItems.length > 0 && (
+                  <span className="bg-white/20 px-2 py-1 rounded-lg text-sm">
+                    {portfolioItems.filter(p => p.published).length}
+                  </span>
+                )}
+                <ArrowUpRight className="w-5 h-5 transition-transform duration-300 group-hover:rotate-45" />
+                
+                {/* Hover Effect */}
+                <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-white/0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              </button>
+            </Link>
+          </AnimatedText>
         </div>
       </div>
     </section>
