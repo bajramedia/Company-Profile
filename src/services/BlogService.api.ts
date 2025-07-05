@@ -1,4 +1,6 @@
 // BlogService using API Bridge instead of Prisma
+import { getFallbackData, formatBlogForDisplay } from '@/utils/fallback-data';
+
 export interface BlogPost {
   id: string;
   title: string;
@@ -107,7 +109,14 @@ class BlogServiceAPI {
       }));
     } catch (error) {
       console.error('Error fetching posts:', error);
-      return [];
+      console.log('🔄 API connection failed, loading fallback blog posts...');
+      
+      // Use fallback dummy data instead of empty array
+      const fallbackData = getFallbackData();
+      const formattedBlogPosts = formatBlogForDisplay(fallbackData.blogPosts);
+      
+      console.log('✅ Fallback blog posts loaded successfully:', formattedBlogPosts.length, 'posts');
+      return formattedBlogPosts;
     }
   }
 
@@ -147,6 +156,19 @@ class BlogServiceAPI {
       };
     } catch (error) {
       console.error('Error fetching post:', error);
+      console.log('🔄 API connection failed, trying fallback data for slug:', slug);
+      
+      // Try to find the post in fallback data
+      const fallbackData = getFallbackData();
+      const formattedBlogPosts = formatBlogForDisplay(fallbackData.blogPosts);
+      const fallbackPost = formattedBlogPosts.find(p => p.slug === slug);
+      
+      if (fallbackPost) {
+        console.log('✅ Found fallback post:', fallbackPost.title);
+        return fallbackPost;
+      }
+      
+      console.log('❌ Post not found in fallback data');
       return null;
     }
   }
@@ -179,7 +201,22 @@ class BlogServiceAPI {
       return featuredPosts.slice(0, limit);
     } catch (error) {
       console.error('❌ Error fetching featured posts:', error);
-      return [];
+      console.log('🔄 API connection failed, loading fallback featured posts...');
+      
+      // Use fallback dummy data instead of empty array
+      const fallbackData = getFallbackData();
+      const formattedBlogPosts = formatBlogForDisplay(fallbackData.blogPosts);
+      
+      // Get featured posts from fallback data
+      const featuredPosts = formattedBlogPosts.filter(post => post.featured === true);
+      
+      if (featuredPosts.length === 0) {
+        console.log('🔄 No featured posts in fallback data, returning recent posts');
+        return formattedBlogPosts.slice(0, limit);
+      }
+      
+      console.log('✅ Fallback featured posts loaded successfully:', featuredPosts.length, 'posts');
+      return featuredPosts.slice(0, limit);
     }
   }
 
@@ -189,7 +226,15 @@ class BlogServiceAPI {
       return allPosts.filter(post => post.category.slug === categorySlug).slice(0, limit);
     } catch (error) {
       console.error('Error fetching posts by category:', error);
-      return [];
+      console.log('🔄 API connection failed, loading fallback posts by category:', categorySlug);
+      
+      // Use fallback dummy data
+      const fallbackData = getFallbackData();
+      const formattedBlogPosts = formatBlogForDisplay(fallbackData.blogPosts);
+      const categoryPosts = formattedBlogPosts.filter(post => post.category.slug === categorySlug);
+      
+      console.log('✅ Fallback category posts loaded:', categoryPosts.length, 'posts');
+      return categoryPosts.slice(0, limit);
     }
   }
 
@@ -205,7 +250,21 @@ class BlogServiceAPI {
       );
     } catch (error) {
       console.error('Error searching posts:', error);
-      return [];
+      console.log('🔄 API connection failed, searching in fallback data for:', query);
+      
+      // Use fallback dummy data for search
+      const fallbackData = getFallbackData();
+      const formattedBlogPosts = formatBlogForDisplay(fallbackData.blogPosts);
+      const searchTerm = query.toLowerCase();
+      
+      const searchResults = formattedBlogPosts.filter(post => 
+        post.title.toLowerCase().includes(searchTerm) ||
+        post.excerpt.toLowerCase().includes(searchTerm) ||
+        post.content.toLowerCase().includes(searchTerm)
+      );
+      
+      console.log('✅ Fallback search results found:', searchResults.length, 'posts');
+      return searchResults;
     }
   }
 

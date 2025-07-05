@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { API_BASE_URL } from "@/config/api";
+import { getFallbackData, formatBlogForDisplay } from '@/utils/fallback-data';
 
 export async function GET(request: NextRequest) {
   try {
@@ -65,13 +66,28 @@ export async function GET(request: NextRequest) {
     
   } catch (error) {
     console.error("Public Posts API: Database connection failed:", error);
-    return NextResponse.json(
-      { 
-        error: 'Failed to fetch posts from database',
-        message: 'Please check if post table exists in bajx7634_bajra database',
-        details: error instanceof Error ? error.message : 'Unknown error occurred' 
-      },
-      { status: 500 }
-    );
+    console.log('🔄 API connection failed, loading fallback blog posts...');
+    
+    // Use fallback dummy data instead of returning error
+    const fallbackData = getFallbackData();
+    const formattedBlogPosts = formatBlogForDisplay(fallbackData.blogPosts);
+    
+    // Apply search filter if provided
+    const searchParams = request.nextUrl.searchParams;
+    const search = searchParams.get("search") || "";
+    
+    let filteredPosts = formattedBlogPosts;
+    if (search) {
+      const searchLower = search.toLowerCase();
+      filteredPosts = formattedBlogPosts.filter((post: any) => 
+        post.title?.toLowerCase().includes(searchLower) ||
+        post.excerpt?.toLowerCase().includes(searchLower) ||
+        post.content?.toLowerCase().includes(searchLower)
+      );
+    }
+    
+    console.log('✅ Fallback blog posts loaded successfully:', filteredPosts.length, 'posts');
+    
+    return NextResponse.json(filteredPosts);
   }
 }

@@ -8,6 +8,7 @@ import Heading from './Heading';
 import Text from './Text';
 import Button from './Button';
 import AnimatedText from './AnimatedText';
+import { getFallbackData, formatPortfolioForDisplay } from '@/utils/fallback-data';
 
 interface PortfolioItem {
   id: number;
@@ -87,10 +88,17 @@ const Portfolio: React.FC = () => {
         console.log('🔍 DEBUG: Categories after processing:', Array.isArray(categoriesData) ? categoriesData : (categoriesData.categories || []));
       } catch (err) {
         console.error('Error fetching portfolio:', err);
-        setError(err instanceof Error ? err.message : 'Failed to load portfolio');
+        console.log('🔄 API connection failed, loading fallback data...');
 
-        // No fallback data - show real error to user
-        setPortfolioItems([]);
+        // Use fallback dummy data instead of showing error
+        const fallbackData = getFallbackData();
+        const formattedPortfolioItems = formatPortfolioForDisplay(fallbackData.portfolioItems);
+
+        setPortfolioItems(formattedPortfolioItems);
+        setCategories(fallbackData.portfolioCategories);
+        setError(null); // Clear error since we have fallback data
+
+        console.log('✅ Fallback data loaded successfully:', formattedPortfolioItems.length, 'items');
       } finally {
         setLoading(false);
       }

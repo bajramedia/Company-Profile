@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 import { API_BASE_URL } from '@/config/api';
+import { getFallbackData, formatPortfolioForDisplay } from '@/utils/fallback-data';
 
 // GET /api/portfolio - Get all portfolios with filters
 export async function GET(request: NextRequest) {
@@ -114,14 +115,60 @@ export async function GET(request: NextRequest) {
 
   } catch (error) {
     console.error('Portfolio API: Database connection failed:', error);
-    return NextResponse.json(
-      { 
-        error: 'Failed to fetch portfolios from database',
-        message: 'Please check if portfolio table exists in bajx7634_bajra database',
-        details: error instanceof Error ? error.message : 'Unknown error occurred' 
-      },
-      { status: 500 }
-    );
+    console.log('🔄 API connection failed, loading fallback portfolio data...');
+    
+    // Use fallback dummy data instead of returning error
+    const fallbackData = getFallbackData();
+    const formattedPortfolios = formatPortfolioForDisplay(fallbackData.portfolioItems);
+    
+    // Apply the same filtering logic as above
+    let filteredPortfolios = formattedPortfolios;
+    
+    const { searchParams } = new URL(request.url);
+    const page = parseInt(searchParams.get('page') || '1');
+    const limit = parseInt(searchParams.get('limit') || '12');
+    const category = searchParams.get('category');
+    const featured = searchParams.get('featured');
+    const published = searchParams.get('published');
+    const search = searchParams.get('search');
+    
+    if (published !== null) {
+      const isPublished = published === 'true';
+      filteredPortfolios = filteredPortfolios.filter((p: any) => p.published === isPublished);
+    }
+    
+    if (featured !== null) {
+      const isFeatured = featured === 'true';
+      filteredPortfolios = filteredPortfolios.filter((p: any) => p.featured === isFeatured);
+    }
+    
+    if (category && category !== 'all') {
+      filteredPortfolios = filteredPortfolios.filter((p: any) => 
+        p.categoryName?.toLowerCase() === category.toLowerCase() ||
+        p.categorySlug?.toLowerCase() === category.toLowerCase()
+      );
+    }
+    
+    if (search) {
+      const searchLower = search.toLowerCase();
+      filteredPortfolios = filteredPortfolios.filter((p: any) =>
+        p.title?.toLowerCase().includes(searchLower) ||
+        p.excerpt?.toLowerCase().includes(searchLower) ||
+        p.client_name?.toLowerCase().includes(searchLower)
+      );
+    }
+    
+    console.log('✅ Fallback portfolio data loaded successfully:', filteredPortfolios.length, 'items');
+    
+    return NextResponse.json({
+      portfolios: filteredPortfolios,
+      pagination: {
+        page,
+        limit,
+        total: filteredPortfolios.length,
+        pages: Math.ceil(filteredPortfolios.length / limit)
+      }
+    });
   }
 }
 
