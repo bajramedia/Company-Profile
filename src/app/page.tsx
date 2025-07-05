@@ -507,7 +507,7 @@ export default function HomePage() {
                                         <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-200 dark:border-gray-700">
                                             <div className="w-16 h-16 bg-green-500/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-green-500/20 transition-colors">
                                                 <svg className="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
                                                 </svg>
                                             </div>
                                             <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-green-500 transition-colors">
@@ -515,8 +515,8 @@ export default function HomePage() {
                                             </h3>
                                             <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
                                                 {language === 'id'
-                                                    ? 'Pembuatan website dan aplikasi web yang responsif, cepat, dan user-friendly dengan teknologi terkini.'
-                                                    : 'Creating responsive, fast, and user-friendly websites and web applications with the latest technology.'
+                                                    ? 'Bangun website profesional dengan teknologi terbaru yang cepat, aman, dan mobile-friendly.'
+                                                    : 'Build professional websites with the latest technology that are fast, secure, and mobile-friendly.'
                                                 }
                                             </p>
                                         </div>
@@ -551,7 +551,7 @@ export default function HomePage() {
                                         <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-200 dark:border-gray-700">
                                             <div className="w-16 h-16 bg-purple-500/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-purple-500/20 transition-colors">
                                                 <svg className="w-8 h-8 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v12a4 4 0 004 4h4a2 2 0 002-2V5z" />
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                                 </svg>
                                             </div>
                                             <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-purple-500 transition-colors">
@@ -559,8 +559,8 @@ export default function HomePage() {
                                             </h3>
                                             <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
                                                 {language === 'id'
-                                                    ? 'Desain antarmuka yang menarik dan pengalaman pengguna yang intuitif untuk meningkatkan engagement.'
-                                                    : 'Attractive interface design and intuitive user experience to increase engagement.'
+                                                    ? 'Ciptakan pengalaman pengguna yang luar biasa dengan desain yang intuitif dan menarik.'
+                                                    : 'Create extraordinary user experiences with intuitive and attractive designs.'
                                                 }
                                             </p>
                                         </div>
@@ -603,8 +603,8 @@ export default function HomePage() {
                                             </h3>
                                             <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
                                                 {language === 'id'
-                                                    ? 'Pengembangan sistem informasi dan enterprise solution yang scalable dan secure untuk bisnis Anda.'
-                                                    : 'Developing scalable and secure information systems and enterprise solutions for your business.'
+                                                    ? 'Bangun sistem enterprise yang scalable untuk workflow bisnis yang kompleks.'
+                                                    : 'Build scalable enterprise systems for complex business workflows.'
                                                 }
                                             </p>
                                         </div>
