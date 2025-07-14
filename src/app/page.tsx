@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from 'react';
-import { Button, Heading, Text, Logo, LanguageSwitcher, AnimatedText, SupportedBy, CTA, Blog, Portfolio, Team, WhatsAppChat, Navbar, Home } from "@/components";
+import { Button, Heading, Text, Logo, LanguageSwitcher, AnimatedText, SupportedBy, CTA, Blog, Portfolio, Team, WhatsAppChat, Navbar, Home, ServicesOverview } from "@/components";
 import { useLanguage } from "@/context/LanguageContext";
 import { usePublicSettings } from "@/hooks/useSettings";
 import EnhancedSEO from '@/components/EnhancedSEO';
@@ -280,14 +280,15 @@ export default function HomePage() {
                                         }
                                     </Heading>
 
+                                   
                                     <Text color="secondary" className="mb-8 text-base leading-relaxed">
                                         {language === 'id'
-                                            ? 'Dengan pengalaman lebih dari 5 tahun di industri teknologi, Bajramedia telah membantu puluhan klien mengembangkan bisnis mereka melalui solusi digital yang inovatif. Kami berkomitmen memberikan layanan terbaik dengan teknologi terdepan.'
-                                            : 'With over 5 years of experience in the technology industry, Bajramedia has helped dozens of clients grow their businesses through innovative digital solutions. We are committed to providing the best service with cutting-edge technology.'
+                                            ? 'Bajra Media (sebelumnya Reduktor Development) adalah perusahaan teknologi yang fokus pada pengembangan software inovatif dan solusi digital terintegrasi. Kami berdedikasi membantu bisnis dari berbagai skala untuk bertransformasi dan berkembang di era digital. Kami adalah partner terpercaya dalam merancang, membangun, dan mengelola teknologi yang mendorong efisiensi operasional serta keunggulan kompetitif untuk klien-klien kami.'
+                                            : 'Bajra Media (formerly Reduktor Development) is a technology company specializing in innovative software development and integrated digital solutions. We are dedicated to helping businesses of all sizes transform and thrive in the digital age. We are a trusted partner in designing, building, and managing technology that drives operational efficiency and competitive advantage for our clients.'
                                         }
                                     </Text>
 
-                                    {/* Achievement Stats */}
+                               
                                 
                                     <div className="flex flex-col sm:flex-row gap-4">
                                         <Link href="/about">
@@ -439,170 +440,7 @@ export default function HomePage() {
                     </section>
 
                     {/* Services Section */}
-                    <section className="py-20 bg-white dark:bg-gray-900 transition-colors duration-300">
-                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                            <div className="text-center mb-16">
-                                <AnimatedText as="div">
-                                    <span className="text-green-500 font-medium text-sm tracking-wider uppercase mb-6 block">
-                                        {language === 'id' ? 'Layanan Kami' : 'Our Services'}
-                                    </span>
-                                    <Heading variant="h2" color="foreground" className="mb-4 text-[28px] md:text-[32px] lg:text-[36px] font-extrabold">
-                                        {language === 'id' ? 'Solusi Digital Komprehensif' : 'Comprehensive Digital Solutions'}
-                                    </Heading>
-                                    <Text color="secondary" className="max-w-3xl mx-auto text-base leading-relaxed">
-                                        {language === 'id'
-                                            ? 'Kami menawarkan berbagai layanan digital yang terintegrasi untuk membantu bisnis Anda berkembang di era digital.'
-                                            : 'We offer various integrated digital services to help your business thrive in the digital era.'
-                                        }
-                                    </Text>
-                                </AnimatedText>
-                            </div>
-
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                                {/* Service 1 - Web Development */}
-                                <AnimatedText as="div">
-                                    <Link href="/services/web-development" className="block group">
-                                        <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-200 dark:border-gray-700">
-                                            <div className="w-16 h-16 bg-green-500/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-green-500/20 transition-colors">
-                                                <svg className="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
-                                                </svg>
-                                            </div>
-                                            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-green-500 transition-colors">
-                                                {language === 'id' ? 'Web Development' : 'Web Development'}
-                                            </h3>
-                                            <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
-                                                {language === 'id'
-                                                    ? 'Bangun website profesional dengan teknologi terbaru yang cepat, aman, dan mobile-friendly.'
-                                                    : 'Build professional websites with the latest technology that are fast, secure, and mobile-friendly.'
-                                                }
-                                            </p>
-                                        </div>
-                                    </Link>
-                                </AnimatedText>
-
-                                {/* Service 2 - Mobile Apps */}
-                                <AnimatedText as="div">
-                                    <Link href="/services/mobile-apps" className="block group">
-                                        <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-200 dark:border-gray-700">
-                                            <div className="w-16 h-16 bg-blue-500/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-blue-500/20 transition-colors">
-                                                <svg className="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                                                </svg>
-                                            </div>
-                                            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-blue-500 transition-colors">
-                                                {language === 'id' ? 'Mobile Apps' : 'Mobile Apps'}
-                                            </h3>
-                                            <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
-                                                {language === 'id'
-                                                    ? 'Pengembangan aplikasi mobile native dan cross-platform untuk iOS dan Android dengan performa optimal.'
-                                                    : 'Native and cross-platform mobile app development for iOS and Android with optimal performance.'
-                                                }
-                                            </p>
-                                        </div>
-                                    </Link>
-                                </AnimatedText>
-
-                                {/* Service 3 - UI/UX Design */}
-                                <AnimatedText as="div">
-                                    <Link href="/services/uiux-design" className="block group">
-                                        <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-200 dark:border-gray-700">
-                                            <div className="w-16 h-16 bg-purple-500/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-purple-500/20 transition-colors">
-                                                <svg className="w-8 h-8 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                                </svg>
-                                            </div>
-                                            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-purple-500 transition-colors">
-                                                {language === 'id' ? 'UI/UX Design' : 'UI/UX Design'}
-                                            </h3>
-                                            <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
-                                                {language === 'id'
-                                                    ? 'Ciptakan pengalaman pengguna yang luar biasa dengan desain yang intuitif dan menarik.'
-                                                    : 'Create extraordinary user experiences with intuitive and attractive designs.'
-                                                }
-                                            </p>
-                                        </div>
-                                    </Link>
-                                </AnimatedText>
-
-                                {/* Service 4 - Digital Marketing */}
-                                <AnimatedText as="div">
-                                    <Link href="/services/digital-marketing" className="block group">
-                                        <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-200 dark:border-gray-700">
-                                            <div className="w-16 h-16 bg-red-500/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-red-500/20 transition-colors">
-                                                <svg className="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                                </svg>
-                                            </div>
-                                            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-red-500 transition-colors">
-                                                {language === 'id' ? 'Digital Marketing' : 'Digital Marketing'}
-                                            </h3>
-                                            <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
-                                                {language === 'id'
-                                                    ? 'Strategi pemasaran digital yang komprehensif untuk meningkatkan brand awareness dan penjualan.'
-                                                    : 'Comprehensive digital marketing strategies to increase brand awareness and sales.'
-                                                }
-                                            </p>
-                                        </div>
-                                    </Link>
-                                </AnimatedText>
-
-                                {/* Service 5 - System Development */}
-                                <AnimatedText as="div">
-                                    <Link href="/services/sistem-development" className="block group">
-                                        <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-200 dark:border-gray-700">
-                                            <div className="w-16 h-16 bg-indigo-500/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-indigo-500/20 transition-colors">
-                                                <svg className="w-8 h-8 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
-                                                </svg>
-                                            </div>
-                                            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-indigo-500 transition-colors">
-                                                {language === 'id' ? 'System Development' : 'System Development'}
-                                            </h3>
-                                            <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
-                                                {language === 'id'
-                                                    ? 'Bangun sistem enterprise yang scalable untuk workflow bisnis yang kompleks.'
-                                                    : 'Build scalable enterprise systems for complex business workflows.'
-                                                }
-                                            </p>
-                                        </div>
-                                    </Link>
-                                </AnimatedText>
-
-                                {/* Service 6 - Consulting */}
-                                <AnimatedText as="div">
-                                    <Link href="/services/consulting" className="block group">
-                                        <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-200 dark:border-gray-700">
-                                            <div className="w-16 h-16 bg-yellow-500/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-yellow-500/20 transition-colors">
-                                                <svg className="w-8 h-8 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                                                </svg>
-                                            </div>
-                                            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-yellow-500 transition-colors">
-                                                {language === 'id' ? 'Consulting' : 'Consulting'}
-                                            </h3>
-                                            <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
-                                                {language === 'id'
-                                                    ? 'Konsultasi teknologi dan strategi digital untuk mengoptimalkan proses bisnis dan transformasi digital.'
-                                                    : 'Technology consulting and digital strategy to optimize business processes and digital transformation.'
-                                                }
-                                            </p>
-                                        </div>
-                                    </Link>
-                                </AnimatedText>
-                            </div>
-
-                            <div className="text-center mt-12">
-                                <AnimatedText as="div">
-                                    <Link href="/services">
-                                        <Button variant="outline" size="lg" className="px-8 py-4 border-2 border-green-500 text-green-500 hover:bg-green-500 hover:text-white transform hover:scale-105 transition-all duration-300">
-                                            {language === 'id' ? 'Lihat Semua Layanan' : 'View All Services'}
-                                        </Button>
-                                    </Link>
-                                </AnimatedText>
-                            </div>
-                        </div>
-                    </section>
+                    <ServicesOverview showFeatures={false} showAllServices={false} />
 
                     {/* Why Choose Us Section */}
                     <section className="py-20 bg-gray-50 dark:bg-gray-800 transition-colors duration-300">

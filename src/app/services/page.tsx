@@ -1,141 +1,11 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
-import { useState, useEffect } from 'react';
-import { Button, Heading, Navbar, AnimatedText, WhatsAppChat } from "@/components";
+import { Button, Heading, Navbar, AnimatedText, WhatsAppChat, ServicesOverview } from "@/components";
 import { useLanguage } from "@/context/LanguageContext";
-import { Globe, Smartphone, Palette, BarChart3, Cpu, Lightbulb } from 'lucide-react';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
-
-// Data services - Updated to match homepage
-const services = [
-    {
-        id: 'web-development',
-        title: 'Web Development',
-        titleId: 'Website Modern & Responsif',
-        description: 'Bangun website profesional dengan teknologi terbaru yang cepat, aman, dan mobile-friendly.',
-        descriptionEn: 'Build professional websites with the latest technology that are fast, secure, and mobile-friendly.',
-        icon: Globe,
-        color: 'from-green-500 to-green-600',
-        features: ['Responsive Design', 'SEO Optimized', 'Fast Loading', 'Mobile First']
-    },
-    {
-        id: 'mobile-apps',
-        title: 'Mobile Apps',
-        titleId: 'Aplikasi Mobile Modern',
-        description: 'Pengembangan aplikasi mobile native dan cross-platform untuk iOS dan Android dengan performa optimal.',
-        descriptionEn: 'Native and cross-platform mobile app development for iOS and Android with optimal performance.',
-        icon: Smartphone,
-        color: 'from-blue-500 to-blue-600',
-        features: ['Native Development', 'Cross Platform', 'Performance Optimized', 'App Store Ready']
-    },
-    {
-        id: 'uiux-design',
-        title: 'UI/UX Design',
-        titleId: 'Desain Interface yang Memukau',
-        description: 'Ciptakan pengalaman pengguna yang luar biasa dengan desain yang intuitif dan menarik.',
-        descriptionEn: 'Create extraordinary user experiences with intuitive and attractive designs.',
-        icon: Palette,
-        color: 'from-purple-500 to-purple-600',
-        features: ['User Research', 'Wireframing', 'Prototyping', 'Design System']
-    },
-    {
-        id: 'digital-marketing',
-        title: 'Digital Marketing',
-        titleId: 'Digital Marketing Terpadu',
-        description: 'Strategi pemasaran digital yang komprehensif untuk meningkatkan brand awareness dan penjualan.',
-        descriptionEn: 'Comprehensive digital marketing strategies to increase brand awareness and sales.',
-        icon: BarChart3,
-        color: 'from-red-500 to-red-600',
-        features: ['SEO/SEM', 'Social Media Ads', 'Content Marketing', 'Analytics & Reporting']
-    },
-    {
-        id: 'sistem-development',
-        title: 'System Development',
-        titleId: 'Sistem Development Enterprise',
-        description: 'Bangun sistem enterprise yang scalable untuk workflow bisnis yang kompleks.',
-        descriptionEn: 'Build scalable enterprise systems for complex business workflows.',
-        icon: Cpu,
-        color: 'from-indigo-500 to-indigo-600',
-        features: ['ERP System', 'CRM System', 'Custom Development', 'Integration Support']
-    },
-    {
-        id: 'consulting',
-        title: 'Consulting',
-        titleId: 'Konsultasi Teknologi & Strategi',
-        description: 'Konsultasi teknologi dan strategi digital untuk mengoptimalkan proses bisnis dan transformasi digital.',
-        descriptionEn: 'Technology consulting and digital strategy to optimize business processes and digital transformation.',
-        icon: Lightbulb,
-        color: 'from-yellow-500 to-yellow-600',
-        features: ['Digital Strategy', 'Tech Consultation', 'Process Optimization', 'Business Analysis']
-    }
-];
 
 export default function ServicesPage() {
     const { t, language } = useLanguage();
-
-    // Dark mode state
-    const [isDarkMode, setIsDarkMode] = useState(false);
-
-    // Initialize dark mode
-    useEffect(() => {
-        if (typeof window !== 'undefined') {
-            const savedMode = localStorage.getItem('darkMode');
-            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            const shouldEnableDarkMode = savedMode === 'true' || (savedMode === null && prefersDark);
-
-            setIsDarkMode(shouldEnableDarkMode);
-
-            if (shouldEnableDarkMode) {
-                document.documentElement.classList.add('dark');
-            }
-
-            // Listen for storage changes (untuk sync dengan tab lain)
-            const handleStorageChange = (e: StorageEvent) => {
-                if (e.key === 'darkMode') {
-                    const newMode = e.newValue === 'true';
-                    setIsDarkMode(newMode);
-
-                    if (newMode) {
-                        document.documentElement.classList.add('dark');
-                    } else {
-                        document.documentElement.classList.remove('dark');
-                    }
-                }
-            };
-
-            window.addEventListener('storage', handleStorageChange);
-            return () => window.removeEventListener('storage', handleStorageChange);
-        }
-    }, []);
-
-    // Initialize AOS
-    useEffect(() => {
-        AOS.init({
-            duration: 800,
-            easing: 'ease-out',
-            once: true,
-            offset: 100,
-        });
-    }, []);
-
-    // Toggle dark mode
-    const toggleDarkMode = () => {
-        setIsDarkMode(prev => {
-            const newMode = !prev;
-
-            if (newMode) {
-                document.documentElement.classList.add('dark');
-            } else {
-                document.documentElement.classList.remove('dark');
-            }
-
-            localStorage.setItem('darkMode', newMode ? 'true' : 'false');
-            return newMode;
-        });
-    };
 
     return (
         <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
@@ -146,28 +16,28 @@ export default function ServicesPage() {
             <div className="pt-20 pb-6 bg-gray-50 dark:bg-gray-800 transition-colors duration-300">
                 <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8">
                     <nav className="flex items-center space-x-2 text-sm">
-                        <Link href="/" className="text-gray-500 dark:text-gray-400 hover:text-primary transition-colors">
+                        <Link href="/" className="text-gray-500 dark:text-gray-400 hover:text-[#00D084] transition-colors">
                             {t('nav.home') || 'Home'}
                         </Link>
                         <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
                         </svg>
-                        <span className="text-primary font-medium">{t('nav.services') || 'Services'}</span>
+                        <span className="text-[#00D084] font-medium">{t('nav.services') || 'Services'}</span>
                     </nav>
                 </div>
             </div>
 
             {/* Main Content */}
-            <main className="py-16">
+            <main>
                 {/* Hero Section */}
                 <section className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 mb-20">
                     <div className="text-center">
                         <AnimatedText as="div">
                             <Heading variant="h1" color="foreground" className="mb-6 text-[32px] md:text-[40px] lg:text-[48px] font-bold" data-aos="fade-up">
                                 {t('services.page.title.main')} {' '}
-                                <span className="text-primary relative">
+                                <span className="text-[#00D084] relative">
                                     <span className="relative z-10">{t('services.page.title.highlight')}</span>
-                                    <span className="absolute bottom-1 left-0 w-full h-3 bg-primary/10 -z-0"></span>
+                                    <span className="absolute bottom-1 left-0 w-full h-3 bg-[#00D084]/10 -z-0"></span>
                                 </span>
                                 {' '} {t('services.page.title.end')}
                             </Heading>
@@ -182,56 +52,7 @@ export default function ServicesPage() {
                 </section>
 
                 {/* Services Grid */}
-                <section className="w-[95%] mx-auto px-4 sm:px-6 md:px-8">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {services.map((service, index) => (
-                            <AnimatedText key={service.id} as="div">
-                                <Link href={`/services/${service.id}`}>
-                                    <div
-                                        className="group bg-white dark:bg-slate-800/90 dark:backdrop-blur-sm dark:border dark:border-gray-700/50 rounded-2xl p-8 shadow-sm hover:shadow-xl dark:hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 cursor-pointer h-full flex flex-col"
-                                        data-aos="fade-up"
-                                        data-aos-delay={index * 100}
-                                    >
-                                        {/* Icon dengan gradient background */}
-                                        <div className={`inline-flex items-center justify-center w-16 h-16 rounded-xl bg-gradient-to-r ${service.color} text-white mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                                            <service.icon className="w-8 h-8" />
-                                        </div>
-
-                                        {/* Title */}
-                                        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-primary transition-colors">
-                                            {language === 'id' ? service.titleId : service.title}
-                                        </h3>
-
-                                        {/* Description */}
-                                        <p className="text-gray-600 dark:text-gray-400 mb-6 leading-relaxed flex-grow">
-                                            {language === 'id' ? service.description : service.descriptionEn}
-                                        </p>
-
-                                        {/* Features */}
-                                        <div className="space-y-2 mb-6">
-                                            {service.features.map((feature, idx) => (
-                                                <div key={idx} className="flex items-center space-x-2">
-                                                    <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                                                    </svg>
-                                                    <span className="text-sm text-gray-600 dark:text-gray-400">{feature}</span>
-                                                </div>
-                                            ))}
-                                        </div>
-
-                                        {/* CTA */}
-                                        <div className="flex items-center text-primary font-medium group-hover:gap-3 transition-all duration-300 mt-auto">
-                                            <span>{language === 'id' ? 'Pelajari Lebih Lanjut' : 'Learn More'}</span>
-                                            <svg className="w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-                                            </svg>
-                                        </div>
-                                    </div>
-                                </Link>
-                            </AnimatedText>
-                        ))}
-                    </div>
-                </section>
+                <ServicesOverview showFeatures={true} showAllServices={true} />
 
                 {/* CTA Section */}
                 <section className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 mt-20">
@@ -250,46 +71,24 @@ export default function ServicesPage() {
                         <div className="absolute top-1/2 left-1/4 w-16 h-16 bg-white/4 dark:bg-white/8 rounded-full blur-lg"></div>
 
                         <div className="relative z-10">
-                            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">
-                                {language === 'id' ? 'Siap Memulai Proyek Impian Kamu?' : 'Ready to Start Your Dream Project?'}
-                            </h2>
-                            <p className="text-xl opacity-90 mb-8 max-w-2xl mx-auto leading-relaxed">
+                            <h3 className="text-2xl md:text-3xl font-bold mb-4">
+                                {language === 'id' ? 'Siap Memulai Proyek?' : 'Ready to Start Your Project?'}
+                            </h3>
+                            <p className="text-lg text-gray-300 mb-8 max-w-2xl mx-auto">
                                 {language === 'id'
-                                    ? 'Konsultasi gratis untuk membahas kebutuhan digital kamu. Tim expert kami siap membantu!'
-                                    : 'Free consultation to discuss your digital needs. Our expert team is ready to help!'
+                                    ? 'Konsultasikan kebutuhan digital Anda dengan tim kami dan dapatkan solusi terbaik untuk bisnis Anda.'
+                                    : 'Consult your digital needs with our team and get the best solution for your business.'
                                 }
                             </p>
-                            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                                <Button variant="outline" size="lg" className="bg-white text-gray-900 border-white hover:bg-gray-50 hover:scale-105 transition-all duration-300 px-8 py-4 font-semibold shadow-lg">
-                                    {language === 'id' ? 'Konsultasi Gratis' : 'Free Consultation'}
+                            <Link href="/contact">
+                                <Button variant="primary" size="lg" className="bg-[#00D084] hover:bg-[#00B873] text-white px-8 py-4 rounded-full transform hover:scale-105 transition-all duration-300">
+                                    {language === 'id' ? 'Mulai Konsultasi Gratis' : 'Start Free Consultation'}
                                 </Button>
-                                <Button variant="outline" size="lg" className="border-white/60 text-white hover:bg-white/10 dark:hover:bg-white/15 hover:scale-105 transition-all duration-300 px-8 py-4 font-semibold backdrop-blur-sm">
-                                    {language === 'id' ? 'Lihat Portfolio' : 'View Portfolio'}
-                                </Button>
-                            </div>
+                            </Link>
                         </div>
                     </div>
                 </section>
             </main>
-
-            {/* Floating Dark Mode Toggle */}
-            <div className="fixed bottom-6 left-6 z-50">
-                <button
-                    onClick={toggleDarkMode}
-                    className="w-14 h-14 rounded-full bg-white dark:bg-gray-800 shadow-lg border border-gray-200 dark:border-gray-600 flex items-center justify-center hover:shadow-xl transition-all duration-300 hover:scale-110 group"
-                    aria-label="Toggle dark mode"
-                >
-                    {isDarkMode ? (
-                        <svg className="w-6 h-6 text-yellow-500 transform group-hover:rotate-180 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                        </svg>
-                    ) : (
-                        <svg className="w-6 h-6 text-gray-700 transform group-hover:rotate-12 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                        </svg>
-                    )}
-                </button>
-            </div>
 
             {/* WhatsApp Chat */}
             <WhatsAppChat

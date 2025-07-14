@@ -1,218 +1,168 @@
-"use client";
-
+import React from 'react';
 import Link from 'next/link';
-import { useState } from 'react';
+import { Globe, Smartphone, Palette, BarChart3, Cpu, Lightbulb } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
-import { Button, Heading, Text } from '@/components';
+import { Button, Heading, Text, AnimatedText } from '@/components';
 
+// Data services
 const services = [
-  {
-    id: 'web-development',
-    icon: (
-      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-      </svg>
-    ),
-    titleId: 'Pengembangan Web',
-    titleEn: 'Web Development',
-    descriptionId: 'Membangun website dan aplikasi web modern dengan teknologi terdepan untuk kebutuhan bisnis Anda.',
-    descriptionEn: 'Building modern websites and web applications with cutting-edge technology for your business needs.',
-    features: ['Responsive Design', 'SEO Optimized', 'Fast Loading', 'Secure'],
-    link: '/services/web-development'
-  },
-  {
-    id: 'mobile-apps',
-    icon: (
-      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
-      </svg>
-    ),
-    titleId: 'Aplikasi Mobile',
-    titleEn: 'Mobile Apps',
-    descriptionId: 'Mengembangkan aplikasi mobile native dan cross-platform untuk iOS dan Android.',
-    descriptionEn: 'Developing native and cross-platform mobile applications for iOS and Android.',
-    features: ['iOS & Android', 'Native Performance', 'User-Friendly', 'App Store Ready'],
-    link: '/services/mobile-apps'
-  },
-  {
-    id: 'uiux-design',
-    icon: (
-      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v12a4 4 0 004 4h4a2 2 0 002-2V5z" />
-      </svg>
-    ),
-    titleId: 'Desain UI/UX',
-    titleEn: 'UI/UX Design',
-    descriptionId: 'Menciptakan pengalaman pengguna yang menarik dan intuitif dengan desain yang modern.',
-    descriptionEn: 'Creating engaging and intuitive user experiences with modern design.',
-    features: ['User Research', 'Wireframing', 'Prototyping', 'Design System'],
-    link: '/services/uiux-design'
-  },
-  {
-    id: 'sistem-development',
-    icon: (
-      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
-      </svg>
-    ),
-    titleId: 'Pengembangan Sistem',
-    titleEn: 'System Development',
-    descriptionId: 'Membangun sistem informasi dan enterprise solutions yang sesuai dengan kebutuhan perusahaan.',
-    descriptionEn: 'Building information systems and enterprise solutions that meet company needs.',
-    features: ['Custom Solutions', 'Scalable Architecture', 'Integration Ready', 'Security Focused'],
-    link: '/services/sistem-development'
-  },
-  {
-    id: 'digital-marketing',
-    icon: (
-      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
-      </svg>
-    ),
-    titleId: 'Digital Marketing',
-    titleEn: 'Digital Marketing',
-    descriptionId: 'Meningkatkan visibilitas online dan pertumbuhan bisnis melalui strategi digital marketing.',
-    descriptionEn: 'Increasing online visibility and business growth through digital marketing strategies.',
-    features: ['SEO/SEM', 'Social Media', 'Content Marketing', 'Analytics'],
-    link: '/services/digital-marketing'
-  },
-  {
-    id: 'game-development',
-    icon: (
-      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h.01M16 14h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-      </svg>
-    ),
-    titleId: 'Pengembangan Game',
-    titleEn: 'Game Development',
-    descriptionId: 'Mengembangkan game dan aset game yang menarik untuk berbagai platform.',
-    descriptionEn: 'Developing engaging games and game assets for various platforms.',
-    features: ['2D/3D Games', 'Multi-Platform', 'Game Assets', 'Interactive Design'],
-    link: '/services/aset-game-development'
-  }
+    {
+        id: 'web-development',
+        title: 'Web Development',
+        titleId: 'Website Modern & Responsif',
+        description: 'Bangun website profesional dengan teknologi terbaru yang cepat, aman, dan mobile-friendly.',
+        descriptionEn: 'Build professional websites with the latest technology that are fast, secure, and mobile-friendly.',
+        icon: Globe,
+        color: 'from-[#00D084] to-[#00B873]',
+        features: ['Responsive Design', 'SEO Optimized', 'Fast Loading', 'Mobile First']
+    },
+    {
+        id: 'mobile-apps',
+        title: 'Mobile Apps',
+        titleId: 'Aplikasi Mobile Modern',
+        description: 'Pengembangan aplikasi mobile native dan cross-platform untuk iOS dan Android dengan performa optimal.',
+        descriptionEn: 'Native and cross-platform mobile app development for iOS and Android with optimal performance.',
+        icon: Smartphone,
+        color: 'from-[#00D084] to-[#00B873]',
+        features: ['Native Development', 'Cross Platform', 'Performance Optimized', 'App Store Ready']
+    },
+    {
+        id: 'uiux-design',
+        title: 'UI/UX Design',
+        titleId: 'Desain Interface yang Memukau',
+        description: 'Ciptakan pengalaman pengguna yang luar biasa dengan desain yang intuitif dan menarik.',
+        descriptionEn: 'Create extraordinary user experiences with intuitive and attractive designs.',
+        icon: Palette,
+        color: 'from-[#00D084] to-[#00B873]',
+        features: ['User Research', 'Wireframing', 'Prototyping', 'Design System']
+    },
+    {
+        id: 'digital-marketing',
+        title: 'Digital Marketing',
+        titleId: 'Digital Marketing Terpadu',
+        description: 'Strategi pemasaran digital yang komprehensif untuk meningkatkan brand awareness dan penjualan.',
+        descriptionEn: 'Comprehensive digital marketing strategies to increase brand awareness and sales.',
+        icon: BarChart3,
+        color: 'from-[#00D084] to-[#00B873]',
+        features: ['SEO/SEM', 'Social Media Ads', 'Content Marketing', 'Analytics & Reporting']
+    },
+    {
+        id: 'sistem-development',
+        title: 'System Development',
+        titleId: 'Sistem Development Enterprise',
+        description: 'Bangun sistem enterprise yang scalable untuk workflow bisnis yang kompleks.',
+        descriptionEn: 'Build scalable enterprise systems for complex business workflows.',
+        icon: Cpu,
+        color: 'from-[#00D084] to-[#00B873]',
+        features: ['ERP System', 'CRM System', 'Custom Development', 'Integration Support']
+    },
+    {
+        id: 'consulting',
+        title: 'Consulting',
+        titleId: 'Konsultasi Teknologi & Strategi',
+        description: 'Konsultasi teknologi dan strategi digital untuk mengoptimalkan proses bisnis dan transformasi digital.',
+        descriptionEn: 'Technology consulting and digital strategy to optimize business processes and digital transformation.',
+        icon: Lightbulb,
+        color: 'from-[#00D084] to-[#00B873]',
+        features: ['Digital Strategy', 'Tech Consultation', 'Process Optimization', 'Business Analysis']
+    }
 ];
 
-export default function ServicesOverview() {
-  const { language } = useLanguage();
-  const [hoveredService, setHoveredService] = useState<string | null>(null);
+interface ServicesOverviewProps {
+    showFeatures?: boolean;
+    showAllServices?: boolean;
+    className?: string;
+}
 
-  return (
-    <section className="py-16 bg-white dark:bg-gray-900 transition-colors duration-300">
-      <div className="w-[95%] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <div className="mb-6">
-            <span className="text-green-500 font-medium text-sm tracking-wider uppercase">
-              {language === 'id' ? 'Layanan Kami' : 'Our Services'}
-            </span>
-          </div>
+const ServicesOverview: React.FC<ServicesOverviewProps> = ({
+    showFeatures = false,
+    showAllServices = true,
+    className = ''
+}) => {
+    const { language } = useLanguage();
+    const displayedServices = showAllServices ? services : services.slice(0, 3);
 
-          <Heading variant="h2" color="foreground" className="mb-4 text-[28px] md:text-[32px] lg:text-[36px] font-extrabold">
-            {language === 'id' ? 'Solusi Digital Komprehensif' : 'Comprehensive Digital Solutions'}
-          </Heading>
-
-          <Text color="secondary" className="max-w-3xl mx-auto text-[16px] leading-relaxed">
-            {language === 'id'
-              ? 'Kami menyediakan berbagai layanan digital yang dirancang khusus untuk membantu bisnis Anda berkembang di era digital dengan teknologi terdepan dan strategi yang tepat.'
-              : 'We provide various digital services specially designed to help your business grow in the digital era with cutting-edge technology and the right strategies.'
-            }
-          </Text>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-          {services.map((service) => (
-            <div
-              key={service.id}
-              className="group relative bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:scale-105 border border-gray-100 dark:border-gray-700 hover:border-green-500/20"
-              onMouseEnter={() => setHoveredService(service.id)}
-              onMouseLeave={() => setHoveredService(null)}
-            >
-              {/* Gradient Background */}
-              <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-blue-500/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-
-              {/* Icon */}
-              <div className="relative mb-6">
-                <div className="w-16 h-16 bg-green-500/10 rounded-2xl flex items-center justify-center text-green-500 group-hover:bg-green-500 group-hover:text-white transition-all duration-300 group-hover:scale-110">
-                  {service.icon}
+    return (
+        <section className={`py-20 bg-white dark:bg-gray-900 transition-colors duration-300 ${className}`}>
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="text-center mb-16">
+                    <AnimatedText as="div">
+                        <span className="text-[#00D084] font-medium text-sm tracking-wider uppercase mb-6 block">
+                            {language === 'id' ? 'Layanan Kami' : 'Our Services'}
+                        </span>
+                        <Heading variant="h2" color="foreground" className="mb-4 text-[28px] md:text-[32px] lg:text-[36px] font-extrabold">
+                            {language === 'id' ? 'Solusi Digital Komprehensif' : 'Comprehensive Digital Solutions'}
+                        </Heading>
+                        <Text color="secondary" className="max-w-3xl mx-auto text-base leading-relaxed">
+                            {language === 'id'
+                                ? 'Kami menawarkan berbagai layanan digital yang terintegrasi untuk membantu bisnis Anda berkembang di era digital.'
+                                : 'We offer various integrated digital services to help your business thrive in the digital era.'
+                            }
+                        </Text>
+                    </AnimatedText>
                 </div>
 
-                {/* Floating dot */}
-                <div className="absolute -top-2 -right-2 w-4 h-4 bg-green-500 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 animate-pulse"></div>
-              </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {displayedServices.map((service) => (
+                        <AnimatedText key={service.id} as="div">
+                            <Link href={`/services/${service.id}`}>
+                                <div className="group bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-200 dark:border-gray-700 h-full">
+                                    {/* Icon */}
+                                    <div className={`w-16 h-16 bg-gradient-to-r ${service.color} rounded-xl flex items-center justify-center mb-6 text-white group-hover:scale-110 transition-transform duration-300`}>
+                                        <service.icon className="w-8 h-8" />
+                                    </div>
 
-              {/* Content */}
-              <div className="relative">
-                <Heading variant="h3" color="foreground" className="mb-3 text-xl font-bold">
-                  {language === 'id' ? service.titleId : service.titleEn}
-                </Heading>
+                                    {/* Title */}
+                                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-[#00D084] transition-colors">
+                                        {language === 'id' ? service.titleId : service.title}
+                                    </h3>
 
-                <Text color="secondary" className="mb-4 text-sm leading-relaxed">
-                  {language === 'id' ? service.descriptionId : service.descriptionEn}
-                </Text>
+                                    {/* Description */}
+                                    <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed mb-6">
+                                        {language === 'id' ? service.description : service.descriptionEn}
+                                    </p>
 
-                {/* Features */}
-                <div className="flex flex-wrap gap-2 mb-6">
-                  {service.features.map((feature, index) => (
-                    <span
-                      key={index}
-                      className="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full text-xs font-medium group-hover:bg-green-500/10 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors duration-300"
-                    >
-                      {feature}
-                    </span>
-                  ))}
+                                    {/* Features */}
+                                    {showFeatures && (
+                                        <div className="space-y-2 mb-6">
+                                            {service.features.map((feature, idx) => (
+                                                <div key={idx} className="flex items-center space-x-2">
+                                                    <svg className="w-4 h-4 text-[#00D084]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                                                    </svg>
+                                                    <span className="text-sm text-gray-600 dark:text-gray-400">{feature}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+
+                                    {/* Learn More Link */}
+                                    <div className="flex items-center text-[#00D084] font-medium group-hover:gap-3 transition-all duration-300">
+                                        <span>{language === 'id' ? 'Pelajari Lebih Lanjut' : 'Learn More'}</span>
+                                        <svg className="w-4 h-4 transform group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </Link>
+                        </AnimatedText>
+                    ))}
                 </div>
 
-                {/* CTA */}
-                <Link href={service.link}>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="w-full border-green-500/20 text-green-600 hover:bg-green-500 hover:text-white hover:border-green-500 transition-all duration-300 group-hover:shadow-lg"
-                  >
-                    {language === 'id' ? 'Pelajari Lebih Lanjut' : 'Learn More'}
-                    <svg className="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-                    </svg>
-                  </Button>
-                </Link>
-              </div>
-
-              {/* Decorative element */}
-              <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-green-500 to-blue-500 rounded-b-2xl transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
+                {!showAllServices && (
+                    <div className="text-center mt-12">
+                        <AnimatedText as="div">
+                            <Link href="/services">
+                                <Button variant="outline" size="lg" className="px-8 py-4 border-2 border-[#00D084] text-[#00D084] hover:bg-[#00D084] hover:text-white transform hover:scale-105 transition-all duration-300">
+                                    {language === 'id' ? 'Lihat Semua Layanan' : 'View All Services'}
+                                </Button>
+                            </Link>
+                        </AnimatedText>
+                    </div>
+                )}
             </div>
-          ))}
-        </div>
+        </section>
+    );
+};
 
-        {/* Bottom CTA */}
-        <div className="text-center">
-          <Text color="secondary" className="mb-6 text-lg">
-            {language === 'id'
-              ? 'Siap untuk mengembangkan bisnis Anda dengan solusi digital terbaik?'
-              : 'Ready to grow your business with the best digital solutions?'
-            }
-          </Text>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/services">
-              <Button
-                variant="primary"
-                size="lg"
-                className="px-8 py-4 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
-              >
-                {language === 'id' ? 'Lihat Semua Layanan' : 'View All Services'}
-              </Button>
-            </Link>
-            <Link href="/about">
-              <Button
-                variant="outline"
-                size="lg"
-                className="px-8 py-4 border-2 border-green-500 text-green-500 hover:bg-green-500 hover:text-white transform hover:scale-105 transition-all duration-300"
-              >
-                {language === 'id' ? 'Konsultasi Gratis' : 'Free Consultation'}
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-} 
+export default ServicesOverview; 

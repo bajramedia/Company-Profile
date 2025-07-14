@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useState, useEffect } from 'react';
-import { Button, Heading, Text, Logo, LanguageSwitcher, AnimatedText, SupportedBy, CTA, Blog, Team } from "@/components";
+import { Button, Heading, Text, Logo, LanguageSwitcher, AnimatedText, CTA, Blog, Team } from "@/components";
 import { useLanguage } from "@/context/LanguageContext";
 import { usePublicSettings } from "@/hooks/useSettings";
 import Script from 'next/script';
