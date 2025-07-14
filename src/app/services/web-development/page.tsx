@@ -1,22 +1,20 @@
-import { Metadata } from "next";
-import { Heading } from "@/components";
-import { Globe, Code2, Database, Server, Cpu, Lock } from 'lucide-react';
+"use client";
 
-export const metadata: Metadata = {
-  title: "Jasa Web Development | Bajramedia",
-  description: "Jasa pembuatan website profesional dengan teknologi modern dan performa tinggi",
-};
+import { Heading, LanguageSwitcher } from "@/components";
+import { Globe, Code2, Database, Server, Cpu, Lock } from 'lucide-react';
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function WebDevelopmentPage() {
+  const { t } = useLanguage();
+
   return (
     <div className="container mx-auto px-4 py-16">
       <div className="text-center mb-16">
-        <Heading as="h1" size="2xl" className="mb-4">
-          Jasa Web Development
+        <Heading variant="h1" color="foreground" className="mb-4 text-[32px] md:text-[40px] lg:text-[48px] font-bold">
+          {t('services.web.title') || 'Jasa Web Development'}
         </Heading>
         <p className="text-gray-600 max-w-2xl mx-auto">
-          Kami menyediakan jasa pembuatan website profesional dengan teknologi modern
-          dan performa tinggi untuk mengembangkan bisnis Anda
+          {t('services.web.description') || 'Kami menyediakan jasa pembuatan website profesional dengan teknologi modern dan performa tinggi untuk mengembangkan bisnis Anda'}
         </p>
       </div>
 
@@ -24,10 +22,10 @@ export default function WebDevelopmentPage() {
       <div className="mb-20">
         <div className="text-center mb-12">
           <h2 className="text-2xl md:text-3xl font-bold mb-4">
-            Teknologi yang Kami Gunakan
+            {t('services.web.tech.title') || 'Teknologi yang Kami Gunakan'}
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Stack modern yang terpercaya untuk menghasilkan website berkualitas tinggi
+            {t('services.web.tech.description') || 'Stack modern yang terpercaya untuk menghasilkan website berkualitas tinggi'}
           </p>
         </div>
 

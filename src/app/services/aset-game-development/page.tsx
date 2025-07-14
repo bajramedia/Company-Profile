@@ -1,129 +1,128 @@
-import { Metadata } from "next";
-import { Heading } from "@/components";
+"use client";
 
-export const metadata: Metadata = {
-  title: "Jasa Pembuatan Asset Game | Bajramedia",
-  description: "Jasa pembuatan asset game 2D dan 3D berkualitas tinggi untuk game development",
-};
+import { Heading, LanguageSwitcher } from "@/components";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function GameAssetDevelopmentPage() {
+  const { t } = useLanguage();
+
   return (
     <div className="container mx-auto px-4 py-16">
       <div className="text-center mb-16">
-        <Heading as="h1" size="2xl" className="mb-4">
-          Jasa Pembuatan Asset Game
+        <Heading variant="h1" color="foreground" className="mb-4 text-[32px] md:text-[40px] lg:text-[48px] font-bold">
+          {t('services.gameAsset.title') || 'Jasa Game Asset Development'}
         </Heading>
         <p className="text-gray-600 max-w-2xl mx-auto">
-          Kami menyediakan jasa pembuatan asset game 2D dan 3D berkualitas tinggi
-          untuk mengembangkan game impian Anda
+          {t('services.gameAsset.description') || 'Kami menyediakan jasa pembuatan aset game 2D dan 3D berkualitas tinggi untuk game Anda'}
         </p>
       </div>
 
-      <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-        {/* 2D Asset Pack */}
+      <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        {/* 2D Package */}
         <div className="border rounded-lg p-8 hover:shadow-lg transition-shadow">
-          <h3 className="text-2xl font-bold mb-4">2D Asset Pack</h3>
-          <p className="text-3xl font-bold mb-6">Rp 1.000.000</p>
-          <p className="text-gray-600 mb-6">Paket asset 2D lengkap untuk game sederhana</p>
+          <h3 className="text-2xl font-bold mb-4">
+            {t('services.gameAsset.2d.title') || '2D Asset Package'}
+          </h3>
+          <p className="text-3xl font-bold mb-6">
+            {t('services.gameAsset.2d.price') || 'Rp 1.000.000'}
+          </p>
           <ul className="space-y-3 mb-8">
             <li className="flex items-start">
               <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
               </svg>
-              <span>10 Character sprites</span>
+              <span>{t('services.gameAsset.2d.features.characters') || '5 karakter 2D'}</span>
             </li>
             <li className="flex items-start">
               <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
               </svg>
-              <span>20 UI Elements</span>
+              <span>{t('services.gameAsset.2d.features.animations') || '3 animasi per karakter'}</span>
             </li>
             <li className="flex items-start">
               <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
               </svg>
-              <span>15 Background assets</span>
+              <span>{t('services.gameAsset.2d.features.items') || '10 item/prop'}</span>
             </li>
             <li className="flex items-start">
               <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
               </svg>
-              <span>Sound effects pack</span>
+              <span>{t('services.gameAsset.2d.features.backgrounds') || '3 background scene'}</span>
             </li>
             <li className="flex items-start">
               <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
               </svg>
-              <span>Multiple formats (PNG, SVG)</span>
+              <span>{t('services.gameAsset.2d.features.source') || 'File sumber (PSD/AI)'}</span>
             </li>
             <li className="flex items-start">
               <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
               </svg>
-              <span>Source files included</span>
+              <span>{t('services.gameAsset.2d.features.revisions') || '2x revisi'}</span>
             </li>
           </ul>
         </div>
 
-        {/* 3D Asset Pack */}
-        <div className="border rounded-lg p-8 hover:shadow-lg transition-shadow">
-          <h3 className="text-2xl font-bold mb-4">3D Asset Pack</h3>
-          <p className="text-3xl font-bold mb-6">Rp 3.500.000</p>
-          <p className="text-gray-600 mb-6">Paket asset 3D premium untuk game modern</p>
+        {/* 3D Package */}
+        <div className="border rounded-lg p-8 hover:shadow-lg transition-shadow bg-green-50">
+          <div className="inline-block px-4 py-1 bg-green-500 text-white rounded-full text-sm mb-4">POPULER</div>
+          <h3 className="text-2xl font-bold mb-4">
+            {t('services.gameAsset.3d.title') || '3D Asset Package'}
+          </h3>
+          <p className="text-3xl font-bold mb-6">
+            {t('services.gameAsset.3d.price') || 'Rp 3.500.000'}
+          </p>
           <ul className="space-y-3 mb-8">
             <li className="flex items-start">
               <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
               </svg>
-              <span>5 High-quality 3D models</span>
+              <span>{t('services.gameAsset.3d.features.characters') || '3 karakter 3D'}</span>
             </li>
             <li className="flex items-start">
               <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
               </svg>
-              <span>Character animations</span>
+              <span>{t('services.gameAsset.3d.features.animations') || '5 animasi per karakter'}</span>
             </li>
             <li className="flex items-start">
               <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
               </svg>
-              <span>Environment assets</span>
+              <span>{t('services.gameAsset.3d.features.items') || '8 item/prop 3D'}</span>
             </li>
             <li className="flex items-start">
               <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
               </svg>
-              <span>Texture maps included</span>
+              <span>{t('services.gameAsset.3d.features.environments') || '2 environment scene'}</span>
             </li>
             <li className="flex items-start">
               <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
               </svg>
-              <span>Unity & Unreal compatible</span>
+              <span>{t('services.gameAsset.3d.features.textures') || 'Tekstur & material HD'}</span>
             </li>
             <li className="flex items-start">
               <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
               </svg>
-              <span>Custom rigging</span>
+              <span>{t('services.gameAsset.3d.features.source') || 'File sumber (FBX/OBJ/Blend)'}</span>
             </li>
             <li className="flex items-start">
               <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
               </svg>
-              <span>Source files (FBX, OBJ)</span>
+              <span>{t('services.gameAsset.3d.features.revisions') || '3x revisi'}</span>
             </li>
             <li className="flex items-start">
               <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
               </svg>
-              <span>Revision support</span>
-            </li>
-            <li className="flex items-start">
-              <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-              </svg>
-              <span>Commercial license</span>
+              <span>{t('services.gameAsset.3d.features.optimization') || 'Optimasi performa'}</span>
             </li>
           </ul>
         </div>

@@ -1,36 +1,38 @@
-import { Metadata } from "next";
-import { Heading } from "@/components";
-import { Settings, Database, Shield, BarChart } from 'lucide-react';
+"use client";
 
-export const metadata: Metadata = {
-  title: "Jasa Sistem Development | Bajramedia",
-  description: "Jasa pembuatan sistem dan aplikasi enterprise untuk mengoptimalkan proses bisnis Anda",
-};
+import { Heading, LanguageSwitcher } from "@/components";
+import { Settings, Database, Shield, BarChart } from 'lucide-react';
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function SystemDevelopmentPage() {
+  const { t } = useLanguage();
+
   return (
     <div className="container mx-auto px-4 py-16">
       <div className="text-center mb-16">
-        <Heading as="h1" size="2xl" className="mb-4">
-          Jasa Sistem Development
+        <Heading variant="h1" color="foreground" className="mb-4 text-[32px] md:text-[40px] lg:text-[48px] font-bold">
+          {t('services.system.title') || 'Jasa Sistem Development'}
         </Heading>
         <p className="text-gray-600 max-w-2xl mx-auto">
-          Kami menyediakan jasa pembuatan sistem dan aplikasi enterprise
-          untuk mengoptimalkan proses bisnis Anda
+          {t('services.system.description') || 'Kami menyediakan jasa pembuatan sistem dan aplikasi enterprise untuk mengoptimalkan proses bisnis Anda'}
         </p>
       </div>
 
       <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
         {/* Basic Package */}
         <div className="border rounded-lg p-8 hover:shadow-lg transition-shadow">
-          <h3 className="text-2xl font-bold mb-4">Basic System</h3>
-          <p className="text-3xl font-bold mb-6">Rp 10.000.000</p>
+          <h3 className="text-2xl font-bold mb-4">
+            {t('services.system.basic.title') || 'Basic System'}
+          </h3>
+          <p className="text-3xl font-bold mb-6">
+            {t('services.system.basic.price') || 'Rp 10.000.000'}
+          </p>
           <ul className="space-y-3 mb-8">
             <li className="flex items-start">
               <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
               </svg>
-              <span>Sistem manajemen dasar</span>
+              <span>{t('services.system.basic.features.management') || 'Sistem manajemen dasar'}</span>
             </li>
             <li className="flex items-start">
               <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -74,14 +76,18 @@ export default function SystemDevelopmentPage() {
         {/* Standard Package */}
         <div className="border rounded-lg p-8 hover:shadow-lg transition-shadow bg-green-50">
           <div className="inline-block px-4 py-1 bg-green-500 text-white rounded-full text-sm mb-4">POPULER</div>
-          <h3 className="text-2xl font-bold mb-4">Pro System</h3>
-          <p className="text-3xl font-bold mb-6">Rp 15.000.000</p>
+          <h3 className="text-2xl font-bold mb-4">
+            {t('services.system.standard.title') || 'Pro System'}
+          </h3>
+          <p className="text-3xl font-bold mb-6">
+            {t('services.system.standard.price') || 'Rp 15.000.000'}
+          </p>
           <ul className="space-y-3 mb-8">
             <li className="flex items-start">
               <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
               </svg>
-              <span>Sistem manajemen lengkap</span>
+              <span>{t('services.system.standard.features.fullManagement') || 'Sistem manajemen lengkap'}</span>
             </li>
             <li className="flex items-start">
               <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -136,14 +142,18 @@ export default function SystemDevelopmentPage() {
 
         {/* Premium Package */}
         <div className="border rounded-lg p-8 hover:shadow-lg transition-shadow">
-          <h3 className="text-2xl font-bold mb-4">Enterprise System</h3>
-          <p className="text-3xl font-bold mb-6">Custom Price</p>
+          <h3 className="text-2xl font-bold mb-4">
+            {t('services.system.premium.title') || 'Enterprise System'}
+          </h3>
+          <p className="text-3xl font-bold mb-6">
+            {t('services.system.premium.price') || 'Custom Price'}
+          </p>
           <ul className="space-y-3 mb-8">
             <li className="flex items-start">
               <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
               </svg>
-              <span>Sistem enterprise custom</span>
+              <span>{t('services.system.premium.features.enterpriseCustom') || 'Sistem enterprise custom'}</span>
             </li>
             <li className="flex items-start">
               <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
