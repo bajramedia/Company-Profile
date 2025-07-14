@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { createPost, updatePost } from '@/actions/post-actions';
 import { FiSave, FiX, FiEye, FiCalendar, FiClock, FiUser, FiTag, FiFolder, FiImage, FiFileText, FiGlobe, FiSettings } from 'react-icons/fi';
+import Image from 'next/image';
 import ImageUpload from './ImageUpload';
 import RichTextEditor from './RichTextEditor';
 import { useLanguage } from '@/context/LanguageContext';
@@ -245,14 +246,12 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
 
   // Auto-save effect
   useEffect(() => {
-    const timer = setTimeout(() => {
-      if (formData.title || formData.content) {
-        autoSaveDraft();
-      }
-    }, 30000); // Auto-save every 30 seconds
+    const interval = setInterval(() => {
+      autoSaveDraft();
+    }, 30000);
 
-    return () => clearTimeout(timer);
-  }, [formData]);
+    return () => clearInterval(interval);
+  }, [autoSaveDraft]); // Add autoSaveDraft to dependencies
 
   // Update word count when content changes
   useEffect(() => {
@@ -280,9 +279,11 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
     return (
       <div className="bg-white rounded-lg shadow-lg overflow-hidden">
         {formData.featuredImage && (
-          <img
+          <Image
             src={formData.featuredImage}
             alt={formData.title}
+            width={600}
+            height={400}
             className="w-full h-64 object-cover"
           />
         )}
@@ -795,9 +796,11 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
                     <div className="border border-gray-300 rounded-lg p-4 bg-gray-50">
                       <div className="flex">
                         {formData.featuredImage && (
-                          <img
+                          <Image
                             src={formData.featuredImage}
                             alt="Preview"
+                            width={80}
+                            height={80}
                             className="w-20 h-20 object-cover rounded-lg mr-4"
                           />
                         )}
