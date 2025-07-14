@@ -111,7 +111,34 @@ async function getMetadata(): Promise<Metadata> {
           }
         },
         category: 'Digital Agency',
-        classification: 'Business'
+        classification: 'Business',
+        // Safari and iOS compatibility
+        viewport: {
+          width: 'device-width',
+          initialScale: 1,
+          maximumScale: 1,
+          userScalable: false,
+          viewportFit: 'cover'
+        },
+        appleWebApp: {
+          capable: true,
+          statusBarStyle: 'default',
+          title: siteName
+        },
+        formatDetection: {
+          telephone: false,
+          date: false,
+          address: false,
+          email: false,
+          url: false
+        },
+        other: {
+          'mobile-web-app-capable': 'yes',
+          'apple-mobile-web-app-capable': 'yes',
+          'apple-mobile-web-app-status-bar-style': 'default',
+          'format-detection': 'telephone=no',
+          'msapplication-tap-highlight': 'no'
+        }
       };
     }
   } catch (error) {
@@ -142,6 +169,33 @@ async function getMetadata(): Promise<Metadata> {
       card: "summary_large_image",
       title: "Bajramedia - Digital Solutions Agency",
       description: "Professional digital solutions for your business growth",
+    },
+    // Safari and iOS compatibility for fallback
+    viewport: {
+      width: 'device-width',
+      initialScale: 1,
+      maximumScale: 1,
+      userScalable: false,
+      viewportFit: 'cover'
+    },
+    appleWebApp: {
+      capable: true,
+      statusBarStyle: 'default',
+      title: 'Bajramedia'
+    },
+    formatDetection: {
+      telephone: false,
+      date: false,
+      address: false,
+      email: false,
+      url: false
+    },
+    other: {
+      'mobile-web-app-capable': 'yes',
+      'apple-mobile-web-app-capable': 'yes',
+      'apple-mobile-web-app-status-bar-style': 'default',
+      'format-detection': 'telephone=no',
+      'msapplication-tap-highlight': 'no'
     }
   };
 }

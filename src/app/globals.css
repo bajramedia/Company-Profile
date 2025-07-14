@@ -4,12 +4,95 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Safari Compatibility Fixes */
+@supports (-webkit-appearance: none) {
+  /* Safari-specific styles */
+  .safari-fix {
+    -webkit-transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    -webkit-perspective: 1000px;
+  }
+  
+  /* Fix for Safari backdrop-filter */
+  .backdrop-blur {
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+  }
+  
+  /* Fix for Safari sticky positioning */
+  .sticky {
+    position: -webkit-sticky;
+    position: sticky;
+  }
+  
+  /* Fix for Safari flexbox */
+  .flex {
+    display: -webkit-flex;
+    display: flex;
+  }
+  
+  /* Fix for Safari grid */
+  .grid {
+    display: -webkit-grid;
+    display: grid;
+  }
+}
+
+/* WebKit specific fixes */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  /* Safari and Chrome specific styles */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  textarea {
+    -webkit-appearance: none;
+    border-radius: 0;
+  }
+  
+  /* Fix for Safari button styling */
+  button {
+    -webkit-appearance: none;
+    border-radius: 0;
+  }
+  
+  /* Fix for Safari transform issues */
+  .transform {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+}
+
+/* iOS Safari specific fixes */
+@supports (-webkit-touch-callout: none) {
+  /* iOS Safari specific styles */
+  body {
+    -webkit-text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  /* Fix for iOS Safari viewport issues */
+  .ios-fix {
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Fix for iOS Safari button tap highlight */
+  button, 
+  a,
+  input[type="submit"],
+  input[type="button"] {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  }
+}
+
 @layer utilities {
   .perspective-1000 {
     perspective: 1000px;
+    -webkit-perspective: 1000px;
   }
   .transform-gpu {
     transform: translateZ(0);
+    -webkit-transform: translateZ(0);
   }
   .green-glow {
     background: radial-gradient(circle at center, rgba(80, 200, 120, 0.03) 0%, rgba(255, 255, 255, 1) 75%);
@@ -19,31 +102,39 @@
   .language-fade-enter {
     opacity: 0;
     transform: translateY(-4px) scale(0.98);
+    -webkit-transform: translateY(-4px) scale(0.98);
   }
   
   .language-fade-enter-active {
     opacity: 1;
     transform: translateY(0) scale(1);
+    -webkit-transform: translateY(0) scale(1);
     transition: all 300ms ease-out;
+    -webkit-transition: all 300ms ease-out;
   }
   
   .language-fade-exit {
     opacity: 1;
     transform: translateY(0) scale(1);
+    -webkit-transform: translateY(0) scale(1);
   }
   
   .language-fade-exit-active {
     opacity: 0;
     transform: translateY(4px) scale(0.98);
+    -webkit-transform: translateY(4px) scale(0.98);
     transition: all 300ms ease-in;
+    -webkit-transition: all 300ms ease-in;
   }
   
   .animate-spin-slow {
     animation: spin 3s linear infinite;
+    -webkit-animation: spin 3s linear infinite;
   }
   
   .animate-bounce-subtle {
     animation: bounce-subtle 2s infinite;
+    -webkit-animation: bounce-subtle 2s infinite;
   }
 
   /* Mobile TOC animations */
@@ -51,26 +142,32 @@
     max-height: 0;
     opacity: 0;
     transform: translateY(-10px) scale(0.98);
+    -webkit-transform: translateY(-10px) scale(0.98);
   }
   
   .mobile-toc-enter-active {
     max-height: 60vh;
     opacity: 1;
     transform: translateY(0) scale(1);
+    -webkit-transform: translateY(0) scale(1);
     transition: all 400ms cubic-bezier(0.16, 1, 0.3, 1);
+    -webkit-transition: all 400ms cubic-bezier(0.16, 1, 0.3, 1);
   }
   
   .mobile-toc-exit {
     max-height: 60vh;
     opacity: 1;
     transform: translateY(0) scale(1);
+    -webkit-transform: translateY(0) scale(1);
   }
   
   .mobile-toc-exit-active {
     max-height: 0;
     opacity: 0;
     transform: translateY(-10px) scale(0.98);
+    -webkit-transform: translateY(-10px) scale(0.98);
     transition: all 300ms cubic-bezier(0.5, 0, 0.75, 0);
+    -webkit-transition: all 300ms cubic-bezier(0.5, 0, 0.75, 0);
   }
 }
 
