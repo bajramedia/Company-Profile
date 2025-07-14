@@ -219,7 +219,7 @@ export default function ImageUpload({
             <div>
               <p className="font-medium">Upload not available</p>
               <p className="text-xs mt-1">{error}</p>
-              <p className="text-xs mt-1">Please use the "paste image URL" option above or select from available images.</p>
+              <p className="text-xs mt-1">Please use the &quot;paste image URL&quot; option above or select from available images.</p>
             </div>
           </div>
         </div>

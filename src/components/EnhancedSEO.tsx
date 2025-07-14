@@ -251,7 +251,20 @@ export default function EnhancedSEO({
             document.head.appendChild(script);
         }
 
-    }, [settings, title, description, schema, author, organization, services, faq]);
+        // Update JSON-LD script
+        const script = document.querySelector('#jsonld');
+        if (script) {
+          script.textContent = JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': type,
+            url: url,
+            image: image,
+            dateModified: modifiedTime,
+            datePublished: publishedTime,
+          });
+        }
+
+    }, [settings, title, description, schema, author, organization, services, faq, type, url, image, modifiedTime, publishedTime]);
 
     if (loading || !settings) return null;
 

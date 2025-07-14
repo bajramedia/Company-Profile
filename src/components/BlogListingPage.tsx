@@ -9,6 +9,7 @@ import Head from 'next/head';
 import Script from 'next/script';
 import { generateArticleSchema } from '@/lib/jsonld';
 import { Navbar, WhatsAppChat } from '@/components';
+import Image from 'next/image';
 
 // Utility function to format date
 const formatDate = (dateString: string): string => {
@@ -45,11 +46,13 @@ const ModernBlogPostCard: React.FC<{ post: BlogPost }> = ({ post }) => {
       <article className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm hover:shadow-xl border border-gray-100 dark:border-gray-700 overflow-hidden transition-all duration-300 hover:-translate-y-1 group cursor-pointer h-full flex flex-col">
         {/* Modern Image with badges */}
         <div className="relative h-48 w-full overflow-hidden bg-gray-100 dark:bg-gray-700">
-          <img
-            src={post.featuredImage}
+          <Image
+            src={post.featuredImage || '/images/placeholder.jpg'}
             alt={post.title}
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-            loading="lazy"
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="object-cover"
+            priority={true}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
 
@@ -86,9 +89,11 @@ const ModernBlogPostCard: React.FC<{ post: BlogPost }> = ({ post }) => {
             {/* Author info */}
             <div className="flex items-center">
               {post.author.avatar && (
-                <img
+                <Image
                   src={post.author.avatar}
                   alt={post.author.name}
+                  width={24}
+                  height={24}
                   className="w-6 h-6 rounded-full mr-2 border border-gray-200 dark:border-gray-600"
                 />
               )}
@@ -368,11 +373,13 @@ export default function BlogListingPage() {
                   <div key={post.id} className="bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md border border-gray-100 dark:border-gray-700 overflow-hidden transition-all duration-300 group">
                     <Link href={`/blog/${post.slug}`} className="flex flex-col md:flex-row h-full">
                       <div className="md:w-1/3 h-48 md:h-auto relative">
-                        <img
-                          src={post.featuredImage}
+                        <Image
+                          src={post.featuredImage || '/images/placeholder.jpg'}
                           alt={post.title}
-                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                          loading="lazy"
+                          fill
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          className="object-cover transition-transform duration-500 group-hover:scale-105"
+                          priority={true}
                         />
                       </div>
                       <div className="p-5 md:w-2/3 flex flex-col">
@@ -397,9 +404,11 @@ export default function BlogListingPage() {
                         <div className="mt-auto flex justify-between items-center">
                           <div className="flex items-center">
                             {post.author.avatar && (
-                              <img
+                              <Image
                                 src={post.author.avatar}
                                 alt={post.author.name}
+                                width={32}
+                                height={32}
                                 className="w-8 h-8 rounded-full mr-3 border border-gray-200 dark:border-gray-600"
                               />
                             )}
@@ -429,27 +438,27 @@ export default function BlogListingPage() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  {posts.slice(0, 3).map(post => (
+                  {posts.slice(0, 3).map((post, index) => (
                     <Link href={`/blog/${post.slug}`} key={`trending-${post.id}`} className="group">
-                      <div className="flex items-center space-x-4">
-                        <div className="w-16 h-16 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700 flex-shrink-0">
-                          <img
-                            src={post.featuredImage}
-                            alt={post.title}
-                            className="w-full h-full object-cover"
-                            loading="lazy"
-                          />
-                        </div>
-                        <div>
-                          <h3 className="font-medium text-sm line-clamp-2 group-hover:text-primary transition-colors text-gray-900 dark:text-gray-100">
-                            {post.title}
-                          </h3>
-                          <div className="flex items-center mt-1">
-                            <span className="text-xs text-gray-500 dark:text-gray-400 flex items-center">
-                              <FiEye className="mr-1" size={12} />
-                              {post.views || 0}
-                            </span>
-                          </div>
+                      <div className="relative aspect-video w-full overflow-hidden rounded-lg">
+                        <Image
+                          src={post.featuredImage || '/images/placeholder.jpg'}
+                          alt={post.title}
+                          fill
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          className="object-cover"
+                          priority={index < 3}
+                        />
+                      </div>
+                      <div>
+                        <h3 className="font-medium text-sm line-clamp-2 group-hover:text-primary transition-colors text-gray-900 dark:text-gray-100">
+                          {post.title}
+                        </h3>
+                        <div className="flex items-center mt-1">
+                          <span className="text-xs text-gray-500 dark:text-gray-400 flex items-center">
+                            <FiEye className="mr-1" size={12} />
+                            {post.views || 0}
+                          </span>
                         </div>
                       </div>
                     </Link>

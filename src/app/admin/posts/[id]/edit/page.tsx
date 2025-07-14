@@ -127,6 +127,9 @@ export default function EditPostPage() {
         </div>
 
         <PostForm postId={id} initialData={post} />
+        <p className="text-sm text-gray-500">
+          Don&apos;t forget to save your changes before leaving this page.
+        </p>
       </div>
     </div>
   );

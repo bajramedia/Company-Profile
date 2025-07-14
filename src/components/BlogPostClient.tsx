@@ -7,6 +7,7 @@ import { FiArrowLeft, FiCalendar, FiClock, FiEye, FiShare2, FiUser, FiTag, FiHea
 import { blogService, BlogPost } from '@/services/BlogService.api';
 import Link from 'next/link';
 import { WhatsAppChat } from '@/components';
+import Image from 'next/image';
 
 interface TocItem {
     level: number;
@@ -409,12 +410,14 @@ export default function BlogPostClient({ initialPost, slug }: BlogPostClientProp
 
                     {/* Featured image */}
                     {post.featuredImage && (
-                        <div className="relative w-full h-64 md:h-80 rounded-2xl overflow-hidden mb-10">
-                            <img
-                                src={post.featuredImage}
+                        <div className="relative aspect-video w-full overflow-hidden rounded-lg">
+                            <Image
+                                src={post.featuredImage || '/images/placeholder.jpg'}
                                 alt={post.title}
-                                className="w-full h-full object-cover"
-                                loading="eager"
+                                fill
+                                sizes="100vw"
+                                className="object-cover"
+                                priority
                             />
                         </div>
                     )}
@@ -475,7 +478,7 @@ export default function BlogPostClient({ initialPost, slug }: BlogPostClientProp
                                 >
                                     {relatedPost.featuredImage && (
                                         <div className="aspect-video overflow-hidden">
-                                            <img
+                                            <Image
                                                 src={relatedPost.featuredImage}
                                                 alt={relatedPost.title}
                                                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"

@@ -7,6 +7,7 @@ import { useLanguage } from "@/context/LanguageContext";
 import { usePublicSettings } from "@/hooks/useSettings";
 import Script from 'next/script';
 import { generateWebsiteSchema, generateLocalBusinessSchema } from '@/lib/jsonld';
+import Link from 'next/link';
 
 export default function Home() {
   const { t, language } = useLanguage();
@@ -135,7 +136,9 @@ export default function Home() {
                   <a href="#" className="text-foreground hover:text-primary transition-colors text-[15px]">{t('nav.portfolio')}</a>
                 </AnimatedText>
                 <AnimatedText as="span">
-                  <a href="/blog" className="text-foreground hover:text-primary transition-colors text-[15px]">{t('nav.blog')}</a>
+                  <Link href="/blog" className="text-foreground hover:text-primary transition-colors text-[15px]">
+                    {t('nav.blog')}
+                  </Link>
                 </AnimatedText>
               </nav>
               <LanguageSwitcher className="mr-4 text-foreground" />
