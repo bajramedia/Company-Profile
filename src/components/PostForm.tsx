@@ -240,7 +240,7 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
       console.error('Auto-save failed:', error);
       setSaveStatus('unsaved');
     }
-  }, [formData, loading, isEditing, postId, updatePost]);
+  }, [formData, loading, isEditing, postId]);
 
   // Auto-save effect
   useEffect(() => {

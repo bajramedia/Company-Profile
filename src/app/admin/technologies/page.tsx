@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components';
 
 // Types
@@ -44,7 +44,7 @@ export default function TechnologiesAdminPage() {
     });
 
     // Fetch categories from database
-    const fetchCategories = async () => {
+    const fetchCategories = useCallback(async () => {
         try {
             setLoadingCategories(true);
             const response = await fetch('/api/admin/technology-categories');
@@ -66,10 +66,10 @@ export default function TechnologiesAdminPage() {
         } finally {
             setLoadingCategories(false);
         }
-    };
+    }, [formData.category]);
 
     // Fetch technologies
-    const fetchTechnologies = async () => {
+    const fetchTechnologies = useCallback(async () => {
         try {
             setLoading(true);
             const response = await fetch('/api/admin/technologies?include_inactive=true');
@@ -82,7 +82,7 @@ export default function TechnologiesAdminPage() {
         } finally {
             setLoading(false);
         }
-    };
+    }, []);
 
     useEffect(() => {
         fetchCategories();
