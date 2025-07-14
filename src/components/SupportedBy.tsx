@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useLanguage } from '@/context/LanguageContext';
 import Heading from './Heading';
 import Text from './Text';
@@ -100,7 +101,7 @@ const SupportedBy: React.FC = () => {
         <AnimatedText as="div">
           <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
             {partners.map((partner, index) => (
-              <a
+              <Link
                 key={partner.id}
                 href={partner.website}
                 target="_blank"
@@ -127,7 +128,7 @@ const SupportedBy: React.FC = () => {
                     }}
                   />
                 </div>
-              </a>
+              </Link>
             ))}
           </div>
         </AnimatedText>

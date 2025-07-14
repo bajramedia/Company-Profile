@@ -118,25 +118,37 @@ export default function Footer() {
                         {/* Quick Links */}
                         <div>
                             <h4 className="font-semibold text-white mb-6">{t('Quick Links') || 'Quick Links'}</h4>
-                            <ul className="space-y-3">
-                                <li><a href="/" className="text-gray-400 hover:text-white transition-colors duration-300">{t('nav.home') || 'Home'}</a></li>
-                                <li><Link href="/about" className="text-gray-400 hover:text-white transition-colors duration-300">{t('nav.about') || 'About Us'}</Link></li>
-                                <li><a href="/services" className="text-gray-400 hover:text-white transition-colors duration-300">{t('nav.services') || 'Services'}</a></li>
-                                <li><a href="/portfolio" className="text-gray-400 hover:text-white transition-colors duration-300">{t('nav.portfolio') || 'Portfolio'}</a></li>
-                                <li><a href="/blog" className="text-gray-400 hover:text-white transition-colors duration-300">{t('nav.blog') || 'Blog'}</a></li>
-                                <li><a href="/#contact" className="text-gray-400 hover:text-white transition-colors duration-300">{t('nav.contact') || 'Contact'}</a></li>
-                            </ul>
+                            <div className="space-y-2">
+                                <Link href="/" className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors duration-300">
+                                    Beranda
+                                </Link>
+                                <Link href="/about" className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors duration-300">
+                                    Tentang Kami
+                                </Link>
+                                <Link href="/services" className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors duration-300">
+                                    Layanan
+                                </Link>
+                                <Link href="/portfolio" className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors duration-300">
+                                    Portfolio
+                                </Link>
+                                <Link href="/blog" className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors duration-300">
+                                    Blog
+                                </Link>
+                                <Link href="/#contact" className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition-colors duration-300">
+                                    Kontak
+                                </Link>
+                            </div>
                         </div>
 
                         {/* Services */}
                         <div>
                             <h4 className="font-semibold text-white mb-6">{t('Services') || 'Services'}</h4>
                             <ul className="space-y-3">
-                                <li><a href="/services/web-development" className="text-gray-400 hover:text-white transition-colors duration-300">{t('Web Development') || 'Web Development'}</a></li>
-                                <li><a href="/services/aset-game-development" className="text-gray-400 hover:text-white transition-colors duration-300">{t('Game Assets') || 'Aset Game Development'}</a></li>
-                                <li><a href="/services/uiux-design" className="text-gray-400 hover:text-white transition-colors duration-300">{t('Uiux Design') || 'UI/UX Design'}</a></li>
-                                <li><a href="/services/sistem-development" className="text-gray-400 hover:text-white transition-colors duration-300">{t('System Development') || 'Sistem Development'}</a></li>
-                                <li><a href="/services/sosial-media-management" className="text-gray-400 hover:text-white transition-colors duration-300">{t('Social Media') || 'Social Media Management'}</a></li>
+                                <li><Link href="/services/web-development" className="text-gray-400 hover:text-white transition-colors duration-300">{t('Web Development') || 'Web Development'}</Link></li>
+                                <li><Link href="/services/aset-game-development" className="text-gray-400 hover:text-white transition-colors duration-300">{t('Game Assets') || 'Aset Game Development'}</Link></li>
+                                <li><Link href="/services/uiux-design" className="text-gray-400 hover:text-white transition-colors duration-300">{t('Uiux Design') || 'UI/UX Design'}</Link></li>
+                                <li><Link href="/services/sistem-development" className="text-gray-400 hover:text-white transition-colors duration-300">{t('System Development') || 'Sistem Development'}</Link></li>
+                                <li><Link href="/services/sosial-media-management" className="text-gray-400 hover:text-white transition-colors duration-300">{t('Social Media') || 'Social Media Management'}</Link></li>
                             </ul>
                         </div>
                     </div>

@@ -231,19 +231,9 @@ const Blog: React.FC<BlogProps> = ({ className = '' }) => {
         {/* View All Button */}
         <div className="mt-10 text-center">
           <AnimatedText as="div">
-            <a href="/blog">
-              <button
-                className="inline-flex items-center px-6 py-3 rounded-lg font-medium transition-all duration-300 hover:-translate-y-1"
-                style={{
-                  backgroundColor: primaryColor,
-                  color: 'white',
-                  boxShadow: `0 4px 14px ${primaryColor}30`
-                }}
-              >
-                {t('blog.Button') || 'View All Articles'}
-                <FiArrowRight className="ml-2" />
-              </button>
-            </a>
+            <Link href="/blog" className="text-primary hover:text-primary-dark transition-colors duration-300">
+              {t('blog.readMore') || 'Baca Selengkapnya'}
+            </Link>
           </AnimatedText>
         </div>
       </div>
