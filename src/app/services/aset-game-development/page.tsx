@@ -9,8 +9,8 @@ export default function GameAssetDevelopmentPage() {
   return (
     <div className="container mx-auto px-4 py-16">
       <div className="text-center mb-16">
-        <Heading variant="h1" color="foreground" className="mb-4 text-[32px] md:text-[40px] lg:text-[48px] font-bold">
-          {t('services.gameAsset.title') || 'Jasa Game Asset Development'}
+        <Heading variant="h1" color="foreground" className="mb-4">
+          {t('services.gameAsset.title') || 'Jasa Pembuatan Asset Game'}
         </Heading>
         <p className="text-gray-600 max-w-2xl mx-auto">
           {t('services.gameAsset.description') || 'Kami menyediakan jasa pembuatan aset game 2D dan 3D berkualitas tinggi untuk game Anda'}

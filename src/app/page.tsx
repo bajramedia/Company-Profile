@@ -368,18 +368,15 @@ export default function HomePage() {
                                         ))}
                                     </div>
                                     <Text color="secondary" className="mb-6 italic text-sm leading-relaxed text-gray-600 dark:text-gray-300">
-                                        "{language === 'id'
-                                            ? 'Tim Bajramedia sangat profesional dalam mengembangkan website perusahaan kami. Hasilnya melebihi ekspektasi dan sangat membantu meningkatkan brand awareness.'
-                                            : 'Bajramedia team is very professional in developing our company website. The results exceeded expectations and really helped increase brand awareness.'
-                                        }"
+                                        &quot;{t('testimonials.1.text') || 'Bajramedia sangat membantu kami dalam mengembangkan website perusahaan. Tim mereka sangat profesional dan responsif.'}&quot;
                                     </Text>
                                     <div className="flex items-center">
                                         <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-white font-bold mr-4">
                                             A
                                         </div>
                                         <div>
-                                            <div className="font-semibold text-gray-900 dark:text-white">Andi Prasetyo</div>
-                                            <div className="text-sm text-gray-500 dark:text-gray-400">CEO, PT Maju Bersama</div>
+                                            <div className="font-semibold text-gray-900 dark:text-white">{t('testimonials.1.author') || 'John Doe'}</div>
+                                            <div className="text-sm text-gray-500 dark:text-gray-400">{t('testimonials.1.position') || 'CEO, Tech Corp'}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -394,18 +391,15 @@ export default function HomePage() {
                                         ))}
                                     </div>
                                     <Text color="secondary" className="mb-6 italic text-sm leading-relaxed text-gray-600 dark:text-gray-300">
-                                        "{language === 'id'
-                                            ? 'Pelayanan yang luar biasa! Sistem manajemen yang dikembangkan Bajramedia sangat membantu operasional bisnis kami menjadi lebih efisien.'
-                                            : 'Extraordinary service! The management system developed by Bajramedia really helps our business operations become more efficient.'
-                                        }"
+                                        &quot;{t('testimonials.2.text') || 'Desain yang mereka buat sangat modern dan sesuai dengan kebutuhan kami. Sangat merekomendasikan!'}&quot;
                                     </Text>
                                     <div className="flex items-center">
                                         <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold mr-4">
                                             S
                                         </div>
                                         <div>
-                                            <div className="font-semibold text-gray-900 dark:text-white">Sari Wijaya</div>
-                                            <div className="text-sm text-gray-500 dark:text-gray-400">Owner, Sari Beauty Clinic</div>
+                                            <div className="font-semibold text-gray-900 dark:text-white">{t('testimonials.2.author') || 'Jane Smith'}</div>
+                                            <div className="text-sm text-gray-500 dark:text-gray-400">{t('testimonials.2.position') || 'Marketing Director, Creative Agency'}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -420,18 +414,15 @@ export default function HomePage() {
                                         ))}
                                     </div>
                                     <Text color="secondary" className="mb-6 italic text-sm leading-relaxed text-gray-600 dark:text-gray-300">
-                                        "{language === 'id'
-                                            ? 'Aplikasi mobile yang dikembangkan sangat user-friendly dan sesuai dengan kebutuhan bisnis kami. Tim support juga sangat responsif.'
-                                            : 'The mobile application developed is very user-friendly and suits our business needs. The support team is also very responsive.'
-                                        }"
+                                        &quot;{t('testimonials.3.text') || 'Proses pengembangan aplikasi berjalan lancar dan tepat waktu. Hasil akhirnya memuaskan!'}&quot;
                                     </Text>
                                     <div className="flex items-center">
                                         <div className="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center text-white font-bold mr-4">
                                             R
                                         </div>
                                         <div>
-                                            <div className="font-semibold text-gray-900 dark:text-white">Rudi Hartanto</div>
-                                            <div className="text-sm text-gray-500 dark:text-gray-400">Director, RH Logistics</div>
+                                            <div className="font-semibold text-gray-900 dark:text-white">{t('testimonials.3.author') || 'Mike Johnson'}</div>
+                                            <div className="text-sm text-gray-500 dark:text-gray-400">{t('testimonials.3.position') || 'Product Manager, Startup Inc'}</div>
                                         </div>
                                     </div>
                                 </div>

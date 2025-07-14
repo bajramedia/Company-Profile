@@ -73,7 +73,7 @@ const Testimonials: React.FC = () => {
                 </div>
 
                 <blockquote className="text-foreground dark:text-gray-300 leading-relaxed text-sm md:text-base italic transition-colors duration-300">
-                  "{testimonial.quote}"
+                  &quot;{testimonial.quote}&quot;
                 </blockquote>                {/* Star rating */}
                 <div className="flex mt-4">
                   {Array(5).fill(0).map((_, i) => (
