@@ -52,9 +52,8 @@ interface PortfolioDetailPageProps {
     }>;
 }
 
-export default async function PortfolioDetailPage({ params }: PortfolioDetailPageProps) {
-    const { slug } = await params;
-    return <PortfolioDetailPageContent slug={slug} />;
+export default function PortfolioDetailPage({ params }: { params: { slug: string } }) {
+    return <PortfolioDetailPageContent slug={params.slug} />;
 }
 
 function PortfolioDetailPageContent({ slug }: { slug: string }) {

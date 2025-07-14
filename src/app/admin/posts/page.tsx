@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { useState, useEffect, Suspense, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -28,7 +28,7 @@ function AdminPostsContent() {
   }, [searchParams]);
 
   // Function to reload posts
-  const loadPosts = async () => {
+  const loadPosts = useCallback(async () => {
     try {
       setLoading(true);
       const res = await fetch(`/api/admin/posts?page=${currentPage}&limit=10${searchQuery ? `&search=${encodeURIComponent(searchQuery)}` : ''}`);
@@ -43,7 +43,7 @@ function AdminPostsContent() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [currentPage, searchQuery]);
 
   // Handle post deletion
   const handleDelete = async (postId: string) => {

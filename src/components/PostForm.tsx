@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { createPost, updatePost } from '@/actions/post-actions';
 import { FiSave, FiX, FiEye, FiCalendar, FiClock, FiUser, FiTag, FiFolder, FiImage, FiFileText, FiGlobe, FiSettings } from 'react-icons/fi';
@@ -211,18 +211,16 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
     }
   };
 
-  // Calculate estimated read time based on content length
-  const calculateReadTime = () => {
-    const words = formData.content.replace(/<[^>]*>/g, '').trim().split(/\s+/).filter((word: string) => word.length > 0);
-    const wordCount = words.length;
-    const readTime = Math.max(1, Math.ceil(wordCount / 200)); // Assuming 200 words per minute
-
-    setWordCount(wordCount);
+  // Calculate read time
+  const calculateReadTime = useCallback(() => {
+    const words = formData.content.replace(/<[^>]*>/g, '').split(/\s+/).length;
+    const readTime = Math.ceil(words / 200); // Assuming average reading speed of 200 words per minute
+    setWordCount(words);
     setFormData(prev => ({ ...prev, readTime }));
-  };
+  }, [formData.content]);
 
   // Auto-save draft function
-  const autoSaveDraft = async () => {
+  const autoSaveDraft = useCallback(async () => {
     if (!formData.title.trim() || loading) return;
 
     setSaveStatus('saving');
@@ -242,7 +240,7 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
       console.error('Auto-save failed:', error);
       setSaveStatus('unsaved');
     }
-  };
+  }, [formData, loading, isEditing, postId, updatePost]);
 
   // Auto-save effect
   useEffect(() => {
@@ -251,12 +249,12 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
     }, 30000);
 
     return () => clearInterval(interval);
-  }, [autoSaveDraft]); // Add autoSaveDraft to dependencies
+  }, [autoSaveDraft]);
 
   // Update word count when content changes
   useEffect(() => {
     calculateReadTime();
-  }, [formData.content]);
+  }, [calculateReadTime]);
 
   // Generate meta description from excerpt or content
   const generateMetaDescription = () => {

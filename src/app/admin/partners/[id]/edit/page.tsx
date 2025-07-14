@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Button, ImageUpload } from '@/components';
 import Link from 'next/link';
 import { useRouter, useParams } from 'next/navigation';
@@ -27,26 +27,7 @@ export default function EditPartnerPage() {
     const [fetching, setFetching] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    const [formData, setFormData] = useState<Partner>({
-        id: '',
-        name_en: '',
-        name_id: '',
-        description_en: '',
-        description_id: '',
-        logo_url: '',
-        website_url: '',
-        partner_type: 'Strategic Partner',
-        sort_order: 0,
-        is_active: true,
-    });
-
-    useEffect(() => {
-        if (partnerId) {
-            fetchPartner();
-        }
-    }, [partnerId, fetchPartner]);
-
-    const fetchPartner = async () => {
+    const fetchPartner = useCallback(async () => {
         try {
             setFetching(true);
             console.log('🔍 Fetching partner with ID:', partnerId);
@@ -96,7 +77,26 @@ export default function EditPartnerPage() {
         } finally {
             setFetching(false);
         }
-    };
+    }, [partnerId]);
+
+    const [formData, setFormData] = useState<Partner>({
+        id: '',
+        name_en: '',
+        name_id: '',
+        description_en: '',
+        description_id: '',
+        logo_url: '',
+        website_url: '',
+        partner_type: 'Strategic Partner',
+        sort_order: 0,
+        is_active: true,
+    });
+
+    useEffect(() => {
+        if (partnerId) {
+            fetchPartner();
+        }
+    }, [partnerId, fetchPartner]);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();

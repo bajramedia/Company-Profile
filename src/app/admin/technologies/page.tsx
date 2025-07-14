@@ -87,7 +87,7 @@ export default function TechnologiesAdminPage() {
     useEffect(() => {
         fetchCategories();
         fetchTechnologies();
-    }, []);
+    }, [fetchCategories, fetchTechnologies]);
 
     // Get category info by value
     const getCategoryInfo = (categoryValue: string) => {
