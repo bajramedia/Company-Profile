@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Logo, LanguageSwitcher, Button, AnimatedText } from '@/components';
@@ -22,6 +22,29 @@ export default function Navbar({
     const { t } = useLanguage();
     const pathname = usePathname();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const [isDarkMode, setIsDarkMode] = useState(false);
+
+    // Check for dark mode on mount
+    useEffect(() => {
+        const darkMode = localStorage.getItem('darkMode') === 'true';
+        setIsDarkMode(darkMode);
+        if (darkMode) {
+            document.documentElement.classList.add('dark');
+        }
+    }, []);
+
+    // Toggle dark mode
+    const toggleDarkMode = () => {
+        const newDarkMode = !isDarkMode;
+        setIsDarkMode(newDarkMode);
+        localStorage.setItem('darkMode', newDarkMode.toString());
+        
+        if (newDarkMode) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    };
 
     // Determine active tab based on current path or prop
     const currentTab = activeTab || (() => {
@@ -198,6 +221,23 @@ export default function Navbar({
 
                     <LanguageSwitcher className="mr-4 text-white-700 dark:text-white-300" />
 
+                    {/* Dark Mode Toggle */}
+                    <button
+                        onClick={toggleDarkMode}
+                        className="p-2 rounded-lg text-white-700 dark:text-white-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors mr-4"
+                        aria-label="Toggle dark mode"
+                    >
+                        {isDarkMode ? (
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                            </svg>
+                        ) : (
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                            </svg>
+                        )}
+                    </button>
+
                     <AnimatedText as="span">
                         <Button
                             variant="primary"
@@ -212,6 +252,24 @@ export default function Navbar({
                 {/* Mobile Menu Button */}
                 <div className="flex items-center space-x-4 md:hidden">
                     <LanguageSwitcher className="text-foreground" />
+                    
+                    {/* Dark Mode Toggle for Mobile */}
+                    <button
+                        onClick={toggleDarkMode}
+                        className="text-foreground p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+                        aria-label="Toggle dark mode"
+                    >
+                        {isDarkMode ? (
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                            </svg>
+                        ) : (
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                            </svg>
+                        )}
+                    </button>
+                    
                     <button
                         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                         className="text-foreground p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
