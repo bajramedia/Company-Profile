@@ -1,321 +1,233 @@
-"use client";
+import { Metadata } from "next";
+import { Heading } from "@/components";
+import { Globe, Code2, Database, Server, Cpu, Lock } from 'lucide-react';
 
-import Link from "next/link";
-import { useState, useEffect } from 'react';
-import { Button, Heading, Navbar, AnimatedText, Logo, LanguageSwitcher, WhatsAppChat } from "@/components";
-import { useLanguage } from "@/context/LanguageContext";
-import { technologiesService, Technology } from "@/services/TechnologiesService";
-import AOS from 'aos';
-import 'aos/dist/aos.css';
-import { Sun, Moon } from 'lucide-react';
+export const metadata: Metadata = {
+  title: "Jasa Web Development | Bajramedia",
+  description: "Jasa pembuatan website profesional dengan teknologi modern dan performa tinggi",
+};
 
 export default function WebDevelopmentPage() {
-    const { t, language } = useLanguage();
-    const [isDarkMode, setIsDarkMode] = useState(false);
-    const [technologies, setTechnologies] = useState<Technology[]>([]);
-    const [loadingTechnologies, setLoadingTechnologies] = useState(true);
+  return (
+    <div className="container mx-auto px-4 py-16">
+      <div className="text-center mb-16">
+        <Heading as="h1" size="2xl" className="mb-4">
+          Jasa Web Development
+        </Heading>
+        <p className="text-gray-600 max-w-2xl mx-auto">
+          Kami menyediakan jasa pembuatan website profesional dengan teknologi modern
+          dan performa tinggi untuk mengembangkan bisnis Anda
+        </p>
+      </div>
 
-    // Load technologies dynamically
-    useEffect(() => {
-        const loadTechnologies = async () => {
-            try {
-                setLoadingTechnologies(true);
-                const webTech = await technologiesService.getWebTechnologies();
-                setTechnologies(webTech);
-            } catch (error) {
-                // Silent error - will show fallback UI
-                setTechnologies([]);
-            } finally {
-                setLoadingTechnologies(false);
-            }
-        };
-
-        loadTechnologies();
-    }, []);
-
-    useEffect(() => {
-        if (typeof window !== 'undefined') {
-            const savedMode = localStorage.getItem('darkMode');
-            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-            const shouldEnableDarkMode = savedMode === 'true' || (savedMode === null && prefersDark);
-
-            setIsDarkMode(shouldEnableDarkMode);
-            if (shouldEnableDarkMode) {
-                document.documentElement.classList.add('dark');
-            }
-
-            const handleStorageChange = (e: StorageEvent) => {
-                if (e.key === 'darkMode') {
-                    const newMode = e.newValue === 'true';
-                    setIsDarkMode(newMode);
-                    if (newMode) {
-                        document.documentElement.classList.add('dark');
-                    } else {
-                        document.documentElement.classList.remove('dark');
-                    }
-                }
-            };
-
-            window.addEventListener('storage', handleStorageChange);
-            return () => window.removeEventListener('storage', handleStorageChange);
-        }
-    }, []);
-
-    // Initialize AOS
-    useEffect(() => {
-        AOS.init({
-            duration: 800,
-            easing: 'ease-out',
-            once: true,
-            offset: 100,
-        });
-    }, []);
-
-    const toggleDarkMode = () => {
-        setIsDarkMode(prev => {
-            const newMode = !prev;
-            if (newMode) {
-                document.documentElement.classList.add('dark');
-            } else {
-                document.documentElement.classList.remove('dark');
-            }
-            localStorage.setItem('darkMode', newMode ? 'true' : 'false');
-            return newMode;
-        });
-    };
-
-    // Get description based on current language
-    const getDescription = (tech: Technology) => {
-        return technologiesService.getDescription(tech, language);
-    };
-
-    return (
-        <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
-            {/* Header */}
-            <Navbar variant="solid" activeTab="services" />
-
-            {/* Breadcrumb */}
-            <div className="pt-20 pb-6 bg-gray-50 dark:bg-gray-800 transition-colors duration-300">
-                <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8">
-                    <nav className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 mb-8" data-aos="fade-right">
-                        <div className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
-                            <Link href="/services" className="hover:text-green-500 transition-colors duration-300">
-                                Services
-                            </Link>
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-                            </svg>
-                            <span className="text-gray-900 dark:text-white">Web Development</span>
-                        </div>
-                    </nav>
-                </div>
-            </div>
-
-            <main className="py-16">
-                {/* Hero Section */}
-                <section className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 mb-20">
-                    <div className="text-center">
-                        <AnimatedText as="div">
-                            <Heading
-                                variant="h1"
-                                color="foreground"
-                                className="mb-6 text-[32px] md:text-[40px] lg:text-[48px] font-bold"
-                                data-aos="fade-up"
-                            >
-                                {t('service.webDev.title')}
-                            </Heading>
-                        </AnimatedText>
-
-                        <AnimatedText as="div">
-                            <p
-                                className="text-gray-600 dark:text-gray-400 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed mb-8"
-                                data-aos="fade-up"
-                                data-aos-delay="200"
-                            >
-                                {t('service.webDev.subtitle')}
-                            </p>
-                        </AnimatedText>
-                    </div>
-                </section>
-
-                {/* Technologies */}
-                <section className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 mb-20">
-                    <div className="text-center mb-12">
-                        <h2
-                            className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4"
-                            data-aos="fade-up"
-                        >
-                            Teknologi yang Kami Gunakan
-                        </h2>
-                        <p
-                            className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto"
-                            data-aos="fade-up"
-                            data-aos-delay="100"
-                        >
-                            Stack modern yang terpercaya untuk menghasilkan website berkualitas tinggi
-                        </p>
-                    </div>
-
-                    {loadingTechnologies ? (
-                        // Loading skeleton
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                            {[...Array(4)].map((_, index) => (
-                                <div
-                                    key={index}
-                                    className="bg-white dark:bg-slate-800/90 dark:backdrop-blur-sm dark:border dark:border-gray-700/50 rounded-xl p-6 text-center shadow-sm border border-gray-100 animate-pulse"
-                                >
-                                    <div className="w-16 h-16 bg-gray-200 dark:bg-gray-700 rounded-full mx-auto mb-3"></div>
-                                    <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded mb-2 mx-auto w-3/4"></div>
-                                    <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded mx-auto w-1/2"></div>
-                                </div>
-                            ))}
-                        </div>
-                    ) : technologies.length > 0 ? (
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                            {technologies.map((tech, index) => (
-                                <div
-                                    key={tech.id}
-                                    className="group bg-white dark:bg-slate-800/90 dark:backdrop-blur-sm dark:border dark:border-gray-700/50 rounded-xl p-6 text-center shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 border border-gray-100"
-                                    data-aos="fade-up"
-                                    data-aos-delay={index * 100}
-                                >
-                                    <div
-                                        className="text-4xl mb-3 group-hover:scale-110 transition-transform duration-300"
-                                        style={{ color: tech.color }}
-                                    >
-                                        {tech.icon}
-                                    </div>
-                                    <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
-                                        {tech.name}
-                                    </h3>
-                                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                                        {getDescription(tech)}
-                                    </p>
-                                </div>
-                            ))}
-                        </div>
-                    ) : (
-                        // Empty state
-                        <div className="text-center py-12">
-                            <div className="text-6xl mb-4 opacity-50">🔧</div>
-                            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
-                                Teknologi Sedang Disiapkan
-                            </h3>
-                            <p className="text-gray-600 dark:text-gray-400">
-                                Tim kami sedang menyiapkan daftar teknologi terbaru untuk Anda
-                            </p>
-                        </div>
-                    )}
-                </section>
-
-                {/* Pricing Section */}
-                <section className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 mb-20">
-                    <div className="text-center mb-12">
-                        <h2
-                            className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4"
-                            data-aos="fade-up"
-                        >
-                            Paket Layanan
-                        </h2>
-                        <p
-                            className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto"
-                            data-aos="fade-up"
-                            data-aos-delay="100"
-                        >
-                            Pilih paket yang sesuai dengan kebutuhan bisnis kamu
-                        </p>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-100 dark:border-gray-700 flex flex-col h-full">
-                            <div className="flex-grow">
-                                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Landing Page</h3>
-                                <p className="text-gray-600 dark:text-gray-400 mb-6">Website satu halaman yang powerful</p>
-                                <div className="mb-6">
-                                    <span className="text-3xl font-bold text-green-500">Mulai 2.5jt</span>
-                                </div>
-                            </div>
-                            <Button variant="outline" size="lg" className="w-full mt-auto">Pilih Paket</Button>
-                        </div>
-
-                        <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 border-2 border-green-500 ring-2 ring-green-500/20 relative flex flex-col h-full">
-                            <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                                <span className="bg-green-500 text-white px-4 py-2 rounded-full text-sm font-medium">
-                                    Paling Populer
-                                </span>
-                            </div>
-                            <div className="flex-grow">
-                                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Company Profile</h3>
-                                <p className="text-gray-600 dark:text-gray-400 mb-6">Website perusahaan yang profesional</p>
-                                <div className="mb-6">
-                                    <span className="text-3xl font-bold text-green-500">Mulai 5jt</span>
-                                </div>
-                            </div>
-                            <Button variant="primary" size="lg" className="w-full mt-auto">Pilih Paket</Button>
-                        </div>
-
-                        <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-100 dark:border-gray-700 flex flex-col h-full">
-                            <div className="flex-grow">
-                                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">E-Commerce</h3>
-                                <p className="text-gray-600 dark:text-gray-400 mb-6">Toko online dengan payment gateway</p>
-                                <div className="mb-6">
-                                    <span className="text-3xl font-bold text-green-500">Mulai 15jt</span>
-                                </div>
-                            </div>
-                            <Button variant="outline" size="lg" className="w-full mt-auto">Pilih Paket</Button>
-                        </div>
-                    </div>
-                </section>
-
-                {/* CTA Section */}
-                <section className="w-[95%] mx-auto px-4 sm:px-6 md:px-8">
-                    <div
-                        className="relative bg-gray-900 dark:bg-gray-800 rounded-3xl p-12 text-center text-white overflow-hidden"
-                        data-aos="zoom-in"
-                        data-aos-delay="300"
-                    >
-                        {/* Background Pattern */}
-                        <div className="absolute inset-0 opacity-5 dark:opacity-10">
-                            <div className="absolute inset-0" style={{
-                                backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-                                backgroundSize: '60px 60px'
-                            }}></div>
-                        </div>
-
-                        {/* Floating Elements */}
-                        <div className="absolute top-10 left-10 w-20 h-20 bg-white/3 dark:bg-white/5 rounded-full blur-xl"></div>
-                        <div className="absolute bottom-10 right-10 w-32 h-32 bg-white/2 dark:bg-white/3 rounded-full blur-2xl"></div>
-                        <div className="absolute top-1/2 left-1/4 w-16 h-16 bg-white/4 dark:bg-white/8 rounded-full blur-lg"></div>
-
-                        <div className="relative z-10">
-                            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">
-                                {t('service.webDev.cta.title')}
-                            </h2>
-                            <p className="text-xl opacity-90 mb-8 max-w-2xl mx-auto leading-relaxed">
-                                {t('service.webDev.cta.subtitle')}
-                            </p>
-                            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                                <Button variant="outline" size="lg" className="bg-white text-gray-900 border-white hover:bg-gray-50 hover:scale-105 transition-all duration-300 px-8 py-4 font-semibold shadow-lg">
-                                    {t('service.webDev.cta.consultation')}
-                                </Button>
-                                <Button variant="outline" size="lg" className="border-white/60 text-white hover:bg-white/10 dark:hover:bg-white/15 hover:scale-105 transition-all duration-300 px-8 py-4 font-semibold backdrop-blur-sm">
-                                    {t('service.webDev.cta.portfolio')}
-                                </Button>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </main>
-
-            {/* Dark Mode Toggle */}
-            <div className="fixed bottom-6 left-6 z-50">
-                <button
-                    onClick={toggleDarkMode}
-                    className="w-14 h-14 rounded-full bg-white dark:bg-gray-800 shadow-lg border border-gray-200 dark:border-gray-600 flex items-center justify-center hover:shadow-xl transition-all duration-300 hover:scale-110 group"
-                >
-                    {isDarkMode ? <Sun size={24} className="text-yellow-500" /> : <Moon size={24} className="text-blue-500" />}
-                </button>
-            </div>
+      {/* Technologies Section */}
+      <div className="mb-20">
+        <div className="text-center mb-12">
+          <h2 className="text-2xl md:text-3xl font-bold mb-4">
+            Teknologi yang Kami Gunakan
+          </h2>
+          <p className="text-gray-600 max-w-2xl mx-auto">
+            Stack modern yang terpercaya untuk menghasilkan website berkualitas tinggi
+          </p>
         </div>
-    );
+
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 max-w-6xl mx-auto">
+          <div className="bg-white rounded-xl p-6 text-center shadow-sm hover:shadow-lg transition-all duration-300">
+            <div className="text-4xl mb-3 text-blue-500 flex justify-center">
+              <Globe className="w-12 h-12" />
+            </div>
+            <h3 className="font-semibold mb-2">Next.js</h3>
+            <p className="text-sm text-gray-600">Modern React Framework</p>
+          </div>
+
+          <div className="bg-white rounded-xl p-6 text-center shadow-sm hover:shadow-lg transition-all duration-300">
+            <div className="text-4xl mb-3 text-purple-500 flex justify-center">
+              <Code2 className="w-12 h-12" />
+            </div>
+            <h3 className="font-semibold mb-2">TypeScript</h3>
+            <p className="text-sm text-gray-600">Type-Safe JavaScript</p>
+          </div>
+
+          <div className="bg-white rounded-xl p-6 text-center shadow-sm hover:shadow-lg transition-all duration-300">
+            <div className="text-4xl mb-3 text-green-500 flex justify-center">
+              <Database className="w-12 h-12" />
+            </div>
+            <h3 className="font-semibold mb-2">PostgreSQL</h3>
+            <p className="text-sm text-gray-600">Advanced Database</p>
+          </div>
+
+          <div className="bg-white rounded-xl p-6 text-center shadow-sm hover:shadow-lg transition-all duration-300">
+            <div className="text-4xl mb-3 text-orange-500 flex justify-center">
+              <Server className="w-12 h-12" />
+            </div>
+            <h3 className="font-semibold mb-2">Node.js</h3>
+            <p className="text-sm text-gray-600">Backend Runtime</p>
+          </div>
+
+          <div className="bg-white rounded-xl p-6 text-center shadow-sm hover:shadow-lg transition-all duration-300">
+            <div className="text-4xl mb-3 text-red-500 flex justify-center">
+              <Cpu className="w-12 h-12" />
+            </div>
+            <h3 className="font-semibold mb-2">Redis</h3>
+            <p className="text-sm text-gray-600">High Performance Cache</p>
+          </div>
+
+          <div className="bg-white rounded-xl p-6 text-center shadow-sm hover:shadow-lg transition-all duration-300">
+            <div className="text-4xl mb-3 text-gray-700 flex justify-center">
+              <Lock className="w-12 h-12" />
+            </div>
+            <h3 className="font-semibold mb-2">Auth0</h3>
+            <p className="text-sm text-gray-600">Enterprise Security</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        {/* Basic Package */}
+        <div className="border rounded-lg p-8 hover:shadow-lg transition-shadow">
+          <h3 className="text-2xl font-bold mb-4">Basic</h3>
+          <p className="text-3xl font-bold mb-6">Rp 1.000.000</p>
+          <ul className="space-y-3 mb-8">
+            <li className="flex items-start">
+              <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              <span>Landing page sederhana</span>
+            </li>
+            <li className="flex items-start">
+              <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              <span>Desain responsif</span>
+            </li>
+            <li className="flex items-start">
+              <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              <span>3 halaman website</span>
+            </li>
+            <li className="flex items-start">
+              <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              <span>Optimasi SEO dasar</span>
+            </li>
+            <li className="flex items-start">
+              <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              <span>1x revisi minor</span>
+            </li>
+          </ul>
+        </div>
+
+        {/* Standard Package */}
+        <div className="border rounded-lg p-8 hover:shadow-lg transition-shadow bg-green-50">
+          <div className="inline-block px-4 py-1 bg-green-500 text-white rounded-full text-sm mb-4">POPULER</div>
+          <h3 className="text-2xl font-bold mb-4">Standard</h3>
+          <p className="text-3xl font-bold mb-6">Rp 3.000.000</p>
+          <ul className="space-y-3 mb-8">
+            <li className="flex items-start">
+              <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              <span>Website company profile lengkap</span>
+            </li>
+            <li className="flex items-start">
+              <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              <span>Desain responsif premium</span>
+            </li>
+            <li className="flex items-start">
+              <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              <span>8 halaman website</span>
+            </li>
+            <li className="flex items-start">
+              <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              <span>Optimasi SEO menengah</span>
+            </li>
+            <li className="flex items-start">
+              <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              <span>CMS untuk update konten</span>
+            </li>
+            <li className="flex items-start">
+              <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              <span>3x revisi</span>
+            </li>
+            <li className="flex items-start">
+              <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              <span>Support teknis 1 bulan</span>
+            </li>
+          </ul>
+        </div>
+
+        {/* Premium Package */}
+        <div className="border rounded-lg p-8 hover:shadow-lg transition-shadow">
+          <h3 className="text-2xl font-bold mb-4">Premium</h3>
+          <p className="text-3xl font-bold mb-6">Rp 5.000.000</p>
+          <ul className="space-y-3 mb-8">
+            <li className="flex items-start">
+              <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              <span>Website custom sesuai kebutuhan</span>
+            </li>
+            <li className="flex items-start">
+              <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              <span>Desain premium & animasi</span>
+            </li>
+            <li className="flex items-start">
+              <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              <span>Halaman unlimited</span>
+            </li>
+            <li className="flex items-start">
+              <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              <span>Optimasi SEO profesional</span>
+            </li>
+            <li className="flex items-start">
+              <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              <span>CMS custom & training</span>
+            </li>
+            <li className="flex items-start">
+              <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              <span>Integrasi sistem & API</span>
+            </li>
+            <li className="flex items-start">
+              <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              <span>5x revisi major</span>
+            </li>
+            <li className="flex items-start">
+              <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              <span>Support teknis 3 bulan</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  );
 } 
