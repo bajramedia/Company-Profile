@@ -1,15 +1,13 @@
 import { Suspense } from 'react';
+import { Metadata } from 'next';
 import PortfolioDetailClient from './PortfolioDetailClient';
 
-// Tambah type untuk generateMetadata jika diperlukan nanti
-export interface PortfolioDetailPageProps {
-    params: {
-        slug: string;
-    };
+type Props = {
+    params: { slug: string };
     searchParams: { [key: string]: string | string[] | undefined };
 }
 
-export default function PortfolioDetailPage({ params, searchParams }: PortfolioDetailPageProps) {
+export default async function PortfolioDetailPage({ params, searchParams }: Props) {
     return (
         <Suspense fallback={<div>Loading...</div>}>
             <PortfolioDetailClient slug={params.slug} />
