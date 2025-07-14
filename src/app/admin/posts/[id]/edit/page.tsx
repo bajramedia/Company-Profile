@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from '@/components';
@@ -12,53 +12,53 @@ export default function EditPostPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchPost = async () => {
-      try {
-        setLoading(true);
-        setError(null);
+  const fetchPost = useCallback(async () => {
+    try {
+      setLoading(true);
+      setError(null);
 
-        console.log('🔄 Fetching post with ID:', id);
+      console.log('🔄 Fetching post with ID:', id);
 
-        const response = await fetch(`/api/admin/posts/${id}`);
+      const response = await fetch(`/api/admin/posts/${id}`);
 
-        console.log('📊 API Response status:', response.status);
+      console.log('📊 API Response status:', response.status);
 
-        if (!response.ok) {
-          throw new Error(`Failed to fetch post: ${response.status}`);
-        }
-
-        const data = await response.json();
-        console.log('📊 API Response data:', data);
-
-        // Handle different response formats
-        if (data.success && data.post) {
-          // New format with success wrapper
-          setPost(data.post);
-          console.log('✅ Post data loaded (new format):', data.post);
-        } else if (data && data.id) {
-          // Direct post data
-          setPost(data);
-          console.log('✅ Post data loaded (direct format):', data);
-        } else if (data === null) {
-          // Explicitly null response
-          throw new Error('Post not found');
-        } else {
-          console.warn('⚠️ Unexpected response format:', data);
-          throw new Error('Invalid response format');
-        }
-      } catch (err) {
-        console.error('❌ Error fetching post:', err);
-        setError(err instanceof Error ? err.message : 'Could not load post. Please try again.');
-      } finally {
-        setLoading(false);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch post: ${response.status}`);
       }
-    };
 
+      const data = await response.json();
+      console.log('📊 API Response data:', data);
+
+      // Handle different response formats
+      if (data.success && data.post) {
+        // New format with success wrapper
+        setPost(data.post);
+        console.log('✅ Post data loaded (new format):', data.post);
+      } else if (data && data.id) {
+        // Direct post data
+        setPost(data);
+        console.log('✅ Post data loaded (direct format):', data);
+      } else if (data === null) {
+        // Explicitly null response
+        throw new Error('Post not found');
+      } else {
+        console.warn('⚠️ Unexpected response format:', data);
+        throw new Error('Invalid response format');
+      }
+    } catch (err) {
+      console.error('❌ Error fetching post:', err);
+      setError(err instanceof Error ? err.message : 'Could not load post. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  }, [id]);
+
+  useEffect(() => {
     if (id) {
       fetchPost();
     }
-  }, [id]);
+  }, [id, fetchPost]);
 
   if (loading) {
     return (
