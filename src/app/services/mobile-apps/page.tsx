@@ -4,18 +4,18 @@ import { Heading, LanguageSwitcher } from "@/components";
 import { useLanguage } from "@/context/LanguageContext";
 
 export default function MobileAppsPage() {
-  const { t } = useLanguage();
+    const { t } = useLanguage();
 
-  return (
+    return (
     <div className="container mx-auto px-4 py-16">
       <div className="text-center mb-16">
         <Heading variant="h1" color="foreground" className="mb-4 text-[32px] md:text-[40px] lg:text-[48px] font-bold">
           {t('services.mobile.title') || 'Jasa Mobile App Development'}
-        </Heading>
+                        </Heading>
         <p className="text-gray-600 max-w-2xl mx-auto">
           {t('services.mobile.description') || 'Kami menyediakan jasa pembuatan aplikasi mobile profesional untuk iOS dan Android'}
-        </p>
-      </div>
+                        </p>
+                    </div>
 
       <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
         {/* Basic Package */}
@@ -26,7 +26,7 @@ export default function MobileAppsPage() {
           <p className="text-3xl font-bold mb-6">
             {t('services.mobile.basic.price') || 'Rp 25.000.000'}
           </p>
-          <ul className="space-y-3 mb-8">
+                                    <ul className="space-y-3 mb-8">
             <li className="flex items-start">
               <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
@@ -60,11 +60,11 @@ export default function MobileAppsPage() {
             <li className="flex items-start">
               <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-              </svg>
+                                                </svg>
               <span>{t('services.mobile.basic.features.support') || '1 bulan support'}</span>
-            </li>
-          </ul>
-        </div>
+                                            </li>
+                                    </ul>
+                                </div>
 
         {/* Advanced Package */}
         <div className="border rounded-lg p-8 hover:shadow-lg transition-shadow bg-green-50">
@@ -131,8 +131,8 @@ export default function MobileAppsPage() {
               <span>{t('services.mobile.advanced.features.analytics') || 'Analytics integration'}</span>
             </li>
           </ul>
+                            </div>
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 } 

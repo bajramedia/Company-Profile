@@ -4,18 +4,18 @@ import { Heading, LanguageSwitcher } from "@/components";
 import { useLanguage } from "@/context/LanguageContext";
 
 export default function GameAssetDevelopmentPage() {
-  const { t } = useLanguage();
+    const { t } = useLanguage();
 
-  return (
+    return (
     <div className="container mx-auto px-4 py-16">
       <div className="text-center mb-16">
         <Heading variant="h1" color="foreground" className="mb-4">
           {t('services.gameAsset.title') || 'Jasa Pembuatan Asset Game'}
-        </Heading>
+                        </Heading>
         <p className="text-gray-600 max-w-2xl mx-auto">
           {t('services.gameAsset.description') || 'Kami menyediakan jasa pembuatan aset game 2D dan 3D berkualitas tinggi untuk game Anda'}
-        </p>
-      </div>
+                        </p>
+                    </div>
 
       <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
         {/* 2D Package */}
@@ -26,7 +26,7 @@ export default function GameAssetDevelopmentPage() {
           <p className="text-3xl font-bold mb-6">
             {t('services.gameAsset.2d.price') || 'Rp 1.000.000'}
           </p>
-          <ul className="space-y-3 mb-8">
+                                    <ul className="space-y-3 mb-8">
             <li className="flex items-start">
               <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
@@ -60,11 +60,11 @@ export default function GameAssetDevelopmentPage() {
             <li className="flex items-start">
               <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-              </svg>
+                                                </svg>
               <span>{t('services.gameAsset.2d.features.revisions') || '2x revisi'}</span>
-            </li>
-          </ul>
-        </div>
+                                            </li>
+                                    </ul>
+                                </div>
 
         {/* 3D Package */}
         <div className="border rounded-lg p-8 hover:shadow-lg transition-shadow bg-green-50">
@@ -125,8 +125,8 @@ export default function GameAssetDevelopmentPage() {
               <span>{t('services.gameAsset.3d.features.optimization') || 'Optimasi performa'}</span>
             </li>
           </ul>
+                            </div>
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 } 

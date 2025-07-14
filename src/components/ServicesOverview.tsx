@@ -6,8 +6,8 @@ import { Button, Heading, Text, AnimatedText } from '@/components';
 
 // Data services
 const services = [
-    {
-        id: 'web-development',
+  {
+    id: 'web-development',
         title: 'Web Development',
         titleId: 'Website Modern & Responsif',
         description: 'Bangun website profesional dengan teknologi terbaru yang cepat, aman, dan mobile-friendly.',
@@ -15,9 +15,9 @@ const services = [
         icon: Globe,
         color: 'from-[#00D084] to-[#00B873]',
         features: ['Responsive Design', 'SEO Optimized', 'Fast Loading', 'Mobile First']
-    },
-    {
-        id: 'mobile-apps',
+  },
+  {
+    id: 'mobile-apps',
         title: 'Mobile Apps',
         titleId: 'Aplikasi Mobile Modern',
         description: 'Pengembangan aplikasi mobile native dan cross-platform untuk iOS dan Android dengan performa optimal.',
@@ -25,9 +25,9 @@ const services = [
         icon: Smartphone,
         color: 'from-[#00D084] to-[#00B873]',
         features: ['Native Development', 'Cross Platform', 'Performance Optimized', 'App Store Ready']
-    },
-    {
-        id: 'uiux-design',
+  },
+  {
+    id: 'uiux-design',
         title: 'UI/UX Design',
         titleId: 'Desain Interface yang Memukau',
         description: 'Ciptakan pengalaman pengguna yang luar biasa dengan desain yang intuitif dan menarik.',
@@ -45,9 +45,9 @@ const services = [
         icon: BarChart3,
         color: 'from-[#00D084] to-[#00B873]',
         features: ['SEO/SEM', 'Social Media Ads', 'Content Marketing', 'Analytics & Reporting']
-    },
-    {
-        id: 'sistem-development',
+  },
+  {
+    id: 'sistem-development',
         title: 'System Development',
         titleId: 'Sistem Development Enterprise',
         description: 'Bangun sistem enterprise yang scalable untuk workflow bisnis yang kompleks.',
@@ -79,26 +79,26 @@ const ServicesOverview: React.FC<ServicesOverviewProps> = ({
     showAllServices = true,
     className = ''
 }) => {
-    const { language } = useLanguage();
+  const { language } = useLanguage();
     const displayedServices = showAllServices ? services : services.slice(0, 3);
 
-    return (
+  return (
         <section className={`py-20 bg-white dark:bg-gray-900 transition-colors duration-300 ${className}`}>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-16">
                     <AnimatedText as="div">
                         <span className="text-[#00D084] font-medium text-sm tracking-wider uppercase mb-6 block">
-                            {language === 'id' ? 'Layanan Kami' : 'Our Services'}
-                        </span>
-                        <Heading variant="h2" color="foreground" className="mb-4 text-[28px] md:text-[32px] lg:text-[36px] font-extrabold">
-                            {language === 'id' ? 'Solusi Digital Komprehensif' : 'Comprehensive Digital Solutions'}
-                        </Heading>
+              {language === 'id' ? 'Layanan Kami' : 'Our Services'}
+            </span>
+          <Heading variant="h2" color="foreground" className="mb-4 text-[28px] md:text-[32px] lg:text-[36px] font-extrabold">
+            {language === 'id' ? 'Solusi Digital Komprehensif' : 'Comprehensive Digital Solutions'}
+          </Heading>
                         <Text color="secondary" className="max-w-3xl mx-auto text-base leading-relaxed">
-                            {language === 'id'
+            {language === 'id'
                                 ? 'Kami menawarkan berbagai layanan digital yang terintegrasi untuk membantu bisnis Anda berkembang di era digital.'
                                 : 'We offer various integrated digital services to help your business thrive in the digital era.'
-                            }
-                        </Text>
+            }
+          </Text>
                     </AnimatedText>
                 </div>
 
@@ -110,7 +110,7 @@ const ServicesOverview: React.FC<ServicesOverviewProps> = ({
                                     {/* Icon */}
                                     <div className={`w-16 h-16 bg-gradient-to-r ${service.color} rounded-xl flex items-center justify-center mb-6 text-white group-hover:scale-110 transition-transform duration-300`}>
                                         <service.icon className="w-8 h-8" />
-                                    </div>
+              </div>
 
                                     {/* Title */}
                                     <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-[#00D084] transition-colors">
@@ -122,7 +122,7 @@ const ServicesOverview: React.FC<ServicesOverviewProps> = ({
                                         {language === 'id' ? service.description : service.descriptionEn}
                                     </p>
 
-                                    {/* Features */}
+                {/* Features */}
                                     {showFeatures && (
                                         <div className="space-y-2 mb-6">
                                             {service.features.map((feature, idx) => (
@@ -132,37 +132,37 @@ const ServicesOverview: React.FC<ServicesOverviewProps> = ({
                                                     </svg>
                                                     <span className="text-sm text-gray-600 dark:text-gray-400">{feature}</span>
                                                 </div>
-                                            ))}
-                                        </div>
+                  ))}
+                </div>
                                     )}
 
                                     {/* Learn More Link */}
                                     <div className="flex items-center text-[#00D084] font-medium group-hover:gap-3 transition-all duration-300">
                                         <span>{language === 'id' ? 'Pelajari Lebih Lanjut' : 'Learn More'}</span>
                                         <svg className="w-4 h-4 transform group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-                                        </svg>
-                                    </div>
-                                </div>
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                    </svg>
+              </div>
+            </div>
                             </Link>
                         </AnimatedText>
-                    ))}
-                </div>
+          ))}
+        </div>
 
                 {!showAllServices && (
                     <div className="text-center mt-12">
                         <AnimatedText as="div">
-                            <Link href="/services">
+            <Link href="/services">
                                 <Button variant="outline" size="lg" className="px-8 py-4 border-2 border-[#00D084] text-[#00D084] hover:bg-[#00D084] hover:text-white transform hover:scale-105 transition-all duration-300">
-                                    {language === 'id' ? 'Lihat Semua Layanan' : 'View All Services'}
-                                </Button>
-                            </Link>
+                {language === 'id' ? 'Lihat Semua Layanan' : 'View All Services'}
+              </Button>
+            </Link>
                         </AnimatedText>
-                    </div>
+          </div>
                 )}
-            </div>
-        </section>
-    );
+      </div>
+    </section>
+  );
 };
 
 export default ServicesOverview; 

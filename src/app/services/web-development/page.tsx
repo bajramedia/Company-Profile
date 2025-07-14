@@ -7,68 +7,68 @@ import { useLanguage } from "@/context/LanguageContext";
 export default function WebDevelopmentPage() {
   const { t } = useLanguage();
 
-  return (
+    return (
     <div className="container mx-auto px-4 py-16">
       <div className="text-center mb-16">
         <Heading variant="h1" color="foreground" className="mb-4 text-[32px] md:text-[40px] lg:text-[48px] font-bold">
           {t('services.web.title') || 'Jasa Web Development'}
-        </Heading>
+                            </Heading>
         <p className="text-gray-600 max-w-2xl mx-auto">
           {t('services.web.description') || 'Kami menyediakan jasa pembuatan website profesional dengan teknologi modern dan performa tinggi untuk mengembangkan bisnis Anda'}
-        </p>
-      </div>
+                        </p>
+                    </div>
 
       {/* Technologies Section */}
       <div className="mb-20">
-        <div className="text-center mb-12">
+                    <div className="text-center mb-12">
           <h2 className="text-2xl md:text-3xl font-bold mb-4">
             {t('services.web.tech.title') || 'Teknologi yang Kami Gunakan'}
-          </h2>
+                        </h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
             {t('services.web.tech.description') || 'Stack modern yang terpercaya untuk menghasilkan website berkualitas tinggi'}
-          </p>
-        </div>
+                        </p>
+                    </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 max-w-6xl mx-auto">
           <div className="bg-white rounded-xl p-6 text-center shadow-sm hover:shadow-lg transition-all duration-300">
             <div className="text-4xl mb-3 text-blue-500 flex justify-center">
               <Globe className="w-12 h-12" />
-            </div>
+                                </div>
             <h3 className="font-semibold mb-2">Next.js</h3>
             <p className="text-sm text-gray-600">Modern React Framework</p>
-          </div>
+                        </div>
 
           <div className="bg-white rounded-xl p-6 text-center shadow-sm hover:shadow-lg transition-all duration-300">
             <div className="text-4xl mb-3 text-purple-500 flex justify-center">
               <Code2 className="w-12 h-12" />
-            </div>
+                            </div>
             <h3 className="font-semibold mb-2">TypeScript</h3>
             <p className="text-sm text-gray-600">Type-Safe JavaScript</p>
-          </div>
+                                </div>
 
           <div className="bg-white rounded-xl p-6 text-center shadow-sm hover:shadow-lg transition-all duration-300">
             <div className="text-4xl mb-3 text-green-500 flex justify-center">
               <Database className="w-12 h-12" />
-            </div>
+                            </div>
             <h3 className="font-semibold mb-2">PostgreSQL</h3>
             <p className="text-sm text-gray-600">Advanced Database</p>
-          </div>
+                        </div>
 
           <div className="bg-white rounded-xl p-6 text-center shadow-sm hover:shadow-lg transition-all duration-300">
             <div className="text-4xl mb-3 text-orange-500 flex justify-center">
               <Server className="w-12 h-12" />
-            </div>
+                                </div>
             <h3 className="font-semibold mb-2">Node.js</h3>
             <p className="text-sm text-gray-600">Backend Runtime</p>
-          </div>
+                            </div>
 
           <div className="bg-white rounded-xl p-6 text-center shadow-sm hover:shadow-lg transition-all duration-300">
             <div className="text-4xl mb-3 text-red-500 flex justify-center">
               <Cpu className="w-12 h-12" />
-            </div>
+                        </div>
             <h3 className="font-semibold mb-2">Redis</h3>
             <p className="text-sm text-gray-600">High Performance Cache</p>
-          </div>
+                        </div>
 
           <div className="bg-white rounded-xl p-6 text-center shadow-sm hover:shadow-lg transition-all duration-300">
             <div className="text-4xl mb-3 text-gray-700 flex justify-center">
@@ -76,9 +76,9 @@ export default function WebDevelopmentPage() {
             </div>
             <h3 className="font-semibold mb-2">Auth0</h3>
             <p className="text-sm text-gray-600">Enterprise Security</p>
-          </div>
-        </div>
-      </div>
+                            </div>
+                        </div>
+                    </div>
 
       <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
         {/* Basic Package */}
@@ -225,7 +225,7 @@ export default function WebDevelopmentPage() {
             </li>
           </ul>
         </div>
-      </div>
-    </div>
-  );
+            </div>
+        </div>
+    );
 } 

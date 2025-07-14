@@ -5,18 +5,18 @@ import { Settings, Database, Shield, BarChart } from 'lucide-react';
 import { useLanguage } from "@/context/LanguageContext";
 
 export default function SystemDevelopmentPage() {
-  const { t } = useLanguage();
+    const { t } = useLanguage();
 
-  return (
+    return (
     <div className="container mx-auto px-4 py-16">
       <div className="text-center mb-16">
         <Heading variant="h1" color="foreground" className="mb-4 text-[32px] md:text-[40px] lg:text-[48px] font-bold">
           {t('services.system.title') || 'Jasa Sistem Development'}
-        </Heading>
+                        </Heading>
         <p className="text-gray-600 max-w-2xl mx-auto">
           {t('services.system.description') || 'Kami menyediakan jasa pembuatan sistem dan aplikasi enterprise untuk mengoptimalkan proses bisnis Anda'}
         </p>
-      </div>
+                    </div>
 
       <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
         {/* Basic Package */}
@@ -57,21 +57,21 @@ export default function SystemDevelopmentPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
               </svg>
               <span>Basic reporting</span>
-            </li>
+                                    </li>
             <li className="flex items-start">
               <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
               </svg>
               <span>2x revisi</span>
-            </li>
+                                    </li>
             <li className="flex items-start">
               <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
               </svg>
               <span>Training penggunaan</span>
-            </li>
-          </ul>
-        </div>
+                                    </li>
+                                </ul>
+                        </div>
 
         {/* Standard Package */}
         <div className="border rounded-lg p-8 hover:shadow-lg transition-shadow bg-green-50">
@@ -118,27 +118,27 @@ export default function SystemDevelopmentPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
               </svg>
               <span>API integration</span>
-            </li>
+                                    </li>
             <li className="flex items-start">
               <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
               </svg>
               <span>4x revisi</span>
-            </li>
+                                    </li>
             <li className="flex items-start">
               <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
               </svg>
               <span>Training & dokumentasi</span>
-            </li>
+                                    </li>
             <li className="flex items-start">
               <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
               </svg>
               <span>Support 3 bulan</span>
-            </li>
-          </ul>
-        </div>
+                                    </li>
+                                </ul>
+                        </div>
 
         {/* Premium Package */}
         <div className="border rounded-lg p-8 hover:shadow-lg transition-shadow">
@@ -190,28 +190,28 @@ export default function SystemDevelopmentPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
               </svg>
               <span>Unlimited revisions</span>
-            </li>
+                                    </li>
             <li className="flex items-start">
               <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
               </svg>
               <span>Training & SOP lengkap</span>
-            </li>
+                                    </li>
             <li className="flex items-start">
               <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
               </svg>
               <span>Support 1 tahun</span>
-            </li>
+                                    </li>
             <li className="flex items-start">
               <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
               </svg>
               <span>Server monitoring</span>
-            </li>
-          </ul>
+                                    </li>
+                                </ul>
+                            </div>
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 } 

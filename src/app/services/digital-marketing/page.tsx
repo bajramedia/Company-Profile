@@ -4,18 +4,18 @@ import { Heading, LanguageSwitcher } from "@/components";
 import { useLanguage } from "@/context/LanguageContext";
 
 export default function DigitalMarketingPage() {
-  const { t } = useLanguage();
+    const { t } = useLanguage();
 
-  return (
+    return (
     <div className="container mx-auto px-4 py-16">
       <div className="text-center mb-16">
         <Heading variant="h1" color="foreground" className="mb-4 text-[32px] md:text-[40px] lg:text-[48px] font-bold">
           {t('services.marketing.title') || 'Jasa Digital Marketing'}
-        </Heading>
+                        </Heading>
         <p className="text-gray-600 max-w-2xl mx-auto">
           {t('services.marketing.description') || 'Kami menyediakan jasa digital marketing profesional untuk meningkatkan presence dan penjualan bisnis Anda'}
         </p>
-      </div>
+                    </div>
 
       <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
         {/* Basic Package */}
@@ -38,21 +38,21 @@ export default function DigitalMarketingPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
               </svg>
               <span>{t('services.marketing.basic.features.keywords') || 'Keyword research'}</span>
-            </li>
+                                    </li>
             <li className="flex items-start">
               <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
               </svg>
               <span>{t('services.marketing.basic.features.optimization') || 'Basic SEO optimization'}</span>
-            </li>
+                                    </li>
             <li className="flex items-start">
               <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
               </svg>
               <span>{t('services.marketing.basic.features.report') || 'Monthly report'}</span>
-            </li>
-          </ul>
-        </div>
+                                    </li>
+                                </ul>
+                        </div>
 
         {/* Pro Package */}
         <div className="border rounded-lg p-8 hover:shadow-lg transition-shadow bg-green-50">
@@ -75,27 +75,27 @@ export default function DigitalMarketingPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
               </svg>
               <span>{t('services.marketing.pro.features.content') || 'Content strategy'}</span>
-            </li>
+                                    </li>
             <li className="flex items-start">
               <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
               </svg>
               <span>{t('services.marketing.pro.features.seo') || 'Advanced SEO'}</span>
-            </li>
+                                    </li>
             <li className="flex items-start">
               <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
               </svg>
               <span>{t('services.marketing.pro.features.analytics') || 'Analytics setup'}</span>
-            </li>
+                                    </li>
             <li className="flex items-start">
               <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
               </svg>
               <span>{t('services.marketing.pro.features.report') || 'Weekly reports'}</span>
-            </li>
-          </ul>
-        </div>
+                                    </li>
+                                </ul>
+                        </div>
 
         {/* Enterprise Package */}
         <div className="border rounded-lg p-8 hover:shadow-lg transition-shadow">
@@ -117,28 +117,28 @@ export default function DigitalMarketingPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
               </svg>
               <span>{t('services.marketing.enterprise.features.channels') || 'Multi-channel campaigns'}</span>
-            </li>
+                                    </li>
             <li className="flex items-start">
               <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
               </svg>
               <span>{t('services.marketing.enterprise.features.automation') || 'Marketing automation'}</span>
-            </li>
+                                    </li>
             <li className="flex items-start">
               <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
               </svg>
               <span>{t('services.marketing.enterprise.features.dedicated') || 'Dedicated team'}</span>
-            </li>
+                                    </li>
             <li className="flex items-start">
               <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
               </svg>
               <span>{t('services.marketing.enterprise.features.report') || 'Custom reporting'}</span>
-            </li>
-          </ul>
+                                    </li>
+                                </ul>
+                            </div>
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 } 

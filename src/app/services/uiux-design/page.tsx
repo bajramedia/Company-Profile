@@ -4,18 +4,18 @@ import { Heading, LanguageSwitcher } from "@/components";
 import { useLanguage } from "@/context/LanguageContext";
 
 export default function UiUxDesignPage() {
-  const { t } = useLanguage();
+    const { t } = useLanguage();
 
-  return (
+    return (
     <div className="container mx-auto px-4 py-16">
       <div className="text-center mb-16">
         <Heading variant="h1" color="foreground" className="mb-4 text-[32px] md:text-[40px] lg:text-[48px] font-bold">
           {t('services.uiux.title') || 'Jasa UI/UX Design'}
-        </Heading>
+                        </Heading>
         <p className="text-gray-600 max-w-2xl mx-auto">
           {t('services.uiux.description') || 'Kami menyediakan jasa pembuatan desain UI/UX profesional untuk meningkatkan pengalaman pengguna aplikasi dan website Anda'}
-        </p>
-      </div>
+                        </p>
+                    </div>
 
       <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
         {/* Basic Package */}
@@ -58,7 +58,7 @@ export default function UiUxDesignPage() {
               <span>{t('services.uiux.basic.features.style') || 'Panduan style dasar'}</span>
             </li>
           </ul>
-        </div>
+                    </div>
 
         {/* Standard Package */}
         <div className="border rounded-lg p-8 hover:shadow-lg transition-shadow bg-green-50">
@@ -119,7 +119,7 @@ export default function UiUxDesignPage() {
               <span>{t('services.uiux.standard.features.documentation') || 'Dokumentasi desain'}</span>
             </li>
           </ul>
-        </div>
+                    </div>
 
         {/* Premium Package */}
         <div className="border rounded-lg p-8 hover:shadow-lg transition-shadow">
@@ -173,8 +173,8 @@ export default function UiUxDesignPage() {
               <span>{t('services.uiux.premium.features.styleGuide') || 'Style guide custom'}</span>
             </li>
           </ul>
+                            </div>
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 } 

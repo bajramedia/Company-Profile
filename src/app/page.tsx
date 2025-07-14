@@ -280,7 +280,7 @@ export default function HomePage() {
                                         }
                                     </Heading>
 
-                                   
+
                                     <Text color="secondary" className="mb-8 text-base leading-relaxed">
                                         {language === 'id'
                                             ? 'Bajra Media (sebelumnya Reduktor Development) adalah perusahaan teknologi yang fokus pada pengembangan software inovatif dan solusi digital terintegrasi. Kami berdedikasi membantu bisnis dari berbagai skala untuk bertransformasi dan berkembang di era digital. Kami adalah partner terpercaya dalam merancang, membangun, dan mengelola teknologi yang mendorong efisiensi operasional serta keunggulan kompetitif untuk klien-klien kami.'
@@ -289,7 +289,7 @@ export default function HomePage() {
                                     </Text>
 
                                
-                                
+
                                     <div className="flex flex-col sm:flex-row gap-4">
                                         <Link href="/about">
                                             <Button variant="primary" size="md" className="px-8 py-4 transform hover:scale-105 transition-all duration-300 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700">

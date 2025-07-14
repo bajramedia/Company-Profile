@@ -146,6 +146,10 @@ const Portfolio: React.FC = () => {
     }
   };
 
+  const getImageSrc = (item: PortfolioItem): string => {
+    return item.featuredImage || item.featured_image || '/images/placeholder.jpg';
+  };
+
   if (loading) {
     console.log('🎯 Portfolio component: Rendering LOADING state');
     return (
@@ -182,7 +186,7 @@ const Portfolio: React.FC = () => {
           <AnimatedText as="div">
             <span className="inline-block text-sm font-medium text-[#00D084] mb-2">
               {t('portfolio.subtitle') || 'Our Portfolio'}
-            </span>
+              </span>
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
               {t('portfolio.title') || 'Latest Projects'}
             </h2>
@@ -194,43 +198,43 @@ const Portfolio: React.FC = () => {
 
         {/* Categories */}
         <div className="flex flex-wrap justify-center gap-4 mb-12">
-          <button
-            onClick={() => handleCategoryFilter('all')}
+              <button
+                onClick={() => handleCategoryFilter('all')}
             className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
-              selectedCategory === 'all'
+                  selectedCategory === 'all'
                 ? 'bg-[#00D084] text-white'
                 : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-[#00D084] hover:text-white'
-            }`}
-          >
+                }`}
+              >
             {t('portfolio.filter.all') || 'All'}
-          </button>
-          {categories.map((category) => (
-            <button
-              key={category.id}
-              onClick={() => handleCategoryFilter(category.slug)}
+              </button>
+              {categories.map((category) => (
+                <button
+                  key={category.id}
+                  onClick={() => handleCategoryFilter(category.slug)}
               className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
-                selectedCategory === category.slug
+                    selectedCategory === category.slug
                   ? 'bg-[#00D084] text-white'
                   : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-[#00D084] hover:text-white'
-              }`}
-            >
+                  }`}
+                >
               {category.name}
-            </button>
-          ))}
-        </div>
+                </button>
+              ))}
+            </div>
 
         {/* Portfolio Grid */}
         {displayedItems.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {displayedItems.map((item) => (
               <Link href={`/portfolio/${item.slug}`} key={item.id}>
                 <div className="group bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
                   {/* Image Container */}
                   <div className="relative h-48 overflow-hidden">
-                    <Image
-                      src={getFieldValue(item, 'image')}
-                      alt={item.title}
-                      fill
+                      <Image
+                      src={getImageSrc(item)}
+                        alt={item.title}
+                        fill
                       className="object-cover group-hover:scale-110 transition-transform duration-500"
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     />
@@ -238,38 +242,38 @@ const Portfolio: React.FC = () => {
                     <div className="absolute bottom-4 left-4 right-4">
                       <span className="inline-block px-3 py-1 bg-[#00D084] text-white text-xs font-medium rounded-full">
                         {item.categoryName}
-                      </span>
+                          </span>
                     </div>
-                  </div>
+                    </div>
 
-                  {/* Content */}
-                  <div className="p-6">
+                    {/* Content */}
+                    <div className="p-6">
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-[#00D084] transition-colors">
-                      {item.title}
-                    </h3>
+                        {item.title}
+                      </h3>
                     <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-2">
-                      {getFieldValue(item, 'description')}
-                    </p>
-                    
-                    {/* Meta Info */}
+                        {getFieldValue(item, 'description')}
+                      </p>
+                      
+                      {/* Meta Info */}
                     <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
                       <div className="flex items-center space-x-4">
                         <span className="flex items-center">
                           <Calendar className="w-4 h-4 mr-1" />
                           {new Date(getFieldValue(item, 'date')).toLocaleDateString()}
-                        </span>
+                            </span>
                         <span className="flex items-center">
                           <Eye className="w-4 h-4 mr-1" />
                           {getFieldValue(item, 'views')}
                         </span>
                       </div>
                       <ArrowUpRight className="w-5 h-5 text-[#00D084] transform group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                      </div>
                     </div>
                   </div>
-                </div>
-              </Link>
+                </Link>
             ))}
-          </div>
+        </div>
         ) : (
           <div className="text-center py-12">
             <div className="inline-block p-4 rounded-full bg-gray-100 dark:bg-gray-800 mb-4">
@@ -288,12 +292,12 @@ const Portfolio: React.FC = () => {
 
         {/* View All Button */}
         <div className="text-center mt-12">
-          <Link href="/portfolio">
+            <Link href="/portfolio">
             <button className="inline-flex items-center px-8 py-3 rounded-full bg-[#00D084] text-white font-medium hover:bg-[#00B873] transition-colors duration-300">
               {t('portfolio.viewAll') || 'View All Projects'}
               <ArrowUpRight className="w-5 h-5 ml-2" />
-            </button>
-          </Link>
+              </button>
+            </Link>
         </div>
       </div>
     </section>

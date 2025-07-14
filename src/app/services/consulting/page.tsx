@@ -4,18 +4,18 @@ import { Heading, LanguageSwitcher } from "@/components";
 import { useLanguage } from "@/context/LanguageContext";
 
 export default function ConsultingPage() {
-  const { t } = useLanguage();
+    const { t } = useLanguage();
 
-  return (
+    return (
     <div className="container mx-auto px-4 py-16">
       <div className="text-center mb-16">
         <Heading variant="h1" color="foreground" className="mb-4 text-[32px] md:text-[40px] lg:text-[48px] font-bold">
           {t('services.consulting.title') || 'Jasa Business Consulting'}
-        </Heading>
+                        </Heading>
         <p className="text-gray-600 max-w-2xl mx-auto">
           {t('services.consulting.description') || 'Kami menyediakan jasa konsultasi bisnis profesional untuk membantu mengembangkan bisnis Anda'}
         </p>
-      </div>
+                    </div>
 
       <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
         {/* Basic Package */}
@@ -52,7 +52,7 @@ export default function ConsultingPage() {
               <span>{t('services.consulting.basic.features.report') || 'Laporan konsultasi'}</span>
             </li>
           </ul>
-        </div>
+                    </div>
 
         {/* Pro Package */}
         <div className="border rounded-lg p-8 hover:shadow-lg transition-shadow bg-green-50">
@@ -95,7 +95,7 @@ export default function ConsultingPage() {
               <span>{t('services.consulting.pro.features.report') || 'Laporan progress mingguan'}</span>
             </li>
           </ul>
-        </div>
+                        </div>
 
         {/* Enterprise Package */}
         <div className="border rounded-lg p-8 hover:shadow-lg transition-shadow">
@@ -137,8 +137,8 @@ export default function ConsultingPage() {
               <span>{t('services.consulting.enterprise.features.report') || 'Custom reporting'}</span>
             </li>
           </ul>
+                            </div>
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 } 

@@ -5,18 +5,18 @@ import { Instagram, MessageCircle, TrendingUp, BarChart2 } from 'lucide-react';
 import { useLanguage } from "@/context/LanguageContext";
 
 export default function SocialMediaManagementPage() {
-  const { t } = useLanguage();
+    const { t } = useLanguage();
 
-  return (
+    return (
     <div className="container mx-auto px-4 py-16">
       <div className="text-center mb-16">
         <Heading variant="h1" color="foreground" className="mb-4 text-[32px] md:text-[40px] lg:text-[48px] font-bold">
           {t('services.social.title') || 'Jasa Social Media Management'}
-        </Heading>
+                        </Heading>
         <p className="text-gray-600 max-w-2xl mx-auto">
           {t('services.social.description') || 'Kami menyediakan jasa pengelolaan media sosial profesional untuk meningkatkan presence dan engagement brand Anda'}
         </p>
-      </div>
+                    </div>
 
       <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
         {/* Basic Package */}
@@ -57,27 +57,27 @@ export default function SocialMediaManagementPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
               </svg>
               <span>{t('services.social.basic.features.hashtag') || 'Hashtag research'}</span>
-            </li>
+                                    </li>
             <li className="flex items-start">
               <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
               </svg>
               <span>{t('services.social.basic.features.contentPlanning') || 'Content planning bulanan'}</span>
-            </li>
+                                    </li>
             <li className="flex items-start">
               <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
               </svg>
               <span>{t('services.social.basic.features.revision') || '1x revisi konten'}</span>
-            </li>
+                                    </li>
             <li className="flex items-start">
               <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
               </svg>
               <span>{t('services.social.basic.features.report') || 'Report performa bulanan'}</span>
-            </li>
-          </ul>
-        </div>
+                                    </li>
+                                </ul>
+                        </div>
 
         {/* Pro Package */}
         <div className="border rounded-lg p-8 hover:shadow-lg transition-shadow bg-green-50">
@@ -100,64 +100,64 @@ export default function SocialMediaManagementPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
               </svg>
               <span>{t('services.social.pro.features.stories') || '24 story Instagram/bulan'}</span>
-            </li>
+                                    </li>
             <li className="flex items-start">
               <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
               </svg>
               <span>{t('services.social.pro.features.reels') || '4 Reels Instagram/bulan'}</span>
-            </li>
+                                    </li>
             <li className="flex items-start">
               <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
               </svg>
               <span>{t('services.social.pro.features.premiumDesign') || 'Desain konten premium'}</span>
-            </li>
+                                    </li>
             <li className="flex items-start">
               <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
               </svg>
               <span>{t('services.social.pro.features.copywritingSEO') || 'Copywriting caption SEO'}</span>
-            </li>
+                                    </li>
             <li className="flex items-start">
               <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
               </svg>
               <span>{t('services.social.pro.features.keywordResearch') || 'Hashtag & keyword research'}</span>
-            </li>
+                                    </li>
             <li className="flex items-start">
               <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
               </svg>
               <span>{t('services.social.pro.features.calendarStrategy') || 'Content calendar & strategy'}</span>
-            </li>
+                                    </li>
             <li className="flex items-start">
               <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
               </svg>
               <span>{t('services.social.pro.features.revision') || '3x revisi konten'}</span>
-            </li>
+                                    </li>
             <li className="flex items-start">
               <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
               </svg>
               <span>{t('services.social.pro.features.adminEngagement') || 'Admin engagement aktif'}</span>
-            </li>
+                                    </li>
             <li className="flex items-start">
               <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
               </svg>
               <span>{t('services.social.pro.features.reportAnalytics') || 'Report analytics mingguan'}</span>
-            </li>
+                                    </li>
             <li className="flex items-start">
               <svg className="w-5 h-5 text-green-500 mr-2 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
               </svg>
               <span>{t('services.social.pro.features.consultation') || 'Konsultasi strategi'}</span>
-            </li>
-          </ul>
+                                    </li>
+                                </ul>
+                            </div>
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 } 
