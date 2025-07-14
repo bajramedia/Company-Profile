@@ -9,7 +9,7 @@ type Props = {
 
 export default async function PortfolioDetailPage({ params, searchParams }: Props) {
     const { slug } = await params;
-    
+
     return (
         <Suspense fallback={<div>Loading...</div>}>
             <PortfolioDetailClient slug={slug} />

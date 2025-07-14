@@ -36,52 +36,46 @@ export default function DigitalMarketingPage() {
             <div className="container mx-auto px-4 py-16">
                 <div className="text-center mb-16">
                     <Heading variant="h1" color="foreground" className="mb-4 text-[32px] md:text-[40px] lg:text-[48px] font-bold">
-                        {t('services.marketing.title') || 'Jasa Digital Marketing'}
+                        Jasa Digital Marketing
                     </Heading>
                     <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-                        {t('services.marketing.description') || 'Kami menyediakan jasa digital marketing profesional untuk meningkatkan presence dan penjualan bisnis Anda'}
+                        Kami menyediakan jasa digital marketing profesional untuk meningkatkan presence dan penjualan bisnis Anda
                     </p>
-                </div>
+                        </div>
 
                 <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
                     {/* Basic Package */}
                     <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-8 hover:shadow-lg transition-all duration-300 bg-white dark:bg-gray-800 flex flex-col">
                         <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
-                            {t('services.marketing.basic.title') || 'Basic Marketing'}
+                            Basic Marketing
                         </h3>
                         <p className="text-3xl font-bold mb-6 text-gray-900 dark:text-white">
-                            {t('services.marketing.basic.price') || 'Rp 2.500.000'}<span className="text-base font-normal text-gray-600 dark:text-gray-400">/bulan</span>
+                            Rp 2.500.000<span className="text-base font-normal text-gray-600 dark:text-gray-400">/bulan</span>
                         </p>
                         <ul className="space-y-3 mb-8 flex-grow">
                             <li className="flex items-start">
                                 <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
-                                <span className="text-gray-700 dark:text-gray-300">{t('services.marketing.basic.features.socialMedia') || 'Social media management'}</span>
+                                <span className="text-gray-700 dark:text-gray-300">Social media management (2 platform)</span>
                             </li>
                             <li className="flex items-start">
                                 <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
-                                <span className="text-gray-700 dark:text-gray-300">{t('services.marketing.basic.features.content') || 'Content creation'}</span>
+                                <span className="text-gray-700 dark:text-gray-300">12 post/bulan</span>
                             </li>
                             <li className="flex items-start">
                                 <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
-                                <span className="text-gray-700 dark:text-gray-300">{t('services.marketing.basic.features.seo') || 'Basic SEO optimization'}</span>
-                            </li>
-                            <li className="flex items-start">
-                                <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                                </svg>
-                                <span className="text-gray-700 dark:text-gray-300">{t('services.marketing.basic.features.report') || 'Monthly report'}</span>
+                                <span className="text-gray-700 dark:text-gray-300">Basic content strategy</span>
                             </li>
                         </ul>
                         <button className="w-full bg-green-600 hover:bg-green-700 text-white py-3 px-6 rounded-lg transition-colors duration-300 mt-auto">
                             Pilih Paket Basic
                         </button>
-                    </div>
+                            </div>
 
                     {/* Pro Package */}
                     <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-8 hover:shadow-lg transition-all duration-300 bg-green-50 dark:bg-green-900/20 flex flex-col relative">
@@ -100,30 +94,30 @@ export default function DigitalMarketingPage() {
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
                                 <span className="text-gray-700 dark:text-gray-300">{t('services.marketing.pro.features.advanced') || 'Advanced social media strategy'}</span>
-                            </li>
+                                    </li>
                             <li className="flex items-start">
                                 <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
                                 <span className="text-gray-700 dark:text-gray-300">{t('services.marketing.pro.features.paidAds') || 'Paid advertising campaigns'}</span>
-                            </li>
+                                    </li>
                             <li className="flex items-start">
                                 <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
                                 <span className="text-gray-700 dark:text-gray-300">{t('services.marketing.pro.features.analytics') || 'Advanced analytics'}</span>
-                            </li>
+                                    </li>
                             <li className="flex items-start">
                                 <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
                                 <span className="text-gray-700 dark:text-gray-300">{t('services.marketing.pro.features.email') || 'Email marketing'}</span>
-                            </li>
-                        </ul>
+                                    </li>
+                                </ul>
                         <button className="w-full bg-green-600 hover:bg-green-700 text-white py-3 px-6 rounded-lg transition-colors duration-300 mt-auto">
                             Pilih Paket Pro
                         </button>
-                    </div>
+                        </div>
 
                     {/* Enterprise Package */}
                     <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-8 hover:shadow-lg transition-all duration-300 bg-white dark:bg-gray-800 flex flex-col">
@@ -139,39 +133,39 @@ export default function DigitalMarketingPage() {
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
                                 <span className="text-gray-700 dark:text-gray-300">{t('services.marketing.enterprise.features.fullService') || 'Full-service marketing'}</span>
-                            </li>
+                                    </li>
                             <li className="flex items-start">
                                 <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
                                 <span className="text-gray-700 dark:text-gray-300">{t('services.marketing.enterprise.features.dedicated') || 'Dedicated marketing team'}</span>
-                            </li>
+                                    </li>
                             <li className="flex items-start">
                                 <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
                                 <span className="text-gray-700 dark:text-gray-300">{t('services.marketing.enterprise.features.strategy') || 'Custom marketing strategy'}</span>
-                            </li>
+                                    </li>
                             <li className="flex items-start">
                                 <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
                                 <span className="text-gray-700 dark:text-gray-300">{t('services.marketing.enterprise.features.support') || 'Priority support'}</span>
-                            </li>
-                        </ul>
+                                    </li>
+                                </ul>
                         <button className="w-full bg-green-600 hover:bg-green-700 text-white py-3 px-6 rounded-lg transition-colors duration-300 mt-auto">
                             Hubungi Kami
                         </button>
                     </div>
-                </div>
+                        </div>
 
                 {/* CTA Section */}
                 <div className="text-center mt-16">
                     <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Siap Meningkatkan Digital Presence Anda?</h2>
                     <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
                         Konsultasi gratis untuk membahas strategi digital marketing yang tepat untuk bisnis Anda. Tim ahli kami siap membantu!
-                    </p>
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                            </p>
+                            <div className="flex flex-col sm:flex-row gap-4 justify-center">
                         <button className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg transition-colors duration-300">
                             Konsultasi Gratis
                         </button>

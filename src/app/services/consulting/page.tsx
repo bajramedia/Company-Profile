@@ -41,7 +41,7 @@ export default function ConsultingPage() {
                     <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
                         {t('services.consulting.description') || 'Kami menyediakan jasa konsultasi bisnis profesional untuk membantu mengembangkan bisnis Anda'}
                     </p>
-                </div>
+                        </div>
 
                 <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
                     {/* Basic Package */}
@@ -163,17 +163,17 @@ export default function ConsultingPage() {
                             Hubungi Kami
                         </button>
                     </div>
-                </div>
+                    </div>
 
                 {/* CTA Section */}
                 <div className="text-center mt-16">
                     <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Siap Mengembangkan Bisnis Anda?</h2>
                     <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
                         Konsultasi gratis untuk membahas kebutuhan bisnis Anda. Tim ahli kami siap membantu mengembangkan strategi yang tepat!
-                    </p>
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                            </p>
+                            <div className="flex flex-col sm:flex-row gap-4 justify-center">
                         <button className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg transition-colors duration-300">
-                            Konsultasi Gratis
+                                    Konsultasi Gratis
                         </button>
                         <button className="border border-green-600 text-green-600 dark:text-green-400 px-8 py-3 rounded-lg hover:bg-green-50 dark:hover:bg-green-900/20 transition-colors duration-300">
                             Lihat Case Study
