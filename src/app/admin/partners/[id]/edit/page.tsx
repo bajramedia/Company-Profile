@@ -44,7 +44,7 @@ export default function EditPartnerPage() {
         if (partnerId) {
             fetchPartner();
         }
-    }, [partnerId]);
+    }, [partnerId, fetchPartner]);
 
     const fetchPartner = async () => {
         try {

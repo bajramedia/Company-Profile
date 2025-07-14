@@ -101,12 +101,12 @@ function AdminPostsContent() {
   // Effect to reload posts when page changes
   useEffect(() => {
     loadPosts();
-  }, [currentPage]);
+  }, [currentPage, loadPosts]);
 
   // Initial load
   useEffect(() => {
     loadPosts();
-  }, []);
+  }, [loadPosts]);
 
   if (loading && posts.length === 0) {
     return (

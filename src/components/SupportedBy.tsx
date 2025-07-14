@@ -142,7 +142,7 @@ const SupportedBy: React.FC = () => {
                 : 'Interested in partnering with us?'
               }
             </Text>
-            <a
+            <Link
               href="/#contact"
               className="inline-flex items-center text-green-500 hover:text-green-600 font-medium text-sm transition-colors duration-300"
             >
@@ -150,7 +150,7 @@ const SupportedBy: React.FC = () => {
               <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
               </svg>
-            </a>
+            </Link>
           </div>
         </AnimatedText>
       </div>

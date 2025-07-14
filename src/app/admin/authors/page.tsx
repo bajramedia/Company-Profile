@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { FiEdit, FiTrash2, FiPlusCircle } from 'react-icons/fi';
 import { deleteAuthor } from '@/actions/author-actions';
+import Image from 'next/image';
 
 interface Author {
   id: string;
@@ -107,22 +108,15 @@ export default function AuthorsPage() {
                 <tr key={author.id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
-                      {author.avatar ? (
-                        <div className="flex-shrink-0 h-10 w-10 rounded-full overflow-hidden">
-                          <img
-                            src={author.avatar}
-                            alt={author.name}
-                            className="h-10 w-10 rounded-full object-cover"
-                            onError={(e) => (e.currentTarget.src = '/images/placeholder.jpg')}
-                          />
-                        </div>
-                      ) : (
-                        <div className="flex-shrink-0 h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center">
-                          <span className="text-gray-500 text-sm font-medium">
-                            {author.name.charAt(0).toUpperCase()}
-                          </span>
-                        </div>
-                      )}
+                      <div className="relative w-10 h-10 overflow-hidden rounded-full">
+                        <Image
+                          src={author.avatar || '/images/team/default-avatar.jpg'}
+                          alt={author.name}
+                          fill
+                          sizes="40px"
+                          className="object-cover"
+                        />
+                      </div>
                       <div className="ml-4">
                         <div className="text-sm font-medium text-gray-900">{author.name}</div>
                       </div>

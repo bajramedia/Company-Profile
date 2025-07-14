@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface Partner {
     id: string;
@@ -178,15 +179,13 @@ export default function PartnersAdminPage() {
                                         <tr key={partner.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
                                             <td className="px-6 py-4 whitespace-nowrap">
                                                 <div className="flex items-center">
-                                                    <div className="flex-shrink-0 h-12 w-12">
-                                                        <img
-                                                            className="h-12 w-12 rounded-lg object-contain bg-gray-100 dark:bg-gray-600"
-                                                            src={partner.logo_url || '/images/logo.png'}
+                                                    <div className="relative w-10 h-10 overflow-hidden rounded-lg">
+                                                        <Image
+                                                            src={partner.logo_url || '/images/placeholder.jpg'}
                                                             alt={partner.name_en}
-                                                            onError={(e) => {
-                                                                const target = e.target as HTMLImageElement;
-                                                                target.src = '/images/logo.png';
-                                                            }}
+                                                            fill
+                                                            sizes="40px"
+                                                            className="object-cover"
                                                         />
                                                     </div>
                                                     <div className="ml-4">
