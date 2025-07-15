@@ -243,7 +243,7 @@ const Portfolio: React.FC = () => {
                       <span className="inline-block px-3 py-1 bg-[#00D084] text-white text-xs font-medium rounded-full">
                         {item.categoryName}
                           </span>
-                    </div>
+                      </div>
                     </div>
 
                     {/* Content */}
@@ -266,7 +266,7 @@ const Portfolio: React.FC = () => {
                           <Eye className="w-4 h-4 mr-1" />
                           {getFieldValue(item, 'views')}
                         </span>
-                      </div>
+                        </div>
                       <ArrowUpRight className="w-5 h-5 text-[#00D084] transform group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                       </div>
                     </div>

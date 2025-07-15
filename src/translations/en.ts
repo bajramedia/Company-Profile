@@ -333,27 +333,27 @@ export const en = {
                 description: 'Modern technology stack for maximum performance',
                 nextjs: {
                     title: 'Next.js',
-                    desc: 'Modern React framework for web development'
+                    desc: 'Modern React Framework'
                 },
                 typescript: {
                     title: 'TypeScript',
-                    desc: 'JavaScript with type system for safer code'
+                    desc: 'Type-Safe JavaScript'
                 },
-                postgresql: {
-                    title: 'PostgreSQL',
-                    desc: 'Powerful relational database'
+                mysql: {
+                    title: 'MySQL',
+                    desc: 'Powerful Database'
                 },
                 nodejs: {
                     title: 'Node.js',
-                    desc: 'JavaScript runtime for backend development'
+                    desc: 'Server Runtime'
                 },
-                redis: {
-                    title: 'Redis',
-                    desc: 'In-memory database for caching'
+                laravel: {
+                    title: 'Laravel',
+                    desc: 'PHP Framework'
                 },
-                security: {
-                    title: 'Security',
-                    desc: 'Layered security implementation'
+                vuejs: {
+                    title: 'Vue.js',
+                    desc: 'Progressive Framework'
                 }
             },
             basic: {

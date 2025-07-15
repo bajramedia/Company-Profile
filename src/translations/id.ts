@@ -333,27 +333,27 @@ export const id = {
                 description: 'Stack teknologi modern untuk performa maksimal',
                 nextjs: {
                     title: 'Next.js',
-                    desc: 'Framework React modern untuk web development'
+                    desc: 'Framework React Modern'
                 },
                 typescript: {
                     title: 'TypeScript',
-                    desc: 'JavaScript dengan type system untuk kode yang lebih aman'
+                    desc: 'JavaScript dengan Type-Safe'
                 },
-                postgresql: {
-                    title: 'PostgreSQL',
-                    desc: 'Database relasional yang powerful'
+                mysql: {
+                    title: 'MySQL',
+                    desc: 'Database Handal'
                 },
                 nodejs: {
                     title: 'Node.js',
-                    desc: 'Runtime JavaScript untuk backend development'
+                    desc: 'Runtime Server'
                 },
-                redis: {
-                    title: 'Redis',
-                    desc: 'In-memory database untuk caching'
+                laravel: {
+                    title: 'Laravel',
+                    desc: 'Framework PHP'
                 },
-                security: {
-                    title: 'Security',
-                    desc: 'Implementasi keamanan berlapis'
+                vuejs: {
+                    title: 'Vue.js',
+                    desc: 'Framework Progresif'
                 }
             },
             basic: {

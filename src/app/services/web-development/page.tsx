@@ -4,6 +4,7 @@ import { Heading, Navbar, WhatsAppChat } from "@/components";
 import { Globe, Code2, Database, Server, Cpu, Lock } from 'lucide-react';
 import { useLanguage } from "@/context/LanguageContext";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function WebDevelopmentPage() {
   const { t } = useLanguage();
@@ -55,80 +56,70 @@ export default function WebDevelopmentPage() {
                         </p>
                     </div>
 
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 max-w-6xl mx-auto">
-                        <div className="bg-white dark:bg-gray-800 rounded-xl p-6 text-center shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-200 dark:border-gray-700">
-                            <div className="text-4xl mb-3 text-blue-500 flex justify-center">
-                                <Globe className="w-12 h-12" />
-                            </div>
-                            <h3 className="font-semibold mb-2 text-gray-900 dark:text-white">
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                        <div className="flex flex-col items-center justify-center p-4 rounded-lg bg-white/5 backdrop-blur-sm">
+                            <Image src="/next.svg" alt="Next.js" width={40} height={40} className="mb-2" />
+                            <h3 className="text-lg font-semibold text-center">
                                 {t('services.webdev.tech.nextjs.title') || 'Next.js'}
                             </h3>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                            <p className="text-sm text-center text-gray-400">
                                 {t('services.webdev.tech.nextjs.desc') || 'Modern React Framework'}
                             </p>
                         </div>
 
-                        <div className="bg-white dark:bg-gray-800 rounded-xl p-6 text-center shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-200 dark:border-gray-700">
-                            <div className="text-4xl mb-3 text-purple-500 flex justify-center">
-                                <Code2 className="w-12 h-12" />
+                        <div className="flex flex-col items-center justify-center p-4 rounded-lg bg-white/5 backdrop-blur-sm">
+                            <div className="text-purple-500 mb-2 text-3xl">
+                                <code>&lt;/&gt;</code>
                             </div>
-                            <h3 className="font-semibold mb-2 text-gray-900 dark:text-white">
+                            <h3 className="text-lg font-semibold text-center">
                                 {t('services.webdev.tech.typescript.title') || 'TypeScript'}
                             </h3>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                            <p className="text-sm text-center text-gray-400">
                                 {t('services.webdev.tech.typescript.desc') || 'Type-Safe JavaScript'}
                             </p>
                         </div>
 
-                        <div className="bg-white dark:bg-gray-800 rounded-xl p-6 text-center shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-200 dark:border-gray-700">
-                            <div className="text-4xl mb-3 text-green-500 flex justify-center">
-                                <Database className="w-12 h-12" />
-                            </div>
-                            <h3 className="font-semibold mb-2 text-gray-900 dark:text-white">
-                                {t('services.webdev.tech.postgresql.title') || 'PostgreSQL'}
+                        <div className="flex flex-col items-center justify-center p-4 rounded-lg bg-white/5 backdrop-blur-sm">
+                            <Image src="/mysql-icon.svg" alt="MySQL" width={40} height={40} className="mb-2" />
+                            <h3 className="text-lg font-semibold text-center">
+                                {t('services.webdev.tech.mysql.title') || 'MySQL'}
                             </h3>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
-                                {t('services.webdev.tech.postgresql.desc') || 'Advanced Database'}
+                            <p className="text-sm text-center text-gray-400">
+                                {t('services.webdev.tech.mysql.desc') || 'Powerful Database'}
                             </p>
                         </div>
 
-                        <div className="bg-white dark:bg-gray-800 rounded-xl p-6 text-center shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-200 dark:border-gray-700">
-                            <div className="text-4xl mb-3 text-orange-500 flex justify-center">
-                                <Server className="w-12 h-12" />
-                            </div>
-                            <h3 className="font-semibold mb-2 text-gray-900 dark:text-white">
+                        <div className="flex flex-col items-center justify-center p-4 rounded-lg bg-white/5 backdrop-blur-sm">
+                            <Image src="/nodejs.svg" alt="Node.js" width={40} height={40} className="mb-2" />
+                            <h3 className="text-lg font-semibold text-center">
                                 {t('services.webdev.tech.nodejs.title') || 'Node.js'}
                             </h3>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                            <p className="text-sm text-center text-gray-400">
                                 {t('services.webdev.tech.nodejs.desc') || 'Server Runtime'}
                             </p>
                         </div>
 
-                        <div className="bg-white dark:bg-gray-800 rounded-xl p-6 text-center shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-200 dark:border-gray-700">
-                            <div className="text-4xl mb-3 text-red-500 flex justify-center">
-                                <Cpu className="w-12 h-12" />
-                            </div>
-                            <h3 className="font-semibold mb-2 text-gray-900 dark:text-white">
-                                {t('services.webdev.tech.redis.title') || 'Redis'}
+                        <div className="flex flex-col items-center justify-center p-4 rounded-lg bg-white/5 backdrop-blur-sm">
+                            <Image src="/laravel.svg" alt="Laravel" width={40} height={40} className="mb-2" />
+                            <h3 className="text-lg font-semibold text-center">
+                                {t('services.webdev.tech.laravel.title') || 'Laravel'}
                             </h3>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
-                                {t('services.webdev.tech.redis.desc') || 'High Performance Cache'}
+                            <p className="text-sm text-center text-gray-400">
+                                {t('services.webdev.tech.laravel.desc') || 'PHP Framework'}
                             </p>
                         </div>
 
-                        <div className="bg-white dark:bg-gray-800 rounded-xl p-6 text-center shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-200 dark:border-gray-700">
-                            <div className="text-4xl mb-3 text-gray-500 flex justify-center">
-                                <Lock className="w-12 h-12" />
-                            </div>
-                            <h3 className="font-semibold mb-2 text-gray-900 dark:text-white">
-                                {t('services.webdev.tech.security.title') || 'Security'}
+                        <div className="flex flex-col items-center justify-center p-4 rounded-lg bg-white/5 backdrop-blur-sm">
+                            <Image src="/vuejs.svg" alt="Vue.js" width={40} height={40} className="mb-2" />
+                            <h3 className="text-lg font-semibold text-center">
+                                {t('services.webdev.tech.vuejs.title') || 'Vue.js'}
                             </h3>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
-                                {t('services.webdev.tech.security.desc') || 'Advanced Protection'}
+                            <p className="text-sm text-center text-gray-400">
+                                {t('services.webdev.tech.vuejs.desc') || 'Progressive Framework'}
                             </p>
                         </div>
                     </div>
-                        </div>
+                </div>
 
                 {/* Pricing Section */}
                 <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
