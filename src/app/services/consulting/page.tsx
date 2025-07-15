@@ -17,18 +17,18 @@ export default function ConsultingPage() {
                 <div className="container mx-auto px-4">
                     <nav className="flex items-center space-x-2 text-sm">
                         <Link href="/" className="text-gray-500 dark:text-gray-400 hover:text-[#00D084] transition-colors">
-                            Home
+                            {t('nav.home') || 'Home'}
                         </Link>
                         <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
                         </svg>
                         <Link href="/services" className="text-gray-500 dark:text-gray-400 hover:text-[#00D084] transition-colors">
-                            Services
+                            {t('nav.services') || 'Services'}
                         </Link>
                         <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
                         </svg>
-                        <span className="text-[#00D084] font-medium">Business Consulting</span>
+                        <span className="text-[#00D084] font-medium">{t('services.consulting.breadcrumb') || 'Business Consulting'}</span>
                     </nav>
                 </div>
             </div>
@@ -79,14 +79,16 @@ export default function ConsultingPage() {
                             </li>
                         </ul>
                         <button className="w-full bg-green-600 hover:bg-green-700 text-white py-3 px-6 rounded-lg transition-colors duration-300 mt-auto">
-                            Pilih Paket Basic
+                            {t('common.choosePackage') || 'Pilih Paket Basic'}
                         </button>
                     </div>
 
                     {/* Pro Package */}
                     <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-8 hover:shadow-lg transition-all duration-300 bg-green-50 dark:bg-green-900/20 flex flex-col relative">
                         <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                            <div className="inline-block px-4 py-1 bg-green-500 text-white rounded-full text-sm font-medium">POPULER</div>
+                            <div className="inline-block px-4 py-1 bg-green-500 text-white rounded-full text-sm font-medium">
+                                {t('common.popular') || 'POPULER'}
+                            </div>
                         </div>
                         <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
                             {t('services.consulting.pro.title') || 'Pro Consulting'}
@@ -121,7 +123,7 @@ export default function ConsultingPage() {
                             </li>
                         </ul>
                         <button className="w-full bg-green-600 hover:bg-green-700 text-white py-3 px-6 rounded-lg transition-colors duration-300 mt-auto">
-                            Pilih Paket Pro
+                            {t('common.choosePackage') || 'Pilih Paket Pro'}
                         </button>
                     </div>
 
@@ -160,23 +162,25 @@ export default function ConsultingPage() {
                             </li>
                         </ul>
                         <button className="w-full bg-green-600 hover:bg-green-700 text-white py-3 px-6 rounded-lg transition-colors duration-300 mt-auto">
-                            Hubungi Kami
+                            {t('common.contactUs') || 'Hubungi Kami'}
                         </button>
                     </div>
                     </div>
 
                 {/* CTA Section */}
                 <div className="text-center mt-16">
-                    <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Siap Mengembangkan Bisnis Anda?</h2>
+                    <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
+                        {t('services.consulting.cta.title') || 'Siap Mengembangkan Bisnis Anda?'}
+                    </h2>
                     <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
-                        Konsultasi gratis untuk membahas kebutuhan bisnis Anda. Tim ahli kami siap membantu mengembangkan strategi yang tepat!
-                            </p>
-                            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                        {t('services.consulting.cta.description') || 'Konsultasi gratis untuk membahas kebutuhan bisnis Anda. Tim ahli kami siap membantu mengembangkan strategi yang tepat!'}
+                    </p>
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
                         <button className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg transition-colors duration-300">
-                                    Konsultasi Gratis
+                            {t('common.freeConsultation') || 'Konsultasi Gratis'}
                         </button>
                         <button className="border border-green-600 text-green-600 dark:text-green-400 px-8 py-3 rounded-lg hover:bg-green-50 dark:hover:bg-green-900/20 transition-colors duration-300">
-                            Lihat Case Study
+                            {t('services.consulting.cta.viewCaseStudy') || 'Lihat Case Study'}
                         </button>
                     </div>
                 </div>
@@ -185,7 +189,7 @@ export default function ConsultingPage() {
             {/* WhatsApp Chat */}
             <WhatsAppChat
                 phoneNumber="6285739402436"
-                message="Halo! Saya tertarik dengan layanan Business Consulting Bajramedia. Bisa konsultasi gratis?"
+                message={t('services.consulting.whatsapp.message') || "Halo! Saya tertarik dengan layanan Business Consulting Bajramedia. Bisa konsultasi gratis?"}
             />
         </div>
     );

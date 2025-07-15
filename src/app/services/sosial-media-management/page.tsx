@@ -18,18 +18,18 @@ export default function SocialMediaManagementPage() {
                 <div className="container mx-auto px-4">
                     <nav className="flex items-center space-x-2 text-sm">
                         <Link href="/" className="text-gray-500 dark:text-gray-400 hover:text-[#00D084] transition-colors">
-                            Home
+                            {t('nav.home') || 'Home'}
                         </Link>
                         <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
                         </svg>
                         <Link href="/services" className="text-gray-500 dark:text-gray-400 hover:text-[#00D084] transition-colors">
-                            Services
+                            {t('nav.services') || 'Services'}
                         </Link>
                         <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
                         </svg>
-                        <span className="text-[#00D084] font-medium">Social Media Management</span>
+                        <span className="text-[#00D084] font-medium">{t('services.social.breadcrumb') || 'Social Media Management'}</span>
                     </nav>
                 </div>
             </div>
@@ -37,10 +37,10 @@ export default function SocialMediaManagementPage() {
             <div className="container mx-auto px-4 py-16">
                 <div className="text-center mb-16">
                     <Heading variant="h1" color="foreground" className="mb-4 text-[32px] md:text-[40px] lg:text-[48px] font-bold">
-                        Jasa Social Media Management
+                        {t('services.social.title') || 'Jasa Social Media Management'}
                     </Heading>
                     <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-                        Kami menyediakan jasa pengelolaan media sosial profesional untuk meningkatkan presence dan engagement brand Anda
+                        {t('services.social.description') || 'Kami menyediakan jasa pengelolaan media sosial profesional untuk meningkatkan presence dan engagement brand Anda'}
                     </p>
                 </div>
 
@@ -48,149 +48,139 @@ export default function SocialMediaManagementPage() {
                     {/* Basic Package */}
                     <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-8 hover:shadow-lg transition-all duration-300 bg-white dark:bg-gray-800 flex flex-col">
                         <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
-                            Basic Social Media
+                            {t('services.social.basic.title') || 'Basic Social Media'}
                         </h3>
                         <p className="text-3xl font-bold mb-6 text-gray-900 dark:text-white">
-                            Rp 2.000.000<span className="text-base font-normal text-gray-600 dark:text-gray-400">/bulan</span>
+                            {t('services.social.basic.price') || 'Rp 2.000.000'}<span className="text-base font-normal text-gray-600 dark:text-gray-400">/bulan</span>
                         </p>
                         <ul className="space-y-3 mb-8 flex-grow">
                             <li className="flex items-start">
                                 <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
-                                <span className="text-gray-700 dark:text-gray-300">1 platform sosmed</span>
+                                <span className="text-gray-700 dark:text-gray-300">{t('services.social.basic.features.posts') || '12 post/bulan'}</span>
                             </li>
                             <li className="flex items-start">
                                 <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
-                                <span className="text-gray-700 dark:text-gray-300">10 post/bulan</span>
+                                <span className="text-gray-700 dark:text-gray-300">{t('services.social.basic.features.platform') || '1 platform'}</span>
                             </li>
                             <li className="flex items-start">
                                 <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
-                                <span className="text-gray-700 dark:text-gray-300">Basic analytics</span>
+                                <span className="text-gray-700 dark:text-gray-300">{t('services.social.basic.features.report') || 'Report bulanan'}</span>
                             </li>
                             <li className="flex items-start">
                                 <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
-                                <span className="text-gray-700 dark:text-gray-300">Report bulanan</span>
+                                <span className="text-gray-700 dark:text-gray-300">{t('services.social.basic.features.admin') || '1 admin'}</span>
                             </li>
                         </ul>
-                        <button className="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-lg transition-colors duration-300">
-                            Pilih Paket Basic
-                        </button>
+                        <Link href="https://wa.me/6285739402436?text=Halo%20saya%20tertarik%20dengan%20paket%20Basic%20Social%20Media" className="block">
+                            <button className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-300">
+                                {t('common.contactUs') || 'Hubungi Kami'}
+                            </button>
+                        </Link>
                     </div>
 
                     {/* Pro Package */}
                     <div className="border-2 border-green-500 dark:border-green-400 rounded-lg p-8 hover:shadow-lg transition-all duration-300 bg-white dark:bg-gray-800 flex flex-col relative">
-                        <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-4 py-1 rounded-full text-sm font-medium">
-                            POPULER
+                        <div className="absolute top-0 right-0 bg-green-500 text-white px-4 py-1 rounded-bl-lg rounded-tr-lg text-sm font-semibold">
+                            {t('common.popular') || 'POPULER'}
                         </div>
                         <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
-                            Pro Social Media
+                            {t('services.social.pro.title') || 'Pro Social Media'}
                         </h3>
                         <p className="text-3xl font-bold mb-6 text-gray-900 dark:text-white">
-                            Rp 3.500.000<span className="text-base font-normal text-gray-600 dark:text-gray-400">/bulan</span>
+                            {t('services.social.pro.price') || 'Rp 3.500.000'}<span className="text-base font-normal text-gray-600 dark:text-gray-400">/bulan</span>
                         </p>
                         <ul className="space-y-3 mb-8 flex-grow">
                             <li className="flex items-start">
                                 <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
-                                <span className="text-gray-700 dark:text-gray-300">2 platform sosmed</span>
+                                <span className="text-gray-700 dark:text-gray-300">{t('services.social.pro.features.posts') || '20 post/bulan'}</span>
                             </li>
                             <li className="flex items-start">
                                 <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
-                                <span className="text-gray-700 dark:text-gray-300">20 post/bulan</span>
+                                <span className="text-gray-700 dark:text-gray-300">{t('services.social.pro.features.platform') || '2 platform'}</span>
                             </li>
                             <li className="flex items-start">
                                 <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
-                                <span className="text-gray-700 dark:text-gray-300">Content strategy</span>
+                                <span className="text-gray-700 dark:text-gray-300">{t('services.social.pro.features.report') || 'Report mingguan'}</span>
                             </li>
                             <li className="flex items-start">
                                 <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
-                                <span className="text-gray-700 dark:text-gray-300">Engagement management</span>
+                                <span className="text-gray-700 dark:text-gray-300">{t('services.social.pro.features.admin') || '2 admin'}</span>
                             </li>
                             <li className="flex items-start">
                                 <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
-                                <span className="text-gray-700 dark:text-gray-300">Report mingguan</span>
+                                <span className="text-gray-700 dark:text-gray-300">{t('services.social.pro.features.ads') || 'Basic ads management'}</span>
                             </li>
                         </ul>
-                        <button className="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-lg transition-colors duration-300">
-                            Pilih Paket Pro
-                        </button>
+                        <Link href="https://wa.me/6285739402436?text=Halo%20saya%20tertarik%20dengan%20paket%20Pro%20Social%20Media" className="block">
+                            <button className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-300">
+                                {t('common.contactUs') || 'Hubungi Kami'}
+                            </button>
+                        </Link>
                     </div>
 
                     {/* Enterprise Package */}
                     <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-8 hover:shadow-lg transition-all duration-300 bg-white dark:bg-gray-800 flex flex-col">
                         <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
-                            Enterprise Social Media
+                            {t('services.social.enterprise.title') || 'Enterprise Social Media'}
                         </h3>
                         <p className="text-3xl font-bold mb-6 text-gray-900 dark:text-white">
-                            Custom<span className="text-base font-normal text-gray-600 dark:text-gray-400">/project</span>
+                            {t('services.social.enterprise.price') || 'Custom'}<span className="text-base font-normal text-gray-600 dark:text-gray-400">/project</span>
                         </p>
                         <ul className="space-y-3 mb-8 flex-grow">
                             <li className="flex items-start">
                                 <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
-                                <span className="text-gray-700 dark:text-gray-300">Unlimited platform</span>
+                                <span className="text-gray-700 dark:text-gray-300">{t('services.social.enterprise.features.posts') || 'Unlimited post'}</span>
                             </li>
                             <li className="flex items-start">
                                 <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
-                                <span className="text-gray-700 dark:text-gray-300">Dedicated team</span>
+                                <span className="text-gray-700 dark:text-gray-300">{t('services.social.enterprise.features.platform') || 'All platform'}</span>
                             </li>
                             <li className="flex items-start">
                                 <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
-                                <span className="text-gray-700 dark:text-gray-300">Custom strategy</span>
+                                <span className="text-gray-700 dark:text-gray-300">{t('services.social.enterprise.features.report') || 'Report harian'}</span>
                             </li>
                             <li className="flex items-start">
                                 <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
-                                <span className="text-gray-700 dark:text-gray-300">Advanced analytics</span>
+                                <span className="text-gray-700 dark:text-gray-300">{t('services.social.enterprise.features.admin') || 'Dedicated team'}</span>
                             </li>
                             <li className="flex items-start">
                                 <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
-                                <span className="text-gray-700 dark:text-gray-300">Report harian</span>
+                                <span className="text-gray-700 dark:text-gray-300">{t('services.social.enterprise.features.ads') || 'Full ads management'}</span>
                             </li>
                         </ul>
-                        <button className="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-lg transition-colors duration-300">
-                            Hubungi Kami
-                        </button>
-                    </div>
-                </div>
-
-                {/* CTA Section */}
-                <div className="text-center mt-16">
-                    <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Siap Memulai Social Media Management?</h2>
-                    <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
-                        Konsultasi gratis untuk membahas strategi sosial media Anda. Tim ahli kami siap membantu meningkatkan presence brand Anda!
-                    </p>
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                        <button className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg transition-colors duration-300">
-                            Konsultasi Gratis
-                        </button>
-                        <button className="border border-green-600 text-green-600 dark:text-green-400 px-8 py-3 rounded-lg hover:bg-green-50 dark:hover:bg-green-900/20 transition-colors duration-300">
-                            Lihat Portfolio
-                        </button>
+                        <Link href="https://wa.me/6285739402436?text=Halo%20saya%20tertarik%20dengan%20paket%20Enterprise%20Social%20Media" className="block">
+                            <button className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-300">
+                                {t('common.contactUs') || 'Hubungi Kami'}
+                            </button>
+                        </Link>
                     </div>
                 </div>
             </div>

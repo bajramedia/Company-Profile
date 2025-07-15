@@ -17,18 +17,18 @@ export default function MobileAppsPage() {
                 <div className="container mx-auto px-4">
                     <nav className="flex items-center space-x-2 text-sm">
                         <Link href="/" className="text-gray-500 dark:text-gray-400 hover:text-[#00D084] transition-colors">
-                            Home
+                            {t('nav.home') || 'Home'}
                         </Link>
                         <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
                         </svg>
                         <Link href="/services" className="text-gray-500 dark:text-gray-400 hover:text-[#00D084] transition-colors">
-                                Services
-                            </Link>
+                            {t('nav.services') || 'Services'}
+                        </Link>
                         <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-                            </svg>
-                        <span className="text-[#00D084] font-medium">Mobile App Development</span>
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                        <span className="text-[#00D084] font-medium">{t('services.mobile.breadcrumb') || 'Mobile App Development'}</span>
                     </nav>
                 </div>
             </div>
@@ -36,160 +36,144 @@ export default function MobileAppsPage() {
             <div className="container mx-auto px-4 py-16">
                 <div className="text-center mb-16">
                     <Heading variant="h1" color="foreground" className="mb-4 text-[32px] md:text-[40px] lg:text-[48px] font-bold">
-                        Jasa Mobile App Development
+                        {t('services.mobile.title') || 'Jasa Mobile App Development'}
                     </Heading>
                     <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-                        Kami menyediakan jasa pembuatan aplikasi mobile profesional untuk Android dan iOS
+                        {t('services.mobile.description') || 'Kami menyediakan jasa pembuatan aplikasi mobile profesional untuk Android dan iOS'}
                     </p>
-                    </div>
+                </div>
 
                 <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
                     {/* Basic Package */}
                     <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-8 hover:shadow-lg transition-all duration-300 bg-white dark:bg-gray-800 flex flex-col">
                         <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
-                            Basic App
+                            {t('services.mobile.basic.title') || 'Basic App'}
                         </h3>
                         <p className="text-3xl font-bold mb-6 text-gray-900 dark:text-white">
-                            Rp 15.000.000<span className="text-base font-normal text-gray-600 dark:text-gray-400">/app</span>
+                            {t('services.mobile.basic.price') || 'Rp 15.000.000'}<span className="text-base font-normal text-gray-600 dark:text-gray-400">/app</span>
                         </p>
                         <ul className="space-y-3 mb-8 flex-grow">
                             <li className="flex items-start">
                                 <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
-                                <span className="text-gray-700 dark:text-gray-300">5 halaman app</span>
+                                <span className="text-gray-700 dark:text-gray-300">{t('services.mobile.basic.features.platform') || 'Android atau iOS'}</span>
                             </li>
                             <li className="flex items-start">
                                 <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
-                                <span className="text-gray-700 dark:text-gray-300">Android/iOS</span>
+                                <span className="text-gray-700 dark:text-gray-300">{t('services.mobile.basic.features.screens') || '5 halaman utama'}</span>
                             </li>
                             <li className="flex items-start">
                                 <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
-                                <span className="text-gray-700 dark:text-gray-300">Basic UI/UX</span>
+                                <span className="text-gray-700 dark:text-gray-300">{t('services.mobile.basic.features.auth') || 'Basic authentication'}</span>
                             </li>
                             <li className="flex items-start">
                                 <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
-                                <span className="text-gray-700 dark:text-gray-300">Support 1 bulan</span>
+                                <span className="text-gray-700 dark:text-gray-300">{t('services.mobile.basic.features.support') || 'Support 1 bulan'}</span>
                             </li>
                         </ul>
-                        <button className="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-lg transition-colors duration-300">
-                            Pilih Paket Basic
-                        </button>
+                        <Link href="https://wa.me/6285739402436?text=Halo%20saya%20tertarik%20dengan%20paket%20Basic%20App" className="block">
+                            <button className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-300">
+                                {t('common.contactUs') || 'Hubungi Kami'}
+                            </button>
+                        </Link>
                     </div>
 
                     {/* Pro Package */}
                     <div className="border-2 border-green-500 dark:border-green-400 rounded-lg p-8 hover:shadow-lg transition-all duration-300 bg-white dark:bg-gray-800 flex flex-col relative">
-                        <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-4 py-1 rounded-full text-sm font-medium">
-                            POPULER
+                        <div className="absolute top-0 right-0 bg-green-500 text-white px-4 py-1 rounded-bl-lg rounded-tr-lg text-sm font-semibold">
+                            {t('common.popular') || 'POPULER'}
                         </div>
                         <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
-                            Pro App
+                            {t('services.mobile.pro.title') || 'Pro App'}
                         </h3>
                         <p className="text-3xl font-bold mb-6 text-gray-900 dark:text-white">
-                            Rp 25.000.000<span className="text-base font-normal text-gray-600 dark:text-gray-400">/app</span>
+                            {t('services.mobile.pro.price') || 'Rp 25.000.000'}<span className="text-base font-normal text-gray-600 dark:text-gray-400">/app</span>
                         </p>
                         <ul className="space-y-3 mb-8 flex-grow">
                             <li className="flex items-start">
                                 <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
-                                <span className="text-gray-700 dark:text-gray-300">10 halaman app</span>
+                                <span className="text-gray-700 dark:text-gray-300">{t('services.mobile.pro.features.platform') || 'Android dan iOS'}</span>
                             </li>
                             <li className="flex items-start">
                                 <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
-                                <span className="text-gray-700 dark:text-gray-300">Android & iOS</span>
+                                <span className="text-gray-700 dark:text-gray-300">{t('services.mobile.pro.features.screens') || '10 halaman utama'}</span>
                             </li>
                             <li className="flex items-start">
                                 <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
-                                <span className="text-gray-700 dark:text-gray-300">Custom UI/UX</span>
+                                <span className="text-gray-700 dark:text-gray-300">{t('services.mobile.pro.features.auth') || 'Advanced authentication'}</span>
                             </li>
                             <li className="flex items-start">
                                 <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
-                                <span className="text-gray-700 dark:text-gray-300">Backend API</span>
+                                <span className="text-gray-700 dark:text-gray-300">{t('services.mobile.pro.features.api') || 'REST API integration'}</span>
                             </li>
                             <li className="flex items-start">
                                 <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
-                                <span className="text-gray-700 dark:text-gray-300">Support 3 bulan</span>
+                                <span className="text-gray-700 dark:text-gray-300">{t('services.mobile.pro.features.support') || 'Support 3 bulan'}</span>
                             </li>
                         </ul>
-                        <button className="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-lg transition-colors duration-300">
-                            Pilih Paket Pro
-                        </button>
+                        <Link href="https://wa.me/6285739402436?text=Halo%20saya%20tertarik%20dengan%20paket%20Pro%20App" className="block">
+                            <button className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-300">
+                                {t('common.contactUs') || 'Hubungi Kami'}
+                            </button>
+                        </Link>
                     </div>
 
                     {/* Enterprise Package */}
                     <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-8 hover:shadow-lg transition-all duration-300 bg-white dark:bg-gray-800 flex flex-col">
                         <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
-                            Enterprise App
+                            {t('services.mobile.enterprise.title') || 'Enterprise App'}
                         </h3>
                         <p className="text-3xl font-bold mb-6 text-gray-900 dark:text-white">
-                            Custom<span className="text-base font-normal text-gray-600 dark:text-gray-400">/project</span>
+                            {t('services.mobile.enterprise.price') || 'Custom'}<span className="text-base font-normal text-gray-600 dark:text-gray-400">/project</span>
                         </p>
                         <ul className="space-y-3 mb-8 flex-grow">
                             <li className="flex items-start">
                                 <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
-                                <span className="text-gray-700 dark:text-gray-300">Unlimited pages</span>
+                                <span className="text-gray-700 dark:text-gray-300">{t('services.mobile.enterprise.features.platform') || 'Android, iOS & web app'}</span>
                             </li>
                             <li className="flex items-start">
                                 <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
-                                <span className="text-gray-700 dark:text-gray-300">Custom development</span>
+                                <span className="text-gray-700 dark:text-gray-300">{t('services.mobile.enterprise.features.screens') || 'Unlimited pages'}</span>
                             </li>
                             <li className="flex items-start">
                                 <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
-                                <span className="text-gray-700 dark:text-gray-300">Advanced features</span>
+                                <span className="text-gray-700 dark:text-gray-300">{t('services.mobile.enterprise.features.custom') || 'Custom features'}</span>
                             </li>
                             <li className="flex items-start">
                                 <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
-                                <span className="text-gray-700 dark:text-gray-300">Cloud integration</span>
-                            </li>
-                            <li className="flex items-start">
-                                <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                                </svg>
-                                <span className="text-gray-700 dark:text-gray-300">Support 6 bulan</span>
+                                <span className="text-gray-700 dark:text-gray-300">{t('services.mobile.enterprise.features.support') || 'Support 6 bulan'}</span>
                             </li>
                         </ul>
-                        <button className="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-lg transition-colors duration-300">
-                            Hubungi Kami
-                        </button>
-                    </div>
-                </div>
-
-                {/* CTA Section */}
-                <div className="text-center mt-16">
-                    <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Siap Memulai Project Mobile App?</h2>
-                    <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
-                        Konsultasi gratis untuk membahas kebutuhan aplikasi Anda. Tim ahli kami siap membantu mengembangkan aplikasi impian Anda!
-                    </p>
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                        <button className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg transition-colors duration-300">
-                            Konsultasi Gratis
-                        </button>
-                        <button className="border border-green-600 text-green-600 dark:text-green-400 px-8 py-3 rounded-lg hover:bg-green-50 dark:hover:bg-green-900/20 transition-colors duration-300">
-                            Lihat Portfolio
-                        </button>
+                        <Link href="https://wa.me/6285739402436?text=Halo%20saya%20tertarik%20dengan%20paket%20Enterprise%20App" className="block">
+                            <button className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-300">
+                                {t('common.contactUs') || 'Hubungi Kami'}
+                            </button>
+                        </Link>
                     </div>
                 </div>
             </div>
