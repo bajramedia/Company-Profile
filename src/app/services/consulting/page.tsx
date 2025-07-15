@@ -1,6 +1,7 @@
 "use client";
 
 import { Heading, Navbar, WhatsAppChat } from "@/components";
+import DarkModeToggle from "@/components/DarkModeToggle";
 import { useLanguage } from "@/context/LanguageContext";
 import Link from "next/link";
 
@@ -33,6 +34,7 @@ export default function ConsultingPage() {
                 </div>
             </div>
 
+            {/* Main Content */}
             <div className="container mx-auto px-4 py-16">
                 <div className="text-center mb-16">
                     <Heading variant="h1" color="foreground" className="mb-4 text-[32px] md:text-[40px] lg:text-[48px] font-bold">
@@ -41,8 +43,9 @@ export default function ConsultingPage() {
                     <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
                         {t('services.consulting.description') || 'Kami menyediakan jasa konsultasi bisnis profesional untuk membantu mengembangkan bisnis Anda'}
                     </p>
-                        </div>
+                </div>
 
+                {/* Packages Grid */}
                 <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
                     {/* Basic Package */}
                     <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-8 hover:shadow-lg transition-all duration-300 bg-white dark:bg-gray-800 flex flex-col">
@@ -185,6 +188,9 @@ export default function ConsultingPage() {
                     </div>
                 </div>
             </div>
+
+            {/* Dark Mode Toggle */}
+            <DarkModeToggle />
 
             {/* WhatsApp Chat */}
             <WhatsAppChat

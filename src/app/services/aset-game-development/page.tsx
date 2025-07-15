@@ -1,6 +1,7 @@
 "use client";
 
 import { Heading, Navbar, WhatsAppChat } from "@/components";
+import DarkModeToggle from "@/components/DarkModeToggle";
 import { useLanguage } from "@/context/LanguageContext";
 import Link from "next/link";
 
@@ -33,6 +34,7 @@ export default function GameAssetDevelopmentPage() {
                 </div>
             </div>
 
+            {/* Main Content */}
             <div className="container mx-auto px-4 py-16">
                 <div className="text-center mb-16">
                     <Heading variant="h1" color="foreground" className="mb-4">
@@ -43,6 +45,7 @@ export default function GameAssetDevelopmentPage() {
                     </p>
                 </div>
 
+                {/* Packages Grid */}
                 <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
                     {/* 2D Package */}
                     <div className="border dark:border-gray-700 rounded-lg p-8 hover:shadow-lg transition-all bg-white dark:bg-gray-800">
@@ -182,6 +185,9 @@ export default function GameAssetDevelopmentPage() {
                     </div>
                 </div>
             </div>
+
+            {/* Dark Mode Toggle */}
+            <DarkModeToggle />
 
             {/* WhatsApp Chat */}
             <WhatsAppChat
