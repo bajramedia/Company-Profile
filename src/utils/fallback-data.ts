@@ -75,7 +75,7 @@ export const dummyPortfolioItems: DummyPortfolioItem[] = [
     featured: true,
     client_name: 'PT Digital Commerce',
     project_url: 'https://example.com',
-    technologies: 'React, Node.js, PostgreSQL, Stripe',
+    technologies: 'React, Node.js, MySQL, Laravel',
     date: '2024-01-15',
     views: 245
   },
@@ -141,7 +141,7 @@ export const dummyPortfolioItems: DummyPortfolioItem[] = [
     featured: false,
     client_name: 'Manufacturing Corp',
     project_url: '#',
-    technologies: 'Laravel, Vue.js, MySQL, Redis',
+    technologies: 'Laravel, Vue.js, MySQL',
     date: '2024-01-20',
     views: 98
   },
@@ -214,7 +214,10 @@ export const dummyBlogPosts: DummyBlogPost[] = [
     <h2>2. Progressive Web Apps (PWA)</h2>
     <p>PWA terus menjadi pilihan utama untuk memberikan pengalaman mobile yang optimal dengan performa yang mendekati native app.</p>
     
-    <h2>3. Edge Computing</h2>
+    <h2>3. Modern Tech Stack</h2>
+    <p>Kombinasi Laravel sebagai backend framework dengan Vue.js di frontend dan MySQL sebagai database menjadi pilihan populer untuk pengembangan web modern. Stack ini menawarkan performa tinggi dan developer experience yang baik.</p>
+    
+    <h2>4. Edge Computing</h2>
     <p>Komputasi edge memberikan performa yang lebih baik dengan mengurangi latency dan meningkatkan user experience secara keseluruhan.</p>`,
     excerpt: 'Simak tren web development terbaru di 2024 yang wajib diketahui oleh developer modern. Mulai dari AI-powered development hingga edge computing.',
     slug: 'tren-web-development-2024',
