@@ -42,7 +42,7 @@ export default function SystemDevelopmentPage() {
                     <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
                         Kami menyediakan jasa pembuatan sistem dan aplikasi enterprise untuk mengoptimalkan proses bisnis Anda
                     </p>
-                        </div>
+                </div>
 
                 <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
                     {/* Basic Package */}
@@ -51,7 +51,7 @@ export default function SystemDevelopmentPage() {
                             Basic System
                         </h3>
                         <p className="text-3xl font-bold mb-6 text-gray-900 dark:text-white">
-                            Rp 10.000.000
+                            Rp 10.000.000<span className="text-base font-normal text-gray-600 dark:text-gray-400">/sistem</span>
                         </p>
                         <ul className="space-y-3 mb-8 flex-grow">
                             <li className="flex items-start">
@@ -64,132 +64,132 @@ export default function SystemDevelopmentPage() {
                                 <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
-                                <span className="text-gray-700 dark:text-gray-300">Database management</span>
+                                <span className="text-gray-700 dark:text-gray-300">Database MySQL</span>
                             </li>
                             <li className="flex items-start">
                                 <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
-                                <span className="text-gray-700 dark:text-gray-300">User authentication</span>
+                                <span className="text-gray-700 dark:text-gray-300">User management</span>
+                            </li>
+                            <li className="flex items-start">
+                                <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span className="text-gray-700 dark:text-gray-300">Support 1 bulan</span>
                             </li>
                         </ul>
-                        <button className="w-full bg-green-600 hover:bg-green-700 text-white py-3 px-6 rounded-lg transition-colors duration-300 mt-auto">
+                        <button className="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-lg transition-colors duration-300">
                             Pilih Paket Basic
                         </button>
                     </div>
 
-                    {/* Standard Package */}
-                    <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-8 hover:shadow-lg transition-all duration-300 bg-green-50 dark:bg-green-900/20 flex flex-col relative">
-                        <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                            <div className="inline-block px-4 py-1 bg-green-500 text-white rounded-full text-sm font-medium">POPULER</div>
+                    {/* Pro Package */}
+                    <div className="border-2 border-green-500 dark:border-green-400 rounded-lg p-8 hover:shadow-lg transition-all duration-300 bg-white dark:bg-gray-800 flex flex-col relative">
+                        <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-4 py-1 rounded-full text-sm font-medium">
+                            POPULER
                         </div>
                         <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
-                            {t('services.system.standard.title') || 'Pro System'}
+                            Pro System
                         </h3>
                         <p className="text-3xl font-bold mb-6 text-gray-900 dark:text-white">
-                            {t('services.system.standard.price') || 'Rp 15.000.000'}
+                            Rp 25.000.000<span className="text-base font-normal text-gray-600 dark:text-gray-400">/sistem</span>
                         </p>
                         <ul className="space-y-3 mb-8 flex-grow">
-                            <li className="flex items-start">
-                                <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                                </svg>
-                                <span className="text-gray-700 dark:text-gray-300">{t('services.system.standard.features.fullManagement') || 'Sistem manajemen lengkap'}</span>
-                                    </li>
                             <li className="flex items-start">
                                 <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
                                 <span className="text-gray-700 dark:text-gray-300">10 modul sistem</span>
-                                    </li>
+                            </li>
                             <li className="flex items-start">
                                 <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
-                                <span className="text-gray-700 dark:text-gray-300">Database optimized</span>
-                                    </li>
+                                <span className="text-gray-700 dark:text-gray-300">Database PostgreSQL</span>
+                            </li>
+                            <li className="flex items-start">
+                                <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span className="text-gray-700 dark:text-gray-300">Role & permission</span>
+                            </li>
                             <li className="flex items-start">
                                 <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
                                 <span className="text-gray-700 dark:text-gray-300">API integration</span>
-                                    </li>
-                            <li className="flex items-start">
-                                <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                                </svg>
-                                <span className="text-gray-700 dark:text-gray-300">Security features</span>
-                                    </li>
+                            </li>
                             <li className="flex items-start">
                                 <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
                                 <span className="text-gray-700 dark:text-gray-300">Support 3 bulan</span>
-                                    </li>
-                                </ul>
-                        <button className="w-full bg-green-600 hover:bg-green-700 text-white py-3 px-6 rounded-lg transition-colors duration-300 mt-auto">
+                            </li>
+                        </ul>
+                        <button className="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-lg transition-colors duration-300">
                             Pilih Paket Pro
                         </button>
-                        </div>
+                    </div>
 
-                    {/* Premium Package */}
+                    {/* Enterprise Package */}
                     <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-8 hover:shadow-lg transition-all duration-300 bg-white dark:bg-gray-800 flex flex-col">
                         <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
-                            {t('services.system.premium.title') || 'Enterprise System'}
+                            Enterprise System
                         </h3>
                         <p className="text-3xl font-bold mb-6 text-gray-900 dark:text-white">
-                            {t('services.system.premium.price') || 'Custom Price'}
+                            Custom<span className="text-base font-normal text-gray-600 dark:text-gray-400">/project</span>
                         </p>
                         <ul className="space-y-3 mb-8 flex-grow">
                             <li className="flex items-start">
                                 <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
-                                <span className="text-gray-700 dark:text-gray-300">{t('services.system.premium.features.fullCustom') || 'Full custom system'}</span>
+                                <span className="text-gray-700 dark:text-gray-300">Unlimited modul</span>
                             </li>
                             <li className="flex items-start">
                                 <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
-                                <span className="text-gray-700 dark:text-gray-300">Unlimited modules</span>
-                                    </li>
+                                <span className="text-gray-700 dark:text-gray-300">Custom database</span>
+                            </li>
                             <li className="flex items-start">
                                 <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
                                 <span className="text-gray-700 dark:text-gray-300">Advanced security</span>
-                                    </li>
+                            </li>
                             <li className="flex items-start">
                                 <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
                                 <span className="text-gray-700 dark:text-gray-300">Cloud deployment</span>
-                                    </li>
+                            </li>
                             <li className="flex items-start">
                                 <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
-                                <span className="text-gray-700 dark:text-gray-300">24/7 support</span>
-                                    </li>
-                                </ul>
-                        <button className="w-full bg-green-600 hover:bg-green-700 text-white py-3 px-6 rounded-lg transition-colors duration-300 mt-auto">
+                                <span className="text-gray-700 dark:text-gray-300">Support 6 bulan</span>
+                            </li>
+                        </ul>
+                        <button className="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-lg transition-colors duration-300">
                             Hubungi Kami
                         </button>
                     </div>
-                        </div>
+                </div>
 
                 {/* CTA Section */}
                 <div className="text-center mt-16">
-                    <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Siap Mengoptimalkan Sistem Bisnis Anda?</h2>
+                    <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Siap Memulai Project Sistem?</h2>
                     <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
-                        Konsultasi gratis untuk membahas kebutuhan sistem development Anda. Tim ahli kami siap membantu mengotomatisasi proses bisnis!
-                            </p>
-                            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                        Konsultasi gratis untuk membahas kebutuhan sistem Anda. Tim ahli kami siap membantu mengembangkan sistem impian Anda!
+                    </p>
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
                         <button className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg transition-colors duration-300">
-                                    Konsultasi Gratis
+                            Konsultasi Gratis
                         </button>
                         <button className="border border-green-600 text-green-600 dark:text-green-400 px-8 py-3 rounded-lg hover:bg-green-50 dark:hover:bg-green-900/20 transition-colors duration-300">
-                            Lihat Demo
+                            Lihat Portfolio
                         </button>
                     </div>
                 </div>

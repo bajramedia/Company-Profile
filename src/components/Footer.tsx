@@ -118,24 +118,24 @@ export default function Footer() {
                         {/* Quick Links */}
                         <div>
                             <h4 className="font-semibold text-white mb-6">{t('Quick Links') || 'Quick Links'}</h4>
-                            <div className="flex flex-col space-y-2">
+                            <div className="flex flex-col space-y-3">
                                 <Link href="/" className="text-gray-400 hover:text-white transition-colors duration-300">
-                                    Beranda
+                                    {t('nav.home') || 'Beranda'}
                                 </Link>
                                 <Link href="/about" className="text-gray-400 hover:text-white transition-colors duration-300">
-                                    Tentang Kami
+                                    {t('nav.about') || 'Tentang Kami'}
                                 </Link>
                                 <Link href="/services" className="text-gray-400 hover:text-white transition-colors duration-300">
-                                    Layanan
+                                    {t('nav.services') || 'Layanan'}
                                 </Link>
                                 <Link href="/portfolio" className="text-gray-400 hover:text-white transition-colors duration-300">
-                                    Portfolio
+                                    {t('nav.portfolio') || 'Portfolio'}
                                 </Link>
                                 <Link href="/blog" className="text-gray-400 hover:text-white transition-colors duration-300">
-                                    Blog
+                                    {t('nav.blog') || 'Blog'}
                                 </Link>
                                 <Link href="/#contact" className="text-gray-400 hover:text-white transition-colors duration-300">
-                                    Kontak
+                                    {t('nav.contact') || 'Kontak'}
                                 </Link>
                             </div>
                         </div>
