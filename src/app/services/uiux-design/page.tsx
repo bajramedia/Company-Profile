@@ -37,11 +37,11 @@ export default function UiUxDesignPage() {
                 <div className="text-center mb-16">
                     <Heading variant="h1" color="foreground" className="mb-4 text-[32px] md:text-[40px] lg:text-[48px] font-bold">
                         {t('services.uiux.title') || 'Jasa UI/UX Design'}
-                    </Heading>
+                        </Heading>
                     <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
                         {t('services.uiux.description') || 'Kami menyediakan jasa pembuatan desain UI/UX profesional untuk aplikasi dan website Anda'}
                     </p>
-                </div>
+                    </div>
 
                 <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
                     {/* Basic Package */}
@@ -169,17 +169,17 @@ export default function UiUxDesignPage() {
                             {t('common.contactUs') || 'Hubungi Kami'}
                         </button>
                     </div>
-                </div>
+                        </div>
 
                 {/* CTA Section */}
                 <div className="text-center mt-16">
                     <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
                         {t('services.uiux.cta.title') || 'Siap Memulai Project Design?'}
-                    </h2>
+                            </h2>
                     <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
                         {t('services.uiux.cta.description') || 'Konsultasi gratis untuk membahas kebutuhan desain Anda. Tim ahli kami siap membantu mengembangkan desain impian Anda!'}
-                    </p>
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                            </p>
+                            <div className="flex flex-col sm:flex-row gap-4 justify-center">
                         <button className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg transition-colors duration-300">
                             {t('common.freeConsultation') || 'Konsultasi Gratis'}
                         </button>

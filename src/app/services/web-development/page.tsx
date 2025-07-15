@@ -59,49 +59,73 @@ export default function WebDevelopmentPage() {
                         <div className="bg-white dark:bg-gray-800 rounded-xl p-6 text-center shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-200 dark:border-gray-700">
                             <div className="text-4xl mb-3 text-blue-500 flex justify-center">
                                 <Globe className="w-12 h-12" />
-                                </div>
-                            <h3 className="font-semibold mb-2 text-gray-900 dark:text-white">Next.js</h3>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">Modern React Framework</p>
+                            </div>
+                            <h3 className="font-semibold mb-2 text-gray-900 dark:text-white">
+                                {t('services.webdev.tech.nextjs.title') || 'Next.js'}
+                            </h3>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                                {t('services.webdev.tech.nextjs.desc') || 'Modern React Framework'}
+                            </p>
                         </div>
 
                         <div className="bg-white dark:bg-gray-800 rounded-xl p-6 text-center shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-200 dark:border-gray-700">
                             <div className="text-4xl mb-3 text-purple-500 flex justify-center">
                                 <Code2 className="w-12 h-12" />
-                                    </div>
-                            <h3 className="font-semibold mb-2 text-gray-900 dark:text-white">TypeScript</h3>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">Type-Safe JavaScript</p>
+                            </div>
+                            <h3 className="font-semibold mb-2 text-gray-900 dark:text-white">
+                                {t('services.webdev.tech.typescript.title') || 'TypeScript'}
+                            </h3>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                                {t('services.webdev.tech.typescript.desc') || 'Type-Safe JavaScript'}
+                            </p>
                         </div>
 
                         <div className="bg-white dark:bg-gray-800 rounded-xl p-6 text-center shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-200 dark:border-gray-700">
                             <div className="text-4xl mb-3 text-green-500 flex justify-center">
                                 <Database className="w-12 h-12" />
                             </div>
-                            <h3 className="font-semibold mb-2 text-gray-900 dark:text-white">PostgreSQL</h3>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">Advanced Database</p>
+                            <h3 className="font-semibold mb-2 text-gray-900 dark:text-white">
+                                {t('services.webdev.tech.postgresql.title') || 'PostgreSQL'}
+                            </h3>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                                {t('services.webdev.tech.postgresql.desc') || 'Advanced Database'}
+                            </p>
                         </div>
 
                         <div className="bg-white dark:bg-gray-800 rounded-xl p-6 text-center shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-200 dark:border-gray-700">
                             <div className="text-4xl mb-3 text-orange-500 flex justify-center">
                                 <Server className="w-12 h-12" />
                             </div>
-                            <h3 className="font-semibold mb-2 text-gray-900 dark:text-white">Node.js</h3>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">Server Runtime</p>
-                                </div>
+                            <h3 className="font-semibold mb-2 text-gray-900 dark:text-white">
+                                {t('services.webdev.tech.nodejs.title') || 'Node.js'}
+                            </h3>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                                {t('services.webdev.tech.nodejs.desc') || 'Server Runtime'}
+                            </p>
+                        </div>
 
                         <div className="bg-white dark:bg-gray-800 rounded-xl p-6 text-center shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-200 dark:border-gray-700">
                             <div className="text-4xl mb-3 text-red-500 flex justify-center">
                                 <Cpu className="w-12 h-12" />
                             </div>
-                            <h3 className="font-semibold mb-2 text-gray-900 dark:text-white">Redis</h3>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">High Performance Cache</p>
+                            <h3 className="font-semibold mb-2 text-gray-900 dark:text-white">
+                                {t('services.webdev.tech.redis.title') || 'Redis'}
+                            </h3>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                                {t('services.webdev.tech.redis.desc') || 'High Performance Cache'}
+                            </p>
                         </div>
 
                         <div className="bg-white dark:bg-gray-800 rounded-xl p-6 text-center shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-200 dark:border-gray-700">
                             <div className="text-4xl mb-3 text-gray-500 flex justify-center">
                                 <Lock className="w-12 h-12" />
                             </div>
-                            <h3 className="font-semibold mb-2 text-gray-900 dark:text-white">Security</h3>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">Advanced Protection</p>
+                            <h3 className="font-semibold mb-2 text-gray-900 dark:text-white">
+                                {t('services.webdev.tech.security.title') || 'Security'}
+                            </h3>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                                {t('services.webdev.tech.security.desc') || 'Advanced Protection'}
+                            </p>
                         </div>
                     </div>
                         </div>

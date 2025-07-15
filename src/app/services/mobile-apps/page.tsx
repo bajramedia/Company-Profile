@@ -24,10 +24,10 @@ export default function MobileAppsPage() {
                         </svg>
                         <Link href="/services" className="text-gray-500 dark:text-gray-400 hover:text-[#00D084] transition-colors">
                             {t('nav.services') || 'Services'}
-                        </Link>
+                            </Link>
                         <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-                        </svg>
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                            </svg>
                         <span className="text-[#00D084] font-medium">{t('services.mobile.breadcrumb') || 'Mobile App Development'}</span>
                     </nav>
                 </div>
@@ -37,11 +37,11 @@ export default function MobileAppsPage() {
                 <div className="text-center mb-16">
                     <Heading variant="h1" color="foreground" className="mb-4 text-[32px] md:text-[40px] lg:text-[48px] font-bold">
                         {t('services.mobile.title') || 'Jasa Mobile App Development'}
-                    </Heading>
+                        </Heading>
                     <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
                         {t('services.mobile.description') || 'Kami menyediakan jasa pembuatan aplikasi mobile profesional untuk Android dan iOS'}
                     </p>
-                </div>
+                    </div>
 
                 <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
                     {/* Basic Package */}
@@ -165,17 +165,17 @@ export default function MobileAppsPage() {
                             <li className="flex items-start">
                                 <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                                </svg>
+                                                </svg>
                                 <span className="text-gray-700 dark:text-gray-300">{t('services.mobile.enterprise.features.support') || 'Support 6 bulan'}</span>
-                            </li>
-                        </ul>
+                                            </li>
+                                    </ul>
                         <Link href="https://wa.me/6285739402436?text=Halo%20saya%20tertarik%20dengan%20paket%20Enterprise%20App" className="block">
                             <button className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-300">
                                 {t('common.contactUs') || 'Hubungi Kami'}
                             </button>
                         </Link>
+                        </div>
                     </div>
-                </div>
             </div>
 
             {/* WhatsApp Chat */}

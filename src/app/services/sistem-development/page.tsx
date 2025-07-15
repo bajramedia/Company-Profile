@@ -42,7 +42,7 @@ export default function SystemDevelopmentPage() {
                     <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
                         {t('services.system.description') || 'Kami menyediakan jasa pembuatan sistem dan aplikasi enterprise untuk mengoptimalkan proses bisnis Anda'}
                     </p>
-                </div>
+                        </div>
 
                 <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
                     {/* Basic Package */}
@@ -103,38 +103,38 @@ export default function SystemDevelopmentPage() {
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
                                 <span className="text-gray-700 dark:text-gray-300">{t('services.system.pro.features.modules') || '6 modul utama'}</span>
-                            </li>
+                                    </li>
                             <li className="flex items-start">
                                 <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
                                 <span className="text-gray-700 dark:text-gray-300">{t('services.system.pro.features.users') || '15 user'}</span>
-                            </li>
+                                    </li>
                             <li className="flex items-start">
                                 <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
                                 <span className="text-gray-700 dark:text-gray-300">{t('services.system.pro.features.support') || 'Support 3 bulan'}</span>
-                            </li>
+                                    </li>
                             <li className="flex items-start">
                                 <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
                                 <span className="text-gray-700 dark:text-gray-300">{t('services.system.pro.features.training') || 'Training 3x'}</span>
-                            </li>
+                                    </li>
                             <li className="flex items-start">
                                 <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
                                 <span className="text-gray-700 dark:text-gray-300">{t('services.system.pro.features.api') || 'API integration'}</span>
-                            </li>
-                        </ul>
+                                    </li>
+                                </ul>
                         <Link href="https://wa.me/6285739402436?text=Halo%20saya%20tertarik%20dengan%20paket%20Pro%20System" className="block">
                             <button className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-300">
                                 {t('common.contactUs') || 'Hubungi Kami'}
                             </button>
                         </Link>
-                    </div>
+                        </div>
 
                     {/* Enterprise Package */}
                     <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-8 hover:shadow-lg transition-all duration-300 bg-white dark:bg-gray-800 flex flex-col">
@@ -156,33 +156,95 @@ export default function SystemDevelopmentPage() {
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
                                 <span className="text-gray-700 dark:text-gray-300">{t('services.system.enterprise.features.users') || 'Unlimited user'}</span>
-                            </li>
+                                    </li>
                             <li className="flex items-start">
                                 <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
                                 <span className="text-gray-700 dark:text-gray-300">{t('services.system.enterprise.features.support') || 'Support 6 bulan'}</span>
-                            </li>
+                                    </li>
                             <li className="flex items-start">
                                 <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
                                 <span className="text-gray-700 dark:text-gray-300">{t('services.system.enterprise.features.training') || 'Training unlimited'}</span>
-                            </li>
+                                    </li>
                             <li className="flex items-start">
                                 <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
                                 <span className="text-gray-700 dark:text-gray-300">{t('services.system.enterprise.features.custom') || 'Custom integration'}</span>
-                            </li>
-                        </ul>
+                                    </li>
+                                </ul>
                         <Link href="https://wa.me/6285739402436?text=Halo%20saya%20tertarik%20dengan%20paket%20Enterprise%20System" className="block">
                             <button className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-300">
                                 {t('common.contactUs') || 'Hubungi Kami'}
                             </button>
                         </Link>
+                        </div>
                     </div>
-                </div>
+
+                    {/* Features Section */}
+                    <div className="mb-20">
+                        <div className="text-center mb-12">
+                            <h2 className="text-2xl md:text-3xl font-bold mb-4 text-gray-900 dark:text-white">
+                                {t('services.system.features.title') || 'Fitur Unggulan'}
+                            </h2>
+                            <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                                {t('services.system.features.description') || 'Sistem yang kami kembangkan dilengkapi dengan fitur-fitur modern'}
+                            </p>
+                        </div>
+
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-6xl mx-auto">
+                            <div className="bg-white dark:bg-gray-800 rounded-xl p-6 text-center shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-200 dark:border-gray-700">
+                                <div className="text-4xl mb-3 text-blue-500 flex justify-center">
+                                    <Settings className="w-12 h-12" />
+                                </div>
+                                <h3 className="font-semibold mb-2 text-gray-900 dark:text-white">
+                                    {t('services.system.features.customization.title') || 'Customizable'}
+                                </h3>
+                                <p className="text-sm text-gray-600 dark:text-gray-400">
+                                    {t('services.system.features.customization.desc') || 'Sistem yang dapat disesuaikan'}
+                                </p>
+                            </div>
+
+                            <div className="bg-white dark:bg-gray-800 rounded-xl p-6 text-center shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-200 dark:border-gray-700">
+                                <div className="text-4xl mb-3 text-green-500 flex justify-center">
+                                    <Database className="w-12 h-12" />
+                                </div>
+                                <h3 className="font-semibold mb-2 text-gray-900 dark:text-white">
+                                    {t('services.system.features.database.title') || 'Database'}
+                                </h3>
+                                <p className="text-sm text-gray-600 dark:text-gray-400">
+                                    {t('services.system.features.database.desc') || 'Database yang terstruktur'}
+                                </p>
+                            </div>
+
+                            <div className="bg-white dark:bg-gray-800 rounded-xl p-6 text-center shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-200 dark:border-gray-700">
+                                <div className="text-4xl mb-3 text-red-500 flex justify-center">
+                                    <Shield className="w-12 h-12" />
+                                </div>
+                                <h3 className="font-semibold mb-2 text-gray-900 dark:text-white">
+                                    {t('services.system.features.security.title') || 'Security'}
+                                </h3>
+                                <p className="text-sm text-gray-600 dark:text-gray-400">
+                                    {t('services.system.features.security.desc') || 'Keamanan tingkat tinggi'}
+                                </p>
+                            </div>
+
+                            <div className="bg-white dark:bg-gray-800 rounded-xl p-6 text-center shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-200 dark:border-gray-700">
+                                <div className="text-4xl mb-3 text-orange-500 flex justify-center">
+                                    <BarChart className="w-12 h-12" />
+                                </div>
+                                <h3 className="font-semibold mb-2 text-gray-900 dark:text-white">
+                                    {t('services.system.features.analytics.title') || 'Analytics'}
+                                </h3>
+                                <p className="text-sm text-gray-600 dark:text-gray-400">
+                                    {t('services.system.features.analytics.desc') || 'Laporan dan analisis'}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
             </div>
 
             {/* WhatsApp Chat */}

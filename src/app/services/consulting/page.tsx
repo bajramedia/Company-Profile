@@ -171,11 +171,11 @@ export default function ConsultingPage() {
                 <div className="text-center mt-16">
                     <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
                         {t('services.consulting.cta.title') || 'Siap Mengembangkan Bisnis Anda?'}
-                    </h2>
+                            </h2>
                     <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
                         {t('services.consulting.cta.description') || 'Konsultasi gratis untuk membahas kebutuhan bisnis Anda. Tim ahli kami siap membantu mengembangkan strategi yang tepat!'}
-                    </p>
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                            </p>
+                            <div className="flex flex-col sm:flex-row gap-4 justify-center">
                         <button className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg transition-colors duration-300">
                             {t('common.freeConsultation') || 'Konsultasi Gratis'}
                         </button>

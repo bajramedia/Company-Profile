@@ -443,22 +443,22 @@ export default function BlogListingPage() {
                       <div className="relative aspect-video w-full overflow-hidden rounded-lg">
                         <Image
                           src={post.featuredImage || '/images/placeholder.jpg'}
-                          alt={post.title}
+                            alt={post.title}
                           fill
                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                           className="object-cover"
                           priority={index < 3}
-                        />
-                      </div>
-                      <div>
-                        <h3 className="font-medium text-sm line-clamp-2 group-hover:text-primary transition-colors text-gray-900 dark:text-gray-100">
-                          {post.title}
-                        </h3>
-                        <div className="flex items-center mt-1">
-                          <span className="text-xs text-gray-500 dark:text-gray-400 flex items-center">
-                            <FiEye className="mr-1" size={12} />
-                            {post.views || 0}
-                          </span>
+                          />
+                        </div>
+                        <div>
+                          <h3 className="font-medium text-sm line-clamp-2 group-hover:text-primary transition-colors text-gray-900 dark:text-gray-100">
+                            {post.title}
+                          </h3>
+                          <div className="flex items-center mt-1">
+                            <span className="text-xs text-gray-500 dark:text-gray-400 flex items-center">
+                              <FiEye className="mr-1" size={12} />
+                              {post.views || 0}
+                            </span>
                         </div>
                       </div>
                     </Link>

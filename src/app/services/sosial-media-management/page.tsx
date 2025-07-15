@@ -44,6 +44,68 @@ export default function SocialMediaManagementPage() {
                     </p>
                 </div>
 
+                {/* Features Section */}
+                <div className="mb-20">
+                    <div className="text-center mb-12">
+                        <h2 className="text-2xl md:text-3xl font-bold mb-4 text-gray-900 dark:text-white">
+                            {t('services.social.features.title') || 'Layanan Unggulan'}
+                        </h2>
+                        <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                            {t('services.social.features.description') || 'Layanan sosial media yang kami sediakan'}
+                        </p>
+                    </div>
+
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-6xl mx-auto">
+                        <div className="bg-white dark:bg-gray-800 rounded-xl p-6 text-center shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-200 dark:border-gray-700">
+                            <div className="text-4xl mb-3 text-pink-500 flex justify-center">
+                                <Instagram className="w-12 h-12" />
+                            </div>
+                            <h3 className="font-semibold mb-2 text-gray-900 dark:text-white">
+                                {t('services.social.features.content.title') || 'Content Creation'}
+                            </h3>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                                {t('services.social.features.content.desc') || 'Pembuatan konten menarik'}
+                            </p>
+                        </div>
+
+                        <div className="bg-white dark:bg-gray-800 rounded-xl p-6 text-center shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-200 dark:border-gray-700">
+                            <div className="text-4xl mb-3 text-blue-500 flex justify-center">
+                                <MessageCircle className="w-12 h-12" />
+                            </div>
+                            <h3 className="font-semibold mb-2 text-gray-900 dark:text-white">
+                                {t('services.social.features.engagement.title') || 'Engagement'}
+                            </h3>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                                {t('services.social.features.engagement.desc') || 'Interaksi dengan followers'}
+                            </p>
+                        </div>
+
+                        <div className="bg-white dark:bg-gray-800 rounded-xl p-6 text-center shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-200 dark:border-gray-700">
+                            <div className="text-4xl mb-3 text-green-500 flex justify-center">
+                                <TrendingUp className="w-12 h-12" />
+                            </div>
+                            <h3 className="font-semibold mb-2 text-gray-900 dark:text-white">
+                                {t('services.social.features.growth.title') || 'Growth Strategy'}
+                            </h3>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                                {t('services.social.features.growth.desc') || 'Strategi pertumbuhan'}
+                            </p>
+                        </div>
+
+                        <div className="bg-white dark:bg-gray-800 rounded-xl p-6 text-center shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-200 dark:border-gray-700">
+                            <div className="text-4xl mb-3 text-purple-500 flex justify-center">
+                                <BarChart2 className="w-12 h-12" />
+                            </div>
+                            <h3 className="font-semibold mb-2 text-gray-900 dark:text-white">
+                                {t('services.social.features.analytics.title') || 'Analytics'}
+                            </h3>
+                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                                {t('services.social.features.analytics.desc') || 'Laporan performa'}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
                 <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
                     {/* Basic Package */}
                     <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-8 hover:shadow-lg transition-all duration-300 bg-white dark:bg-gray-800 flex flex-col">
