@@ -1,45 +1,24 @@
 import { NextResponse } from 'next/server';
-
-const dummyPartners = [
-  {
-    id: 1,
-    name: "TechCorp Solutions",
-    nameId: "TechCorp Solutions",
-    logo: "/images/partners/techcorp.png",
-    website: "https://techcorp.com"
-  },
-  {
-    id: 2,
-    name: "Digital Innovators",
-    nameId: "Digital Innovators",
-    logo: "/images/partners/digital-innovators.png",
-    website: "https://digitalinnovators.com"
-  },
-  {
-    id: 3,
-    name: "Creative Studio",
-    nameId: "Creative Studio",
-    logo: "/images/partners/creative-studio.png",
-    website: "https://creativestudio.com"
-  },
-  {
-    id: 4,
-    name: "Global Connect",
-    nameId: "Global Connect",
-    logo: "/images/partners/global-connect.png",
-    website: "https://globalconnect.com"
-  }
-];
+import { API_BASE_URL } from '@/config/api';
 
 export async function GET() {
   try {
-    // Di sini nantinya bisa ditambahkan logic untuk mengambil data dari database
-    // Untuk sementara kita gunakan dummy data
-    return NextResponse.json(dummyPartners);
+    const response = await fetch(`${API_BASE_URL}?endpoint=partners`);
+
+    if (!response.ok) {
+      throw new Error(`Gagal mengambil data dari CMS: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+
+    // Pastikan data yang diterima adalah array
+    const partners = Array.isArray(data) ? data : [];
+
+    return NextResponse.json(partners);
   } catch (error) {
-    console.error('Error fetching partners data:', error);
+    console.error('Kesalahan saat mengambil data partner:', error);
     return NextResponse.json(
-      { error: 'Failed to fetch partners data' },
+      { error: 'Gagal mengambil data partner dari server' },
       { status: 500 }
     );
   }

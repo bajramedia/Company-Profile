@@ -76,6 +76,31 @@ export const en = {
     whatsapp: {
         aboutPage: 'Hi! I want to know more about Bajramedia.'
     },
+    portfolio: {
+        title: 'Our Portfolio',
+        subtitle: 'Check out the best work we have done for our clients.',
+        categories: {
+            all: 'All Categories'
+        },
+        noResults: 'There are no projects in this category yet.',
+        cta: {
+            title: 'Have a Project for Us?',
+            subtitle: 'Let\'s discuss your project idea with our team.'
+        },
+        error: {
+            fetch: 'Failed to fetch portfolio data.'
+        }
+    },
+    blog: {
+        title: 'Latest Blog & Articles',
+        description: 'Find the latest articles on technology, design, and digital strategies to grow your business.',
+        readMore: 'Read More',
+        noPosts: 'There are no blog posts at the moment.',
+        card: {
+            author: 'Author',
+            readMore: 'Read More'
+        }
+    },
     services: {
         gameAsset: {
             breadcrumb: 'Game Asset Development',
@@ -235,6 +260,13 @@ export const en = {
                     custom: 'Custom features',
                     support: '6 months support'
                 }
+            },
+            cta: {
+                title: 'Ready to Build Your Dream App?',
+                description: 'Create a functional and engaging mobile app with us.'
+            },
+            whatsapp: {
+                message: 'Hi! I\'m interested in Bajramedia\'s Mobile App Development service.'
             }
         },
         system: {
@@ -264,34 +296,19 @@ export const en = {
             },
             enterprise: {
                 title: 'Enterprise System',
-                price: 'Custom',
+                price: 'Custom Price',
                 features: {
                     modules: 'Unlimited modules',
-                    users: 'Unlimited users',
-                    support: '6 months support',
-                    training: 'Custom training',
-                    custom: 'Custom features'
+                    custom: 'Custom features',
+                    support: '6 months support'
                 }
             },
-            features: {
-                title: 'Key Features',
-                description: 'Our information systems are equipped with various modern features',
-                customization: {
-                    title: 'Customization',
-                    desc: 'System can be customized to your business needs'
-                },
-                database: {
-                    title: 'Database Management',
-                    desc: 'Secure and efficient data management'
-                },
-                security: {
-                    title: 'Security',
-                    desc: 'Layered security system to protect your data'
-                },
-                analytics: {
-                    title: 'Analytics',
-                    desc: 'Reports and data analysis for decision making'
-                }
+            cta: {
+                title: 'Need an Integrated Information System?',
+                description: 'Optimize your business processes with a system we develop specifically for you.'
+            },
+            whatsapp: {
+                message: 'Hi! I\'m interested in Bajramedia\'s System Development service.'
             }
         },
         social: {
@@ -373,21 +390,19 @@ export const en = {
             },
             enterprise: {
                 title: 'Enterprise Design',
-                price: 'Custom',
+                price: 'Custom Price',
                 features: {
-                    pages: 'Unlimited pages',
-                    research: 'User research',
-                    testing: 'Usability testing',
-                    revision: 'Unlimited revision',
-                    consultation: 'Design consultation'
+                    screens: 'Unlimited screens',
+                    prototype: 'High-fidelity prototype',
+                    system: 'Full design system'
                 }
             },
             cta: {
-                title: 'Ready to Improve User Experience?',
-                description: 'Free consultation to discuss your application\'s UI/UX design needs!'
+                title: 'Want an Engaging & User-Friendly Design?',
+                description: 'Enhance the user experience of your digital product with our UI/UX design.'
             },
             whatsapp: {
-                message: 'Hi! I\'m interested in Bajramedia\'s UI/UX Design service. Can I get a free consultation?'
+                message: 'Hi! I\'m interested in Bajramedia\'s UI/UX Design service.'
             }
         },
         webdev: {
@@ -446,22 +461,20 @@ export const en = {
             },
             enterprise: {
                 title: 'Enterprise Website',
-                price: 'Custom',
+                price: 'Custom Price',
                 features: {
-                    unlimited: 'Unlimited pages',
+                    pages: 'Unlimited pages',
                     custom: 'Custom features',
-                    api: 'REST API',
-                    security: 'Advanced security',
                     support: '6 months support'
                 }
             },
             cta: {
-                title: 'Ready to Start Your Website Project?',
-                description: 'Free consultation to discuss your website needs!',
-                portfolio: 'View Portfolio',
-                consultation: 'Free Consultation'
+                title: 'Bring Your Dream Website to Life With Us',
+                description: 'From company profiles to e-commerce, we are here to help you.'
             },
-            whatsapp: 'Hi! I\'m interested in Bajramedia\'s Web Development service. Can I get a free consultation?'
+            whatsapp: {
+                message: 'Hi! I\'m interested in Bajramedia\'s Web Development service.'
+            }
         }
     }
 }; 

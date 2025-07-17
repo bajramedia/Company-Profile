@@ -76,6 +76,31 @@ export const id = {
     whatsapp: {
         aboutPage: 'Halo! Saya ingin tahu lebih banyak tentang Bajramedia.'
     },
+    portfolio: {
+        title: 'Portofolio Kami',
+        subtitle: 'Lihat hasil karya terbaik yang telah kami kerjakan untuk klien kami.',
+        categories: {
+            all: 'Semua Kategori'
+        },
+        noResults: 'Belum ada proyek dalam kategori ini.',
+        cta: {
+            title: 'Punya Proyek untuk Kami?',
+            subtitle: 'Mari diskusikan ide proyek Anda dengan tim kami.'
+        },
+        error: {
+            fetch: 'Gagal mengambil data portofolio.'
+        }
+    },
+    blog: {
+        title: 'Blog & Artikel Terbaru',
+        description: 'Temukan artikel terbaru tentang teknologi, desain, dan strategi digital untuk mengembangkan bisnis Anda.',
+        readMore: 'Baca Selengkapnya',
+        noPosts: 'Saat ini belum ada postingan blog.',
+        card: {
+            author: 'Penulis',
+            readMore: 'Baca Selengkapnya'
+        }
+    },
     services: {
         gameAsset: {
             breadcrumb: 'Game Asset Development',
@@ -235,6 +260,13 @@ export const id = {
                     custom: 'Custom features',
                     support: 'Support 6 bulan'
                 }
+            },
+            cta: {
+                title: 'Siap Membangun Aplikasi Impian Anda?',
+                description: 'Wujudkan aplikasi mobile yang fungsional dan menarik bersama kami.'
+            },
+            whatsapp: {
+                message: 'Halo! Saya tertarik dengan layanan Mobile App Development Bajramedia.'
             }
         },
         system: {
@@ -264,34 +296,19 @@ export const id = {
             },
             enterprise: {
                 title: 'Enterprise System',
-                price: 'Custom',
+                price: 'Custom Price',
                 features: {
                     modules: 'Unlimited modules',
-                    users: 'Unlimited users',
-                    support: 'Support 6 bulan',
-                    training: 'Training custom',
-                    custom: 'Custom features'
+                    custom: 'Custom features',
+                    support: 'Support 6 bulan'
                 }
             },
-            features: {
-                title: 'Fitur Unggulan',
-                description: 'Sistem informasi yang kami kembangkan dilengkapi dengan berbagai fitur modern',
-                customization: {
-                    title: 'Customization',
-                    desc: 'Sistem dapat disesuaikan dengan kebutuhan bisnis Anda'
-                },
-                database: {
-                    title: 'Database Management',
-                    desc: 'Pengelolaan data yang aman dan efisien'
-                },
-                security: {
-                    title: 'Security',
-                    desc: 'Sistem keamanan berlapis untuk melindungi data Anda'
-                },
-                analytics: {
-                    title: 'Analytics',
-                    desc: 'Laporan dan analisis data untuk pengambilan keputusan'
-                }
+            cta: {
+                title: 'Butuh Sistem Informasi Terintegrasi?',
+                description: 'Optimalkan proses bisnis Anda dengan sistem yang kami kembangkan khusus untuk Anda.'
+            },
+            whatsapp: {
+                message: 'Halo! Saya tertarik dengan layanan Sistem Development Bajramedia.'
             }
         },
         social: {
@@ -373,21 +390,19 @@ export const id = {
             },
             enterprise: {
                 title: 'Enterprise Design',
-                price: 'Custom',
+                price: 'Custom Price',
                 features: {
-                    pages: 'Unlimited pages',
-                    research: 'User research',
-                    testing: 'Usability testing',
-                    revision: 'Unlimited revision',
-                    consultation: 'Design consultation'
+                    screens: 'Unlimited screens',
+                    prototype: 'High-fidelity prototype',
+                    system: 'Full design system'
                 }
             },
             cta: {
-                title: 'Siap Meningkatkan User Experience?',
-                description: 'Konsultasi gratis untuk membahas kebutuhan desain UI/UX aplikasi Anda!'
+                title: 'Ingin Desain yang Menarik & Mudah Digunakan?',
+                description: 'Tingkatkan pengalaman pengguna produk digital Anda dengan desain UI/UX dari kami.'
             },
             whatsapp: {
-                message: 'Halo! Saya tertarik dengan layanan UI/UX Design Bajramedia. Bisa konsultasi gratis?'
+                message: 'Halo! Saya tertarik dengan layanan UI/UX Design Bajramedia.'
             }
         },
         webdev: {
@@ -446,22 +461,20 @@ export const id = {
             },
             enterprise: {
                 title: 'Enterprise Website',
-                price: 'Custom',
+                price: 'Custom Price',
                 features: {
-                    unlimited: 'Unlimited pages',
+                    pages: 'Unlimited pages',
                     custom: 'Custom features',
-                    api: 'REST API',
-                    security: 'Advanced security',
                     support: 'Support 6 bulan'
                 }
             },
             cta: {
-                title: 'Siap Memulai Proyek Website Anda?',
-                description: 'Konsultasi gratis untuk membahas kebutuhan website Anda!',
-                portfolio: 'Lihat Portfolio',
-                consultation: 'Konsultasi Gratis'
+                title: 'Wujudkan Website Impian Anda Bersama Kami',
+                description: 'Dari company profile hingga e-commerce, kami siap membantu Anda.'
             },
-            whatsapp: 'Halo! Saya tertarik dengan layanan Web Development Bajramedia. Bisa konsultasi gratis?'
+            whatsapp: {
+                message: 'Halo! Saya tertarik dengan layanan Web Development Bajramedia.'
+            }
         }
     }
 }; 
