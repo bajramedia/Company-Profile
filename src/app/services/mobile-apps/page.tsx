@@ -1,6 +1,7 @@
 "use client";
 
 import { Heading, Navbar, WhatsAppChat } from "@/components";
+import DarkModeToggle from "@/components/DarkModeToggle";
 import { useLanguage } from "@/context/LanguageContext";
 import Link from "next/link";
 
@@ -87,7 +88,8 @@ export default function MobileAppsPage() {
 
                     {/* Pro Package */}
                     <div className="border-2 border-green-500 dark:border-green-400 rounded-lg p-8 hover:shadow-lg transition-all duration-300 bg-white dark:bg-gray-800 flex flex-col relative">
-                        <div className="absolute top-0 right-0 bg-green-500 text-white px-4 py-1 rounded-bl-lg rounded-tr-lg text-sm font-semibold">
+                        {/* Badge Populer di tengah atas */}
+                        <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-4 py-1 rounded-full text-sm font-medium">
                             {t('common.popular') || 'POPULER'}
                         </div>
                         <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
@@ -165,17 +167,22 @@ export default function MobileAppsPage() {
                             <li className="flex items-start">
                                 <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                                                </svg>
+                                </svg>
                                 <span className="text-gray-700 dark:text-gray-300">{t('services.mobile.enterprise.features.support') || 'Support 6 bulan'}</span>
-                                            </li>
-                                    </ul>
+                            </li>
+                        </ul>
                         <Link href="https://wa.me/6285739402436?text=Halo%20saya%20tertarik%20dengan%20paket%20Enterprise%20App" className="block">
                             <button className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-300">
                                 {t('common.contactUs') || 'Hubungi Kami'}
                             </button>
                         </Link>
-                        </div>
                     </div>
+                </div>
+
+                {/* Dark Mode Toggle */}
+                <div className="mt-16 flex justify-center">
+                    <DarkModeToggle />
+                </div>
             </div>
 
             {/* WhatsApp Chat */}

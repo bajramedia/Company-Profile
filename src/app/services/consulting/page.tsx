@@ -88,10 +88,9 @@ export default function ConsultingPage() {
 
                     {/* Pro Package */}
                     <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-8 hover:shadow-lg transition-all duration-300 bg-green-50 dark:bg-green-900/20 flex flex-col relative">
-                        <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                            <div className="inline-block px-4 py-1 bg-green-500 text-white rounded-full text-sm font-medium">
-                                {t('common.popular') || 'POPULER'}
-                            </div>
+                        {/* Badge Populer di tengah atas */}
+                        <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-4 py-1 rounded-full text-sm font-medium">
+                            {t('common.popular') || 'POPULER'}
                         </div>
                         <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
                             {t('services.consulting.pro.title') || 'Pro Consulting'}

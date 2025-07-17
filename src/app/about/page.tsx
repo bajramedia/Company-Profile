@@ -1,284 +1,253 @@
 "use client";
 
-import { useEffect, useState } from 'react';
-import { useLanguage } from '@/context/LanguageContext';
-import { Heading, Text, AnimatedText, Button } from '@/components';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Button, Heading, Logo, LanguageSwitcher, AnimatedText, WhatsAppChat, Footer } from '@/components';
+import { useLanguage } from '@/context/LanguageContext';
+import { Sun, Moon } from 'lucide-react';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 interface TeamMember {
-  id: number;
+  id: string | number;
   name: string;
-  position: string;
-  image: string;
+  role: string;
+  roleId: string;
   bio: string;
-  socialLinks: {
+  bioId: string;
+  image: string;
+  social: {
     linkedin?: string;
-    twitter?: string;
     github?: string;
+    instagram?: string;
   };
 }
 
-interface AboutContent {
-  title: string;
-  subtitle: string;
-  description: string;
-  mission: string;
-  vision: string;
-  values: Array<{
-    title: string;
-    description: string;
-    icon: string;
-  }>;
-  stats: Array<{
-    value: string;
-    label: string;
-  }>;
+interface Partner {
+  id: string | number;
+  name: string;
+  nameId: string;
+  logo: string;
+  website: string;
 }
 
 export default function AboutPage() {
   const { t, language } = useLanguage();
+  const [isDarkMode, setIsDarkMode] = useState(false);
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
-  const [aboutContent, setAboutContent] = useState<AboutContent | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [teamLoading, setTeamLoading] = useState(true);
+  const [teamError, setTeamError] = useState<string | null>(null);
+  const [partners, setPartners] = useState<Partner[]>([]);
+  const [partnersLoading, setPartnersLoading] = useState(true);
+  const [partnersError, setPartnersError] = useState<string | null>(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // Fetch team members
-        const teamResponse = await fetch('/api/team-members');
-        const teamData = await teamResponse.json();
-        setTeamMembers(teamData);
-
-        // Fetch about content
-        const aboutResponse = await fetch('/api/admin/about-content');
-        const aboutData = await aboutResponse.json();
-        setAboutContent(aboutData);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
+    setIsClient(true);
+    AOS.init({
+        duration: 800,
+        easing: 'ease-out',
+        once: true,
+        offset: 100,
+    });
   }, []);
 
-  if (loading) {
-    return <div className="min-h-screen flex items-center justify-center">
-      <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-[#00D084]"></div>
-    </div>;
+  useEffect(() => {
+    if (isClient) {
+      const savedMode = localStorage.getItem('darkMode') === 'true';
+      setIsDarkMode(savedMode);
+      if (savedMode) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    }
+  }, [isClient]);
+
+  const toggleDarkMode = () => {
+    const newMode = !isDarkMode;
+    setIsDarkMode(newMode);
+    localStorage.setItem('darkMode', String(newMode));
+    if (newMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  };
+
+  const navLinks = [
+    { href: '/', key: 'nav.home' },
+    { href: '/about', key: 'nav.about' },
+    { href: '/services', key: 'nav.services' },
+    { href: '/portfolio', key: 'nav.portfolio' },
+    { href: '/blog', key: 'nav.blog' },
+    { href: '/contact', key: 'nav.contact' },
+  ];
+
+  if (!isClient) {
+    return (
+        <div className="min-h-screen bg-white dark:bg-gray-900 flex items-center justify-center">
+            <div className="text-center">
+                <Logo size="lg" />
+                <p className="mt-4 text-lg text-gray-600 dark:text-gray-400">{t('common.loading') || 'Loading...'}</p>
+            </div>
+        </div>
+    );
   }
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
-      {/* Hero Section */}
-      <section className="relative py-20 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-[#00D084]/10 to-transparent dark:from-[#00D084]/5"></div>
-        <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 relative z-10">
-          <div className="max-w-4xl">
-            <AnimatedText as="div">
-              <Heading variant="h1" color="foreground" className="mb-6 text-4xl md:text-5xl lg:text-6xl font-bold">
-                {aboutContent?.title || t('about.title')}
-              </Heading>
-              <Text color="secondary" className="text-lg md:text-xl mb-8 max-w-2xl">
-                {aboutContent?.description || t('about.description')}
-              </Text>
-            </AnimatedText>
-          </div>
-        </div>
-      </section>
-
-      {/* Mission & Vision */}
-      <section className="py-20 bg-gray-50 dark:bg-gray-800/50">
-        <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            {/* Mission */}
-            <AnimatedText as="div" className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg">
-              <div className="mb-6">
-                <div className="w-12 h-12 bg-[#00D084]/20 rounded-xl flex items-center justify-center mb-4">
-                  <svg className="w-6 h-6 text-[#00D084]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                  </svg>
-                </div>
-                <Heading variant="h3" color="foreground" className="text-2xl font-bold mb-4">
-                  {t('about.mission.title')}
-                </Heading>
-                <Text color="secondary" className="leading-relaxed">
-                  {aboutContent?.mission || t('about.mission.description')}
-                </Text>
-              </div>
-            </AnimatedText>
-
-            {/* Vision */}
-            <AnimatedText as="div" className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg">
-              <div className="mb-6">
-                <div className="w-12 h-12 bg-[#00D084]/20 rounded-xl flex items-center justify-center mb-4">
-                  <svg className="w-6 h-6 text-[#00D084]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                  </svg>
-                </div>
-                <Heading variant="h3" color="foreground" className="text-2xl font-bold mb-4">
-                  {t('about.vision.title')}
-                </Heading>
-                <Text color="secondary" className="leading-relaxed">
-                  {aboutContent?.vision || t('about.vision.description')}
-                </Text>
-              </div>
-            </AnimatedText>
-          </div>
-        </div>
-      </section>
-
-      {/* Values */}
-      <section className="py-20">
-        <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8">
-          <div className="text-center mb-16">
-            <AnimatedText as="div">
-              <Heading variant="h2" color="foreground" className="text-3xl md:text-4xl font-bold mb-4">
-                {t('about.values.title')}
-              </Heading>
-              <Text color="secondary" className="max-w-2xl mx-auto">
-                {language === 'id'
-                  ? 'Nilai-nilai yang kami junjung tinggi dalam setiap aspek pekerjaan kami'
-                  : 'The values we uphold in every aspect of our work'
-                }
-              </Text>
-            </AnimatedText>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {aboutContent?.values.map((value, index) => (
-              <AnimatedText key={index} as="div" className="bg-white dark:bg-gray-800 rounded-2xl p-6 text-center">
-                <div className="w-16 h-16 bg-[#00D084]/20 rounded-xl flex items-center justify-center mx-auto mb-6">
-                  <div className="w-8 h-8 text-[#00D084]" dangerouslySetInnerHTML={{ __html: value.icon }} />
-                </div>
-                <Heading variant="h4" color="foreground" className="text-xl font-bold mb-3">
-                  {value.title}
-                </Heading>
-                <Text color="secondary" className="text-sm">
-                  {value.description}
-                </Text>
-              </AnimatedText>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Team Section */}
-      <section className="py-20 bg-gray-50 dark:bg-gray-800/50">
-        <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8">
-          <div className="text-center mb-16">
-            <AnimatedText as="div">
-              <Heading variant="h2" color="foreground" className="text-3xl md:text-4xl font-bold mb-4">
-                {language === 'id' ? 'Tim Kami' : 'Our Team'}
-              </Heading>
-              <Text color="secondary" className="max-w-2xl mx-auto">
-                {language === 'id'
-                  ? 'Kenali tim profesional kami yang berdedikasi untuk kesuksesan proyek Anda'
-                  : 'Meet our professional team dedicated to your project success'
-                }
-              </Text>
-            </AnimatedText>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {teamMembers.map((member) => (
-              <AnimatedText key={member.id} as="div" className="bg-white dark:bg-gray-800 rounded-2xl p-6 text-center">
-                <div className="relative w-32 h-32 mx-auto mb-6">
-                  <Image
-                    src={member.image}
-                    alt={member.name}
-                    fill
-                    className="rounded-full object-cover"
-                  />
-                </div>
-                <Heading variant="h4" color="foreground" className="text-xl font-bold mb-2">
-                  {member.name}
-                </Heading>
-                <Text color="primary" className="text-[#00D084] font-medium mb-4">
-                  {member.position}
-                </Text>
-                <Text color="secondary" className="text-sm mb-6">
-                  {member.bio}
-                </Text>
-                <div className="flex items-center justify-center space-x-4">
-                  {member.socialLinks.linkedin && (
-                    <a href={member.socialLinks.linkedin} target="_blank" rel="noopener noreferrer"
-                      className="text-gray-400 hover:text-[#00D084] transition-colors">
-                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                      </svg>
-                    </a>
-                  )}
-                  {member.socialLinks.twitter && (
-                    <a href={member.socialLinks.twitter} target="_blank" rel="noopener noreferrer"
-                      className="text-gray-400 hover:text-[#00D084] transition-colors">
-                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
-                      </svg>
-                    </a>
-                  )}
-                  {member.socialLinks.github && (
-                    <a href={member.socialLinks.github} target="_blank" rel="noopener noreferrer"
-                      className="text-gray-400 hover:text-[#00D084] transition-colors">
-                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
-                      </svg>
-                    </a>
-                  )}
-                </div>
-              </AnimatedText>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Stats Section */}
-      <section className="py-20">
-        <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {aboutContent?.stats.map((stat, index) => (
-              <AnimatedText key={index} as="div" className="text-center">
-                <div className="text-4xl md:text-5xl font-bold text-[#00D084] mb-2">
-                  {stat.value}
-                </div>
-                <div className="text-gray-600 dark:text-gray-400 text-sm md:text-base">
-                  {stat.label}
-                </div>
-              </AnimatedText>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-20 bg-gray-900 dark:bg-gray-800">
-        <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8">
-          <div className="max-w-4xl mx-auto text-center">
-            <AnimatedText as="div">
-              <Heading variant="h2" className="text-white text-3xl md:text-4xl font-bold mb-6">
-                {language === 'id'
-                  ? 'Siap Memulai Project Bersama Kami?'
-                  : 'Ready to Start Your Project with Us?'
-                }
-              </Heading>
-              <Text className="text-gray-400 mb-8 text-lg">
-                {language === 'id'
-                  ? 'Konsultasikan kebutuhan digital Anda dengan tim kami'
-                  : 'Consult your digital needs with our team'
-                }
-              </Text>
-              <Link href="/contact">
-                <Button variant="primary" size="lg" className="bg-[#00D084] hover:bg-[#00B873] text-white px-8 py-4">
-                  {language === 'id' ? 'Mulai Konsultasi' : 'Start Consultation'}
-                </Button>
+      <header className="fixed top-0 left-0 right-0 bg-white/95 dark:bg-gray-800/95 shadow-sm z-50 py-3 md:py-4 backdrop-blur-sm">
+        <div className="w-[95%] mx-auto flex justify-between items-center px-4 sm:px-6 md:px-8">
+          <Logo size="md" />
+          <nav className="hidden md:flex items-center space-x-8">
+            {navLinks.map((link) => (
+              <Link key={link.href} href={link.href} className={`transition-colors duration-300 text-[15px] font-medium ${ '/about' === link.href ? 'text-green-500 dark:text-green-400' : 'text-gray-600 hover:text-green-500 dark:text-gray-300 dark:hover:text-green-400'}`}>
+                {t(link.key) || link.key.split('.')[1]}
               </Link>
-            </AnimatedText>
+            ))}
+          </nav>
+          <div className="hidden md:flex items-center space-x-4">
+            <LanguageSwitcher />
+            <button onClick={toggleDarkMode} className="p-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" aria-label={t(isDarkMode ? 'common.lightMode' : 'common.darkMode')}>
+              {isDarkMode ? <Sun size={24} className="text-yellow-500" /> : <Moon size={24} className="text-blue-500" />}
+            </button>
+            <Link href="/contact">
+                <Button variant="primary" size="sm">{t('nav.contact') || 'Contact'}</Button>
+            </Link>
+          </div>
+          <div className="md:hidden flex items-center">
+            <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="text-gray-700 dark:text-gray-300 hover:text-green-500 dark:hover:text-green-400 focus:outline-none" aria-label="Open menu">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-4 6h10"></path></svg>
+            </button>
           </div>
         </div>
-      </section>
+        {isMobileMenuOpen && (
+          <div className="md:hidden mt-4 px-4 pb-4 border-t border-gray-200 dark:border-gray-700">
+            <nav className="flex flex-col space-y-4 pt-4">
+              {navLinks.map((link) => (
+                <Link key={link.href} href={link.href} className={`transition-colors duration-300 text-base font-medium ${ '/about' === link.href ? 'text-green-500 dark:text-green-400' : 'text-gray-600 hover:text-green-500 dark:text-gray-300 dark:hover:text-green-400'}`} onClick={() => setIsMobileMenuOpen(false)}>
+                  {t(link.key) || link.key.split('.')[1]}
+                </Link>
+              ))}
+            </nav>
+            <div className="mt-6 flex items-center justify-between">
+              <LanguageSwitcher />
+              <button onClick={toggleDarkMode} className="p-2 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors" aria-label={t(isDarkMode ? 'common.lightMode' : 'common.darkMode')}>
+                {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
+              </button>
+            </div>
+            <Link href="/contact">
+                <Button variant="primary" size="sm" className="w-full mt-6" onClick={() => setIsMobileMenuOpen(false)}>
+                    {t('common.freeConsultation') || 'Free Consultation'}
+                </Button>
+            </Link>
+          </div>
+        )}
+      </header>
+      
+      <main className="pt-20">
+        <section className="py-16 md:py-24 bg-gray-50 dark:bg-gray-800/50" data-aos="fade-in">
+          <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 text-center">
+            <AnimatedText>
+              <Heading variant="h1" color="foreground" className="mb-6 text-4xl md:text-5xl lg:text-6xl font-extrabold">
+                {t('about.hero.title.main') || 'Tentang Bajra Media'}
+                <span className="text-green-500 relative"> {t('about.hero.title.highlight') || 'Kami'}
+                  <span className="absolute bottom-1.5 left-0 w-full h-3 bg-green-500/10 -z-0"></span>
+                </span>
+              </Heading>
+            </AnimatedText>
+            <AnimatedText>
+              <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed">
+                {t('about.hero.subtitle') || 'Kami adalah agensi digital kreatif yang bersemangat dalam membangun solusi digital inovatif untuk bisnis Anda.'}
+              </p>
+            </AnimatedText>
+          </div>
+        </section>
+
+        <section className="py-16 md:py-24" data-aos="fade-up">
+          <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8">
+            <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
+                <div className="relative" data-aos="fade-right">
+                    <Image src="/images/team-meeting.jpg" alt={t('about.story.imageAlt') || 'Tim berkolaborasi'} width={600} height={400} className="rounded-2xl shadow-lg w-full"/>
+                    <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-green-500/10 rounded-full blur-2xl -z-10"></div>
+                </div>
+                <div data-aos="fade-left" data-aos-delay="200">
+                    <Heading variant="h2" color="foreground" className="mb-6">{t('about.story.title') || 'Cerita Kami'}</Heading>
+                    <div className="prose prose-lg dark:prose-invert max-w-none text-gray-600 dark:text-gray-300 space-y-4">
+                        <p>{t('about.story.paragraph1') || 'Berawal dari semangat untuk menciptakan solusi digital yang bermakna, Bajra Media didirikan untuk membantu bisnis bertransformasi di era digital.'}</p>
+                        <p>{t('about.story.paragraph2') || 'Dengan tim yang solid dan berpengalaman, kami berkomitmen untuk memberikan layanan terbaik dan hasil yang melebihi ekspektasi.'}</p>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="py-16 md:py-24 bg-gray-50 dark:bg-gray-800/50" data-aos="fade-up">
+            <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8">
+                <div className="grid md:grid-cols-2 gap-12 md:gap-16">
+                    <div data-aos="fade-right">
+                        <Heading variant="h2" color="foreground" className="mb-6">{t('about.mission.title') || 'Misi Kami'}</Heading>
+                        <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">{t('about.mission.description') || 'Memberdayakan bisnis melalui solusi digital yang inovatif, fungsional, dan estetis, serta membangun kemitraan jangka panjang yang saling menguntungkan.'}</p>
+                    </div>
+                    <div data-aos="fade-left" data-aos-delay="200">
+                        <Heading variant="h2" color="foreground" className="mb-6">{t('about.vision.title') || 'Visi Kami'}</Heading>
+                        <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">{t('about.vision.description') || 'Menjadi agensi digital terdepan di Indonesia yang dikenal karena kualitas, kreativitas, dan dampak positif bagi pertumbuhan bisnis klien.'}</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section className="py-16 md:py-24" data-aos="fade-up">
+          <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 text-center">
+            <Heading variant="h2" color="foreground" className="mb-12">{t('about.values.title') || 'Nilai-Nilai Kami'}</Heading>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              {[
+                { icon: '💡', key: 'innovation', title: t('about.values.innovation.title') || 'Inovasi', description: t('about.values.innovation.description') || 'Selalu mencari cara baru dan lebih baik untuk memberikan solusi teknologi dan desain terdepan.' },
+                { icon: '🤝', key: 'collaboration', title: t('about.values.collaboration.title') || 'Kolaborasi', description: t('about.values.collaboration.description') || 'Bekerja sama secara erat dengan klien sebagai mitra strategis untuk mencapai tujuan bersama.' },
+                { icon: '🏆', key: 'excellence', title: t('about.values.excellence.title') || 'Kualitas', description: t('about.values.excellence.description') || 'Berkomitmen pada standar tertinggi dalam setiap detail pekerjaan yang kami lakukan.' },
+                { icon: '❤️', key: 'passion', title: t('about.values.passion.title') || 'Semangat', description: t('about.values.passion.description') || 'Memiliki antusiasme dan dedikasi mendalam terhadap setiap proyek yang kami tangani.' },
+              ].map((value, index) => (
+                <div key={value.key} className="p-8 bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-xl transition-shadow" data-aos="fade-up" data-aos-delay={index * 100}>
+                  <div className="text-5xl mb-4">{value.icon}</div>
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{value.title}</h3>
+                  <p className="text-gray-600 dark:text-gray-400">{value.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="py-16 md:py-24 bg-gray-50 dark:bg-gray-800/50" data-aos="fade-up">
+          <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 text-center">
+            <Heading variant="h2" color="foreground" className="mb-4">{t('about.team.title') || 'Tim Hebat di Balik Layar'}</Heading>
+            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-12">{t('about.team.subtitle') || 'Kami adalah tim yang solid terdiri dari para profesional berbakat dan bersemangat.'}</p>
+            {/* Team Members will be rendered here from API */}
+          </div>
+        </section>
+
+        <section className="py-16 md:py-24" data-aos="fade-up">
+            <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 text-center">
+                <Heading variant="h2" color="foreground" className="mb-12">{t('about.partners.title') || 'Dipercaya oleh Perusahaan Hebat'}</Heading>
+                {/* Partners will be rendered here from API */}
+            </div>
+        </section>
+        
+        <section className="py-16 md:py-24 bg-gray-50 dark:bg-gray-800/50" data-aos="fade-up">
+          <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 text-center">
+            <Heading variant="h2" color="foreground" className="mb-6">{t('about.cta.title') || 'Ayo Mulai Proyek Bersama Kami'}</Heading>
+            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-8">{t('about.cta.subtitle') || 'Jika Anda memiliki proyek atau ide yang ingin direalisasikan, jangan ragu untuk menghubungi kami.'}</p>
+            <Link href="/contact">
+              <Button variant="primary" size="lg">{t('common.contactUs') || 'Hubungi Kami'}</Button>
+            </Link>
+          </div>
+        </section>
+      </main>
+
+      <WhatsAppChat phoneNumber="6285739402436" message={t('whatsapp.aboutPage') || 'Halo! Saya ingin tahu lebih banyak tentang Bajramedia.'} />
+      <Footer />
     </div>
   );
 } 

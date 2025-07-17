@@ -1,6 +1,7 @@
 "use client";
 
 import { Heading, Navbar, WhatsAppChat } from "@/components";
+import DarkModeToggle from "@/components/DarkModeToggle";
 import { useLanguage } from "@/context/LanguageContext";
 import Link from "next/link";
 
@@ -189,6 +190,9 @@ export default function UiUxDesignPage() {
                     </div>
                 </div>
             </div>
+
+            {/* Dark Mode Toggle */}
+            <DarkModeToggle />
 
             {/* WhatsApp Chat */}
             <WhatsAppChat

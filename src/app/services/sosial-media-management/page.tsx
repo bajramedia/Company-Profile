@@ -1,6 +1,7 @@
 "use client";
 
 import { Heading, Navbar, WhatsAppChat } from "@/components";
+import DarkModeToggle from "@/components/DarkModeToggle";
 import { Instagram, MessageCircle, TrendingUp, BarChart2 } from 'lucide-react';
 import { useLanguage } from "@/context/LanguageContext";
 import Link from "next/link";
@@ -38,11 +39,11 @@ export default function SocialMediaManagementPage() {
                 <div className="text-center mb-16">
                     <Heading variant="h1" color="foreground" className="mb-4 text-[32px] md:text-[40px] lg:text-[48px] font-bold">
                         {t('services.social.title') || 'Jasa Social Media Management'}
-                    </Heading>
+                        </Heading>
                     <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
                         {t('services.social.description') || 'Kami menyediakan jasa pengelolaan media sosial profesional untuk meningkatkan presence dan engagement brand Anda'}
                     </p>
-                </div>
+                    </div>
 
                 {/* Features Section */}
                 <div className="mb-20">
@@ -78,7 +79,7 @@ export default function SocialMediaManagementPage() {
                             <p className="text-sm text-gray-600 dark:text-gray-400">
                                 {t('services.social.features.engagement.desc') || 'Interaksi dengan followers'}
                             </p>
-                        </div>
+                                </div>
 
                         <div className="bg-white dark:bg-gray-800 rounded-xl p-6 text-center shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-200 dark:border-gray-700">
                             <div className="text-4xl mb-3 text-green-500 flex justify-center">
@@ -150,7 +151,8 @@ export default function SocialMediaManagementPage() {
 
                     {/* Pro Package */}
                     <div className="border-2 border-green-500 dark:border-green-400 rounded-lg p-8 hover:shadow-lg transition-all duration-300 bg-white dark:bg-gray-800 flex flex-col relative">
-                        <div className="absolute top-0 right-0 bg-green-500 text-white px-4 py-1 rounded-bl-lg rounded-tr-lg text-sm font-semibold">
+                        {/* Badge Populer di tengah atas */}
+                        <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-4 py-1 rounded-full text-sm font-medium">
                             {t('common.popular') || 'POPULER'}
                         </div>
                         <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
@@ -246,6 +248,9 @@ export default function SocialMediaManagementPage() {
                     </div>
                 </div>
             </div>
+
+            {/* Dark Mode Toggle */}
+            <DarkModeToggle />
 
             {/* WhatsApp Chat */}
             <WhatsAppChat

@@ -24,6 +24,7 @@ const formatDate = (dateString: string): string => {
 };
 
 export const BlogPostCard: React.FC<{ post: BlogPost }> = ({ post }) => {
+  const { t } = useLanguage();
   const primaryColor = "rgb(3, 177, 80)";
 
   // View tracking function
@@ -75,7 +76,7 @@ export const BlogPostCard: React.FC<{ post: BlogPost }> = ({ post }) => {
         <div className="absolute top-3 left-3 z-20">
           <span className="inline-flex items-center px-3 py-1 rounded-lg text-xs font-semibold bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm text-gray-700 dark:text-gray-200 shadow-lg transition-colors duration-300">
             <FiTag className="mr-1 text-primary" size={10} />
-            {typeof post.category === 'string' ? post.category : post.category.name}
+            {t(`categories.${(typeof post.category === 'string' ? post.category : post.category.name).toLowerCase()}`) || (typeof post.category === 'string' ? post.category : post.category.name)}
           </span>
         </div>
         {/* Reading time indicator */}
@@ -143,13 +144,13 @@ export const BlogPostCard: React.FC<{ post: BlogPost }> = ({ post }) => {
               <span className="text-xs font-semibold text-gray-900 dark:text-gray-100 block transition-colors duration-300">
                 {post.author.name || 'Admin User'}
               </span>
-              <span className="text-xs text-gray-500 dark:text-gray-400 transition-colors duration-300">Author</span>
+              <span className="text-xs text-gray-500 dark:text-gray-400 transition-colors duration-300">{t('blog.card.author') || 'Author'}</span>
             </div>
           </div>
 
           {/* Compact read more button */}
           <div className="flex items-center text-primary font-semibold text-xs group-hover:translate-x-1 transition-transform duration-300">
-            <span className="mr-1">Read More</span>
+            <span className="mr-1">{t('blog.card.readMore') || 'Read More'}</span>
             <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all duration-300">
               <FiArrowRight size={12} />
             </div>

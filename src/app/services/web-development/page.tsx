@@ -5,6 +5,7 @@ import { Globe, Code2, Database, Server, Cpu, Lock } from 'lucide-react';
 import { useLanguage } from "@/context/LanguageContext";
 import Link from "next/link";
 import Image from "next/image";
+import { DarkModeToggle } from "@/components/DarkModeToggle";
 
 export default function WebDevelopmentPage() {
   const { t } = useLanguage();
@@ -90,7 +91,7 @@ export default function WebDevelopmentPage() {
                                     </div>
 
                         <div className="flex flex-col items-center justify-center p-4 rounded-lg bg-white/5 backdrop-blur-sm">
-                            <Image src="/nodejs.svg" alt="Node.js" width={40} height={40} className="mb-2" />
+                            <Image src="/images/nodejs.svg" alt="Node.js" width={40} height={40} className="mb-2" />
                             <h3 className="text-lg font-semibold text-center">
                                 {t('services.webdev.tech.nodejs.title') || 'Node.js'}
                                     </h3>
@@ -279,10 +280,13 @@ export default function WebDevelopmentPage() {
                         </button>
                     </div>
                 </div>
-            </div>
 
-            {/* WhatsApp Chat */}
-            <WhatsAppChat message={t('services.webdev.whatsapp') || "Halo, saya tertarik dengan layanan web development Bajramedia"} />
+                {/* Dark Mode Toggle */}
+                <DarkModeToggle />
+
+                {/* WhatsApp Chat */}
+                <WhatsAppChat message={t('services.webdev.whatsapp') || "Halo, saya tertarik dengan layanan web development Bajramedia"} />
+            </div>
         </div>
     );
 } 

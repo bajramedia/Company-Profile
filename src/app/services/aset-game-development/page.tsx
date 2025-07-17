@@ -46,9 +46,9 @@ export default function GameAssetDevelopmentPage() {
                     </div>
 
                 {/* Packages Grid */}
-                <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
                     {/* 2D Package */}
-                    <div className="border dark:border-gray-700 rounded-lg p-8 hover:shadow-lg transition-all bg-white dark:bg-gray-800">
+                    <div className="border dark:border-gray-700 rounded-lg p-8 hover:shadow-lg transition-all bg-white dark:bg-gray-800 flex flex-col">
                         <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
                             {t('services.gameAsset.2d.title') || '2D Game Assets'}
                         </h3>
@@ -99,11 +99,10 @@ export default function GameAssetDevelopmentPage() {
                     </div>
 
                     {/* 3D Package */}
-                    <div className="border dark:border-gray-700 rounded-lg p-8 hover:shadow-lg transition-all bg-green-50 dark:bg-gray-800/50 relative">
-                        <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                            <div className="inline-block px-4 py-1 bg-green-500 text-white rounded-full text-sm font-medium">
-                                {t('common.popular') || 'POPULER'}
-                            </div>
+                    <div className="border dark:border-gray-700 rounded-lg p-8 hover:shadow-lg transition-all bg-green-50 dark:bg-gray-800/50 relative flex flex-col">
+                        {/* Badge Populer di tengah atas */}
+                        <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-4 py-1 rounded-full text-sm font-medium">
+                            {t('common.popular') || 'POPULER'}
                         </div>
                         <h3 className="text-2xl font-bold mb-4 mt-2 text-gray-900 dark:text-white">
                             {t('services.gameAsset.3d.title') || '3D Game Assets'}
@@ -161,8 +160,39 @@ export default function GameAssetDevelopmentPage() {
                                 <span className="text-gray-700 dark:text-gray-300">{t('services.gameAsset.3d.features.optimization') || 'Performance optimization'}</span>
                                             </li>
                                     </ul>
-                        <button className="w-full bg-green-600 hover:bg-green-700 text-white py-3 px-6 rounded-lg transition-colors">
+                        <button className="w-full bg-green-600 hover:bg-green-700 text-white py-3 px-6 rounded-lg transition-colors mt-auto">
                             {t('services.gameAsset.3d.cta') || 'Pilih Paket 3D'}
+                        </button>
+                    </div>
+
+                    {/* Enterprise/Custom Package */}
+                    <div className="border dark:border-gray-700 rounded-lg p-8 hover:shadow-lg transition-all bg-white dark:bg-gray-800 flex flex-col">
+                        <h3 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
+                            {t('services.gameAsset.enterprise.title') || 'Enterprise/Custom'}
+                        </h3>
+                        <p className="text-3xl font-bold mb-6 text-green-600 dark:text-green-500">
+                            {t('services.gameAsset.enterprise.price') || 'Hubungi Kami'}
+                        </p>
+                        <ul className="space-y-3 mb-8 flex-grow">
+                            <li className="flex items-start">
+                                <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
+                                <span className="text-gray-700 dark:text-gray-300">{t('services.gameAsset.enterprise.features.unlimited') || 'Jumlah aset tidak terbatas'}</span>
+                            </li>
+                            <li className="flex items-start">
+                                <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
+                                <span className="text-gray-700 dark:text-gray-300">{t('services.gameAsset.enterprise.features.custom') || 'Fitur dan style custom'}</span>
+                            </li>
+                            <li className="flex items-start">
+                                <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
+                                <span className="text-gray-700 dark:text-gray-300">{t('services.gameAsset.enterprise.features.support') || 'Dukungan prioritas'}</span>
+                            </li>
+                            <li className="flex items-start">
+                                <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
+                                <span className="text-gray-700 dark:text-gray-300">{t('services.gameAsset.enterprise.features.revisions') || 'Revisi tidak terbatas'}</span>
+                            </li>
+                        </ul>
+                        <button className="w-full bg-gray-700 hover:bg-gray-800 text-white py-3 px-6 rounded-lg transition-colors mt-auto">
+                            {t('common.contactUs') || 'Hubungi Kami'}
                         </button>
                     </div>
                 </div>
