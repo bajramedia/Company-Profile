@@ -6,25 +6,28 @@ import { createAuthor, updateAuthor } from '@/actions/author-actions';
 import { ImageUpload } from '@/components';
 import { FiSave, FiX } from 'react-icons/fi';
 
+// Interface untuk props yang diterima komponen AuthorForm
 interface AuthorFormProps {
-  authorId?: string;
+  authorId?: string; // ID author opsional, digunakan untuk mode edit
   initialData?: {
-    name: string;
-    email: string;
-    avatar?: string;
-    bio?: string;
+    name: string; // Nama author
+    email: string; // Email author  
+    avatar?: string; // URL avatar opsional
+    bio?: string; // Bio author opsional
   };
 }
 
+// Komponen utama AuthorForm
 export default function AuthorForm({ authorId, initialData }: AuthorFormProps) {
-  const router = useRouter();
-  const isEditing = !!authorId;
+  const router = useRouter(); // Hook untuk navigasi
+  const isEditing = !!authorId; // Cek apakah dalam mode edit
 
+  // State untuk menyimpan data form
   const [formData, setFormData] = useState({
-    name: initialData?.name || '',
-    email: initialData?.email || '',
-    avatar: initialData?.avatar || '',
-    bio: initialData?.bio || ''
+    name: initialData?.name || '', // Nama diambil dari initialData atau string kosong
+    email: initialData?.email || '', // Email diambil dari initialData atau string kosong  
+    avatar: initialData?.avatar || '', // Avatar diambil dari initialData atau string kosong
+    bio: initialData?.bio || '' // Bio diambil dari initialData atau string kosong
   });
 
   const [loading, setLoading] = useState(false);

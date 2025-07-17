@@ -1,23 +1,21 @@
 import { NextResponse } from 'next/server';
-
-import { API_BASE_URL } from '@/config/api';
+import { apiEndpoints, defaultFetchOptions } from '@/config/api';
 
 // GET - Ambil public settings (tanpa admin settings)
 export async function GET() {
   try {
     // Add timestamp to prevent cache
     const timestamp = Date.now();
-    const response = await fetch(`${API_BASE_URL}?endpoint=settings&_t=${timestamp}`, {
-      method: 'GET',
+    const response = await fetch(apiEndpoints.settings(), {
+      ...defaultFetchOptions,
       headers: {
-        'Content-Type': 'application/json',
+        ...defaultFetchOptions.headers,
         'Cache-Control': 'no-cache, no-store, must-revalidate',
         'Pragma': 'no-cache',
         'Expires': '0',
         'User-Agent': 'BajraMedia-NextJS/1.0',
         'Origin': process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
-      },
-      cache: 'no-store',
+      }
     });
     
     if (!response.ok) {
@@ -33,6 +31,8 @@ export async function GET() {
     try {
       if (settings.socialLinks && typeof settings.socialLinks === 'string') {
         socialLinksObj = JSON.parse(settings.socialLinks);
+      } else if (settings.socialLinks && typeof settings.socialLinks === 'object') {
+        socialLinksObj = settings.socialLinks;
       }
     } catch (e) {
       console.warn('Failed to parse socialLinks JSON:', e);
@@ -41,6 +41,8 @@ export async function GET() {
     try {
       if (settings.seoSettings && typeof settings.seoSettings === 'string') {
         seoSettingsObj = JSON.parse(settings.seoSettings);
+      } else if (settings.seoSettings && typeof settings.seoSettings === 'object') {
+        seoSettingsObj = settings.seoSettings;
       }
     } catch (e) {
       console.warn('Failed to parse seoSettings JSON:', e);
@@ -87,10 +89,31 @@ export async function GET() {
 
   } catch (error) {
     console.error('Error fetching public settings:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch settings from database' },
-      { status: 500 }
-    );
+    // Return default settings jika ada error
+    return NextResponse.json({
+      siteName: 'Bajramedia',
+      siteDescription: 'Creative Digital Agency & Blog Platform',
+      siteUrl: 'https://balimoonartandspeace.com',
+      contactEmail: 'contact@bajramedia.com',
+      contactPhone: '+6285739402436',
+      contactAddress: 'Bali, Indonesia',
+      footerText: '© 2025 Bajramedia. All rights reserved.',
+      enableComments: true,
+      enableSocialShare: true,
+      socialLinks: {
+        facebook: '',
+        twitter: '',
+        instagram: '',
+        linkedin: '',
+        youtube: ''
+      },
+      seoSettings: {
+        metaTitle: 'Bajramedia - Creative Digital Agency',
+        metaDescription: 'Professional digital agency providing creative solutions for your business needs.',
+        metaKeywords: 'digital agency, creative, design, development, bali',
+        ogImage: ''
+      }
+    }, { status: 200 });
   }
 }
 

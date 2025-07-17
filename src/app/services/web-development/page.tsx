@@ -26,10 +26,10 @@ export default function WebDevelopmentPage() {
                         </svg>
                         <Link href="/services" className="text-gray-500 dark:text-gray-400 hover:text-[#00D084] transition-colors">
                             {t('nav.services') || 'Services'}
-                        </Link>
+                            </Link>
                         <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-                        </svg>
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                            </svg>
                         <span className="text-[#00D084] font-medium">{t('services.webdev.breadcrumb') || 'Web Development'}</span>
                     </nav>
                 </div>
@@ -39,11 +39,11 @@ export default function WebDevelopmentPage() {
                 <div className="text-center mb-16">
                     <Heading variant="h1" color="foreground" className="mb-4 text-[32px] md:text-[40px] lg:text-[48px] font-bold">
                         {t('services.webdev.title') || 'Jasa Web Development'}
-                    </Heading>
+                            </Heading>
                     <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
                         {t('services.webdev.description') || 'Kami menyediakan jasa pembuatan website profesional dengan teknologi modern dan performa tinggi'}
                     </p>
-                </div>
+                    </div>
 
                 {/* Technologies Section */}
                 <div className="mb-20">
@@ -70,7 +70,7 @@ export default function WebDevelopmentPage() {
                         <div className="flex flex-col items-center justify-center p-4 rounded-lg bg-white/5 backdrop-blur-sm">
                             <div className="text-purple-500 mb-2 text-3xl">
                                 <code>&lt;/&gt;</code>
-                            </div>
+                                </div>
                             <h3 className="text-lg font-semibold text-center">
                                 {t('services.webdev.tech.typescript.title') || 'TypeScript'}
                             </h3>
@@ -87,17 +87,17 @@ export default function WebDevelopmentPage() {
                             <p className="text-sm text-center text-gray-400">
                                 {t('services.webdev.tech.mysql.desc') || 'Powerful Database'}
                             </p>
-                        </div>
+                                    </div>
 
                         <div className="flex flex-col items-center justify-center p-4 rounded-lg bg-white/5 backdrop-blur-sm">
                             <Image src="/nodejs.svg" alt="Node.js" width={40} height={40} className="mb-2" />
                             <h3 className="text-lg font-semibold text-center">
                                 {t('services.webdev.tech.nodejs.title') || 'Node.js'}
-                            </h3>
+                                    </h3>
                             <p className="text-sm text-center text-gray-400">
                                 {t('services.webdev.tech.nodejs.desc') || 'Server Runtime'}
-                            </p>
-                        </div>
+                                    </p>
+                                </div>
 
                         <div className="flex flex-col items-center justify-center p-4 rounded-lg bg-white/5 backdrop-blur-sm">
                             <Image src="/laravel.svg" alt="Laravel" width={40} height={40} className="mb-2" />
@@ -214,7 +214,7 @@ export default function WebDevelopmentPage() {
                         <button className="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-lg transition-colors duration-300">
                             {t('common.choosePackage') || 'Pilih Paket Pro'}
                         </button>
-                    </div>
+                        </div>
 
                     {/* Enterprise Package */}
                     <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-8 hover:shadow-lg transition-all duration-300 bg-white dark:bg-gray-800 flex flex-col">
@@ -266,11 +266,11 @@ export default function WebDevelopmentPage() {
                 <div className="mt-16 text-center">
                     <h2 className="text-2xl md:text-3xl font-bold mb-4 text-gray-900 dark:text-white">
                         {t('services.webdev.cta.title') || 'Siap untuk membuat website impian Anda?'}
-                    </h2>
+                            </h2>
                     <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
                         {t('services.webdev.cta.description') || 'Konsultasikan kebutuhan website Anda dengan tim kami dan dapatkan solusi terbaik'}
-                    </p>
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                            </p>
+                            <div className="flex flex-col sm:flex-row gap-4 justify-center">
                         <Link href="/portfolio" className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-green-600 hover:bg-green-700 transition-colors duration-300">
                             {t('services.webdev.cta.portfolio') || 'Lihat Portfolio'}
                         </Link>

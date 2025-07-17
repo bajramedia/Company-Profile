@@ -25,10 +25,10 @@ export default function GameAssetDevelopmentPage() {
                         </svg>
                         <Link href="/services" className="text-gray-500 dark:text-gray-400 hover:text-[#00D084] transition-colors">
                             {t('nav.services') || 'Services'}
-                        </Link>
+                            </Link>
                         <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-                        </svg>
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                            </svg>
                         <span className="text-[#00D084] font-medium">{t('services.gameAsset.breadcrumb') || 'Game Asset Development'}</span>
                     </nav>
                 </div>
@@ -39,11 +39,11 @@ export default function GameAssetDevelopmentPage() {
                 <div className="text-center mb-16">
                     <Heading variant="h1" color="foreground" className="mb-4">
                         {t('services.gameAsset.title') || 'Jasa Pembuatan Asset Game'}
-                    </Heading>
+                        </Heading>
                     <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
                         {t('services.gameAsset.description') || 'Kami menyediakan jasa pembuatan aset game 2D dan 3D berkualitas tinggi untuk game Anda'}
                     </p>
-                </div>
+                    </div>
 
                 {/* Packages Grid */}
                 <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
@@ -111,7 +111,7 @@ export default function GameAssetDevelopmentPage() {
                         <p className="text-3xl font-bold mb-6 text-green-600 dark:text-green-500">
                             {t('services.gameAsset.3d.price') || 'Starting from Rp 15,000,000'}
                         </p>
-                        <ul className="space-y-3 mb-8">
+                                    <ul className="space-y-3 mb-8">
                             <li className="flex items-start">
                                 <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
@@ -157,10 +157,10 @@ export default function GameAssetDevelopmentPage() {
                             <li className="flex items-start">
                                 <svg className="w-5 h-5 text-green-500 mr-2 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                                </svg>
+                                                </svg>
                                 <span className="text-gray-700 dark:text-gray-300">{t('services.gameAsset.3d.features.optimization') || 'Performance optimization'}</span>
-                            </li>
-                        </ul>
+                                            </li>
+                                    </ul>
                         <button className="w-full bg-green-600 hover:bg-green-700 text-white py-3 px-6 rounded-lg transition-colors">
                             {t('services.gameAsset.3d.cta') || 'Pilih Paket 3D'}
                         </button>
@@ -171,20 +171,20 @@ export default function GameAssetDevelopmentPage() {
                 <div className="text-center mt-16">
                     <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
                         {t('services.gameAsset.cta.title') || 'Siap Memulai Proyek Game Anda?'}
-                    </h2>
+                            </h2>
                     <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
                         {t('services.gameAsset.cta.description') || 'Konsultasi gratis untuk membahas kebutuhan aset game Anda. Tim ahli kami siap membantu mewujudkan visi game Anda!'}
-                    </p>
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                            </p>
+                            <div className="flex flex-col sm:flex-row gap-4 justify-center">
                         <button className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg transition-colors">
                             {t('services.gameAsset.cta.consult') || 'Konsultasi Gratis'}
                         </button>
                         <button className="border border-green-600 text-green-600 dark:text-green-500 dark:border-green-500 px-8 py-3 rounded-lg hover:bg-green-50 dark:hover:bg-green-900/20 transition-colors">
                             {t('services.gameAsset.cta.portfolio') || 'Lihat Portfolio'}
                         </button>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
 
             {/* Dark Mode Toggle */}
             <DarkModeToggle />

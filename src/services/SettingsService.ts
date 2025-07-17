@@ -222,19 +222,28 @@ class SettingsService {
   // Method untuk mendapatkan public settings dari database
   async getPublicSettings() {
     try {
-      const response = await fetch('/api/settings', {
+      const timestamp = Date.now();
+      const response = await fetch(`/api/settings?_t=${timestamp}`, {
         method: 'GET',
         cache: 'no-cache',
         headers: {
-          'Cache-Control': 'no-cache, no-store, must-revalidate'
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache'
         }
       });
       
       if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
+        console.error(`Settings API error: ${response.status}`);
+        return defaultSettings;
       }
       
       const data = await response.json();
+      
+      // Jika data kosong atau error, gunakan default settings
+      if (!data || data.error) {
+        console.warn('Using default settings due to API error or empty data');
+        return defaultSettings;
+      }
       
       // Pastikan data dalam format yang benar untuk frontend
       return {
@@ -245,38 +254,16 @@ class SettingsService {
         contactPhone: data.contactPhone || defaultSettings.contactPhone,
         contactAddress: data.contactAddress || defaultSettings.contactAddress,
         socialLinks: {
-          facebook: data.socialLinks?.facebook || data.social_facebook || '',
-          twitter: data.socialLinks?.twitter || data.social_twitter || '',
-          instagram: data.socialLinks?.instagram || data.social_instagram || '',
-          linkedin: data.socialLinks?.linkedin || data.social_linkedin || '',
-          youtube: data.socialLinks?.youtube || data.social_youtube || ''
-        },
-        footerText: data.footerText || defaultSettings.footerText,
-        enableComments: data.enableComments ?? defaultSettings.enableComments,
-        enableSocialShare: data.enableSocialShare ?? defaultSettings.enableSocialShare,
-        seoSettings: {
-          metaTitle: data.seoSettings?.metaTitle || data.seo_metaTitle || defaultSettings.seoSettings.metaTitle,
-          metaDescription: data.seoSettings?.metaDescription || data.seo_metaDescription || defaultSettings.seoSettings.metaDescription,
-          metaKeywords: data.seoSettings?.metaKeywords || data.seo_metaKeywords || defaultSettings.seoSettings.metaKeywords,
-          ogImage: data.seoSettings?.ogImage || data.seo_ogImage || defaultSettings.seoSettings.ogImage
+          facebook: data.socialLinks?.facebook || '',
+          twitter: data.socialLinks?.twitter || '',
+          instagram: data.socialLinks?.instagram || '',
+          linkedin: data.socialLinks?.linkedin || '',
+          youtube: data.socialLinks?.youtube || ''
         }
       };
     } catch (error) {
       console.error('Error fetching public settings:', error);
-      // Fallback ke default settings
-      return {
-        siteName: defaultSettings.siteName,
-        siteDescription: defaultSettings.siteDescription,
-        siteUrl: defaultSettings.siteUrl,
-        contactEmail: defaultSettings.contactEmail,
-        contactPhone: defaultSettings.contactPhone,
-        contactAddress: defaultSettings.contactAddress,
-        socialLinks: defaultSettings.socialLinks,
-        footerText: defaultSettings.footerText,
-        enableComments: defaultSettings.enableComments,
-        enableSocialShare: defaultSettings.enableSocialShare,
-        seoSettings: defaultSettings.seoSettings
-      };
+      return defaultSettings;
     }
   }
 }

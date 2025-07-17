@@ -110,25 +110,25 @@ export default function PortfolioPage() {
 
         return [
             {
-                name: t('portfolio.categories.all') || 'All',
+                name: t('all') || 'All',
                 slug: 'all',
                 icon: <Folder size={20} className="text-gray-500" />,
                 count: portfolioItems.length
             },
             {
-                name: t('portfolio.categories.webDevelopment') || 'Web Development',
+                name: t('portfolio.filter.web') || 'Web Development',
                 slug: 'web-development',
                 icon: <Globe size={20} className="text-blue-500" />,
                 count: categoryCounts['web-development'] || 0
             },
             {
-                name: t('portfolio.categories.gameAssets') || 'Game Development',
+                name: t('portfolio.filter.mobile') || 'Game Development',
                 slug: 'game-development',
                 icon: <Gamepad2 size={20} className="text-purple-500" />,
                 count: categoryCounts['game-development'] || 0
             },
             {
-                name: t('portfolio.categories.uiuxDesign') || 'UI/UX Design',
+                name: t('portfolio.filter.design') || 'UI/UX Design',
                 slug: 'uiux-design',
                 icon: <Palette size={20} className="text-pink-500" />,
                 count: categoryCounts['uiux-design'] || 0
@@ -276,13 +276,13 @@ export default function PortfolioPage() {
             <div className="pt-20 pb-6 bg-gray-50 dark:bg-gray-800 transition-colors duration-300">
                 <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8">
                     <nav className="flex items-center space-x-2 text-sm">
-                        <Link href="/" className="text-gray-500 dark:text-gray-400 hover:text-primary transition-colors">
+                        <Link href="/" className="text-gray-500 dark:text-gray-400 hover:text-[#00D084] transition-colors">
                             {t('nav.home') || 'Home'}
                         </Link>
                         <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
                         </svg>
-                        <span className="text-primary font-medium">{t('nav.portfolio') || 'Portfolio'}</span>
+                        <span className="text-[#00D084] font-medium">{t('nav.portfolio') || 'Portfolio'}</span>
                     </nav>
                 </div>
             </div>
@@ -292,26 +292,14 @@ export default function PortfolioPage() {
                 {/* Hero Section */}
                 <section className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 mb-20">
                     <div className="text-center">
-                        <Heading
-                            variant="h1"
-                            color="foreground"
-                            className="mb-6 text-[32px] md:text-[40px] lg:text-[48px] font-bold"
-                            data-aos="fade-up"
-                        >
-                            {t('portfolio.page.title.main') || 'Our Amazing'} {' '}
-                            <span className="text-primary relative">
-                                <span className="relative z-10">{t('portfolio.page.title.highlight') || 'Portfolio'}</span>
-                                <span className="absolute bottom-1 left-0 w-full h-3 bg-primary/10 -z-0"></span>
-                            </span>
-                        </Heading>
-
-                        <p
-                            className="text-gray-600 dark:text-gray-400 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed"
-                            data-aos="fade-up"
-                            data-aos-delay="200"
-                        >
-                            {t('portfolio.page.subtitle') || 'Showcasing our best work and creative solutions'}
-                        </p>
+                        <div data-aos="fade-up">
+                            <Heading variant="h1" color="foreground" className="mb-6 text-[32px] md:text-[40px] lg:text-[48px] font-bold">
+                                {t('portfolio.title') || 'Our Portfolio'}
+                            </Heading>
+                            <p className="text-gray-600 dark:text-gray-400 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed mb-8">
+                                {t('portfolio.description') || 'See how we help our clients achieve their digital success'}
+                            </p>
+                        </div>
                     </div>
                 </section>
 
@@ -324,7 +312,7 @@ export default function PortfolioPage() {
                                     key={category.slug}
                                     onClick={() => setSelectedCategory(category.slug)}
                                     className={`inline-flex items-center space-x-2 px-6 py-3 rounded-full text-sm font-medium transition-all duration-300 ${selectedCategory === category.slug
-                                        ? 'bg-primary text-white shadow-lg shadow-primary/25'
+                                        ? 'bg-[#00D084] text-white shadow-lg shadow-primary/25'
                                         : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'
                                         }`}
                                 >
@@ -543,7 +531,7 @@ export default function PortfolioPage() {
             {/* WhatsApp Chat */}
             <WhatsAppChat
                 phoneNumber="6285739402436"
-                message="Halo! Saya tertarik dengan layanan Bajramedia. Bisa konsultasi gratis?"
+                message={t('whatsapp.message') || "Hi! I'm interested in discussing a project with Bajramedia."}
             />
         </div>
     );

@@ -43,7 +43,7 @@ export default function ConsultingPage() {
                     <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
                         {t('services.consulting.description') || 'Kami menyediakan jasa konsultasi bisnis profesional untuk membantu mengembangkan bisnis Anda'}
                     </p>
-                </div>
+                        </div>
 
                 {/* Packages Grid */}
                 <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
@@ -185,9 +185,9 @@ export default function ConsultingPage() {
                         <button className="border border-green-600 text-green-600 dark:text-green-400 px-8 py-3 rounded-lg hover:bg-green-50 dark:hover:bg-green-900/20 transition-colors duration-300">
                             {t('services.consulting.cta.viewCaseStudy') || 'Lihat Case Study'}
                         </button>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
 
             {/* Dark Mode Toggle */}
             <DarkModeToggle />

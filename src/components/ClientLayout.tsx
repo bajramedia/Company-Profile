@@ -3,6 +3,7 @@
 import { usePathname } from 'next/navigation';
 import { Navbar, Footer } from '@/components';
 import WhatsAppChat from '@/components/WhatsAppChat';
+import DarkModeToggle from '@/components/DarkModeToggle';
 
 interface ClientLayoutProps {
   children: React.ReactNode;
@@ -28,6 +29,7 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
       </main>
       <Footer />
       <WhatsAppChat />
+      <DarkModeToggle />
     </div>
   );
 }

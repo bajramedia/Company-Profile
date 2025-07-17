@@ -40,7 +40,7 @@ export default function Footer() {
     }, []);
 
     return (
-        <footer className="bg-gray-900 dark:bg-gray-950 text-white relative overflow-hidden transition-colors duration-300">
+        <footer className="bg-gray-900 dark:bg-gray-950 text-white relative mt-auto">
             {/* Background Pattern */}
             <div className="absolute inset-0 opacity-5">
                 <div className="absolute inset-0" style={{
