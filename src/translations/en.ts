@@ -408,10 +408,10 @@ export const en = {
         webdev: {
             breadcrumb: 'Web Development',
             title: 'Web Development Service',
-            description: 'We provide professional website development services with modern technology',
+            description: 'We provide professional website development services with modern technology and high performance',
             tech: {
                 title: 'Technologies We Use',
-                description: 'Modern technology stack for maximum performance',
+                description: 'Modern and trusted stack to produce high-quality websites',
                 nextjs: {
                     title: 'Next.js',
                     desc: 'Modern React Framework'
@@ -439,9 +439,9 @@ export const en = {
             },
             basic: {
                 title: 'Basic Website',
-                price: '$350',
+                price: '$100',
                 features: {
-                    pages: '5 pages',
+                    pages: '5 website pages',
                     responsive: 'Responsive design',
                     seo: 'Basic SEO',
                     contact: 'Contact form',
@@ -450,31 +450,183 @@ export const en = {
             },
             pro: {
                 title: 'Pro Website',
-                price: '$700',
+                price: '$200',
                 features: {
-                    pages: '10 pages',
-                    cms: 'Content Management',
-                    database: 'Database integration',
-                    analytics: 'Google Analytics',
+                    pages: '10 website pages',
+                    cms: 'CMS Admin',
+                    database: 'Custom database',
+                    analytics: 'Analytics & tracking',
                     support: '3 months support'
                 }
             },
             enterprise: {
                 title: 'Enterprise Website',
-                price: 'Custom Price',
+                price: '$700',
                 features: {
-                    pages: 'Unlimited pages',
+                    unlimited: 'Unlimited pages',
                     custom: 'Custom features',
-                    support: '6 months support'
+                    api: 'API Integration',
+                    security: 'Advanced security',
+                    support: '12 months support'
                 }
             },
             cta: {
-                title: 'Bring Your Dream Website to Life With Us',
-                description: 'From company profiles to e-commerce, we are here to help you.'
+                title: 'Ready to build your dream website?',
+                description: 'Consult your website needs with our team and get the best solution',
+                portfolio: 'View Portfolio',
+                consultation: 'Free Consultation'
             },
-            whatsapp: {
-                message: 'Hi! I\'m interested in Bajramedia\'s Web Development service.'
-            }
+            whatsapp: 'Hi, I\'m interested in Bajramedia\'s web development service'
         }
+    },
+    validation: {
+        titleRequired: 'Title is required',
+        slugRequired: 'Slug is required',
+        descriptionRequired: 'Description is required',
+        contentRequired: 'Content is required',
+        featuredImageRequired: 'Featured image is required',
+        clientNameRequired: 'Client name is required',
+        categoryRequired: 'Category must be selected',
+        invalidProjectUrl: 'Invalid project URL',
+        invalidGithubUrl: 'Invalid GitHub URL',
+        emailRequired: 'Email is required',
+        passwordRequired: 'Password is required',
+        invalidEmail: 'Invalid email format',
+        passwordTooShort: 'Password must be at least 8 characters'
+    },
+    postForm: {
+        title: 'Title',
+        titlePlaceholder: 'Enter article title...',
+        slug: 'URL Slug',
+        slugPlaceholder: 'your-article-url',
+        generate: 'Generate',
+        featuredImage: 'Featured Image',
+        excerpt: 'Excerpt',
+        excerptPlaceholder: 'Brief summary of the article...',
+        content: 'Content',
+        settings: 'Settings',
+        seo: 'SEO',
+        social: 'Social Media',
+        words: 'words',
+        minRead: 'min read',
+        saved: 'Saved',
+        saving: 'Saving...',
+        unsaved: 'Unsaved',
+        edit: 'Edit',
+        preview: 'Preview',
+        cancel: 'Cancel',
+        createNew: 'Create New Article',
+        editPost: 'Edit Article'
+    },
+    portfolioForm: {
+        basicInfo: 'Basic Information',
+        projectTitle: 'Project Title',
+        projectTitlePlaceholder: 'Enter project title...',
+        slug: 'URL Slug',
+        slugPlaceholder: 'your-project-url',
+        clientName: 'Client Name',
+        clientNamePlaceholder: 'Client or company name...',
+        category: 'Category',
+        selectCategory: 'Select category...',
+        shortDescription: 'Short Description',
+        shortDescriptionPlaceholder: 'Brief project description...',
+        detailContent: 'Detail Content',
+        fullContent: 'Full Content',
+        fullContentPlaceholder: 'Explain project details...',
+        projectImages: 'Project Images',
+        mainImage: 'Main Image',
+        additionalImages: 'Additional Images',
+        additionalImagesDesc: 'Add other images from the project (optional)',
+        projectLinks: 'Project Links',
+        projectUrl: 'Project URL',
+        githubUrl: 'GitHub URL',
+        timeline: 'Timeline',
+        startDate: 'Start Date',
+        endDate: 'End Date',
+        technologies: 'Technologies',
+        settings: 'Settings',
+        featuredProject: 'Featured Project',
+        featuredProjectDesc: 'Show as featured project',
+        publish: 'Publish',
+        publishDesc: 'Publish this project',
+        cancel: 'Cancel',
+        updating: 'Updating...',
+        saving: 'Saving...',
+        updateProject: 'Update Project',
+        saveProject: 'Save Project'
+    },
+    testimonials: {
+        title: {
+            main: 'What Our',
+            highlight: 'Clients Say'
+        },
+        subtitle: 'Hear directly from clients who have worked with us',
+        client1: {
+            name: 'Ahmad Fauzi',
+            role: 'CEO TechStart',
+            quote: 'Bajramedia helped us develop an amazing application. Their team is very professional and responsive.'
+        },
+        client2: {
+            name: 'Sarah Wijaya',
+            role: 'Marketing Director',
+            quote: 'The digital marketing strategy they designed successfully increased our brand engagement significantly.'
+        },
+        client3: {
+            name: 'Budi Santoso',
+            role: 'Business Owner',
+            quote: 'The website they built is not only beautiful but also very functional. Highly recommended!'
+        }
+    },
+    team: {
+        badge: 'OUR TEAM',
+        title: 'Meet Our',
+        titleHighlight: 'Great Team',
+        subtitle: 'We are a solid team consisting of talented and passionate professionals',
+        viewAll: 'View All Team',
+        position: {
+            ceo: 'CEO & Founder',
+            cto: 'CTO',
+            designer: 'UI/UX Designer',
+            marketing: 'Marketing Manager'
+        },
+        member1: {
+            name: 'Putra Pratama',
+            bio: 'Over 10 years of experience in digital industry'
+        },
+        member2: {
+            name: 'Budi Santoso',
+            bio: 'Expert in web and mobile application development'
+        },
+        member3: {
+            name: 'Dewi Sari',
+            bio: 'UI/UX design specialist with user-centered approach'
+        },
+        member4: {
+            name: 'Rina Wijaya',
+            bio: 'Digital marketing and branding strategy expert'
+        }
+    },
+    autoTranslate: {
+        title: 'Translation',
+        processing: 'Processing translation...',
+        success: 'Translation successful',
+        error: 'Translation failed',
+        button: 'Auto Translate'
+    },
+    settings: {
+        title: 'Settings',
+        general: 'General',
+        appearance: 'Appearance',
+        notifications: 'Notifications',
+        security: 'Security',
+        language: 'Language',
+        save: 'Save Changes',
+        cancel: 'Cancel',
+        clearCache: 'Clear Cache',
+        cacheCleared: 'Cache cleared successfully!'
+    },
+    richTextEditor: {
+        imageUrl: 'Enter image URL:',
+        linkUrl: 'Enter URL:'
     }
 }; 

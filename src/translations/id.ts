@@ -408,73 +408,225 @@ export const id = {
         webdev: {
             breadcrumb: 'Web Development',
             title: 'Jasa Web Development',
-            description: 'Kami menyediakan jasa pembuatan website profesional dengan teknologi modern',
+            description: 'Kami menyediakan jasa pembuatan website profesional dengan teknologi modern dan performa tinggi',
             tech: {
                 title: 'Teknologi yang Kami Gunakan',
-                description: 'Stack teknologi modern untuk performa maksimal',
+                description: 'Stack modern yang terpercaya untuk menghasilkan website berkualitas tinggi',
                 nextjs: {
                     title: 'Next.js',
-                    desc: 'Framework React Modern'
+                    desc: 'Modern React Framework'
                 },
                 typescript: {
                     title: 'TypeScript',
-                    desc: 'JavaScript dengan Type-Safe'
+                    desc: 'Type-Safe JavaScript'
                 },
                 mysql: {
                     title: 'MySQL',
-                    desc: 'Database Handal'
+                    desc: 'Powerful Database'
                 },
                 nodejs: {
                     title: 'Node.js',
-                    desc: 'Runtime Server'
+                    desc: 'Server Runtime'
                 },
                 laravel: {
                     title: 'Laravel',
-                    desc: 'Framework PHP'
+                    desc: 'PHP Framework'
                 },
                 vuejs: {
                     title: 'Vue.js',
-                    desc: 'Framework Progresif'
+                    desc: 'Progressive Framework'
                 }
             },
             basic: {
                 title: 'Basic Website',
-                price: 'Rp 5.000.000',
+                price: 'Rp 1.500.000',
                 features: {
-                    pages: '5 halaman',
-                    responsive: 'Responsive design',
+                    pages: '5 halaman website',
+                    responsive: 'Desain responsif',
                     seo: 'Basic SEO',
-                    contact: 'Contact form',
+                    contact: 'Form kontak',
                     support: 'Support 1 bulan'
                 }
             },
             pro: {
                 title: 'Pro Website',
-                price: 'Rp 10.000.000',
+                price: 'Rp 3.000.000',
                 features: {
-                    pages: '10 halaman',
-                    cms: 'Content Management',
-                    database: 'Database integration',
-                    analytics: 'Google Analytics',
+                    pages: '10 halaman website',
+                    cms: 'CMS Admin',
+                    database: 'Database custom',
+                    analytics: 'Analytics & tracking',
                     support: 'Support 3 bulan'
                 }
             },
             enterprise: {
                 title: 'Enterprise Website',
-                price: 'Custom Price',
+                price: 'Rp 10.000.000',
                 features: {
-                    pages: 'Unlimited pages',
-                    custom: 'Custom features',
-                    support: 'Support 6 bulan'
+                    unlimited: 'Halaman unlimited',
+                    custom: 'Fitur custom',
+                    api: 'API Integration',
+                    security: 'Advanced security',
+                    support: 'Support 12 bulan'
                 }
             },
             cta: {
-                title: 'Wujudkan Website Impian Anda Bersama Kami',
-                description: 'Dari company profile hingga e-commerce, kami siap membantu Anda.'
+                title: 'Siap untuk membuat website impian Anda?',
+                description: 'Konsultasikan kebutuhan website Anda dengan tim kami dan dapatkan solusi terbaik',
+                portfolio: 'Lihat Portfolio',
+                consultation: 'Konsultasi Gratis'
             },
-            whatsapp: {
-                message: 'Halo! Saya tertarik dengan layanan Web Development Bajramedia.'
-            }
+            whatsapp: 'Halo, saya tertarik dengan layanan web development Bajramedia'
         }
+    },
+    validation: {
+        titleRequired: 'Judul wajib diisi',
+        slugRequired: 'Slug wajib diisi',
+        descriptionRequired: 'Deskripsi wajib diisi',
+        contentRequired: 'Konten wajib diisi',
+        featuredImageRequired: 'Gambar utama wajib diisi',
+        clientNameRequired: 'Nama klien wajib diisi',
+        categoryRequired: 'Kategori wajib dipilih',
+        invalidProjectUrl: 'URL proyek tidak valid',
+        invalidGithubUrl: 'URL GitHub tidak valid',
+        emailRequired: 'Email wajib diisi',
+        passwordRequired: 'Password wajib diisi',
+        invalidEmail: 'Format email tidak valid',
+        passwordTooShort: 'Password minimal 8 karakter'
+    },
+    postForm: {
+        title: 'Judul',
+        titlePlaceholder: 'Masukkan judul artikel...',
+        slug: 'Slug URL',
+        slugPlaceholder: 'url-artikel-anda',
+        generate: 'Generate',
+        featuredImage: 'Gambar Utama',
+        excerpt: 'Ringkasan',
+        excerptPlaceholder: 'Ringkasan singkat artikel...',
+        content: 'Konten',
+        settings: 'Pengaturan',
+        seo: 'SEO',
+        social: 'Social Media',
+        words: 'kata',
+        minRead: 'menit baca',
+        saved: 'Tersimpan',
+        saving: 'Menyimpan...',
+        unsaved: 'Belum tersimpan',
+        edit: 'Edit',
+        preview: 'Preview',
+        cancel: 'Batal',
+        createNew: 'Buat Artikel Baru',
+        editPost: 'Edit Artikel'
+    },
+    portfolioForm: {
+        basicInfo: 'Informasi Dasar',
+        projectTitle: 'Judul Proyek',
+        projectTitlePlaceholder: 'Masukkan judul proyek...',
+        slug: 'Slug URL',
+        slugPlaceholder: 'url-proyek-anda',
+        clientName: 'Nama Klien',
+        clientNamePlaceholder: 'Nama klien atau perusahaan...',
+        category: 'Kategori',
+        selectCategory: 'Pilih kategori...',
+        shortDescription: 'Deskripsi Singkat',
+        shortDescriptionPlaceholder: 'Deskripsi singkat proyek...',
+        detailContent: 'Detail Konten',
+        fullContent: 'Konten Lengkap',
+        fullContentPlaceholder: 'Jelaskan detail proyek...',
+        projectImages: 'Gambar Proyek',
+        mainImage: 'Gambar Utama',
+        additionalImages: 'Gambar Tambahan',
+        additionalImagesDesc: 'Tambahkan gambar lain dari proyek (opsional)',
+        projectLinks: 'Link Proyek',
+        projectUrl: 'URL Proyek',
+        githubUrl: 'URL GitHub',
+        timeline: 'Timeline',
+        startDate: 'Tanggal Mulai',
+        endDate: 'Tanggal Selesai',
+        technologies: 'Teknologi',
+        settings: 'Pengaturan',
+        featuredProject: 'Proyek Unggulan',
+        featuredProjectDesc: 'Tampilkan sebagai proyek unggulan',
+        publish: 'Publikasi',
+        publishDesc: 'Publikasikan proyek ini',
+        cancel: 'Batal',
+        updating: 'Memperbarui...',
+        saving: 'Menyimpan...',
+        updateProject: 'Perbarui Proyek',
+        saveProject: 'Simpan Proyek'
+    },
+    testimonials: {
+        title: {
+            main: 'Apa Kata',
+            highlight: 'Klien Kami'
+        },
+        subtitle: 'Dengarkan langsung dari klien yang telah bekerja sama dengan kami',
+        client1: {
+            name: 'Ahmad Fauzi',
+            role: 'CEO TechStart',
+            quote: 'Bajramedia membantu kami mengembangkan aplikasi yang luar biasa. Tim mereka sangat profesional dan responsif.'
+        },
+        client2: {
+            name: 'Sarah Wijaya',
+            role: 'Marketing Director',
+            quote: 'Strategi digital marketing yang mereka rancang berhasil meningkatkan engagement brand kami secara signifikan.'
+        },
+        client3: {
+            name: 'Budi Santoso',
+            role: 'Business Owner',
+            quote: 'Website yang mereka buat tidak hanya indah tapi juga sangat fungsional. Sangat merekomendasikan!'
+        }
+    },
+    team: {
+        badge: 'TIM KAMI',
+        title: 'Bertemu dengan',
+        titleHighlight: 'Tim Hebat Kami',
+        subtitle: 'Kami adalah tim yang solid terdiri dari para profesional berbakat dan bersemangat',
+        viewAll: 'Lihat Semua Tim',
+        position: {
+            ceo: 'CEO & Founder',
+            cto: 'CTO',
+            designer: 'UI/UX Designer',
+            marketing: 'Marketing Manager'
+        },
+        member1: {
+            name: 'Putra Pratama',
+            bio: 'Berpengalaman lebih dari 10 tahun di industri digital'
+        },
+        member2: {
+            name: 'Budi Santoso',
+            bio: 'Expert di pengembangan aplikasi web dan mobile'
+        },
+        member3: {
+            name: 'Dewi Sari',
+            bio: 'Spesialis desain UI/UX dengan pendekatan user-centered'
+        },
+        member4: {
+            name: 'Rina Wijaya',
+            bio: 'Ahli strategi marketing digital dan branding'
+        }
+    },
+    autoTranslate: {
+        title: 'Terjemahan',
+        processing: 'Memproses terjemahan...',
+        success: 'Terjemahan berhasil',
+        error: 'Gagal menerjemahkan',
+        button: 'Terjemahkan Otomatis'
+    },
+    settings: {
+        title: 'Pengaturan',
+        general: 'Umum',
+        appearance: 'Tampilan',
+        notifications: 'Notifikasi',
+        security: 'Keamanan',
+        language: 'Bahasa',
+        save: 'Simpan Perubahan',
+        cancel: 'Batal',
+        clearCache: 'Bersihkan Cache',
+        cacheCleared: 'Cache berhasil dibersihkan!'
+    },
+    richTextEditor: {
+        imageUrl: 'Masukkan URL gambar:',
+        linkUrl: 'Masukkan URL:'
     }
 }; 
