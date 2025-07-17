@@ -5,7 +5,7 @@ import { Globe, Code2, Database, Server, Cpu, Lock } from 'lucide-react';
 import { useLanguage } from "@/context/LanguageContext";
 import Link from "next/link";
 import Image from "next/image";
-import { DarkModeToggle } from "@/components/DarkModeToggle";
+import DarkModeToggle from "@/components/DarkModeToggle";
 
 export default function WebDevelopmentPage() {
   const { t } = useLanguage();
