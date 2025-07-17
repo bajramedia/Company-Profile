@@ -38,6 +38,7 @@ interface AboutContent {
   content: string;
   section: string;
   language: string;
+  image?: string; // Tambahkan field image sebagai opsional
 }
 
 export default function AboutPage() {
@@ -72,9 +73,15 @@ export default function AboutPage() {
         const response = await fetch('/api/team');
         if (!response.ok) throw new Error('Failed to fetch team members');
         const data = await response.json();
-        setTeamMembers(data);
+        // Pastikan data memiliki format yang benar
+        const formattedTeam = Array.isArray(data) ? data : (data.team || []);
+        setTeamMembers(formattedTeam.map((member: Partial<TeamMember>) => ({
+          ...member,
+          image: member.image || '/images/team/placeholder.jpg',
+          social: member.social || {}
+        })));
       } catch (err) {
-        setTeamError(err instanceof Error ? err.message : t('about.team.error'));
+        setTeamError(err instanceof Error ? err.message : t('about.team.error') || 'Gagal memuat data tim');
       } finally {
         setTeamLoading(false);
       }
@@ -86,9 +93,14 @@ export default function AboutPage() {
         const response = await fetch('/api/partners');
         if (!response.ok) throw new Error('Failed to fetch partners');
         const data = await response.json();
-        setPartners(data);
+        // Pastikan data memiliki format yang benar
+        const formattedPartners = Array.isArray(data) ? data : (data.partners || []);
+        setPartners(formattedPartners.map((partner: Partial<Partner>) => ({
+          ...partner,
+          logo: partner.logo || '/images/partners/placeholder.jpg'
+        })));
       } catch (err) {
-        setPartnersError(err instanceof Error ? err.message : t('about.partners.error'));
+        setPartnersError(err instanceof Error ? err.message : t('about.partners.error') || 'Gagal memuat data partner');
       } finally {
         setPartnersLoading(false);
       }
@@ -101,15 +113,19 @@ export default function AboutPage() {
         if (!response.ok) throw new Error('Failed to fetch about content');
         const data = await response.json();
         
-        // Organize content by section
-        const organizedContent = data.reduce((acc: {[key: string]: AboutContent}, item: AboutContent) => {
-          acc[item.section] = item;
+        // Pastikan data memiliki format yang benar dan gunakan fallback jika tidak ada
+        const organizedContent = (Array.isArray(data) ? data : (data.content || [])).reduce((acc: {[key: string]: AboutContent}, item: AboutContent) => {
+          acc[item.section] = {
+            ...item,
+            title: item.title || t(`about.${item.section}.title`) || '',
+            content: item.content || t(`about.${item.section}.content`) || ''
+          };
           return acc;
         }, {});
         
         setAboutContent(organizedContent);
       } catch (err) {
-        setContentError(err instanceof Error ? err.message : 'Failed to load content');
+        setContentError(err instanceof Error ? err.message : 'Gagal memuat konten');
       } finally {
         setContentLoading(false);
       }
@@ -235,15 +251,15 @@ export default function AboutPage() {
           <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 text-center">
             <AnimatedText>
               <Heading variant="h1" color="foreground" className="mb-6 text-4xl md:text-5xl lg:text-6xl font-extrabold">
-                {aboutContent['hero']?.title || t('about.hero.title.main')}
-                <span className="text-green-500 relative"> {t('about.hero.title.highlight')}
+                {aboutContent['hero']?.title || t('about.hero.title') || 'Tentang Kami'}
+                <span className="text-green-500 relative"> {t('about.hero.highlight') || 'Bajramedia'}
                   <span className="absolute bottom-1.5 left-0 w-full h-3 bg-green-500/10 -z-0"></span>
                 </span>
               </Heading>
             </AnimatedText>
             <AnimatedText>
               <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed">
-                {aboutContent['hero']?.content || t('about.hero.subtitle')}
+                {aboutContent['hero']?.content || t('about.hero.content') || 'Kami adalah tim kreatif yang berdedikasi untuk memberikan solusi digital terbaik untuk bisnis Anda'}
               </p>
             </AnimatedText>
           </div>
@@ -253,15 +269,25 @@ export default function AboutPage() {
           <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8">
             <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
               <div className="relative" data-aos="fade-right">
-                <Image src="/images/team-meeting.jpg" alt={t('about.story.imageAlt')} width={600} height={400} className="rounded-2xl shadow-lg w-full"/>
+                <Image 
+                  src={aboutContent['story']?.image || "/images/team-meeting.jpg"} 
+                  alt={t('about.story.imageAlt') || 'Tim Bajramedia'} 
+                  width={600} 
+                  height={400} 
+                  className="rounded-2xl shadow-lg w-full"
+                />
                 <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-green-500/10 rounded-full blur-2xl -z-10"></div>
               </div>
               <div data-aos="fade-left" data-aos-delay="200">
                 <Heading variant="h2" color="foreground" className="mb-6">
-                  {aboutContent['story']?.title || t('about.story.title')}
+                  {aboutContent['story']?.title || t('about.story.title') || 'Cerita Kami'}
                 </Heading>
                 <div className="prose prose-lg dark:prose-invert max-w-none text-gray-600 dark:text-gray-300 space-y-4">
-                  <div dangerouslySetInnerHTML={{ __html: aboutContent['story']?.content || t('about.story.paragraph1') }} />
+                  <div dangerouslySetInnerHTML={{ 
+                    __html: aboutContent['story']?.content || 
+                            t('about.story.content') || 
+                            'Bajramedia didirikan dengan visi untuk membantu bisnis berkembang di era digital. Kami menggabungkan kreativitas dan teknologi untuk menciptakan solusi yang inovatif.' 
+                  }} />
                 </div>
               </div>
             </div>
@@ -273,17 +299,25 @@ export default function AboutPage() {
             <div className="grid md:grid-cols-2 gap-12 md:gap-16">
               <div data-aos="fade-right">
                 <Heading variant="h2" color="foreground" className="mb-6">
-                  {aboutContent['mission']?.title || t('about.mission.title')}
+                  {aboutContent['mission']?.title || t('about.mission.title') || 'Misi Kami'}
                 </Heading>
                 <div className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed" 
-                     dangerouslySetInnerHTML={{ __html: aboutContent['mission']?.content || t('about.mission.description') }} />
+                     dangerouslySetInnerHTML={{ 
+                       __html: aboutContent['mission']?.content || 
+                               t('about.mission.content') || 
+                               'Memberikan layanan digital terbaik dengan standar internasional untuk membantu bisnis berkembang di era digital.' 
+                     }} />
               </div>
               <div data-aos="fade-left" data-aos-delay="200">
                 <Heading variant="h2" color="foreground" className="mb-6">
-                  {aboutContent['vision']?.title || t('about.vision.title')}
+                  {aboutContent['vision']?.title || t('about.vision.title') || 'Visi Kami'}
                 </Heading>
                 <div className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed"
-                     dangerouslySetInnerHTML={{ __html: aboutContent['vision']?.content || t('about.vision.description') }} />
+                     dangerouslySetInnerHTML={{ 
+                       __html: aboutContent['vision']?.content || 
+                               t('about.vision.content') || 
+                               'Menjadi mitra terpercaya dalam transformasi digital untuk bisnis di Indonesia dan Asia Tenggara.' 
+                     }} />
               </div>
             </div>
           </div>

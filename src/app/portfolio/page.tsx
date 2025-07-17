@@ -80,10 +80,10 @@ export default function PortfolioPage() {
                 <section className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 mb-16" data-aos="fade-up">
                     <div className="text-center">
                         <Heading variant="h1" color="foreground" className="text-4xl md:text-5xl font-bold mb-4">
-                            {t('portfolio.title') || 'Karya Terbaik Kami'}
+                            {t('portfolio.title') || 'Portfolio Kami'}
                         </Heading>
                         <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-                            {t('portfolio.subtitle') || 'Jelajahi proyek-proyek yang telah kami kerjakan dengan bangga.'}
+                            {t('portfolio.subtitle') || 'Lihat hasil karya terbaik yang telah kami kerjakan untuk klien kami'}
                         </p>
                     </div>
                 </section>
@@ -102,7 +102,7 @@ export default function PortfolioPage() {
                             ))}
                     </div>
 
-                    {loading && <p className="text-center">{t('common.loading') || 'Loading...'}</p>}
+                    {loading && <p className="text-center">{t('common.loading') || 'Memuat...'}</p>}
                     {error && <p className="text-center text-red-500">{error}</p>}
 
                     {!loading && !error && (
@@ -124,7 +124,7 @@ export default function PortfolioPage() {
                                     </Link>
                                 ))
                             ) : (
-                                <p className="col-span-full text-center py-10 text-gray-500">{t('portfolio.noResults') || 'Tidak ada proyek yang ditemukan dalam kategori ini.'}</p>
+                                <p className="col-span-full text-center py-10 text-gray-500">{t('portfolio.noResults') || 'Belum ada proyek dalam kategori ini'}</p>
                             )}
                             </div>
                         )}
@@ -132,8 +132,8 @@ export default function PortfolioPage() {
 
                 <section className="py-16 bg-white dark:bg-gray-800" data-aos="fade-up">
                     <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 text-center">
-                        <Heading variant="h2" color="foreground" className="mb-4">{t('portfolio.cta.title') || 'Punya Ide Proyek?'}</Heading>
-                        <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-8">{t('portfolio.cta.subtitle') || 'Mari wujudkan bersama kami. Hubungi kami untuk konsultasi gratis!'}</p>
+                        <Heading variant="h2" color="foreground" className="mb-4">{t('portfolio.cta.title') || 'Punya Proyek untuk Kami?'}</Heading>
+                        <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-8">{t('portfolio.cta.subtitle') || 'Mari diskusikan ide proyek Anda dengan tim kami'}</p>
                         <Link href="/contact">
                             <Button variant="primary" size="lg">{t('common.contactUs') || 'Hubungi Kami'}</Button>
                         </Link>

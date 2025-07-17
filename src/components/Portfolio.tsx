@@ -185,13 +185,13 @@ const Portfolio: React.FC = () => {
         <div className="text-center mb-12">
           <AnimatedText as="div">
             <span className="inline-block text-sm font-medium text-[#00D084] mb-2">
-              {t('portfolio.subtitle') || 'Our Portfolio'}
-              </span>
+              {t('portfolio.subtitle') || 'Portfolio Kami'}
+            </span>
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-              {t('portfolio.title') || 'Latest Projects'}
+              {t('portfolio.title') || 'Proyek Terbaru'}
             </h2>
             <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              {t('portfolio.description') || 'Explore our latest projects and see how we bring ideas to life with cutting-edge technology and creative solutions.'}
+              {t('portfolio.description') || 'Lihat bagaimana kami mengubah ide menjadi kenyataan dengan teknologi terkini dan solusi kreatif.'}
             </p>
           </AnimatedText>
         </div>

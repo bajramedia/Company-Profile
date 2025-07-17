@@ -1,27 +1,45 @@
 import { NextResponse } from 'next/server';
 
-import { API_BASE_URL } from '@/config/api';
+const dummyPartners = [
+  {
+    id: 1,
+    name: "TechCorp Solutions",
+    nameId: "TechCorp Solutions",
+    logo: "/images/partners/techcorp.png",
+    website: "https://techcorp.com"
+  },
+  {
+    id: 2,
+    name: "Digital Innovators",
+    nameId: "Digital Innovators",
+    logo: "/images/partners/digital-innovators.png",
+    website: "https://digitalinnovators.com"
+  },
+  {
+    id: 3,
+    name: "Creative Studio",
+    nameId: "Creative Studio",
+    logo: "/images/partners/creative-studio.png",
+    website: "https://creativestudio.com"
+  },
+  {
+    id: 4,
+    name: "Global Connect",
+    nameId: "Global Connect",
+    logo: "/images/partners/global-connect.png",
+    website: "https://globalconnect.com"
+  }
+];
 
-// GET /api/partners - Get all partners for public display
 export async function GET() {
   try {
-    console.log('Public Partners API: Fetching from production database...');
-    const response = await fetch(`${API_BASE_URL}?endpoint=partners`);
-    
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    
-    const partners = await response.json();
-    return Response.json(partners);
+    // Di sini nantinya bisa ditambahkan logic untuk mengambil data dari database
+    // Untuk sementara kita gunakan dummy data
+    return NextResponse.json(dummyPartners);
   } catch (error) {
-    console.error('Public Partners API: Database connection failed:', error);
+    console.error('Error fetching partners data:', error);
     return NextResponse.json(
-      { 
-        error: 'Failed to fetch partners from database',
-        message: 'Please check if partners table exists in bajx7634_bajra database',
-        details: error instanceof Error ? error.message : 'Unknown error occurred'
-      },
+      { error: 'Failed to fetch partners data' },
       { status: 500 }
     );
   }

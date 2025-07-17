@@ -191,12 +191,12 @@ const Blog: React.FC<BlogProps> = ({ className = '' }) => {
         <div className="text-center mb-12">
           <AnimatedText as="div">
             <h2 className="text-2xl md:text-3xl font-bold mb-3 text-gray-900 dark:text-gray-100 transition-colors duration-300">
-              {t('blog.title') || 'Latest Insights & Articles'}
+              {t('blog.title') || 'Blog & Artikel Terbaru'}
             </h2>
           </AnimatedText>
           <AnimatedText as="div">
             <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto text-base transition-colors duration-300">
-              {t('blog.description') || 'Stay updated with our latest thinking on digital strategy, design trends, technology innovations, and more.'}
+              {t('blog.description') || 'Temukan artikel terbaru tentang teknologi, desain, dan strategi digital untuk mengembangkan bisnis Anda.'}
             </p>
           </AnimatedText>
         </div>
