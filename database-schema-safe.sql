@@ -129,17 +129,37 @@ CREATE TABLE IF NOT EXISTS technologies (
 
 -- Insert About Us Content (Safe INSERT)
 INSERT IGNORE INTO about_content (section_key, title_en, title_id, content_en, content_id) VALUES
-('background', 'Our Background', 'Latar Belakang Kami', 
-'Bajramedia was founded with a vision to empower small and medium enterprises (SMEs) through digital transformation. We believe that every business, regardless of size, deserves access to cutting-edge digital solutions that can drive growth and success.', 
-'Bajramedia didirikan dengan visi untuk memberdayakan usaha kecil dan menengah (UKM) melalui transformasi digital. Kami percaya bahwa setiap bisnis, terlepas dari ukurannya, berhak mendapatkan akses ke solusi digital terdepan yang dapat mendorong pertumbuhan dan kesuksesan.'),
+('hero', 'About Bajramedia', 'Tentang Bajramedia',
+'We are a creative team dedicated to providing the best digital solutions for your business. With over 5 years of experience, we have helped hundreds of businesses thrive in the digital era.',
+'Kami adalah tim kreatif yang berdedikasi untuk memberikan solusi digital terbaik untuk bisnis Anda. Dengan pengalaman lebih dari 5 tahun, kami telah membantu ratusan bisnis berkembang di era digital.'),
+
+('story', 'Our Story', 'Cerita Kami',
+'Bajramedia was founded in 2019 with a vision to help businesses thrive in the digital era. We combine creativity and technology to create innovative solutions. Every project we work on is the result of our team\'s dedication and passion to deliver the best.',
+'Bajramedia didirikan pada tahun 2019 dengan visi untuk membantu bisnis berkembang di era digital. Kami menggabungkan kreativitas dan teknologi untuk menciptakan solusi yang inovatif. Setiap proyek yang kami kerjakan adalah hasil dari dedikasi dan passion tim kami untuk memberikan yang terbaik.'),
 
 ('vision', 'Our Vision', 'Visi Kami',
-'To be the leading digital transformation partner for businesses across Indonesia, creating innovative solutions that bridge the gap between traditional business practices and modern digital excellence.',
-'Menjadi partner transformasi digital terdepan untuk bisnis di seluruh Indonesia, menciptakan solusi inovatif yang menjembatani kesenjangan antara praktik bisnis tradisional dan keunggulan digital modern.'),
+'To become a trusted partner in digital transformation for businesses in Indonesia and Southeast Asia. We want to be part of every client\'s success.',
+'Menjadi mitra terpercaya dalam transformasi digital untuk bisnis di Indonesia dan Asia Tenggara. Kami ingin menjadi bagian dari kesuksesan setiap klien kami.'),
 
 ('mission', 'Our Mission', 'Misi Kami',
-'• Provide accessible and affordable digital solutions for SMEs\n• Foster innovation through cutting-edge technology implementation\n• Build long-term partnerships based on trust and measurable results',
-'• Menyediakan solusi digital yang mudah diakses dan terjangkau untuk UKM\n• Mendorong inovasi melalui implementasi teknologi terdepan\n• Membangun kemitraan jangka panjang berdasarkan kepercayaan dan hasil yang terukur');
+'Providing the best digital services with international standards to help businesses thrive in the digital era. We are committed to always innovating and keeping up with the latest technology developments.',
+'Memberikan layanan digital terbaik dengan standar internasional untuk membantu bisnis berkembang di era digital. Kami berkomitmen untuk selalu berinovasi dan mengikuti perkembangan teknologi terbaru.'),
+
+('values', 'Our Values', 'Nilai-Nilai Kami',
+'Our core values that guide us in delivering the best service for our clients.',
+'Nilai-nilai inti yang memandu kami dalam memberikan layanan terbaik untuk klien kami.'),
+
+('team', 'Meet Our Great Team', 'Bertemu dengan Tim Hebat Kami',
+'Meet our professional team who are ready to help realize your digital vision. Each team member has extensive expertise and experience in their field.',
+'Bertemu dengan tim profesional kami yang siap membantu mewujudkan visi digital Anda. Setiap anggota tim kami memiliki keahlian dan pengalaman yang luas di bidangnya.'),
+
+('partners', 'Trusted by Great Companies', 'Dipercaya oleh Perusahaan Hebat',
+'We are proud to have collaborated with various leading companies and organizations. Together, we create innovative digital solutions.',
+'Kami bangga telah berkolaborasi dengan berbagai perusahaan dan organisasi terkemuka. Bersama-sama, kami menciptakan solusi digital yang inovatif.'),
+
+('cta', 'Let\'s Collaborate', 'Mari Berkolaborasi',
+'Have a project idea? Let\'s discuss it with our team and realize your digital vision.',
+'Punya ide proyek? Mari diskusikan bersama tim kami dan wujudkan visi digital Anda.');
 
 -- Insert Portfolio Categories (Safe INSERT)
 INSERT IGNORE INTO portfoliocategory (name, slug, description_en, description_id, icon, color, sort_order) VALUES
