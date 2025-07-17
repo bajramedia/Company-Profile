@@ -141,7 +141,6 @@ export default function PortfolioPage() {
                 </section>
             </main>
             <WhatsAppChat phoneNumber="6285739402436" message={t('whatsapp.portfolioMessage') || 'Halo! Saya tertarik dengan portofolio Bajramedia.'} />
-            <Footer />
         </div>
     );
 } 

@@ -55,6 +55,41 @@ export default function AboutPage() {
   }, []);
 
   useEffect(() => {
+    const fetchTeamMembers = async () => {
+        try {
+            setTeamLoading(true);
+            const response = await fetch('/api/team');
+            if (!response.ok) throw new Error('Failed to fetch team members');
+            const data = await response.json();
+            setTeamMembers(data);
+        } catch (err) {
+            setTeamError(err instanceof Error ? err.message : t('about.team.error'));
+        } finally {
+            setTeamLoading(false);
+        }
+    };
+
+    const fetchPartners = async () => {
+        try {
+            setPartnersLoading(true);
+            const response = await fetch('/api/partners');
+            if (!response.ok) throw new Error('Failed to fetch partners');
+            const data = await response.json();
+            setPartners(data);
+        } catch (err) {
+            setPartnersError(err instanceof Error ? err.message : t('about.partners.error'));
+        } finally {
+            setPartnersLoading(false);
+        }
+    };
+
+    if (isClient) {
+        fetchTeamMembers();
+        fetchPartners();
+    }
+  }, [isClient, t]);
+
+  useEffect(() => {
     if (isClient) {
       const savedMode = localStorage.getItem('darkMode') === 'true';
       setIsDarkMode(savedMode);
@@ -224,14 +259,48 @@ export default function AboutPage() {
           <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 text-center">
             <Heading variant="h2" color="foreground" className="mb-4">{t('about.team.title') || 'Tim Hebat di Balik Layar'}</Heading>
             <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-12">{t('about.team.subtitle') || 'Kami adalah tim yang solid terdiri dari para profesional berbakat dan bersemangat.'}</p>
-            {/* Team Members will be rendered here from API */}
+            {teamLoading && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                {[...Array(4)].map((_, i) => (
+                  <div key={i} className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 text-center animate-pulse">
+                    <div className="w-32 h-32 rounded-full bg-gray-300 dark:bg-gray-700 mx-auto mb-4"></div>
+                    <div className="h-6 bg-gray-300 dark:bg-gray-700 rounded w-3/4 mx-auto mb-2"></div>
+                    <div className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-1/2 mx-auto"></div>
+                  </div>
+                ))}
+              </div>
+            )}
+            {teamError && <p className="text-red-500">{teamError}</p>}
+            {!teamLoading && !teamError && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-12">
+                {teamMembers.map((member, index) => (
+                  <div key={member.id} className="text-center" data-aos="fade-up" data-aos-delay={index * 100}>
+                    <div className="relative w-40 h-40 mx-auto mb-4">
+                      <Image src={member.image || '/images/team/placeholder.jpg'} alt={member.name} width={160} height={160} className="rounded-full object-cover shadow-lg" />
+                    </div>
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white">{member.name}</h3>
+                    <p className="text-green-500 font-medium">{language === 'id' ? member.roleId : member.role}</p>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </section>
 
         <section className="py-16 md:py-24" data-aos="fade-up">
             <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 text-center">
                 <Heading variant="h2" color="foreground" className="mb-12">{t('about.partners.title') || 'Dipercaya oleh Perusahaan Hebat'}</Heading>
-                {/* Partners will be rendered here from API */}
+                {partnersLoading && <p>{t('common.loading') || 'Loading...'}</p>}
+                {partnersError && <p className="text-red-500">{partnersError}</p>}
+                {!partnersLoading && !partnersError && (
+                  <div className="flex flex-wrap justify-center items-center gap-12">
+                    {partners.map((partner) => (
+                      <Link key={partner.id} href={partner.website} target="_blank" className="grayscale hover:grayscale-0 transition-all" data-aos="zoom-in">
+                        <Image src={partner.logo} alt={language === 'id' ? partner.nameId : partner.name} width={150} height={60} className="object-contain" />
+                      </Link>
+                    ))}
+                  </div>
+                )}
             </div>
         </section>
         
@@ -247,7 +316,6 @@ export default function AboutPage() {
       </main>
 
       <WhatsAppChat phoneNumber="6285739402436" message={t('whatsapp.aboutPage') || 'Halo! Saya ingin tahu lebih banyak tentang Bajramedia.'} />
-      <Footer />
     </div>
   );
 } 
