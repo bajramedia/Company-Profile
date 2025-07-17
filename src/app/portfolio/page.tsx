@@ -29,19 +29,19 @@ export default function PortfolioPage() {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        const fetchPortfolioData = async () => {
-            try {
-                setLoading(true);
-                const response = await fetch('/api/portfolio?published=true');
+    const fetchPortfolioData = async () => {
+        try {
+            setLoading(true);
+            const response = await fetch('/api/portfolio?published=true');
                 if (!response.ok) throw new Error('Failed to fetch portfolio data');
-                const data = await response.json();
+            const data = await response.json();
                 setPortfolioItems(data.portfolios || data);
             } catch (err) {
                 setError(err instanceof Error ? err.message : t('portfolio.error.fetch'));
-            } finally {
-                setLoading(false);
-            }
-        };
+        } finally {
+            setLoading(false);
+        }
+    };
         fetchPortfolioData();
         AOS.init({
             duration: 800,
@@ -91,15 +91,15 @@ export default function PortfolioPage() {
                 <section className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 mb-16">
                     <div className="flex flex-wrap justify-center gap-4 mb-10" data-aos="fade-up" data-aos-delay="100">
                         {categories.map(category => (
-                            <button
-                                key={category.slug}
-                                onClick={() => setSelectedCategory(category.slug)}
+                                <button
+                                    key={category.slug}
+                                    onClick={() => setSelectedCategory(category.slug)}
                                 className={`px-5 py-2.5 text-sm font-semibold rounded-full transition-all duration-300 flex items-center gap-2 ${selectedCategory === category.slug ? 'bg-primary text-white shadow-lg' : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700'}`}
                             >
                                 {category.name}
                                 <span className={`text-xs px-2 py-0.5 rounded-full ${selectedCategory === category.slug ? 'bg-white/20' : 'bg-gray-200 dark:bg-gray-700'}`}>{category.count}</span>
-                            </button>
-                        ))}
+                                </button>
+                            ))}
                     </div>
 
                     {loading && <p className="text-center">{t('common.loading') || 'Loading...'}</p>}
@@ -116,7 +116,7 @@ export default function PortfolioPage() {
                                                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                                                 <span className="absolute top-4 left-4 bg-white/90 dark:bg-gray-900/80 text-xs px-3 py-1.5 rounded-full font-medium shadow-sm">{item.category.name}</span>
                                             </div>
-                                            <div className="p-6">
+                                    <div className="p-6">
                                                 <h3 className="font-bold text-xl mb-2 line-clamp-2 group-hover:text-primary transition-colors text-gray-900 dark:text-gray-100">{item.title}</h3>
                                                 <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-3">{item.description}</p>
                                             </div>
@@ -126,8 +126,8 @@ export default function PortfolioPage() {
                             ) : (
                                 <p className="col-span-full text-center py-10 text-gray-500">{t('portfolio.noResults') || 'Tidak ada proyek yang ditemukan dalam kategori ini.'}</p>
                             )}
-                        </div>
-                    )}
+                            </div>
+                        )}
                 </section>
 
                 <section className="py-16 bg-white dark:bg-gray-800" data-aos="fade-up">

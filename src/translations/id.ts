@@ -1,14 +1,80 @@
 export const id = {
     nav: {
         home: 'Beranda',
+        about: 'Tentang',
         services: 'Layanan',
+        portfolio: 'Portofolio',
+        blog: 'Blog',
+        contact: 'Kontak'
     },
     common: {
+        loading: 'Memuat...',
+        error: 'Terjadi kesalahan',
         popular: 'POPULER',
         choosePackage: 'Pilih Paket',
         contactUs: 'Hubungi Kami',
         freeConsultation: 'Konsultasi Gratis',
-        viewPortfolio: 'Lihat Portfolio'
+        viewPortfolio: 'Lihat Portfolio',
+        lightMode: 'Mode Terang',
+        darkMode: 'Mode Gelap'
+    },
+    about: {
+        hero: {
+            title: {
+                main: 'Tentang',
+                highlight: 'Bajra Media'
+            },
+            subtitle: 'Kami adalah agensi digital kreatif yang bersemangat dalam membangun solusi digital inovatif untuk bisnis Anda.'
+        },
+        story: {
+            title: 'Cerita Kami',
+            imageAlt: 'Tim berkolaborasi',
+            paragraph1: 'Berawal dari semangat untuk menciptakan solusi digital yang bermakna, Bajra Media didirikan untuk membantu bisnis bertransformasi di era digital.',
+            paragraph2: 'Dengan tim yang solid dan berpengalaman, kami berkomitmen untuk memberikan layanan terbaik dan hasil yang melebihi ekspektasi.'
+        },
+        mission: {
+            title: 'Misi Kami',
+            description: 'Memberdayakan bisnis melalui solusi digital yang inovatif, fungsional, dan estetis, serta membangun kemitraan jangka panjang yang saling menguntungkan.'
+        },
+        vision: {
+            title: 'Visi Kami',
+            description: 'Menjadi agensi digital terdepan di Indonesia yang dikenal karena kualitas, kreativitas, dan dampak positif bagi pertumbuhan bisnis klien.'
+        },
+        values: {
+            title: 'Nilai-Nilai Kami',
+            innovation: {
+                title: 'Inovasi',
+                description: 'Selalu mencari cara baru dan lebih baik untuk memberikan solusi teknologi dan desain terdepan.'
+            },
+            collaboration: {
+                title: 'Kolaborasi',
+                description: 'Bekerja sama secara erat dengan klien sebagai mitra strategis untuk mencapai tujuan bersama.'
+            },
+            excellence: {
+                title: 'Kualitas',
+                description: 'Berkomitmen pada standar tertinggi dalam setiap detail pekerjaan yang kami lakukan.'
+            },
+            passion: {
+                title: 'Semangat',
+                description: 'Memiliki antusiasme dan dedikasi mendalam terhadap setiap proyek yang kami tangani.'
+            }
+        },
+        team: {
+            title: 'Tim Hebat di Balik Layar',
+            subtitle: 'Kami adalah tim yang solid terdiri dari para profesional berbakat dan bersemangat.',
+            error: 'Gagal memuat data tim'
+        },
+        partners: {
+            title: 'Dipercaya oleh Perusahaan Hebat',
+            error: 'Gagal memuat data partner'
+        },
+        cta: {
+            title: 'Ayo Mulai Proyek Bersama Kami',
+            subtitle: 'Jika Anda memiliki proyek atau ide yang ingin direalisasikan, jangan ragu untuk menghubungi kami.'
+        }
+    },
+    whatsapp: {
+        aboutPage: 'Halo! Saya ingin tahu lebih banyak tentang Bajramedia.'
     },
     services: {
         gameAsset: {

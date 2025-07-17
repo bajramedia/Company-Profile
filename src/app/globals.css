@@ -240,6 +240,103 @@ body::before {
   background: radial-gradient(circle at center, rgba(80, 200, 120, 0.08) 0%, rgba(17, 24, 39, 0) 80%);
 }
 
+/* Custom styles for About page */
+.about-hero {
+  @apply relative overflow-hidden;
+}
+
+.about-hero::before {
+  content: '';
+  @apply absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent to-black/10 dark:to-black/30 z-0;
+}
+
+.about-team-card {
+  @apply relative overflow-hidden transition-all duration-300 hover:transform hover:scale-105;
+}
+
+.about-team-card img {
+  @apply transition-all duration-300;
+}
+
+.about-team-card:hover img {
+  @apply transform scale-110;
+}
+
+.about-values-card {
+  @apply transition-all duration-300 hover:transform hover:-translate-y-2;
+}
+
+.about-partners {
+  @apply filter grayscale hover:grayscale-0 transition-all duration-300;
+}
+
+/* Custom animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+/* Loading skeleton animation */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Responsive fixes */
+@media (max-width: 768px) {
+  .about-team-grid {
+    @apply grid-cols-1 sm:grid-cols-2;
+  }
+  
+  .about-values-grid {
+    @apply grid-cols-1 sm:grid-cols-2;
+  }
+}
+
+/* Dark mode adjustments */
+.dark .about-team-card {
+  @apply bg-gray-800;
+}
+
+.dark .about-values-card {
+  @apply bg-gray-800/50;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-100 dark:bg-gray-800;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-green-500 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-green-600;
+}
+
 /* Custom WebKit Scrollbar for light mode */
 ::-webkit-scrollbar {
   width: 8px;

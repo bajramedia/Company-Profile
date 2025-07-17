@@ -1,14 +1,80 @@
 export const en = {
     nav: {
         home: 'Home',
+        about: 'About',
         services: 'Services',
+        portfolio: 'Portfolio',
+        blog: 'Blog',
+        contact: 'Contact'
     },
     common: {
+        loading: 'Loading...',
+        error: 'An error occurred',
         popular: 'POPULAR',
         choosePackage: 'Choose Package',
         contactUs: 'Contact Us',
         freeConsultation: 'Free Consultation',
-        viewPortfolio: 'View Portfolio'
+        viewPortfolio: 'View Portfolio',
+        lightMode: 'Light Mode',
+        darkMode: 'Dark Mode'
+    },
+    about: {
+        hero: {
+            title: {
+                main: 'About',
+                highlight: 'Bajra Media'
+            },
+            subtitle: 'We are a creative digital agency passionate about building innovative digital solutions for your business.'
+        },
+        story: {
+            title: 'Our Story',
+            imageAlt: 'Team collaborating',
+            paragraph1: 'Starting from a passion for creating meaningful digital solutions, Bajra Media was established to help businesses transform in the digital era.',
+            paragraph2: 'With a solid and experienced team, we are committed to providing the best service and results that exceed expectations.'
+        },
+        mission: {
+            title: 'Our Mission',
+            description: 'Empowering businesses through innovative, functional, and aesthetic digital solutions, while building mutually beneficial long-term partnerships.'
+        },
+        vision: {
+            title: 'Our Vision',
+            description: 'To become Indonesia\'s leading digital agency known for quality, creativity, and positive impact on client business growth.'
+        },
+        values: {
+            title: 'Our Values',
+            innovation: {
+                title: 'Innovation',
+                description: 'Always seeking new and better ways to deliver cutting-edge technology and design solutions.'
+            },
+            collaboration: {
+                title: 'Collaboration',
+                description: 'Working closely with clients as strategic partners to achieve shared goals.'
+            },
+            excellence: {
+                title: 'Excellence',
+                description: 'Committed to the highest standards in every detail of our work.'
+            },
+            passion: {
+                title: 'Passion',
+                description: 'Having deep enthusiasm and dedication for every project we handle.'
+            }
+        },
+        team: {
+            title: 'The Great Team Behind the Scenes',
+            subtitle: 'We are a solid team consisting of talented and passionate professionals.',
+            error: 'Failed to fetch team members'
+        },
+        partners: {
+            title: 'Trusted by Great Companies',
+            error: 'Failed to fetch partners'
+        },
+        cta: {
+            title: 'Let\'s Start a Project Together',
+            subtitle: 'If you have a project or idea you want to bring to life, don\'t hesitate to contact us.'
+        }
+    },
+    whatsapp: {
+        aboutPage: 'Hi! I want to know more about Bajramedia.'
     },
     services: {
         gameAsset: {
