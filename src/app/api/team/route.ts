@@ -6,19 +6,32 @@ export async function GET() {
     const response = await fetch(`${API_BASE_URL}?endpoint=team-members`);
     
     if (!response.ok) {
-      throw new Error(`Gagal mengambil data dari CMS: ${response.statusText}`);
+      throw new Error(`Failed to fetch team members: ${response.statusText}`);
     }
     
     const data = await response.json();
     
-    // Pastikan data yang diterima adalah array
-    const team = Array.isArray(data) ? data : [];
+    // Transform data sesuai dengan struktur yang diharapkan
+    const transformedTeam = data.map((member: any) => ({
+      id: member.id,
+      name: member.name,
+      role: member.role_en,
+      roleId: member.role_id,
+      bio: member.bio_en,
+      bioId: member.bio_id,
+      image: member.image_url || '/images/team/placeholder.jpg',
+      social: {
+        linkedin: member.linkedin_url || '',
+        github: member.github_url || '',
+        instagram: member.instagram_url || ''
+      }
+    }));
     
-    return NextResponse.json(team);
+    return NextResponse.json(transformedTeam);
   } catch (error) {
-    console.error('Kesalahan saat mengambil data tim:', error);
+    console.error('Error fetching team members:', error);
     return NextResponse.json(
-      { error: 'Gagal mengambil data tim dari server' },
+      { error: 'Failed to fetch team members' },
       { status: 500 }
     );
   }
