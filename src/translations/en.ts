@@ -20,25 +20,22 @@ export const en = {
     },
     about: {
         hero: {
-            title: {
-                main: 'About',
-                highlight: 'Bajra Media'
-            },
-            subtitle: 'We are a creative digital agency passionate about building innovative digital solutions for your business.'
+            title: 'About Us',
+            highlight: 'Bajramedia',
+            content: 'We are a creative team dedicated to providing the best digital solutions for your business'
         },
         story: {
             title: 'Our Story',
-            imageAlt: 'Team collaborating',
-            paragraph1: 'Starting from a passion for creating meaningful digital solutions, Bajra Media was established to help businesses transform in the digital era.',
-            paragraph2: 'With a solid and experienced team, we are committed to providing the best service and results that exceed expectations.'
+            imageAlt: 'Bajramedia Team',
+            content: 'Bajramedia was founded with a vision to help businesses thrive in the digital era. We combine creativity and technology to create innovative solutions.'
         },
         mission: {
             title: 'Our Mission',
-            description: 'Empowering businesses through innovative, functional, and aesthetic digital solutions, while building mutually beneficial long-term partnerships.'
+            content: 'Providing the best digital services with international standards to help businesses thrive in the digital era.'
         },
         vision: {
             title: 'Our Vision',
-            description: 'To become Indonesia\'s leading digital agency known for quality, creativity, and positive impact on client business growth.'
+            content: 'To become a trusted partner in digital transformation for businesses in Indonesia and Southeast Asia.'
         },
         values: {
             title: 'Our Values',
@@ -61,16 +58,17 @@ export const en = {
         },
         team: {
             title: 'The Great Team Behind the Scenes',
-            subtitle: 'We are a solid team consisting of talented and passionate professionals.',
-            error: 'Failed to fetch team members'
+            subtitle: 'Meet our professional team who are ready to help realize your digital vision.',
+            error: 'Failed to load team data'
         },
         partners: {
             title: 'Trusted by Great Companies',
-            error: 'Failed to fetch partners'
+            subtitle: 'We are proud to have collaborated with various leading companies and organizations.',
+            error: 'Failed to load partner data'
         },
         cta: {
-            title: 'Let\'s Start a Project Together',
-            subtitle: 'If you have a project or idea you want to bring to life, don\'t hesitate to contact us.'
+            title: 'Let\'s Collaborate',
+            subtitle: 'Have a project idea? Let\'s discuss it with our team and realize your digital vision.'
         }
     },
     whatsapp: {

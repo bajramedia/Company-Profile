@@ -34,11 +34,12 @@ interface Partner {
 
 interface AboutContent {
   id: number;
-  title: string;
-  content: string;
-  section: string;
-  language: string;
-  image?: string; // Tambahkan field image sebagai opsional
+  section_key: string;
+  title_en: string;
+  title_id: string;
+  content_en: string;
+  content_id: string;
+  is_active: boolean;
 }
 
 export default function AboutPage() {
@@ -50,7 +51,7 @@ export default function AboutPage() {
   const [partners, setPartners] = useState<Partner[]>([]);
   const [partnersLoading, setPartnersLoading] = useState(true);
   const [partnersError, setPartnersError] = useState<string | null>(null);
-  const [aboutContent, setAboutContent] = useState<{[key: string]: AboutContent}>({});
+  const [aboutContent, setAboutContent] = useState<{[key: string]: any}>({});
   const [contentLoading, setContentLoading] = useState(true);
   const [contentError, setContentError] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -113,18 +114,20 @@ export default function AboutPage() {
         if (!response.ok) throw new Error('Failed to fetch about content');
         const data = await response.json();
         
-        // Pastikan data memiliki format yang benar dan gunakan fallback jika tidak ada
-        const organizedContent = (Array.isArray(data) ? data : (data.content || [])).reduce((acc: {[key: string]: AboutContent}, item: AboutContent) => {
-          acc[item.section] = {
-            ...item,
-            title: item.title || t(`about.${item.section}.title`) || '',
-            content: item.content || t(`about.${item.section}.content`) || ''
+        // Transform data sesuai dengan bahasa yang dipilih
+        const organizedContent = data.reduce((acc: {[key: string]: any}, item: AboutContent) => {
+          acc[item.section_key] = {
+            id: item.id,
+            section: item.section_key,
+            title: language === 'id' ? item.title_id : item.title_en,
+            content: language === 'id' ? item.content_id : item.content_en
           };
           return acc;
         }, {});
         
         setAboutContent(organizedContent);
       } catch (err) {
+        console.error('Error fetching about content:', err);
         setContentError(err instanceof Error ? err.message : 'Gagal memuat konten');
       } finally {
         setContentLoading(false);

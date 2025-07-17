@@ -20,25 +20,22 @@ export const id = {
     },
     about: {
         hero: {
-            title: {
-                main: 'Tentang',
-                highlight: 'Bajra Media'
-            },
-            subtitle: 'Kami adalah agensi digital kreatif yang bersemangat dalam membangun solusi digital inovatif untuk bisnis Anda.'
+            title: 'Tentang Kami',
+            highlight: 'Bajramedia',
+            content: 'Kami adalah tim kreatif yang berdedikasi untuk memberikan solusi digital terbaik untuk bisnis Anda'
         },
         story: {
             title: 'Cerita Kami',
-            imageAlt: 'Tim berkolaborasi',
-            paragraph1: 'Berawal dari semangat untuk menciptakan solusi digital yang bermakna, Bajra Media didirikan untuk membantu bisnis bertransformasi di era digital.',
-            paragraph2: 'Dengan tim yang solid dan berpengalaman, kami berkomitmen untuk memberikan layanan terbaik dan hasil yang melebihi ekspektasi.'
+            imageAlt: 'Tim Bajramedia',
+            content: 'Bajramedia didirikan dengan visi untuk membantu bisnis berkembang di era digital. Kami menggabungkan kreativitas dan teknologi untuk menciptakan solusi yang inovatif.'
         },
         mission: {
             title: 'Misi Kami',
-            description: 'Memberdayakan bisnis melalui solusi digital yang inovatif, fungsional, dan estetis, serta membangun kemitraan jangka panjang yang saling menguntungkan.'
+            content: 'Memberikan layanan digital terbaik dengan standar internasional untuk membantu bisnis berkembang di era digital.'
         },
         vision: {
             title: 'Visi Kami',
-            description: 'Menjadi agensi digital terdepan di Indonesia yang dikenal karena kualitas, kreativitas, dan dampak positif bagi pertumbuhan bisnis klien.'
+            content: 'Menjadi mitra terpercaya dalam transformasi digital untuk bisnis di Indonesia dan Asia Tenggara.'
         },
         values: {
             title: 'Nilai-Nilai Kami',
@@ -61,16 +58,17 @@ export const id = {
         },
         team: {
             title: 'Tim Hebat di Balik Layar',
-            subtitle: 'Kami adalah tim yang solid terdiri dari para profesional berbakat dan bersemangat.',
+            subtitle: 'Bertemu dengan tim profesional kami yang siap membantu mewujudkan visi digital Anda.',
             error: 'Gagal memuat data tim'
         },
         partners: {
             title: 'Dipercaya oleh Perusahaan Hebat',
+            subtitle: 'Kami bangga telah berkolaborasi dengan berbagai perusahaan dan organisasi terkemuka.',
             error: 'Gagal memuat data partner'
         },
         cta: {
-            title: 'Ayo Mulai Proyek Bersama Kami',
-            subtitle: 'Jika Anda memiliki proyek atau ide yang ingin direalisasikan, jangan ragu untuk menghubungi kami.'
+            title: 'Mari Berkolaborasi',
+            subtitle: 'Punya ide proyek? Mari diskusikan bersama tim kami dan wujudkan visi digital Anda.'
         }
     },
     whatsapp: {
