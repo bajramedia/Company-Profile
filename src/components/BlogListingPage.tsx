@@ -132,61 +132,6 @@ export default function BlogListingPage() {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [categories, setCategories] = useState<BlogCategory[]>([]);
 
-  // Dark mode state
-  const [isDarkMode, setIsDarkMode] = useState(false);
-
-  // Initialize dark mode based on user preference
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      // Check localStorage
-      const savedMode = localStorage.getItem('darkMode');
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-      const shouldEnableDarkMode = savedMode === 'true' || (savedMode === null && prefersDark);
-
-      setIsDarkMode(shouldEnableDarkMode);
-
-      // Apply dark mode class if needed
-      if (shouldEnableDarkMode) {
-        document.documentElement.classList.add('dark');
-      }
-
-      // Listen for storage changes to sync dark mode across tabs/pages
-      const handleStorageChange = (e: StorageEvent) => {
-        if (e.key === 'darkMode') {
-          const newMode = e.newValue === 'true';
-          setIsDarkMode(newMode);
-          if (newMode) {
-            document.documentElement.classList.add('dark');
-          } else {
-            document.documentElement.classList.remove('dark');
-          }
-        }
-      };
-
-      window.addEventListener('storage', handleStorageChange);
-      return () => window.removeEventListener('storage', handleStorageChange);
-    }
-  }, []);
-
-  // Toggle dark mode function
-  const toggleDarkMode = () => {
-    setIsDarkMode(prev => {
-      const newMode = !prev;
-
-      if (newMode) {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
-
-      // Save preference to localStorage
-      localStorage.setItem('darkMode', newMode ? 'true' : 'false');
-
-      return newMode;
-    });
-  };
-
   useEffect(() => {
     const fetchData = async () => {
       try {

@@ -75,29 +75,52 @@ export const id = {
         aboutPage: 'Halo! Saya ingin tahu lebih banyak tentang Bajramedia.'
     },
     portfolio: {
-        title: 'Portofolio Kami',
-        subtitle: 'Lihat hasil karya terbaik yang telah kami kerjakan untuk klien kami.',
-        categories: {
-            all: 'Semua Kategori'
+        title: 'Portfolio Kami',
+        description: 'Lihat hasil karya terbaik yang telah kami kerjakan untuk klien kami. Dari web development hingga desain UI/UX, kami bangga dengan setiap proyek yang kami selesaikan.',
+        filter: {
+            all: 'Semua',
+            'web-development': 'Web Development',
+            'ui-ux-design': 'UI/UX Design',
+            'digital-marketing': 'Digital Marketing',
+            'mobile-development': 'Mobile Development',
+            'game-development': 'Game Development'
         },
-        noResults: 'Belum ada proyek dalam kategori ini.',
-        cta: {
-            title: 'Punya Proyek untuk Kami?',
-            subtitle: 'Mari diskusikan ide proyek Anda dengan tim kami.'
-        },
-        error: {
-            fetch: 'Gagal mengambil data portofolio.'
-        }
+        noItems: 'Belum ada proyek dalam kategori ini',
+        viewAll: 'Lihat Semua Portfolio'
     },
     blog: {
         title: 'Blog & Artikel Terbaru',
+        subtitle: 'Temukan pemikiran terbaru kami tentang strategi digital, tren desain, dan inovasi teknologi.',
         description: 'Temukan artikel terbaru tentang teknologi, desain, dan strategi digital untuk mengembangkan bisnis Anda.',
         readMore: 'Baca Selengkapnya',
         noPosts: 'Saat ini belum ada postingan blog.',
+        search: {
+            placeholder: 'Cari artikel...'
+        },
+        categories: {
+            all: 'Semua Kategori',
+            'web-development': 'Web Development',
+            'ui-ux-design': 'UI/UX Design',
+            'digital-marketing': 'Digital Marketing',
+            'mobile-development': 'Mobile Development',
+            'game-development': 'Game Development'
+        },
+        noArticles: 'Tidak ada artikel yang ditemukan',
+        adjustFilter: 'Sesuaikan filter untuk menemukan artikel yang Anda inginkan',
         card: {
             author: 'Penulis',
             readMore: 'Baca Selengkapnya'
+        },
+        meta: {
+            title: 'Blog - Bajramedia',
+            description: 'Jelajahi artikel, berita, dan wawasan terbaru kami.'
         }
+    },
+    cta: {
+        primaryButton: 'Mulai Proyek',
+        secondaryButton: 'Hubungi Kami',
+        title: 'Mari Berkolaborasi',
+        description: 'Punya ide proyek? Mari diskusikan bersama tim kami dan wujudkan visi digital Anda.'
     },
     services: {
         gameAsset: {

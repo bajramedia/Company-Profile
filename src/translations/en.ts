@@ -91,12 +91,30 @@ export const en = {
     },
     blog: {
         title: 'Latest Blog & Articles',
+        subtitle: 'Discover our latest thoughts on digital strategy, design trends, and technology innovation.',
         description: 'Find the latest articles on technology, design, and digital strategies to grow your business.',
         readMore: 'Read More',
         noPosts: 'There are no blog posts at the moment.',
+        search: {
+            placeholder: 'Search articles...'
+        },
+        categories: {
+            all: 'All Categories',
+            'web-development': 'Web Development',
+            'ui-ux-design': 'UI/UX Design',
+            'digital-marketing': 'Digital Marketing',
+            'mobile-development': 'Mobile Development',
+            'game-development': 'Game Development'
+        },
+        noArticles: 'No articles found',
+        adjustFilter: 'Adjust the filter to find the articles you want',
         card: {
             author: 'Author',
             readMore: 'Read More'
+        },
+        meta: {
+            title: 'Blog - Bajramedia',
+            description: 'Explore our latest articles, news, and insights.'
         }
     },
     services: {
@@ -626,5 +644,11 @@ export const en = {
     richTextEditor: {
         imageUrl: 'Enter image URL:',
         linkUrl: 'Enter URL:'
+    },
+    cta: {
+        primaryButton: 'Start Project',
+        secondaryButton: 'Contact Us',
+        title: 'Let\'s Collaborate',
+        description: 'Have a project idea? Let\'s discuss it with our team and realize your digital vision.'
     }
 }; 
