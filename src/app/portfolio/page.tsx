@@ -83,7 +83,7 @@ export default function PortfolioPage() {
                             {t('portfolio.title') || 'Portfolio Kami'}
                         </Heading>
                         <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-                            {t('portfolio.subtitle') || 'Lihat hasil karya terbaik yang telah kami kerjakan untuk klien kami'}
+                            {t('portfolio.description') || 'Lihat hasil karya terbaik yang telah kami kerjakan untuk klien kami. Dari web development hingga desain UI/UX, kami bangga dengan setiap proyek yang kami selesaikan.'}
                         </p>
                     </div>
                 </section>

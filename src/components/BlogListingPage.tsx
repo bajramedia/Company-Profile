@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useLanguage } from '@/context/LanguageContext';
-import { blogService, BlogPost } from '@/services/BlogService.api';
+import { blogService, BlogPost, BlogCategory } from '@/services/BlogService.api';
 import { FiSearch, FiClock, FiEye, FiTrendingUp, FiGrid, FiList, FiBookmark, FiShare2, FiHome, FiChevronRight } from 'react-icons/fi';
 import Link from 'next/link';
 import Head from 'next/head';
@@ -126,10 +126,11 @@ export default function BlogListingPage() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [filteredPosts, setFilteredPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
+  const [categoriesLoading, setCategoriesLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [categories, setCategories] = useState<string[]>([]);
+  const [categories, setCategories] = useState<BlogCategory[]>([]);
 
   // Dark mode state
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -187,27 +188,43 @@ export default function BlogListingPage() {
   };
 
   useEffect(() => {
-    const fetchPosts = async () => {
+    const fetchData = async () => {
       try {
         setLoading(true);
-        const allPosts = await blogService.getAllPosts();
+        setCategoriesLoading(true);
+
+        // Fetch posts and categories in parallel
+        const [allPosts, allCategories] = await Promise.all([
+          blogService.getAllPosts(),
+          blogService.getCategories()
+        ]);
+
         setPosts(allPosts);
         setFilteredPosts(allPosts);
+        setCategories(allCategories);
 
-        // Extract unique categories
-        const uniqueCategories = Array.from(new Set(allPosts.map(post =>
-          typeof post.category === 'string' ? post.category : post.category.name
-        )));
-
-        setCategories(['all', ...uniqueCategories]);
+        // Extract unique categories from posts if API fails
+        if (allCategories.length === 0) {
+          const uniqueCategories = Array.from(new Set(allPosts.map(post =>
+            typeof post.category === 'string' ? post.category : post.category.name
+          )));
+          
+          setCategories(uniqueCategories.map(cat => ({
+            id: String(Math.random()),
+            name: cat,
+            slug: cat.toLowerCase().replace(/\s+/g, '-'),
+            description: ''
+          })));
+        }
       } catch (error) {
-        console.error("Error fetching blog posts:", error);
+        console.error("Error fetching data:", error);
       } finally {
         setLoading(false);
+        setCategoriesLoading(false);
       }
     };
 
-    fetchPosts();
+    fetchData();
   }, []);
 
   useEffect(() => {
@@ -217,7 +234,7 @@ export default function BlogListingPage() {
     if (selectedCategory !== 'all') {
       results = results.filter(post => {
         const postCategory = typeof post.category === 'string' ? post.category : post.category.name;
-        return postCategory === selectedCategory;
+        return postCategory.toLowerCase() === selectedCategory.toLowerCase();
       });
     }
 
@@ -273,10 +290,10 @@ export default function BlogListingPage() {
           {/* Header Section */}
           <header className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white mb-4">
-              {t('blog.title') || 'Wawasan & Artikel Terbaru'}
-              </h1>
+              {t('blog.title') || 'Blog & Artikel Terbaru'}
+            </h1>
             <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              {t('blog.subtitle') || 'Temukan pemikiran terbaru kami tentang strategi digital, tren desain, dan inovasi teknologi.'}
+              {t('blog.description') || 'Temukan artikel terbaru tentang teknologi, desain, dan strategi digital untuk mengembangkan bisnis Anda.'}
             </p>
           </header>
 
@@ -285,37 +302,42 @@ export default function BlogListingPage() {
             <div className="flex flex-col md:flex-row items-center gap-4">
               <div className="relative flex-grow w-full">
                 <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
-                  <input
-                    type="text"
+                <input
+                  type="text"
                   placeholder={t('blog.search.placeholder') || 'Cari artikel...'}
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full pl-12 pr-4 py-3 bg-gray-100 dark:bg-gray-700 border-transparent rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition"
-                  />
-                </div>
+                />
+              </div>
               <div className="flex items-center gap-2 w-full md:w-auto">
+                {categoriesLoading ? (
+                  <div className="w-full md:w-48 h-12 bg-gray-100 dark:bg-gray-700 rounded-xl animate-pulse"></div>
+                ) : (
                   <select
                     value={selectedCategory}
                     onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="w-full md:w-auto px-4 py-3 bg-gray-100 dark:bg-gray-700 border-transparent rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition"
-                >
-                  {categories.map(cat => (
-                    <option key={cat} value={cat}>
-                      {t(`blog.categories.${cat}`) || cat.charAt(0).toUpperCase() + cat.slice(1)}
+                    className="w-full md:w-auto px-4 py-3 bg-gray-100 dark:bg-gray-700 border-transparent rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition"
+                  >
+                    <option value="all">{t('blog.categories.all') || 'Semua Kategori'}</option>
+                    {categories.map(cat => (
+                      <option key={cat.id} value={cat.slug}>
+                        {t(`blog.categories.${cat.slug}`) || cat.name}
                       </option>
                     ))}
                   </select>
+                )}
                 <div className="flex items-center bg-gray-100 dark:bg-gray-700 rounded-xl p-1">
                   <button onClick={() => setViewMode('grid')} className={`p-2 rounded-lg ${viewMode === 'grid' ? 'bg-primary text-white' : 'text-gray-500 hover:bg-gray-200 dark:hover:bg-gray-600'}`}>
                     <FiGrid />
-                    </button>
+                  </button>
                   <button onClick={() => setViewMode('list')} className={`p-2 rounded-lg ${viewMode === 'list' ? 'bg-primary text-white' : 'text-gray-500 hover:bg-gray-200 dark:hover:bg-gray-600'}`}>
                     <FiList />
-                    </button>
-                </div>
+                  </button>
                 </div>
               </div>
             </div>
+          </div>
 
             {/* Blog Posts Grid/List */}
             {loading ? (

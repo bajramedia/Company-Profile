@@ -11,8 +11,11 @@ interface CTAProps {
 }
 
 const CTA: React.FC<CTAProps> = ({ className = '' }) => {
-  const { t } = useLanguage(); return (
-    <section className={`py-16 md:py-24 bg-primary dark:bg-gray-900 relative overflow-hidden transition-colors duration-300 ${className}`}>      {/* Wave-shaped connector to SupportedBy section */}
+  const { t } = useLanguage();
+
+  return (
+    <section className={`py-16 md:py-24 bg-primary dark:bg-gray-900 relative overflow-hidden transition-colors duration-300 ${className}`}>
+      {/* Wave-shaped connector to SupportedBy section */}
       <div className="absolute -bottom-1 left-0 right-0 overflow-hidden">
         <svg
           className="relative block w-full h-[60px] fill-gray-50 dark:fill-gray-800 transition-colors duration-300"
@@ -53,51 +56,52 @@ const CTA: React.FC<CTAProps> = ({ className = '' }) => {
         </div>
       </div>
 
-      <div className="relative z-10 w-[95%] mx-auto px-4 sm:px-6 md:px-8">        <div className="flex flex-col lg:flex-row items-center justify-between gap-10">
-        <div className="w-full lg:w-2/3">
-          <AnimatedText as="div">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white dark:text-gray-100 mb-4 transition-colors duration-300">
-              {t('cta.title') || 'Ready to Transform Your Digital Presence?'}
-            </h2>
-          </AnimatedText>
-          <AnimatedText as="div">
-            <p className="text-white/80 dark:text-gray-300 text-base md:text-lg max-w-2xl transition-colors duration-300">
-              {t('cta.description') || 'Let us help you build beautiful, functional, and effective digital solutions that drive results for your business. Start your journey with us today.'}
-            </p>
-          </AnimatedText>
-        </div>
-        <div className="w-full lg:w-1/3 flex flex-col md:flex-row lg:flex-col items-center gap-4">
-          <Link href="https://wa.me/6285739402436?text=Halo%20Bajramedia!%20Saya%20tertarik%20untuk%20memulai%20proyek%20digital.%20Bisa%20konsultasi%20gratis?" target="_blank" className="w-full md:w-auto lg:w-full">
-            <Button
-              variant="primary"
-              size="lg"
-              className="bg-[#f7d046] hover:bg-[#03b150] text-gray-800 hover:text-white py-5 px-8 rounded-xl font-bold shadow-xl w-full hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 group"
-            >
-              <span className="text-base font-semibold flex items-center justify-center">
-                {t('cta.primaryButton') || 'Start Your Project'}
-                <svg className="w-0 h-5 ml-0 opacity-0 group-hover:w-5 group-hover:ml-2 group-hover:opacity-100 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                </svg>
-              </span>
-            </Button>
-          </Link>
+      <div className="relative z-10 w-[95%] mx-auto px-4 sm:px-6 md:px-8">
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-10">
+          <div className="w-full lg:w-2/3">
+            <AnimatedText as="div">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white dark:text-gray-100 mb-4 transition-colors duration-300">
+                {t('about.cta.title') || 'Mari Berkolaborasi'}
+              </h2>
+            </AnimatedText>
+            <AnimatedText as="div">
+              <p className="text-white/80 dark:text-gray-300 text-base md:text-lg max-w-2xl transition-colors duration-300">
+                {t('about.cta.subtitle') || 'Punya ide proyek? Mari diskusikan bersama tim kami dan wujudkan visi digital Anda.'}
+              </p>
+            </AnimatedText>
+          </div>
+          <div className="w-full lg:w-1/3 flex flex-col md:flex-row lg:flex-col items-center gap-4">
+            <Link href="https://wa.me/6285739402436?text=Halo%20Bajramedia!%20Saya%20tertarik%20untuk%20memulai%20proyek%20digital.%20Bisa%20konsultasi%20gratis?" target="_blank" className="w-full md:w-auto lg:w-full">
+              <Button
+                variant="primary"
+                size="lg"
+                className="bg-[#f7d046] hover:bg-[#03b150] text-gray-800 hover:text-white py-5 px-8 rounded-xl font-bold shadow-xl w-full hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 group"
+              >
+                <span className="text-base font-semibold flex items-center justify-center">
+                  {t('cta.primaryButton') || 'Start Your Project'}
+                  <svg className="w-0 h-5 ml-0 opacity-0 group-hover:w-5 group-hover:ml-2 group-hover:opacity-100 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                  </svg>
+                </span>
+              </Button>
+            </Link>
 
-          <Link href="https://wa.me/6285739402436?text=Halo%20Bajramedia!%20Saya%20ingin%20berkonsultasi%20mengenai%20kebutuhan%20digital%20saya.%20Bisa%20dibantu?" target="_blank" className="w-full md:w-auto lg:w-full">
-            <Button
-              variant="outline"
-              size="lg"
-              className="py-5 px-8 rounded-xl font-bold text-white border-2 border-white hover:bg-white/15 hover:-translate-y-1 w-full transition-all duration-300 group"
-            >
-              <span className="text-base font-semibold flex items-center justify-center">
-                {t('cta.secondaryButton') || 'Contact Us'}
-                <svg className="w-0 h-5 ml-0 opacity-0 group-hover:w-5 group-hover:ml-2 group-hover:opacity-100 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                </svg>
-              </span>
-            </Button>
-          </Link>
+            <Link href="https://wa.me/6285739402436?text=Halo%20Bajramedia!%20Saya%20ingin%20berkonsultasi%20mengenai%20kebutuhan%20digital%20saya.%20Bisa%20dibantu?" target="_blank" className="w-full md:w-auto lg:w-full">
+              <Button
+                variant="outline"
+                size="lg"
+                className="py-5 px-8 rounded-xl font-bold text-white border-2 border-white hover:bg-white/15 hover:-translate-y-1 w-full transition-all duration-300 group"
+              >
+                <span className="text-base font-semibold flex items-center justify-center">
+                  {t('cta.secondaryButton') || 'Contact Us'}
+                  <svg className="w-0 h-5 ml-0 opacity-0 group-hover:w-5 group-hover:ml-2 group-hover:opacity-100 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                  </svg>
+                </span>
+              </Button>
+            </Link>
+          </div>
         </div>
-      </div>
       </div>
     </section>
   );
