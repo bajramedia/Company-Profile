@@ -254,15 +254,12 @@ export default function AboutPage() {
           <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 text-center">
             <AnimatedText>
               <Heading variant="h1" color="foreground" className="mb-6 text-4xl md:text-5xl lg:text-6xl font-extrabold">
-                {aboutContent['hero']?.title || t('about.hero.title') || 'Tentang Kami'}
-                <span className="text-green-500 relative"> {t('about.hero.highlight') || 'Bajramedia'}
-                  <span className="absolute bottom-1.5 left-0 w-full h-3 bg-green-500/10 -z-0"></span>
-                </span>
+                {aboutContent['heroo']?.title || t('about.hero.title') || 'Tentang Kami'}
               </Heading>
             </AnimatedText>
             <AnimatedText>
               <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed">
-                {aboutContent['hero']?.content || t('about.hero.content') || 'Kami adalah tim kreatif yang berdedikasi untuk memberikan solusi digital terbaik untuk bisnis Anda'}
+                {aboutContent['heroo']?.content || t('about.hero.content') || 'Kami adalah tim kreatif yang berdedikasi untuk memberikan solusi digital terbaik untuk bisnis Anda'}
               </p>
             </AnimatedText>
           </div>
@@ -273,7 +270,7 @@ export default function AboutPage() {
             <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
               <div className="relative" data-aos="fade-right">
                 <Image 
-                  src={aboutContent['story']?.image || "/images/team-meeting.jpg"} 
+                  src="/images/team-meeting.jpg"
                   alt={t('about.story.imageAlt') || 'Tim Bajramedia'} 
                   width={600} 
                   height={400} 
@@ -283,11 +280,11 @@ export default function AboutPage() {
               </div>
               <div data-aos="fade-left" data-aos-delay="200">
                 <Heading variant="h2" color="foreground" className="mb-6">
-                  {aboutContent['story']?.title || t('about.story.title') || 'Cerita Kami'}
+                  {aboutContent['background']?.title || t('about.story.title') || 'Cerita Kami'}
                 </Heading>
                 <div className="prose prose-lg dark:prose-invert max-w-none text-gray-600 dark:text-gray-300 space-y-4">
                   <div dangerouslySetInnerHTML={{ 
-                    __html: aboutContent['story']?.content || 
+                    __html: aboutContent['background']?.content || 
                             t('about.story.content') || 
                             'Bajramedia didirikan dengan visi untuk membantu bisnis berkembang di era digital. Kami menggabungkan kreativitas dan teknologi untuk menciptakan solusi yang inovatif.' 
                   }} />
