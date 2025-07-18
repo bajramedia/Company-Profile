@@ -114,21 +114,17 @@ export default function AboutPage() {
         if (!response.ok) throw new Error('Failed to fetch about content');
         const data = await response.json();
         
-        // Transform data sesuai dengan bahasa yang dipilih
-        const organizedContent = data.reduce((acc: {[key: string]: any}, item: AboutContent) => {
-          acc[item.section_key] = {
-            id: item.id,
-            section: item.section_key,
-            title: language === 'id' ? item.title_id : item.title_en,
-            content: language === 'id' ? item.content_id : item.content_en
-          };
-          return acc;
-        }, {});
-        
-        setAboutContent(organizedContent);
+        // Pastikan data bukan null atau undefined
+        if (data && typeof data === 'object') {
+          setAboutContent(data);
+        } else {
+          console.warn('Received invalid data format:', data);
+          setAboutContent({});
+        }
       } catch (err) {
         console.error('Error fetching about content:', err);
         setContentError(err instanceof Error ? err.message : 'Gagal memuat konten');
+        setAboutContent({});
       } finally {
         setContentLoading(false);
       }
