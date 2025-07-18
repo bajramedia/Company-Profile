@@ -23,8 +23,43 @@ export default function Home() {
   const { settings: publicSettings, loading: settingsLoading } = usePublicSettings();
 
   // Generate JSON-LD schemas
-  const websiteSchema = generateWebsiteSchema();
-  const localBusinessSchema = generateLocalBusinessSchema();
+  const websiteSchema = generateWebsiteSchema({
+    name: publicSettings?.siteName || 'Bajramedia',
+    url: 'https://bajramedia.com',
+    description: publicSettings?.siteDescription || 'Creative Digital Agency & Blog Platform',
+    logo: 'https://bajramedia.com/images/logo.png',
+    contactPoint: {
+      telephone: publicSettings?.contactPhone || '',
+      email: publicSettings?.contactEmail || 'info@bajramedia.com',
+      contactType: 'customer service',
+    },
+    address: {
+      addressLocality: 'Bali',
+      addressCountry: 'Indonesia',
+    },
+    sameAs: [
+      publicSettings?.socialLinks?.facebook,
+      publicSettings?.socialLinks?.twitter,
+      publicSettings?.socialLinks?.instagram,
+      publicSettings?.socialLinks?.linkedin,
+    ].filter(Boolean) as string[],
+  });
+
+  // Generate local business schema
+  const localBusinessSchema = generateLocalBusinessSchema({
+    name: publicSettings?.siteName || 'Bajramedia',
+    url: 'https://bajramedia.com',
+    description: publicSettings?.siteDescription || 'Creative Digital Agency & Blog Platform',
+    logo: 'https://bajramedia.com/images/logo.png',
+    contactPoint: {
+      telephone: publicSettings?.contactPhone || '',
+      email: publicSettings?.contactEmail || 'info@bajramedia.com',
+    },
+    address: {
+      addressLocality: 'Bali',
+      addressCountry: 'Indonesia',
+    },
+  });
 
   return (
     <>
