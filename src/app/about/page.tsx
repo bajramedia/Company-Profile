@@ -250,12 +250,12 @@ export default function AboutPage() {
           <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 text-center">
             <AnimatedText>
               <Heading variant="h1" color="foreground" className="mb-6 text-4xl md:text-5xl lg:text-6xl font-extrabold">
-                {aboutContent['heroo']?.title || t('about.hero.title') || 'Tentang Kami'}
+                {aboutContent['heroo']?.title || t('about.hero.title')}
               </Heading>
             </AnimatedText>
             <AnimatedText>
               <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed">
-                {aboutContent['heroo']?.content || t('about.hero.content') || 'Kami adalah tim kreatif yang berdedikasi untuk memberikan solusi digital terbaik untuk bisnis Anda'}
+                {aboutContent['heroo']?.content || t('about.hero.content')}
               </p>
             </AnimatedText>
           </div>
@@ -399,13 +399,39 @@ export default function AboutPage() {
             <Heading variant="h2" color="foreground" className="mb-12">
               {aboutContent['partners']?.title || t('about.partners.title')}
             </Heading>
-            {partnersLoading && <p>{t('common.loading')}</p>}
+            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-12">
+              {aboutContent['partners']?.content || t('about.partners.subtitle')}
+            </p>
+            {partnersLoading && (
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+                {[...Array(4)].map((_, i) => (
+                  <div key={i} className="bg-white dark:bg-gray-800 rounded-xl p-6 animate-pulse">
+                    <div className="h-16 bg-gray-200 dark:bg-gray-700 rounded-lg"></div>
+                  </div>
+                ))}
+              </div>
+            )}
             {partnersError && <p className="text-red-500">{partnersError}</p>}
             {!partnersLoading && !partnersError && (
-              <div className="flex flex-wrap justify-center items-center gap-12">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
                 {partners.map((partner) => (
-                  <Link key={partner.id} href={partner.website} target="_blank" className="about-partners" data-aos="zoom-in">
-                    <Image src={partner.logo} alt={language === 'id' ? partner.nameId : partner.name} width={150} height={60} className="object-contain" />
+                  <Link 
+                    key={partner.id} 
+                    href={partner.website} 
+                    target="_blank" 
+                    className="bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group"
+                    data-aos="zoom-in"
+                  >
+                    <div className="relative h-16 flex items-center justify-center">
+                      <Image 
+                        src={partner.logo} 
+                        alt={language === 'id' ? partner.nameId : partner.name} 
+                        width={150} 
+                        height={60} 
+                        className="object-contain filter-none group-hover:scale-105 transition-transform duration-300" 
+                        style={{ maxHeight: '100%' }}
+                      />
+                    </div>
                   </Link>
                 ))}
               </div>

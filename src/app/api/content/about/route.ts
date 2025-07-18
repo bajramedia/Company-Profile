@@ -34,6 +34,9 @@ export async function GET(request: Request) {
     const organizedContent = data
       .filter((item: AboutContent) => item.is_active)
       .reduce((acc: { [key: string]: any }, item: AboutContent) => {
+        // Log untuk debugging
+        console.log('Processing item:', item.section_key);
+        
         acc[item.section_key] = {
           id: item.id,
           section: item.section_key,
@@ -42,6 +45,9 @@ export async function GET(request: Request) {
         };
         return acc;
       }, {});
+
+    // Log hasil akhir untuk debugging
+    console.log('Organized content:', organizedContent);
     
     return NextResponse.json(organizedContent);
   } catch (error) {
