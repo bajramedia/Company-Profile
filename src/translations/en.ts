@@ -78,12 +78,13 @@ export const en = {
         title: 'Our Portfolio',
         subtitle: 'Check out the best work we have done for our clients.',
         categories: {
-            all: 'All Categories'
+            all: 'All',
         },
-        noResults: 'There are no projects in this category yet.',
+        noResults: 'No projects in this category yet',
+        noItemsDesc: 'We will add new projects soon',
         cta: {
-            title: 'Have a Project for Us?',
-            subtitle: 'Let\'s discuss your project idea with our team.'
+            title: 'Ready to Start Your Project?',
+            subtitle: "Let's discuss your project ideas with our team",
         },
         error: {
             fetch: 'Failed to fetch portfolio data.'
@@ -158,7 +159,17 @@ export const en = {
             },
             whatsapp: {
                 message: 'Hi! I\'m interested in Bajramedia\'s Game Asset Development service. Can I get a free consultation?'
-            }
+            },
+            enterprise: {
+                title: 'Enterprise Package',
+                price: 'Custom Price',
+                features: {
+                    unlimited: 'Unlimited assets',
+                    custom: 'Full customization',
+                    support: 'Priority support',
+                    revisions: 'Unlimited revisions',
+                },
+            },
         },
         consulting: {
             breadcrumb: 'Business Consulting',
@@ -325,7 +336,17 @@ export const en = {
             },
             whatsapp: {
                 message: 'Hi! I\'m interested in Bajramedia\'s System Development service.'
-            }
+            },
+            features: {
+                title: 'Featured Features',
+                description: 'Choose a package that suits your system needs',
+            },
+            enterprise: {
+                features: {
+                    users: 'Unlimited users',
+                    training: 'Custom training',
+                },
+            },
         },
         social: {
             breadcrumb: 'Social Media Management',
@@ -390,7 +411,8 @@ export const en = {
                 price: '$350',
                 features: {
                     wireframe: 'Wireframe design',
-                    design: 'UI design 5 pages'
+                    design: 'UI design 5 pages',
+                    revision: '2x revisions',
                 }
             },
             pro: {
@@ -401,7 +423,10 @@ export const en = {
                     flow: 'User flow',
                     prototype: 'Interactive prototype',
                     revision: '3x revision',
-                    system: 'Design system'
+                    system: 'Design system',
+                    research: 'In-depth user research',
+                    testing: 'User testing',
+                    consultation: 'Design consultation',
                 }
             },
             enterprise: {
@@ -410,7 +435,12 @@ export const en = {
                 features: {
                     screens: 'Unlimited screens',
                     prototype: 'High-fidelity prototype',
-                    system: 'Full design system'
+                    system: 'Full design system',
+                    pages: 'Unlimited pages',
+                    research: 'In-depth user research',
+                    testing: 'User testing',
+                    revision: 'Unlimited revisions',
+                    consultation: 'Design consultation',
                 }
             },
             cta: {
@@ -493,6 +523,17 @@ export const en = {
                 consultation: 'Free Consultation'
             },
             whatsapp: 'Hi, I\'m interested in Bajramedia\'s web development service'
+        },
+        web: {
+            enterprise: {
+                features: {
+                    pages: 'Unlimited pages',
+                    custom: 'Full customization',
+                    support: 'Priority support',
+                    revision: 'Unlimited revisions',
+                    hosting: 'Premium hosting',
+                },
+            },
         }
     },
     validation: {

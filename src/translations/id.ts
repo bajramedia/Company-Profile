@@ -498,6 +498,17 @@ export const id = {
                 consultation: 'Konsultasi Gratis'
             },
             whatsapp: 'Halo, saya tertarik dengan layanan web development Bajramedia'
+        },
+        web: {
+            enterprise: {
+                features: {
+                    pages: 'Halaman tidak terbatas',
+                    custom: 'Kustomisasi penuh',
+                    support: 'Dukungan prioritas',
+                    revision: 'Revisi tidak terbatas',
+                    hosting: 'Hosting premium',
+                },
+            },
         }
     },
     validation: {
