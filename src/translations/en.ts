@@ -327,7 +327,9 @@ export const en = {
                 features: {
                     modules: 'Unlimited modules',
                     custom: 'Custom features',
-                    support: '6 months support'
+                    support: '6 months support',
+                    users: 'Unlimited users',
+                    training: 'Custom training'
                 }
             },
             cta: {
@@ -339,14 +341,8 @@ export const en = {
             },
             features: {
                 title: 'Featured Features',
-                description: 'Choose a package that suits your system needs',
-            },
-            enterprise: {
-                features: {
-                    users: 'Unlimited users',
-                    training: 'Custom training',
-                },
-            },
+                description: 'Choose a package that suits your system needs'
+            }
         },
         social: {
             breadcrumb: 'Social Media Management',
