@@ -660,5 +660,16 @@ export const id = {
     richTextEditor: {
         imageUrl: 'Masukkan URL gambar:',
         linkUrl: 'Masukkan URL:'
+    },
+    admin: {
+        dashboard: 'Dasbor',
+        posts: 'Postingan',
+        portfolio: 'Portofolio',
+        authors: 'Penulis',
+        categories: 'Kategori',
+        tags: 'Tag',
+        settings: 'Pengaturan',
+        logout: 'Keluar',
+        backToWebsite: 'Kembali ke Situs Web',
     }
 }; 

@@ -687,5 +687,16 @@ export const en = {
         secondaryButton: 'Contact Us',
         title: 'Let\'s Collaborate',
         description: 'Have a project idea? Let\'s discuss it with our team and realize your digital vision.'
+    },
+    admin: {
+        dashboard: 'Dashboard',
+        posts: 'Posts',
+        portfolio: 'Portfolio',
+        authors: 'Authors',
+        categories: 'Categories',
+        tags: 'Tags',
+        settings: 'Settings',
+        logout: 'Logout',
+        backToWebsite: 'Back to Website',
     }
 }; 
