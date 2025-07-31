@@ -28,21 +28,25 @@ const faqData: { [lang: string]: { [category: string]: ServiceCategory } } = {
       faqs: [
         {
           question: 'Berapa lama waktu pengerjaan proyek website?',
-          answer: 'Waktu pengerjaan bervariasi tergantung kompleksitas proyek. Website company profile biasanya 2-4 minggu, sedangkan web aplikasi kompleks bisa 2-6 bulan. Kami akan memberikan estimasi waktu yang akurat setelah analisis kebutuhan.',
+          answer: 'Waktu pengerjaan bervariasi tergantung kompleksitas. Website company profile biasanya 2-4 minggu, sedangkan web aplikasi kompleks bisa 2-6 bulan. Kami memberikan estimasi waktu akurat setelah analisis kebutuhan.',
         },
         {
-          question: 'Teknologi apa yang Anda gunakan untuk pengembangan web?',
-          answer: 'Kami menggunakan teknologi modern dan teruji seperti Next.js, React, Node.js, dan Laravel. Pemilihan teknologi disesuaikan dengan kebutuhan spesifik proyek untuk memastikan performa, keamanan, dan skalabilitas terbaik.',
+          question: 'Apakah layanan sudah termasuk domain dan hosting?',
+          answer: 'Layanan kami fokus pada pengembangan. Namun, kami bisa memberikan rekomendasi dan bantuan untuk proses registrasi domain dan pemilihan hosting terbaik sesuai kebutuhan Anda.',
         },
       ],
     },
-    'mobile-apps': {
-      id: 'mobile-apps',
-      name: 'Aplikasi Mobile',
+    'game-asset-development': {
+      id: 'game-asset-development',
+      name: 'Pengembangan Aset Game',
       faqs: [
         {
-          question: 'Apakah Anda mengembangkan aplikasi untuk Android dan iOS?',
-          answer: 'Ya, kami mengembangkan aplikasi native dan cross-platform untuk kedua platform, Android dan iOS. Kami menggunakan teknologi seperti React Native dan Flutter untuk efisiensi pengembangan.',
+          question: 'Aset game seperti apa yang bisa Anda buat?',
+          answer: 'Kami dapat membuat berbagai aset 2D dan 3D, mulai dari karakter, environment, properti, hingga UI ikon untuk game Anda, dengan gaya yang bisa disesuaikan.',
+        },
+        {
+            question: 'Dalam format apa saya akan menerima aset game?',
+            answer: 'Aset akan dikirim dalam format standar industri seperti PNG atau sprite sheet untuk 2D, dan FBX atau OBJ untuk 3D, lengkap dengan teksturnya. Kami juga bisa menyesuaikan dengan kebutuhan game engine Anda.',
         },
       ],
     },
@@ -52,8 +56,36 @@ const faqData: { [lang: string]: { [category: string]: ServiceCategory } } = {
         faqs: [
           {
             question: 'Bagaimana proses desain UI/UX di perusahaan Anda?',
-            answer: 'Proses kami dimulai dengan riset mendalam tentang pengguna dan kompetitor, dilanjutkan dengan pembuatan wireframe, mockup, hingga prototipe interaktif. Kami fokus pada desain yang fungsional, estetis, dan ramah pengguna.',
+            answer: 'Proses kami dimulai dari riset, pembuatan user flow, wireframing, hingga menjadi high-fidelity prototype interaktif. Kami memastikan desain tidak hanya indah, tapi juga fungsional dan nyaman digunakan.',
           },
+          {
+            question: 'Tools apa yang biasa digunakan untuk desain?',
+            answer: 'Tim kami mahir menggunakan berbagai tools desain terkemuka seperti Figma, Sketch, dan Adobe XD untuk menciptakan hasil desain yang maksimal dan kolaboratif.',
+          },
+        ],
+      },
+      'system-development': {
+        id: 'system-development',
+        name: 'Pengembangan Sistem',
+        faqs: [
+          {
+            question: 'Sistem informasi seperti apa yang bisa Anda kembangkan?',
+            answer: 'Kami bisa mengembangkan berbagai sistem informasi sesuai kebutuhan bisnis, seperti Sistem Manajemen Inventori, CRM, ERP skala kecil, atau sistem custom lainnya untuk meningkatkan efisiensi operasional.',
+          },
+        ],
+      },
+      'social-media-management': {
+        id: 'social-media-management',
+        name: 'Manajemen Media Sosial',
+        faqs: [
+            {
+                question: 'Platform apa saja yang Anda kelola?',
+                answer: 'Kami dapat mengelola berbagai platform media sosial populer seperti Instagram, Facebook, Twitter, LinkedIn, dan TikTok, disesuaikan dengan target audiens bisnis Anda.',
+            },
+            {
+                question: 'Apakah paket sudah termasuk pembuatan konten dan copywriting?',
+                answer: 'Tentu saja. Layanan kami meliputi perencanaan konten strategis, pembuatan desain visual yang menarik, serta penulisan caption (copywriting) yang persuasif.',
+            },
         ],
       },
     'general': {
@@ -82,33 +114,65 @@ const faqData: { [lang: string]: { [category: string]: ServiceCategory } } = {
       faqs: [
         {
           question: 'How long does a website project take?',
-          answer: 'The project timeline varies depending on its complexity. A company profile website usually takes 2-4 weeks, while a complex web application can take 2-6 months. We will provide an accurate time estimate after a requirements analysis.',
+          answer: 'The project timeline varies depending on its complexity. A company profile website usually takes 2-4 weeks, while a complex web application can take 2-6 months. We provide an accurate time estimate after a requirements analysis.',
         },
         {
-            question: 'What technologies do you use for web development?',
-            answer: 'We use modern and proven technologies like Next.js, React, Node.js, and Laravel. The technology stack is chosen based on the specific project needs to ensure the best performance, security, and scalability.',
+            question: 'Does the service include domain and hosting?',
+            answer: 'Our service focuses on development. However, we can provide recommendations and assistance for the domain registration and selection of the best hosting according to your needs.',
         },
       ],
     },
-    'mobile-apps': {
-      id: 'mobile-apps',
-      name: 'Mobile Apps',
-      faqs: [
-        {
-          question: 'Do you develop apps for Android and iOS?',
-          answer: 'Yes, we develop native and cross-platform applications for both Android and iOS platforms. We use technologies like React Native and Flutter for development efficiency.',
-        },
-      ],
-    },
+    'game-asset-development': {
+        id: 'game-asset-development',
+        name: 'Game Asset Development',
+        faqs: [
+          {
+            question: 'What kind of game assets can you create?',
+            answer: 'We can create various 2D and 3D assets, from characters, environments, props, to UI icons for your game, with customizable styles.',
+          },
+          {
+            question: 'In what format will I receive the game assets?',
+            answer: 'Assets will be delivered in industry-standard formats like PNG or sprite sheets for 2D, and FBX or OBJ for 3D, complete with textures. We can also adapt to your game engine\'s needs.',
+          },
+        ],
+      },
     'uiux-design': {
         id: 'uiux-design',
         name: 'UI/UX Design',
         faqs: [
           {
             question: 'What is your UI/UX design process?',
-            answer: 'Our process starts with in-depth research on users and competitors, followed by creating wireframes, mockups, and interactive prototypes. We focus on designs that are functional, aesthetic, and user-friendly.',
+            answer: 'Our process starts with research, creating user flows, wireframing, up to an interactive high-fidelity prototype. We ensure the design is not only beautiful but also functional and user-friendly.',
+          },
+          {
+            question: 'What tools do you usually use for design?',
+            answer: 'Our team is proficient in using various leading design tools such as Figma, Sketch, and Adobe XD to create maximum and collaborative design results.',
           },
         ],
+      },
+      'system-development': {
+        id: 'system-development',
+        name: 'System Development',
+        faqs: [
+          {
+            question: 'What kind of information systems can you develop?',
+            answer: 'We can develop various information systems according to business needs, such as Inventory Management Systems, CRMs, small-scale ERPs, or other custom systems to improve operational efficiency.',
+          },
+        ],
+      },
+      'social-media-management': {
+          id: 'social-media-management',
+          name: 'Social Media Management',
+          faqs: [
+              {
+                  question: 'What platforms do you manage?',
+                  answer: 'We can manage various popular social media platforms such as Instagram, Facebook, Twitter, LinkedIn, and TikTok, tailored to your business\'s target audience.',
+              },
+              {
+                  question: 'Does the package include content creation and copywriting?',
+                  answer: 'Of course. Our services include strategic content planning, creating attractive visual designs, and writing persuasive captions (copywriting).',
+              },
+          ],
       },
     'general': {
       id: 'general',
