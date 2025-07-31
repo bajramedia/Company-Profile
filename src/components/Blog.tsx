@@ -123,7 +123,7 @@ export const BlogPostCard: React.FC<{ post: BlogPost }> = ({ post }) => {
           <div className="flex items-center">
             {/* Smaller author avatar */}
             <div className="relative w-8 h-8 rounded-full overflow-hidden mr-2 ring-2 ring-gray-100 dark:ring-gray-600 transition-colors duration-300">
-              {post.author.avatar && post.author.avatar.trim() !== '' ? (
+              {typeof post.author === 'object' && post.author.avatar && post.author.avatar.trim() !== '' ? (
                 <Image
                   src={post.author.avatar}
                   alt={post.author.name}
@@ -142,7 +142,7 @@ export const BlogPostCard: React.FC<{ post: BlogPost }> = ({ post }) => {
             </div>
             <div>
               <span className="text-xs font-semibold text-gray-900 dark:text-gray-100 block transition-colors duration-300">
-                {post.author.name || 'Admin User'}
+                {typeof post.author === 'object' ? post.author.name : post.author || 'Admin User'}
               </span>
               <span className="text-xs text-gray-500 dark:text-gray-400 transition-colors duration-300">{t('blog.card.author') || 'Author'}</span>
             </div>
