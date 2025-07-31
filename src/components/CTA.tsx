@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Button from './Button';
 import AnimatedText from './AnimatedText';
 import { useLanguage } from '@/context/LanguageContext';
+import { CheckCircle } from 'lucide-react';
 
 interface CTAProps {
   className?: string;
@@ -13,8 +14,15 @@ interface CTAProps {
 const CTA: React.FC<CTAProps> = ({ className = '' }) => {
   const { t } = useLanguage();
 
+  const whyChooseUsPoints = [
+    t('cta.point1') || 'Tim Profesional & Berpengalaman',
+    t('cta.point2') || 'Solusi Digital Inovatif & Terkini',
+    t('cta.point3') || 'Harga Kompetitif & Transparan',
+    t('cta.point4') || 'Dukungan Purna Jual Terbaik',
+  ];
+
   return (
-    <section className={`py-16 md:py-24 bg-primary dark:bg-gray-900 relative overflow-hidden transition-colors duration-300 ${className}`}>
+    <section className={`py-20 md:py-28 bg-gradient-to-br from-primary to-blue-900 dark:from-gray-900 dark:to-black relative overflow-hidden text-white ${className}`}>
       {/* Wave-shaped connector to SupportedBy section */}
       <div className="absolute -bottom-1 left-0 right-0 overflow-hidden">
         <svg
@@ -30,8 +38,8 @@ const CTA: React.FC<CTAProps> = ({ className = '' }) => {
       </div>
       {/* Background decorative elements */}
       <div className="absolute -top-10 right-10 w-20 h-20 rounded-full bg-white/10 dark:bg-gray-700/30 transition-colors duration-300"></div>
-      <div className="absolute top-1/2 -translate-y-1/2 -left-10 w-32 h-32 rounded-full bg-white/10 dark:bg-gray-700/30 transition-colors duration-300"></div>
-      <div className="absolute -bottom-5 right-1/4 w-16 h-16 rounded-full bg-white/10 dark:bg-gray-700/30 transition-colors duration-300"></div>
+      <div className="absolute top-1/2 -translate-y-1/2 -left-10 w-32 h-32 rounded-full bg-white/5 dark:bg-gray-700/20 transition-colors duration-300"></div>
+      <div className="absolute -bottom-5 right-1/4 w-16 h-16 rounded-full bg-white/5 dark:bg-gray-700/20 transition-colors duration-300"></div>
 
       {/* Dots pattern */}
       <div className="absolute top-10 left-20 opacity-30">
@@ -56,27 +64,37 @@ const CTA: React.FC<CTAProps> = ({ className = '' }) => {
         </div>
       </div>
 
-      <div className="relative z-10 w-[95%] mx-auto px-4 sm:px-6 md:px-8">
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-10">
-          <div className="w-full lg:w-2/3">
+      <div className="relative z-10 w-11/12 mx-auto px-4 sm:px-6 md:px-8">
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-16">
+          <div className="w-full lg:w-[55%]">
             <AnimatedText as="div">
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white dark:text-gray-100 mb-4 transition-colors duration-300">
-                {t('cta.title') || 'Mari Berkolaborasi'}
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-5 tracking-tight">
+                {t('cta.title') || 'Mengapa Harus Kami?'}
               </h2>
             </AnimatedText>
             <AnimatedText as="div">
-              <p className="text-white/80 dark:text-gray-300 text-base md:text-lg max-w-2xl transition-colors duration-300">
-                {t('cta.description') || 'Punya ide proyek? Mari diskusikan bersama tim kami dan wujudkan visi digital Anda.'}
+              <p className="text-gray-200 text-lg md:text-xl max-w-3xl mb-10 leading-relaxed">
+                {t('cta.description') || 'Kami bukan sekadar penyedia jasa, kami adalah partner pertumbuhan bisnis Anda. Kami menggabungkan keahlian teknis dengan pemahaman mendalam tentang kebutuhan pasar untuk memberikan hasil yang tidak hanya memuaskan, tetapi juga mendorong kesuksesan jangka panjang.'}
               </p>
             </AnimatedText>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6">
+              {whyChooseUsPoints.map((point, index) => (
+                <AnimatedText as="div" key={index}>
+                  <div className="flex items-start gap-3 bg-white/10 dark:bg-gray-800/40 p-4 rounded-lg shadow-sm hover:bg-white/20 transition-all duration-300">
+                    <CheckCircle className="w-7 h-7 text-green-400 flex-shrink-0 mt-1" />
+                    <span className="text-gray-100 dark:text-gray-200 font-medium">{point}</span>
+                  </div>
+                </AnimatedText>
+              ))}
+            </div>
           </div>
-
-          <div className="w-full lg:w-1/3 flex flex-col gap-4">
-            <Link href="https://wa.me/6285739402436?text=Halo%20Bajramedia!%20Saya%20tertarik%20untuk%20memulai%20proyek%20digital.%20Bisa%20konsultasi%20gratis?" target="_blank" className="w-full md:w-auto lg:w-full">
+          
+          <div className="w-full lg:w-1/3 flex flex-col gap-5 mt-10 lg:mt-0">
+            <Link href="https://wa.me/6285739402436?text=Halo%20Bajramedia!%20Saya%20tertarik%20untuk%20memulai%20proyek%20digital.%20Bisa%20konsultasi%20gratis?" target="_blank" className="w-full">
               <Button
                 variant="primary"
                 size="lg"
-                className="bg-[#f7d046] hover:bg-[#03b150] text-gray-800 hover:text-white py-5 px-8 rounded-xl font-bold shadow-xl w-full hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 group"
+                className="bg-green-500 hover:bg-green-600 text-white py-4 px-8 rounded-lg font-bold shadow-lg w-full hover:shadow-xl transform hover:-translate-y-1.5 transition-all duration-300 group text-lg"
               >
                 <span className="text-base font-semibold flex items-center justify-center">
                   {t('cta.primaryButton') || 'Mulai Proyek'}
@@ -87,11 +105,11 @@ const CTA: React.FC<CTAProps> = ({ className = '' }) => {
               </Button>
             </Link>
 
-            <Link href="/contact" className="w-full md:w-auto lg:w-full">
+            <Link href="/contact" className="w-full">
               <Button
                 variant="outline"
                 size="lg"
-                className="py-5 px-8 rounded-xl font-bold text-white border-2 border-white hover:bg-white/15 hover:-translate-y-1 w-full transition-all duration-300 group"
+                className="py-4 px-8 rounded-lg font-bold text-white border-2 border-white/40 hover:bg-white/10 hover:border-white transform hover:-translate-y-1.5 w-full transition-all duration-300 group text-lg"
               >
                 <span className="text-base font-semibold flex items-center justify-center">
                   {t('cta.secondaryButton') || 'Hubungi Kami'}

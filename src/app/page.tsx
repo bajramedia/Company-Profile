@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from 'react';
-import { Button, Heading, Text, Logo, LanguageSwitcher, AnimatedText, SupportedBy, CTA, Blog, Portfolio, Team, WhatsAppChat, Navbar, Home, ServicesOverview } from "@/components";
+import { Button, Heading, Text, Logo, LanguageSwitcher, AnimatedText, SupportedBy, CTA, Blog, Portfolio, Team, WhatsAppChat, Navbar, Home, ServicesOverview, FAQ } from "@/components";
 import { useLanguage } from "@/context/LanguageContext";
 import { usePublicSettings } from "@/hooks/useSettings";
 import EnhancedSEO from '@/components/EnhancedSEO';
@@ -640,101 +640,7 @@ export default function HomePage() {
                     </section>
 
                     {/* FAQ Section */}
-                    <section className="py-20 bg-gray-50 dark:bg-gray-800 transition-colors duration-300">
-                        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                            <div className="text-center mb-16">
-                                <AnimatedText as="div">
-                                    <span className="text-green-500 font-medium text-sm tracking-wider uppercase mb-6 block">
-                                        {language === 'id' ? 'Pertanyaan Umum' : 'FAQ'}
-                                    </span>
-                                    <Heading variant="h2" color="foreground" className="mb-4 text-[28px] md:text-[32px] lg:text-[36px] font-extrabold">
-                                        {language === 'id' ? 'Pertanyaan yang Sering Diajukan' : 'Frequently Asked Questions'}
-                                    </Heading>
-                                    <Text color="secondary" className="max-w-3xl mx-auto text-base leading-relaxed">
-                                        {language === 'id'
-                                            ? 'Temukan jawaban untuk pertanyaan-pertanyaan yang paling sering diajukan tentang layanan kami.'
-                                            : 'Find answers to the most frequently asked questions about our services.'
-                                        }
-                                    </Text>
-                                </AnimatedText>
-                            </div>
-
-                            <div className="space-y-6">
-                                {/* FAQ 1 */}
-                                <AnimatedText as="div">
-                                    <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-gray-700">
-                                        <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-3">
-                                            {language === 'id' ? 'Berapa lama waktu pengerjaan proyek website?' : 'How long does it take to complete a website project?'}
-                                        </h3>
-                                        <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
-                                            {language === 'id'
-                                                ? 'Waktu pengerjaan bervariasi tergantung kompleksitas proyek. Website company profile biasanya 2-4 minggu, sedangkan web aplikasi kompleks bisa 2-6 bulan. Kami akan memberikan estimasi waktu yang akurat setelah analisis kebutuhan.'
-                                                : 'Development time varies depending on project complexity. Company profile websites typically take 2-4 weeks, while complex web applications can take 2-6 months. We will provide accurate time estimates after requirements analysis.'
-                                            }
-                                        </p>
-                                    </div>
-                                </AnimatedText>
-
-                                {/* FAQ 2 */}
-                                <AnimatedText as="div">
-                                    <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-gray-700">
-                                        <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-3">
-                                            {language === 'id' ? 'Apakah ada garansi untuk proyek yang dikerjakan?' : 'Is there a warranty for completed projects?'}
-                                        </h3>
-                                        <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
-                                            {language === 'id'
-                                                ? 'Ya, kami memberikan garansi 3 bulan untuk bug fixing dan 1 tahun untuk maintenance support. Kami juga menyediakan paket maintenance berkelanjutan dengan harga yang kompetitif.'
-                                                : 'Yes, we provide a 3-month warranty for bug fixing and 1 year for maintenance support. We also offer ongoing maintenance packages at competitive prices.'
-                                            }
-                                        </p>
-                                    </div>
-                                </AnimatedText>
-
-                                {/* FAQ 3 */}
-                                <AnimatedText as="div">
-                                    <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-gray-700">
-                                        <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-3">
-                                            {language === 'id' ? 'Bagaimana sistem pembayaran dan apakah bisa dicicil?' : 'How is the payment system and can it be paid in installments?'}
-                                        </h3>
-                                        <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
-                                            {language === 'id'
-                                                ? 'Kami menerima pembayaran dengan sistem cicilan: 30% di awal, 40% saat development, dan 30% saat selesai. Pembayaran bisa melalui transfer bank, e-wallet, atau payment gateway lainnya.'
-                                                : 'We accept payments with installment system: 30% at the start, 40% during development, and 30% upon completion. Payment can be made via bank transfer, e-wallet, or other payment gateways.'
-                                            }
-                                        </p>
-                                    </div>
-                                </AnimatedText>
-
-                                {/* FAQ 4 */}
-                                <AnimatedText as="div">
-                                    <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 shadow-lg border border-gray-200 dark:border-gray-700">
-                                        <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-3">
-                                            {language === 'id' ? 'Apakah bisa request revisi setelah proyek selesai?' : 'Can I request revisions after the project is completed?'}
-                                        </h3>
-                                        <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
-                                            {language === 'id'
-                                                ? 'Tentu saja! Kami memberikan 2 kali revisi gratis dalam periode garansi. Revisi tambahan akan dikenakan biaya sesuai dengan kompleksitas perubahan yang diminta.'
-                                                : 'Of course! We provide 2 free revisions during the warranty period. Additional revisions will be charged according to the complexity of the requested changes.'
-                                            }
-                                        </p>
-                                    </div>
-                                </AnimatedText>
-                            </div>
-
-                            <div className="text-center mt-12">
-                                <AnimatedText as="div">
-                                    <Text color="secondary" className="mb-6 text-base">
-                                        {language === 'id' ? 'Masih ada pertanyaan lain?' : 'Still have other questions?'}
-                                    </Text>
-                                    <Link href="/about">
-                                        <Button variant="primary" size="lg" className="px-8 py-4 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 transform hover:scale-105 transition-all duration-300">
-                                            {language === 'id' ? 'Hubungi Kami' : 'Contact Us'}
-                                        </Button>
-                                    </Link>
-                                </AnimatedText>
-                            </div>
-                        </div>
-                    </section>
+                    <FAQ />
 
                     {/* CTA Section */}
                     <CTA />

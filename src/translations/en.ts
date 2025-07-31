@@ -683,10 +683,14 @@ export const en = {
         linkUrl: 'Enter URL:'
     },
     cta: {
-        primaryButton: 'Start Project',
-        secondaryButton: 'Contact Us',
-        title: 'Let\'s Collaborate',
-        description: 'Have a project idea? Let\'s discuss it with our team and realize your digital vision.'
+        title: 'Why Choose Us?',
+        description: 'We are not just a service provider, we are your business growth partner. We combine technical expertise with a deep understanding of market needs to deliver results that not only satisfy but also drive long-term success.',
+        primaryButton: 'Start Your Dream Project',
+        secondaryButton: 'Discuss Your Needs',
+        point1: 'Professional & Experienced Team',
+        point2: 'Innovative & Up-to-date Digital Solutions',
+        point3: 'Competitive & Transparent Pricing',
+        point4: 'Excellent After-Sales Support',
     },
     admin: {
         dashboard: 'Dashboard',

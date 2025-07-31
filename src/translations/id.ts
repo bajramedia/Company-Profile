@@ -117,10 +117,14 @@ export const id = {
         }
     },
     cta: {
-        primaryButton: 'Mulai Proyek',
-        secondaryButton: 'Hubungi Kami',
-        title: 'Mari Berkolaborasi',
-        description: 'Punya ide proyek? Mari diskusikan bersama tim kami dan wujudkan visi digital Anda.'
+        title: 'Mengapa Harus Kami?',
+        description: 'Kami bukan sekadar penyedia jasa, kami adalah partner pertumbuhan bisnis Anda. Kami menggabungkan keahlian teknis dengan pemahaman mendalam tentang kebutuhan pasar untuk memberikan hasil yang tidak hanya memuaskan, tetapi juga mendorong kesuksesan jangka panjang.',
+        primaryButton: 'Mulai Proyek Impian',
+        secondaryButton: 'Diskusikan Kebutuhan Anda',
+        point1: 'Tim Profesional & Berpengalaman',
+        point2: 'Solusi Digital Inovatif & Terkini',
+        point3: 'Harga Kompetitif & Transparan',
+        point4: 'Dukungan Purna Jual Terbaik',
     },
     services: {
         gameAsset: {
