@@ -21,27 +21,62 @@ interface PortfolioItem {
     };
 }
 
+interface Category {
+    slug: string;
+    name: string;
+    count?: number;
+}
+
 export default function PortfolioPage() {
     const { t, language } = useLanguage();
     const [selectedCategory, setSelectedCategory] = useState('all');
     const [portfolioItems, setPortfolioItems] = useState<PortfolioItem[]>([]);
+    const [categories, setCategories] = useState<Category[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-    const fetchPortfolioData = async () => {
-        try {
-            setLoading(true);
-            const response = await fetch('/api/portfolio?published=true');
-                if (!response.ok) throw new Error('Failed to fetch portfolio data');
-            const data = await response.json();
-                setPortfolioItems(data.portfolios || data);
+        const fetchPortfolioData = async () => {
+            try {
+                setLoading(true);
+                const [portfolioRes, categoriesRes] = await Promise.all([
+                    fetch('/api/portfolio?published=true'),
+                    fetch('/api/portfolio/categories')
+                ]);
+
+                if (!portfolioRes.ok) throw new Error('Failed to fetch portfolio items');
+                if (!categoriesRes.ok) throw new Error('Failed to fetch categories');
+
+                const portfolioData = await portfolioRes.json();
+                const categoriesData = await categoriesRes.json();
+                
+                const items = portfolioData.portfolios || portfolioData;
+                setPortfolioItems(items);
+
+                // Menghitung jumlah proyek untuk setiap kategori
+                const counts: { [slug: string]: number } = {};
+                items.forEach((item: PortfolioItem) => {
+                    if (item.category) {
+                        counts[item.category.slug] = (counts[item.category.slug] || 0) + 1;
+                    }
+                });
+
+                const allCategories = [
+                    { name: t('portfolio.categories.all'), slug: 'all', count: items.length },
+                    ...categoriesData.map((cat: Category) => ({
+                        ...cat,
+                        count: counts[cat.slug] || 0
+                    }))
+                ];
+                setCategories(allCategories);
+
             } catch (err) {
                 setError(err instanceof Error ? err.message : t('portfolio.error.fetch'));
-        } finally {
-            setLoading(false);
-        }
-    };
+            } finally {
+                setLoading(false);
+            }
+        };
+
         fetchPortfolioData();
         AOS.init({
             duration: 800,
@@ -51,24 +86,6 @@ export default function PortfolioPage() {
         });
     }, [t]);
 
-    const getCategories = () => {
-        const categoriesMap = new Map();
-        portfolioItems.forEach(item => {
-            if (item.category) {
-                categoriesMap.set(item.category.slug, {
-                    name: item.category.name,
-                    slug: item.category.slug,
-                    count: (categoriesMap.get(item.category.slug)?.count || 0) + 1
-                });
-            }
-        });
-        return [
-            { name: t('portfolio.categories.all'), slug: 'all', count: portfolioItems.length },
-            ...Array.from(categoriesMap.values())
-        ];
-    };
-
-    const categories = getCategories();
     const filteredItems = selectedCategory === 'all'
         ? portfolioItems
         : portfolioItems.filter(item => item.category?.slug === selectedCategory);

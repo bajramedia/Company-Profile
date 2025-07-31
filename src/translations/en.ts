@@ -87,13 +87,13 @@ export const en = {
             subtitle: "Let's discuss your project ideas with our team",
         },
         error: {
-            fetch: 'Failed to fetch portfolio data.'
-        }
+            fetch: 'Failed to fetch portfolio data.',
+        },
+        description: 'See how we turn ideas into reality with the latest technology and creative solutions.',
     },
     blog: {
         title: 'Latest Blog & Articles',
         subtitle: 'Discover our latest thoughts on digital strategy, design trends, and technology innovation.',
-        description: 'Find the latest articles on technology, design, and digital strategies to grow your business.',
         readMore: 'Read More',
         noPosts: 'There are no blog posts at the moment.',
         search: {
@@ -119,6 +119,14 @@ export const en = {
         }
     },
     services: {
+        page: {
+            title: {
+                main: 'Digital Solutions for',
+                highlight: 'Every Business',
+                end: 'Need',
+            },
+            subtitle: 'Explore our wide range of services designed to enhance your digital presence and drive business growth.',
+        },
         gameAsset: {
             breadcrumb: 'Game Asset Development',
             title: 'Game Asset Development Service',
@@ -691,6 +699,16 @@ export const en = {
         point2: 'Innovative & Up-to-date Digital Solutions',
         point3: 'Competitive & Transparent Pricing',
         point4: 'Excellent After-Sales Support',
+    },
+    services: {
+        page: {
+            title: {
+                main: 'Digital Solutions for',
+                highlight: 'Every Business',
+                end: 'Need',
+            },
+            subtitle: 'Explore our wide range of services designed to enhance your digital presence and drive business growth.',
+        },
     },
     admin: {
         dashboard: 'Dashboard',

@@ -76,7 +76,7 @@ export const id = {
     },
     portfolio: {
         title: 'Portfolio Kami',
-        description: 'Lihat hasil karya terbaik yang telah kami kerjakan untuk klien kami. Dari web development hingga desain UI/UX, kami bangga dengan setiap proyek yang kami selesaikan.',
+        description: 'Lihat bagaimana kami mengubah ide menjadi kenyataan dengan teknologi terkini dan solusi kreatif.',
         filter: {
             all: 'Semua',
             'web-development': 'Web Development',
@@ -127,6 +127,14 @@ export const id = {
         point4: 'Dukungan Purna Jual Terbaik',
     },
     services: {
+        page: {
+            title: {
+                main: 'Solusi Digital untuk',
+                highlight: 'Setiap Kebutuhan',
+                end: 'Bisnis Anda',
+            },
+            subtitle: 'Jelajahi beragam layanan kami yang dirancang untuk meningkatkan kehadiran digital dan mendorong pertumbuhan bisnis Anda.',
+        },
         gameAsset: {
             breadcrumb: 'Game Asset Development',
             title: 'Jasa Pembuatan Asset Game',
