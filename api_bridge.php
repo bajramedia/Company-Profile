@@ -221,9 +221,9 @@ function handleGet($pdo, $endpoint, $id) {
                     
                     $stmt = $pdo->prepare("
                         SELECT p.*, 
-                               a.$authorNameCol as authorName, 
+                               a.name as authorName, 
                                a.email as authorEmail,
-                               c.$categoryNameCol as categoryName,
+                               c.name as categoryName,
                                c.slug as categorySlug
                         FROM post p 
                         LEFT JOIN author a ON p.authorId = a.id
@@ -236,10 +236,10 @@ function handleGet($pdo, $endpoint, $id) {
                     error_log("API Bridge: Single post query result: " . ($result ? json_encode($result) : 'NULL'));
                     
                     if ($result) {
-                    // Add date field for compatibility
+                        // Add date field for compatibility
                         if ($dateCol !== 'date') {
-                        $result['date'] = $result[$dateCol] ?? date('Y-m-d H:i:s');
-                    }
+                            $result['date'] = $result[$dateCol] ?? date('Y-m-d H:i:s');
+                        }
                         
                         // Ensure all expected fields exist for admin panel
                         $result['published'] = $result['published'] ?? 0;
@@ -248,6 +248,21 @@ function handleGet($pdo, $endpoint, $id) {
                         $result['excerpt'] = $result['excerpt'] ?? '';
                         $result['featuredImage'] = $result['featuredImage'] ?? '';
                         
+                        // Ambil semua section untuk post ini
+                        try {
+                            $sectionsStmt = $pdo->prepare("
+                                SELECT *
+                                FROM post_sections
+                                WHERE postId = ?
+                                ORDER BY sort_order ASC
+                            ");
+                            $sectionsStmt->execute([$result['id']]);
+                            $result['sections'] = $sectionsStmt->fetchAll();
+                        } catch (Exception $sectionsError) {
+                            error_log("API Bridge: Gagal mengambil seksi post: " . $sectionsError->getMessage());
+                            $result['sections'] = []; // Kasih array kosong kalau gagal
+                        }
+
                         // Get tags for this post
                         try {
                             $tagStmt = $pdo->prepare("
@@ -1108,22 +1123,29 @@ function handlePost($pdo, $endpoint) {
         switch ($endpoint) {
             case 'posts':
                 // Validate required fields - NO FALLBACK DATA
-                if (empty($data['title']) || empty($data['slug']) || empty($data['content'])) {
+                if (empty($data['title']) || empty($data['slug'])) {
                     http_response_code(400);
-                    echo json_encode(['error' => 'Title, slug, and content are required']);
+                    echo json_encode(['error' => 'Judul dan slug wajib diisi']);
                     return;
                 }
                 
+                // Konten sekarang dalam bentuk sections, jadi tidak wajib di level post
+                if (empty($data['sections']) || !is_array($data['sections'])) {
+                    http_response_code(400);
+                    echo json_encode(['error' => 'Sections wajib diisi dan harus berupa array']);
+                    return;
+                }
+
                 if (empty($data['authorId']) || empty($data['categoryId'])) {
                     http_response_code(400);
-                    echo json_encode(['error' => 'Author and category are required']);
+                    echo json_encode(['error' => 'Author dan kategori wajib diisi']);
                     return;
                 }
                 
                 $title = $data['title'];
                 $slug = $data['slug'];
                 $excerpt = $data['excerpt'] ?? '';
-                $content = $data['content'];
+                // Hapus $content karena sudah tidak dipakai
                 $featuredImage = $data['featuredImage'] ?? '';
                 $published = $data['published'] ?? false;
                 $readTime = $data['readTime'] ?? 5;
@@ -1133,26 +1155,52 @@ function handlePost($pdo, $endpoint) {
                 // Convert boolean to int for MySQL
                 $publishedInt = $published ? 1 : 0;
                 
-                // Use auto-increment ID - let database generate ID
-                $stmt = $pdo->prepare("
-                    INSERT INTO post (title, slug, excerpt, content, featuredImage, published, readTime, authorId, categoryId, date) 
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
-                ");
-                $stmt->execute([$title, $slug, $excerpt, $content, $featuredImage, $publishedInt, $readTime, $authorId, $categoryId]);
-                
-                $postId = $pdo->lastInsertId();
-                
-                // Handle tags if provided
-                if (isset($data['tags']) && is_array($data['tags'])) {
-                    foreach ($data['tags'] as $tagId) {
-                        if (!empty($tagId)) {
-                        $stmt = $pdo->prepare("INSERT INTO posttags (postId, tagId) VALUES (?, ?)");
-                        $stmt->execute([$postId, $tagId]);
+                $pdo->beginTransaction();
+
+                try {
+                    // Gunakan auto-increment ID - biarkan database yang buat ID
+                    // Hapus 'content' dari query INSERT
+                    $stmt = $pdo->prepare("
+                        INSERT INTO post (title, slug, excerpt, featuredImage, published, readTime, authorId, categoryId, date) 
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())
+                    ");
+                    $stmt->execute([$title, $slug, $excerpt, $featuredImage, $publishedInt, $readTime, $authorId, $categoryId]);
+                    
+                    $postId = $pdo->lastInsertId();
+
+                    // Simpan setiap section ke tabel post_sections
+                    foreach ($data['sections'] as $index => $section) {
+                        $sectionTitle = $section['title'] ?? null;
+                        $sectionSummary = $section['summary'] ?? null;
+                        $sectionContent = $section['content'] ?? '';
+                        $sectionImageUrl = $section['image_url'] ?? null;
+                        $sortOrder = $index;
+
+                        $sectionStmt = $pdo->prepare("
+                            INSERT INTO post_sections (postId, title, summary, content, image_url, sort_order)
+                            VALUES (?, ?, ?, ?, ?, ?)
+                        ");
+                        $sectionStmt->execute([$postId, $sectionTitle, $sectionSummary, $sectionContent, $sectionImageUrl, $sortOrder]);
+                    }
+
+                    // Handle tags jika disediakan
+                    if (isset($data['tags']) && is_array($data['tags'])) {
+                        foreach ($data['tags'] as $tagId) {
+                            if (!empty($tagId)) {
+                            $stmt = $pdo->prepare("INSERT INTO posttags (postId, tagId) VALUES (?, ?)");
+                            $stmt->execute([$postId, $tagId]);
+                            }
                         }
                     }
+
+                    $pdo->commit();
+                    echo json_encode(['success' => true, 'id' => $postId]);
+
+                } catch (Exception $e) {
+                    $pdo->rollBack();
+                    http_response_code(500);
+                    echo json_encode(['error' => 'Database error saat menyimpan post: ' . $e->getMessage()]);
                 }
-                
-                echo json_encode(['success' => true, 'id' => $postId]);
                 break;
 
             case 'categories':
@@ -1722,7 +1770,7 @@ function handlePut($pdo, $endpoint, $id) {
             case 'posts':
                 if (!$id) {
                     http_response_code(400);
-                    echo json_encode(['error' => 'ID required for update']);
+                    echo json_encode(['error' => 'ID wajib diisi untuk update']);
                     return;
                 }
                 
@@ -1730,7 +1778,7 @@ function handlePut($pdo, $endpoint, $id) {
                 $title = $data['title'] ?? '';
                 $slug = $data['slug'] ?? generateSlug($title);
                 $excerpt = $data['excerpt'] ?? '';
-                $content = $data['content'] ?? '';
+                // Hapus $content
                 $featuredImage = $data['featuredImage'] ?? '';
                 $published = $data['published'] ?? false;
                 $readTime = $data['readTime'] ?? 5;
@@ -1740,27 +1788,59 @@ function handlePut($pdo, $endpoint, $id) {
                 // Convert boolean to int for MySQL
                 $publishedInt = $published ? 1 : 0;
                 
-                $stmt = $pdo->prepare("
-                    UPDATE post 
-                    SET title = ?, slug = ?, excerpt = ?, content = ?, featuredImage = ?, 
-                        published = ?, readTime = ?, authorId = ?, categoryId = ?, updatedAt = NOW()
-                    WHERE id = ?
-                ");
-                $stmt->execute([$title, $slug, $excerpt, $content, $featuredImage, $publishedInt, $readTime, $authorId, $categoryId, $id]);
-                
-                // Handle tags - first delete existing ones
-                $stmt = $pdo->prepare("DELETE FROM posttags WHERE postId = ?");
-                $stmt->execute([$id]);
-                
-                // Add new tags
-                if (isset($data['tags']) && is_array($data['tags'])) {
-                    foreach ($data['tags'] as $tagId) {
-                        $stmt = $pdo->prepare("INSERT INTO posttags (postId, tagId) VALUES (?, ?)");
-                        $stmt->execute([$id, $tagId]);
+                $pdo->beginTransaction();
+
+                try {
+                    $stmt = $pdo->prepare("
+                        UPDATE post 
+                        SET title = ?, slug = ?, excerpt = ?, featuredImage = ?, 
+                            published = ?, readTime = ?, authorId = ?, categoryId = ?, updatedAt = NOW()
+                        WHERE id = ?
+                    ");
+                    $stmt->execute([$title, $slug, $excerpt, $featuredImage, $publishedInt, $readTime, $authorId, $categoryId, $id]);
+                    
+                    // --- Logika Update untuk Sections ---
+                    // Strategi: Hapus semua section lama, lalu insert semua section baru.
+                    // Ini lebih simpel daripada membandingkan satu per satu.
+                    $deleteSectionsStmt = $pdo->prepare("DELETE FROM post_sections WHERE postId = ?");
+                    $deleteSectionsStmt->execute([$id]);
+
+                    if (isset($data['sections']) && is_array($data['sections'])) {
+                        foreach ($data['sections'] as $index => $section) {
+                            $sectionTitle = $section['title'] ?? null;
+                            $sectionSummary = $section['summary'] ?? null;
+                            $sectionContent = $section['content'] ?? '';
+                            $sectionImageUrl = $section['image_url'] ?? null;
+                            $sortOrder = $index;
+
+                            $sectionStmt = $pdo->prepare("
+                                INSERT INTO post_sections (postId, title, summary, content, image_url, sort_order)
+                                VALUES (?, ?, ?, ?, ?, ?)
+                            ");
+                            $sectionStmt->execute([$id, $sectionTitle, $sectionSummary, $sectionContent, $sectionImageUrl, $sortOrder]);
+                        }
                     }
+
+                    // Handle tags - pertama hapus yang lama
+                    $stmt = $pdo->prepare("DELETE FROM posttags WHERE postId = ?");
+                    $stmt->execute([$id]);
+                    
+                    // Tambahkan tag yang baru
+                    if (isset($data['tags']) && is_array($data['tags'])) {
+                        foreach ($data['tags'] as $tagId) {
+                            $stmt = $pdo->prepare("INSERT INTO posttags (postId, tagId) VALUES (?, ?)");
+                            $stmt->execute([$id, $tagId]);
+                        }
+                    }
+                    
+                    $pdo->commit();
+                    echo json_encode(['success' => true]);
+
+                } catch (Exception $e) {
+                    $pdo->rollBack();
+                    http_response_code(500);
+                    echo json_encode(['error' => 'Database error saat mengupdate post: ' . $e->getMessage()]);
                 }
-                
-                echo json_encode(['success' => true]);
                 break;
 
             case 'categories':

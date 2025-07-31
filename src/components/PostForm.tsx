@@ -3,14 +3,23 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { createPost, updatePost } from '@/actions/post-actions';
-import { FiSave, FiX, FiEye, FiCalendar, FiClock, FiUser, FiTag, FiFolder, FiImage, FiFileText, FiGlobe, FiSettings } from 'react-icons/fi';
+import { FiSave, FiX, FiEye, FiCalendar, FiClock, FiUser, FiTag, FiFolder, FiImage, FiFileText, FiGlobe, FiSettings, FiPlusCircle, FiTrash2, FiArrowUp, FiArrowDown } from 'react-icons/fi';
 import Image from 'next/image';
 import ImageUpload from './ImageUpload';
 import RichTextEditor from './RichTextEditor';
 import { useLanguage } from '@/context/LanguageContext';
 import { translationService, type BlogContent } from '@/services/TranslationService';
 
-// Interface for the post form props
+// Interface untuk satu seksi post
+interface PostSection {
+  id: string; // ID unik sementara untuk keperluan UI
+  title: string;
+  summary: string;
+  content: string;
+  image_url: string;
+}
+
+// Interface untuk props form post
 interface PostFormProps {
   postId?: string;
   initialData?: any;
@@ -20,12 +29,18 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
   const router = useRouter();
   const { t } = useLanguage();
   const isEditing = !!postId;
+
+  // State untuk seksi-seksi
+  const [sections, setSections] = useState<PostSection[]>(initialData?.sections || [
+    { id: `section-${Date.now()}`, title: '', summary: '', content: '', image_url: '' }
+  ]);
+
   // Form state
   const [formData, setFormData] = useState({
     title: initialData?.title || '',
     slug: initialData?.slug || '',
     excerpt: initialData?.excerpt || '',
-    content: initialData?.content || '',
+    content: '', // Konten utama sekarang dikelola di 'sections'
     featuredImage: initialData?.featuredImage || '',
     published: initialData?.published || false,
     readTime: initialData?.readTime || 3,
@@ -56,6 +71,54 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
   const [translationStatus, setTranslationStatus] = useState<'idle' | 'detecting' | 'translating' | 'success' | 'error'>('idle');
   const [translatedContent, setTranslatedContent] = useState<BlogContent | null>(null);
   const [supportedLanguages, setSupportedLanguages] = useState<Array<{ code: string, name: string }>>([]);
+
+  // --- FUNGSI-FUNGSI BARU UNTUK MENGELOLA SEKSI ---
+
+  // Menambahkan seksi baru
+  const addSection = () => {
+    setSections(prev => [...prev, {
+      id: `section-${Date.now()}`,
+      title: '',
+      summary: '',
+      content: '',
+      image_url: ''
+    }]);
+  };
+
+  // Menghapus seksi berdasarkan index
+  const removeSection = (index: number) => {
+    if (sections.length > 1) { // Jaga agar selalu ada minimal satu seksi
+      setSections(prev => prev.filter((_, i) => i !== index));
+    }
+  };
+
+  // Mengubah data seksi berdasarkan index
+  const handleSectionChange = (index: number, field: keyof PostSection, value: string) => {
+    setSections(prev => {
+      const newSections = [...prev];
+      newSections[index] = { ...newSections[index], [field]: value };
+      return newSections;
+    });
+  };
+
+  // Mengubah urutan seksi
+  const moveSection = (index: number, direction: 'up' | 'down') => {
+    if (
+      (direction === 'up' && index === 0) ||
+      (direction === 'down' && index === sections.length - 1)
+    ) {
+      return; // Tidak bisa bergerak lebih jauh
+    }
+
+    setSections(prev => {
+      const newSections = [...prev];
+      const targetIndex = direction === 'up' ? index - 1 : index + 1;
+      const temp = newSections[index];
+      newSections[index] = newSections[targetIndex];
+      newSections[targetIndex] = temp;
+      return newSections;
+    });
+  };
 
   // Fetch authors, categories and tags on component mount
   useEffect(() => {
@@ -170,9 +233,15 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
         return;
       }
 
-      console.log('🔄 Calling internal API...');
+      console.log('🔄 Memanggil API internal...');
 
-      // Call internal API route instead of server action
+      // Kirim data utama dan data seksi bersamaan
+      const payload = {
+        ...formData,
+        sections: sections,
+      };
+
+      // Panggil rute API internal, bukan server action
       const apiEndpoint = isEditing ? `/api/admin/posts/${postId}` : '/api/admin/posts';
       const method = isEditing ? 'PUT' : 'POST';
 
@@ -181,10 +250,10 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(payload)
       });
 
-      console.log('📊 API Response status:', response.status);
+      console.log('📊 Status Respons API:', response.status);
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -213,11 +282,13 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
 
   // Calculate read time
   const calculateReadTime = useCallback(() => {
-    const words = formData.content.replace(/<[^>]*>/g, '').split(/\s+/).length;
-    const readTime = Math.ceil(words / 200); // Assuming average reading speed of 200 words per minute
-    setWordCount(words);
+    const totalWords = sections.reduce((acc, section) => {
+      return acc + section.content.replace(/<[^>]*>/g, '').split(/\s+/).length;
+    }, 0);
+    const readTime = Math.ceil(totalWords / 200); // Asumsi kecepatan baca 200 kata per menit
+    setWordCount(totalWords);
     setFormData(prev => ({ ...prev, readTime }));
-  }, [formData.content]);
+  }, [sections]);
 
   // Auto-save draft function
   const autoSaveDraft = useCallback(async () => {
@@ -259,8 +330,8 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
   // Generate meta description from excerpt or content
   const generateMetaDescription = () => {
     let description = formData.excerpt;
-    if (!description && formData.content) {
-      description = formData.content
+    if (!description && sections[0]?.content) {
+      description = sections[0].content
         .replace(/<[^>]*>/g, '')
         .substring(0, 155)
         .trim();
@@ -304,7 +375,22 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
           {formData.excerpt && (
             <p className="text-xl text-gray-600 mb-8 leading-relaxed">{formData.excerpt}</p>
           )}
-          <div className="prose prose-lg max-w-none" dangerouslySetInnerHTML={{ __html: formData.content }} />
+          {sections.map((section, index) => (
+            <div key={index} className="prose prose-lg max-w-none mb-8">
+              {section.image_url && (
+                <Image
+                  src={section.image_url}
+                  alt={section.title || `Section image ${index + 1}`}
+                  width={600}
+                  height={400}
+                  className="w-full h-auto object-cover rounded-lg mb-4"
+                />
+              )}
+              {section.title && <h2 className="text-2xl font-bold mt-6 mb-2">{section.title}</h2>}
+              {section.summary && <p className="text-lg text-gray-600 mb-4 italic">{section.summary}</p>}
+              <div dangerouslySetInnerHTML={{ __html: section.content }} />
+            </div>
+          ))}
 
           {formData.tags.length > 0 && (
             <div className="mt-8 pt-6 border-t border-gray-200">
@@ -505,20 +591,82 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
                     </p>
                   </div>
 
-                  {/* Content Editor */}
+                  {/* Sections Editor */}
                   <div>
                     <label className="block text-gray-700 dark:text-gray-300 font-semibold mb-2">
-                      {t('postForm.content')} *
+                      {t('postForm.sections')} *
                     </label>
-                    <RichTextEditor
-                      content={formData.content}
-                      onChange={(content) => {
-                        setFormData(prev => ({ ...prev, content }));
-                        setSaveStatus('unsaved');
-                      }}
-                      placeholder="Start writing your amazing blog post..."
-                      className="w-full min-h-96"
-                    />
+                    <div className="space-y-6">
+                      {sections.map((section, index) => (
+                        <div key={section.id} className="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-lg border border-gray-200 dark:border-gray-600 relative">
+                          <div className="absolute top-2 right-2 flex items-center space-x-1">
+                            <button
+                              type="button"
+                              onClick={() => moveSection(index, 'up')}
+                              disabled={index === 0}
+                              className="p-2 text-gray-500 hover:text-blue-600 disabled:opacity-50"
+                              title="Pindahkan ke atas"
+                            >
+                              <FiArrowUp />
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => moveSection(index, 'down')}
+                              disabled={index === sections.length - 1}
+                              className="p-2 text-gray-500 hover:text-blue-600 disabled:opacity-50"
+                              title="Pindahkan ke bawah"
+                            >
+                              <FiArrowDown />
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => removeSection(index)}
+                              disabled={sections.length <= 1}
+                              className="p-2 text-gray-500 hover:text-red-600 disabled:opacity-50"
+                              title="Hapus seksi"
+                            >
+                              <FiTrash2 />
+                            </button>
+                          </div>
+                          <div className="space-y-4">
+                            <input
+                              type="text"
+                              value={section.title}
+                              onChange={(e) => handleSectionChange(index, 'title', e.target.value)}
+                              placeholder={`Judul Seksi ${index + 1} (Opsional)`}
+                              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 focus:ring-blue-500"
+                            />
+                            <textarea
+                              value={section.summary}
+                              onChange={(e) => handleSectionChange(index, 'summary', e.target.value)}
+                              placeholder={`Ringkasan untuk seksi ini (Opsional)`}
+                              rows={2}
+                              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 focus:ring-blue-500"
+                            />
+                            <ImageUpload
+                              value={section.image_url}
+                              onChange={(url) => handleSectionChange(index, 'image_url', url || '')}
+                              label="Upload gambar untuk seksi ini (Opsional)"
+                              className="w-full"
+                            />
+                            <RichTextEditor
+                              content={section.content}
+                              onChange={(content) => handleSectionChange(index, 'content', content)}
+                              placeholder={`Tulis konten untuk seksi ${index + 1}...`}
+                              className="w-full min-h-48"
+                            />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    <button
+                      type="button"
+                      onClick={addSection}
+                      className="mt-4 flex items-center px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
+                    >
+                      <FiPlusCircle className="mr-2" />
+                      Tambah Seksi Baru
+                    </button>
                   </div>
                 </div>
               )}

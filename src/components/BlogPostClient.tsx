@@ -425,7 +425,44 @@ export default function BlogPostClient({ initialPost, slug }: BlogPostClientProp
 
                 {/* Article content */}
                 <article className="prose prose-lg dark:prose-invert max-w-none mb-12">
-                    <div dangerouslySetInnerHTML={{ __html: post.content || post.excerpt }} />
+                    {/* Tampilkan setiap seksi dari post */}
+                    {post.sections && post.sections.map((section, index) => (
+                        <section key={index} className="mb-8">
+                            {/* Tampilkan gambar seksi jika ada */}
+                            {section.image_url && (
+                                <div className="relative aspect-video w-full overflow-hidden rounded-lg mb-6">
+                                    <Image
+                                        src={section.image_url}
+                                        alt={section.title || `Gambar untuk seksi ${index + 1}`}
+                                        fill
+                                        sizes="100vw"
+                                        className="object-cover"
+                                    />
+                                </div>
+                            )}
+
+                            {/* Tampilkan judul seksi jika ada */}
+                            {section.title && (
+                                <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white leading-tight mb-4">
+                                    {section.title}
+                                </h2>
+                            )}
+
+                            {/* Tampilkan ringkasan seksi jika ada */}
+                            {section.summary && (
+                                <p className="text-lg italic text-gray-600 dark:text-gray-400 mb-4">
+                                    {section.summary}
+                                </p>
+                            )}
+
+                            {/* Tampilkan konten utama seksi */}
+                            <div dangerouslySetInnerHTML={{ __html: section.content || '' }} />
+                        </section>
+                    ))}
+                    {/* Fallback jika tidak ada sections, tampilkan konten lama */}
+                    {(!post.sections || post.sections.length === 0) && (
+                        <div dangerouslySetInnerHTML={{ __html: post.content || post.excerpt }} />
+                    )}
                 </article>
 
                 {/* Share buttons */}
