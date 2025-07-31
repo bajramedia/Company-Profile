@@ -4,30 +4,26 @@ import { getFallbackData, formatBlogForDisplay } from '@/utils/fallback-data';
 export interface BlogPost {
   id: string;
   title: string;
-  content: string;
-  excerpt: string;
   slug: string;
+  excerpt: string;
+  content: string; // Biarkan untuk fallback
   featuredImage: string;
-  published: boolean;
-  featured: boolean;
   date: string;
-  createdAt: string;
-  updatedAt?: string;
-  author: {
-    id: string;
-    name: string;
-    email: string;
-    avatar?: string;
-    bio?: string;
-  };
-  category: {
-    id: string;
-    name: string;
-    slug: string;
-  };
+  author: Author | string;
+  category: Category | string;
+  tags: string[];
   views?: number;
   readTime?: number;
-  tags?: string[];
+  // Menambahkan sections ke tipe BlogPost
+  sections?: Array<{
+    id: number;
+    post_id: number;
+    title: string | null;
+    summary: string | null;
+    content: string;
+    image_url: string | null;
+    sort_order: number;
+  }>;
 }
 
 export interface BlogCategory {
