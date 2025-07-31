@@ -136,7 +136,11 @@ export const BlogPostCard: React.FC<{ post: BlogPost }> = ({ post }) => {
                 />
               ) : (
                 <div className="w-full h-full bg-green-500 flex items-center justify-center text-white font-bold text-xs">
-                  {(post.author.name || 'A').charAt(0).toUpperCase()}
+                  {
+                    (
+                        (typeof post.author === 'object' ? post.author.name : post.author) || 'A'
+                    ).charAt(0).toUpperCase()
+                  }
                 </div>
               )}
             </div>
