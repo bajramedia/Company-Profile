@@ -1,5 +1,24 @@
 // BlogService using API Bridge instead of Prisma
 import { getFallbackData, formatBlogForDisplay } from '@/utils/fallback-data';
+import { API_URL } from '@/config/api';
+
+// Mendefinisikan struktur untuk Author
+export interface Author {
+  id: string;
+  name: string;
+  email: string;
+  avatar?: string;
+  bio?: string;
+}
+
+// Mendefinisikan struktur untuk Category
+export interface Category {
+  id: string;
+  name: string;
+  slug: string;
+  description?: string;
+  postCount?: number;
+}
 
 export interface BlogPost {
   id: string;
