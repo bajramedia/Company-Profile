@@ -20,7 +20,7 @@ interface ServiceCategory {
 }
 
 // Definisikan data FAQ yang dikelompokkan
-const faqData: { [key: string]: ServiceCategory } = {
+const faqData: { [lang: string]: { [category: string]: ServiceCategory } } = {
   id: {
     'web-development': {
       id: 'web-development',
