@@ -700,16 +700,6 @@ export const en = {
         point3: 'Competitive & Transparent Pricing',
         point4: 'Excellent After-Sales Support',
     },
-    services: {
-        page: {
-            title: {
-                main: 'Digital Solutions for',
-                highlight: 'Every Business',
-                end: 'Need',
-            },
-            subtitle: 'Explore our wide range of services designed to enhance your digital presence and drive business growth.',
-        },
-    },
     admin: {
         dashboard: 'Dashboard',
         posts: 'Posts',
