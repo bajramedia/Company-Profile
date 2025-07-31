@@ -14,6 +14,8 @@ export interface BlogPost {
   tags: string[];
   views?: number;
   readTime?: number;
+  published?: boolean; // Menambahkan kembali properti 'published'
+  featured?: boolean;  // Menambahkan kembali properti 'featured'
   // Menambahkan sections ke tipe BlogPost
   sections?: Array<{
     id: number;
