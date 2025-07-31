@@ -212,7 +212,7 @@ function AdminPostsContent() {
                     {typeof post.category === 'string' ? post.category : post.category?.name || 'No Category'}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                    {post.author?.name || 'Unknown Author'}
+                    {typeof post.author === 'object' ? post.author.name : post.author || 'Unknown Author'}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                     {formatDate(post.date)}
