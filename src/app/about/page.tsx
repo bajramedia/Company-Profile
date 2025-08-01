@@ -102,24 +102,15 @@ export default function AboutPage() {
       mirror: false,
     });
 
+    // --- DATA FETCHING ---
     const fetchPartners = async () => {
       try {
         setPartnersLoading(true);
         const response = await fetch(`/api/partners`);
         if (!response.ok) throw new Error('Failed to fetch partners');
         const data = await response.json();
-        // Correctly map the partner data fields
-        const formattedData = data.map((p: any) => ({
-          id: p.id,
-          name: language === 'id' ? p.name_id : p.name_en,
-          nameId: p.name_id,
-          description: language === 'id' ? p.description_id : p.description_en,
-          descriptionId: p.description_id,
-          logo: p.logo_url,
-          website: p.website_url,
-          is_featured: p.is_featured,
-        }));
-        setPartners(formattedData.filter((p: any) => p.is_featured == 1).slice(0, 2));
+        // The API bridge already provides the correct keys. We just use them.
+        setPartners(data.filter((p: any) => p.is_featured == 1).slice(0, 2));
       } catch (err) {
         console.error('Error fetching partners:', err);
         setPartners([]); // Set to empty array on error
@@ -135,19 +126,15 @@ export default function AboutPage() {
         if (!response.ok) throw new Error('Failed to fetch team');
         const data = await response.json();
         
-        // Correctly map the team data fields from the raw API response
+        // Correctly map the team data fields from the API bridge response
         const formattedData = data.map((t: any) => ({
           id: t.id,
           name: t.name,
-          avatar: t.image_url,
-          position: t.role_en,
-          positionId: t.role_id,
+          avatar: t.image, // `image` from bridge
+          position: t.role, // `role` from bridge
+          positionId: t.roleId, // `roleId` from bridge
           is_featured: t.is_featured,
-          social: {
-            linkedin: t.linkedin_url,
-            github: t.github_url,
-            instagram: t.instagram_url,
-          },
+          social: t.social, 
         }));
         
         setTeam(formattedData.filter((t: any) => t.is_featured == 1));
@@ -163,7 +150,7 @@ export default function AboutPage() {
       fetchPartners();
       fetchTeam();
     }
-  }, [isClient, language]); // Add language to dependency array
+  }, [isClient]);
 
   const currentContent = (section: keyof typeof aboutContent) => {
     const content = aboutContent[section];
@@ -180,24 +167,15 @@ export default function AboutPage() {
   };
 
   if (!isClient) {
-    // Render a skeleton or loading state for SSR to avoid layout shifts
-    return (
-      <div className="pt-20 bg-white dark:bg-gray-900 min-h-screen">
-        <div className="w-full h-96 bg-gray-200 dark:bg-gray-800 animate-pulse"></div>
-        <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 py-16">
-          <div className="h-8 w-1/2 bg-gray-200 dark:bg-gray-800 animate-pulse mb-4 rounded"></div>
-          <div className="h-4 w-full bg-gray-200 dark:bg-gray-800 animate-pulse mb-2 rounded"></div>
-          <div className="h-4 w-3/4 bg-gray-200 dark:bg-gray-800 animate-pulse rounded"></div>
-        </div>
-      </div>
-    );
+    // Render a skeleton loading state for SSR
+    return <div className="min-h-screen pt-20 bg-white dark:bg-gray-900"></div>;
   }
 
   return (
     <>
       <main className="pt-20 bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200">
         
-        {/* Hero Section */}
+        {/* Hero Section - No Blur */}
         <section 
           className="py-24 md:py-32 flex items-center justify-center text-center bg-gray-50 dark:bg-gray-800/50" 
           data-aos="fade-in"
@@ -238,7 +216,7 @@ export default function AboutPage() {
           </div>
         </section>
         
-        {/* Vision Section */}
+        {/* Vision Section - Centered, No Image */}
         <section className="py-16 md:py-24 bg-gray-50 dark:bg-gray-800/50" data-aos="fade-up">
           <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 text-center">
             <Heading variant="h2" className="mb-4">{currentContent('vision').title}</Heading>
@@ -272,7 +250,7 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* Partners Section */}
+        {/* Partners Section - Data fixed */}
         <section className="py-16 md:py-24 bg-gray-50 dark:bg-gray-800/50" data-aos="fade-up">
           <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 text-center">
             <Heading variant="h2" color="foreground" className="mb-4">
@@ -300,15 +278,15 @@ export default function AboutPage() {
             {!partnersLoading && partners.length > 0 && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
                 {partners.map((partner) => (
-                  <div key={partner.id} className="bg-white dark:bg-gray-800 p-8 rounded-xl border border-gray-200 dark:border-gray-700 text-left transition-all duration-300 hover:shadow-xl hover:border-transparent hover:bg-white dark:hover:bg-gray-800">
+                  <div key={partner.id} className="bg-white dark:bg-gray-800 p-8 rounded-xl border border-gray-200 dark:border-gray-700 text-left transition-all duration-300 hover:shadow-xl hover:border-transparent">
                     <div className="flex items-start space-x-6">
                       <Image src={partner.logo} alt={language === 'id' ? partner.nameId : partner.name} width={80} height={80} className="w-20 h-20 object-contain flex-shrink-0"/>
                       <div>
                         <h3 className="font-bold text-xl mb-2 text-gray-900 dark:text-white">
-                          {partner.name}
+                          {language === 'id' ? partner.nameId : partner.name}
                         </h3>
                         <p className="text-gray-600 dark:text-gray-400 mb-4 text-sm">
-                          {partner.description}
+                          {language === 'id' ? partner.descriptionId : partner.description}
                         </p>
                         <Link href={partner.website} passHref legacyBehavior>
                            <a target="_blank" rel="noopener noreferrer">
@@ -326,7 +304,7 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* Team Section */}
+        {/* Team Section - Data fixed */}
         <section className="py-16 md:py-24" data-aos="fade-up">
           <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 text-center">
             <Heading variant="h2" color="foreground" className="mb-4">
