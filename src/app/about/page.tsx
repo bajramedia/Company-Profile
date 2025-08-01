@@ -14,25 +14,25 @@ import AOS from 'aos';
 // --- TYPE DEFINITIONS ---
 interface Partner {
   id: string | number;
-  name: string;
-  nameId: string;
-  description: string;
-  descriptionId: string;
-  logo: string;
-  website: string;
+  name_en: string;
+  name_id: string;
+  description_en: string;
+  description_id: string;
+  logo_url: string;
+  website_url: string;
+  is_active: number;
 }
 
 interface TeamMember {
   id: string;
   name: string;
-  position: string;
-  positionId: string;
-  avatar: string;
-  social: {
-    linkedin?: string;
-    github?: string;
-    instagram?: string;
-  };
+  role_en: string;
+  role_id: string;
+  image_url: string;
+  linkedin_url?: string;
+  github_url?: string;
+  instagram_url?: string;
+  is_active: number;
 }
 
 // --- STATIC CONTENT ---
@@ -99,21 +99,18 @@ export default function AboutPage() {
     AOS.init({
       duration: 800,
       once: true,
-      mirror: false,
     });
 
-    // --- DATA FETCHING ---
     const fetchPartners = async () => {
       try {
         setPartnersLoading(true);
         const response = await fetch(`/api/partners`);
         if (!response.ok) throw new Error('Failed to fetch partners');
         const data = await response.json();
-        // The API bridge already provides the correct keys. We just use them.
-        setPartners(data.filter((p: any) => p.is_featured == 1).slice(0, 2));
+        setPartners(data.filter((p: Partner) => p.is_active == 1).slice(0, 2));
       } catch (err) {
         console.error('Error fetching partners:', err);
-        setPartners([]); // Set to empty array on error
+        setPartners([]);
       } finally {
         setPartnersLoading(false);
       }
@@ -125,22 +122,10 @@ export default function AboutPage() {
         const response = await fetch('/api/team-members');
         if (!response.ok) throw new Error('Failed to fetch team');
         const data = await response.json();
-        
-        // Correctly map the team data fields from the API bridge response
-        const formattedData = data.map((t: any) => ({
-          id: t.id,
-          name: t.name,
-          avatar: t.image, // `image` from bridge
-          position: t.role, // `role` from bridge
-          positionId: t.roleId, // `roleId` from bridge
-          is_featured: t.is_featured,
-          social: t.social, 
-        }));
-        
-        setTeam(formattedData.filter((t: any) => t.is_featured == 1));
+        setTeam(data.filter((t: TeamMember) => t.is_active == 1));
       } catch (error) {
         console.error('Error fetching team:', error);
-        setTeam([]); // Set to empty array on error
+        setTeam([]);
       } finally {
         setTeamLoading(false);
       }
@@ -175,12 +160,9 @@ export default function AboutPage() {
     <>
       <main className="pt-20 bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200">
         
-        {/* Hero Section - No Blur */}
-        <section 
-          className="py-24 md:py-32 flex items-center justify-center text-center bg-gray-50 dark:bg-gray-800/50" 
-          data-aos="fade-in"
-        >
-          <div className="relative w-[95%] mx-auto px-4 sm:px-6 md:px-8 z-10">
+        {/* Hero Section - NO BLUR */}
+        <section className="py-24 md:py-32 text-center" data-aos="fade-in">
+          <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8">
             <Heading variant="h1" className="mb-4 text-4xl md:text-6xl font-extrabold tracking-tight">
               <span className='bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent'>
                 {currentContent('hero').title}
@@ -250,7 +232,7 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* Partners Section - Data fixed */}
+        {/* Partners Section - Show 2 partners with full info */}
         <section className="py-16 md:py-24 bg-gray-50 dark:bg-gray-800/50" data-aos="fade-up">
           <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 text-center">
             <Heading variant="h2" color="foreground" className="mb-4">
@@ -259,6 +241,7 @@ export default function AboutPage() {
             <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-12">
               {currentContent('partners').content}
             </p>
+            
             {partnersLoading && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
                 {[...Array(2)].map((_, i) => (
@@ -268,33 +251,38 @@ export default function AboutPage() {
                       <div className="flex-1 space-y-3">
                         <div className="h-5 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
                         <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-full"></div>
-                        <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-1/2"></div>
                       </div>
                     </div>
                   </div>
                 ))}
               </div>
             )}
+
             {!partnersLoading && partners.length > 0 && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
                 {partners.map((partner) => (
-                  <div key={partner.id} className="bg-white dark:bg-gray-800 p-8 rounded-xl border border-gray-200 dark:border-gray-700 text-left transition-all duration-300 hover:shadow-xl hover:border-transparent">
+                  <div key={partner.id} className="bg-white dark:bg-gray-800 p-8 rounded-xl border border-gray-200 dark:border-gray-700 text-left transition-all duration-300 hover:shadow-xl">
                     <div className="flex items-start space-x-6">
-                      <Image src={partner.logo} alt={language === 'id' ? partner.nameId : partner.name} width={80} height={80} className="w-20 h-20 object-contain flex-shrink-0"/>
+                      <Image 
+                        src={partner.logo_url} 
+                        alt={language === 'id' ? partner.name_id : partner.name_en} 
+                        width={80} height={80} 
+                        className="w-20 h-20 object-contain flex-shrink-0"
+                      />
                       <div>
                         <h3 className="font-bold text-xl mb-2 text-gray-900 dark:text-white">
-                          {language === 'id' ? partner.nameId : partner.name}
+                          {language === 'id' ? partner.name_id : partner.name_en}
                         </h3>
                         <p className="text-gray-600 dark:text-gray-400 mb-4 text-sm">
-                          {language === 'id' ? partner.descriptionId : partner.description}
+                          {language === 'id' ? partner.description_id : partner.description_en}
                         </p>
-                        <Link href={partner.website} passHref legacyBehavior>
+                        <Link href={partner.website_url} passHref legacyBehavior>
                            <a target="_blank" rel="noopener noreferrer">
                              <Button variant="outline" size="sm">
-                               {t('about.partners.visit')} <FiArrowRight className="ml-2" />
-                             </Button>
-                           </a>
-                         </Link>
+                              {t('about.partners.visitWebsite')} <FiArrowRight className="ml-2" />
+                            </Button>
+                          </a>
+                        </Link>
                       </div>
                     </div>
                   </div>
@@ -304,7 +292,7 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* Team Section - Data fixed */}
+        {/* Team Section - Fixed Data Display */}
         <section className="py-16 md:py-24" data-aos="fade-up">
           <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 text-center">
             <Heading variant="h2" color="foreground" className="mb-4">
@@ -330,20 +318,20 @@ export default function AboutPage() {
                   <div key={member.id} className="text-center group">
                     <div className="relative w-32 h-32 md:w-40 md:h-40 mx-auto mb-4">
                       <Image
-                        src={member.avatar || '/images/team/default-avatar.jpg'}
+                        src={member.image_url || '/images/team/default-avatar.jpg'}
                         alt={member.name}
                         fill
                         sizes="(max-width: 768px) 128px, 160px"
                         className="object-cover rounded-full shadow-lg transition-all duration-500 transform group-hover:scale-110"
                       />
                       <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-300 rounded-full flex items-center justify-center space-x-3">
-                        {member.social?.linkedin && <a href={member.social.linkedin} target="_blank" rel="noopener noreferrer" className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-2 group-hover:translate-y-0"><FiLinkedin /></a>}
-                        {member.social?.github && <a href={member.social.github} target="_blank" rel="noopener noreferrer" className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100 transform translate-y-2 group-hover:translate-y-0"><FiGithub /></a>}
-                        {member.social?.instagram && <a href={member.social.instagram} target="_blank" rel="noopener noreferrer" className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-200 transform translate-y-2 group-hover:translate-y-0"><FiInstagram /></a>}
+                        {member.linkedin_url && <a href={member.linkedin_url} target="_blank" rel="noopener noreferrer" className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-2 group-hover:translate-y-0"><FiLinkedin /></a>}
+                        {member.github_url && <a href={member.github_url} target="_blank" rel="noopener noreferrer" className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100 transform translate-y-2 group-hover:translate-y-0"><FiGithub /></a>}
+                        {member.instagram_url && <a href={member.instagram_url} target="_blank" rel="noopener noreferrer" className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-200 transform translate-y-2 group-hover:translate-y-0"><FiInstagram /></a>}
                       </div>
                     </div>
                     <h3 className="font-bold text-lg text-gray-900 dark:text-white">{member.name}</h3>
-                    <p className="text-primary dark:text-accent text-sm">{language === 'id' ? member.positionId : member.position}</p>
+                    <p className="text-primary dark:text-accent text-sm">{language === 'id' ? member.role_id : member.role_en}</p>
                   </div>
                 ))}
               </div>

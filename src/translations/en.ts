@@ -64,7 +64,8 @@ export const en = {
         partners: {
             title: 'Trusted by Great Companies',
             subtitle: 'We are proud to have collaborated with various leading companies and organizations.',
-            error: 'Failed to load partner data'
+            error: 'Failed to load partner data',
+            visitWebsite: 'Visit Website'
         },
         cta: {
             title: 'Let\'s Collaborate',

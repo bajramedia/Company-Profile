@@ -63,8 +63,9 @@ export const id = {
         },
         partners: {
             title: 'Dipercaya oleh Perusahaan Hebat',
-            subtitle: 'Kami bangga telah berkolaborasi dengan berbagai perusahaan dan organisasi terkemuka.',
-            error: 'Gagal memuat data partner'
+            subtitle: 'Kami bangga dapat berkolaborasi dengan perusahaan dan institusi terkemuka.',
+            error: 'Gagal memuat data partner',
+            visitWebsite: 'Kunjungi Website'
         },
         cta: {
             title: 'Mari Berkolaborasi',
