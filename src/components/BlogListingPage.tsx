@@ -354,7 +354,7 @@ export default function BlogListingPage() {
 
                         <div className="mt-auto flex justify-between items-center">
                           <div className="flex items-center">
-                            {post.author.avatar && (
+                            {typeof post.author === 'object' && post.author.avatar ? (
                               <Image
                                 src={post.author.avatar}
                                 alt={post.author.name}
@@ -362,8 +362,10 @@ export default function BlogListingPage() {
                                 height={32}
                                 className="w-8 h-8 rounded-full mr-3 border border-gray-200 dark:border-gray-600"
                               />
+                            ) : (
+                              <div className="w-8 h-8 rounded-full bg-gray-200 mr-3"></div>
                             )}
-                            <span className="text-sm font-medium">{post.author.name}</span>
+                            <span className="text-sm font-medium">{typeof post.author === 'object' ? post.author.name : post.author}</span>
                           </div>
 
                           <div className="text-primary font-medium text-sm flex items-center">
