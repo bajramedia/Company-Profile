@@ -1,4 +1,4 @@
-
+ 
 -- Menambahkan tabel baru untuk seksi-seksi post blog
 -- Tabel ini akan menyimpan konten per-seksi, memungkinkan struktur artikel yang lebih modular.
 CREATE TABLE IF NOT EXISTS `post_sections` (

@@ -126,14 +126,7 @@ class BlogServiceAPI {
       }));
     } catch (error) {
       console.error('Error fetching posts:', error);
-      console.log('🔄 API connection failed, loading fallback blog posts...');
-      
-      // Use fallback dummy data instead of empty array
-      const fallbackData = getFallbackData();
-      const formattedBlogPosts = formatBlogForDisplay(fallbackData.blogPosts);
-      
-      console.log('✅ Fallback blog posts loaded successfully:', formattedBlogPosts.length, 'posts');
-      return formattedBlogPosts;
+      return []; // Mengembalikan array kosong jika gagal
     }
   }
 
@@ -193,47 +186,15 @@ class BlogServiceAPI {
   async getFeaturedPosts(limit: number = 3): Promise<BlogPost[]> {
     try {
       console.log('🔍 Fetching featured posts...');
-      const allPosts = await this.getAllPosts(1, 100);
-      console.log('📊 Total posts fetched:', allPosts.length);
-      
-      // Debug: Check featured field in posts
-      console.log('🏷️ Featured status check:', allPosts.map(post => ({ 
-        title: post.title.substring(0, 30) + '...', 
-        featured: post.featured 
-      })));
-      
-      // Try to get featured posts first
-      const featuredPosts = allPosts.filter(post => post.featured === true);
-      console.log('⭐ Featured posts found:', featuredPosts.length);
-      
-      // If no featured posts found, return the most recent posts instead
-      if (featuredPosts.length === 0) {
-        console.log('🔄 No featured posts found, returning recent posts instead');
-        const recentPosts = allPosts.slice(0, limit);
-        console.log('📈 Returning recent posts:', recentPosts.length);
-        return recentPosts;
+      const response = await fetch(API_URL + '?endpoint=posts&featured=true');
+      if (!response.ok) {
+        throw new Error(`API Error: ${response.statusText}`);
       }
-      
-      console.log('✅ Returning featured posts:', featuredPosts.length);
-      return featuredPosts.slice(0, limit);
+      const posts = await response.json();
+      return posts.slice(0, limit);
     } catch (error) {
-      console.error('❌ Error fetching featured posts:', error);
-      console.log('🔄 API connection failed, loading fallback featured posts...');
-      
-      // Use fallback dummy data instead of empty array
-      const fallbackData = getFallbackData();
-      const formattedBlogPosts = formatBlogForDisplay(fallbackData.blogPosts);
-      
-      // Get featured posts from fallback data
-      const featuredPosts = formattedBlogPosts.filter(post => post.featured === true);
-      
-      if (featuredPosts.length === 0) {
-        console.log('🔄 No featured posts in fallback data, returning recent posts');
-        return formattedBlogPosts.slice(0, limit);
-      }
-      
-      console.log('✅ Fallback featured posts loaded successfully:', featuredPosts.length, 'posts');
-      return featuredPosts.slice(0, limit);
+      console.error('Error fetching featured posts:', error);
+      return []; // Mengembalikan array kosong jika gagal
     }
   }
 
@@ -254,22 +215,7 @@ class BlogServiceAPI {
       }).slice(0, limit);
     } catch (error) {
       console.error('Error fetching posts by category:', error);
-      console.log('🔄 API connection failed, loading fallback posts by category:', categorySlug);
-      
-      // Perbaiki juga filter untuk fallback data
-      return getFallbackData()
-        .filter(post => {
-          const category = post.category;
-          if (typeof category === 'object' && category !== null) {
-            return category.slug === categorySlug;
-          }
-          if (typeof category === 'string') {
-            return category.toLowerCase().replace(/ /g, '-') === categorySlug;
-          }
-          return false;
-        })
-        .slice(0, limit)
-        .map(formatBlogForDisplay);
+      return []; // Mengembalikan array kosong jika gagal
     }
   }
 
@@ -285,21 +231,7 @@ class BlogServiceAPI {
       );
     } catch (error) {
       console.error('Error searching posts:', error);
-      console.log('🔄 API connection failed, searching in fallback data for:', query);
-      
-      // Use fallback dummy data for search
-      const fallbackData = getFallbackData();
-      const formattedBlogPosts = formatBlogForDisplay(fallbackData.blogPosts);
-      const searchTerm = query.toLowerCase();
-      
-      const searchResults = formattedBlogPosts.filter(post => 
-        post.title.toLowerCase().includes(searchTerm) ||
-        post.excerpt.toLowerCase().includes(searchTerm) ||
-        post.content.toLowerCase().includes(searchTerm)
-      );
-      
-      console.log('✅ Fallback search results found:', searchResults.length, 'posts');
-      return searchResults;
+      return []; // Mengembalikan array kosong jika gagal
     }
   }
 

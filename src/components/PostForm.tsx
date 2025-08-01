@@ -649,7 +649,7 @@ export default function PostForm({ postId, initialData }: PostFormProps) {
                               label="Upload gambar untuk seksi ini (Opsional)"
                               className="w-full"
                             />
-                            <RichTextEditor
+                    <RichTextEditor
                               content={section.content}
                               onChange={(content) => handleSectionChange(index, 'content', content)}
                               placeholder={`Tulis konten untuk seksi ${index + 1}...`}
