@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
@@ -7,10 +7,11 @@ import { useLanguage } from '@/context/LanguageContext';
 import Heading from '@/components/Heading';
 import Text from '@/components/Text';
 import Button from '@/components/Button';
-import { FiArrowRight, FiAward, FiTarget, FiUsers } from 'react-icons/fi';
+import { FiArrowRight, FiAward, FiTarget, FiUsers, FiLinkedin, FiGithub, FiInstagram } from 'react-icons/fi';
 import 'aos/dist/aos.css';
 import AOS from 'aos';
 
+// --- TYPE DEFINITIONS ---
 interface Partner {
   id: string | number;
   name: string;
@@ -27,18 +28,24 @@ interface TeamMember {
   position: string;
   positionId: string;
   avatar: string;
+  social: {
+    linkedin?: string;
+    github?: string;
+    instagram?: string;
+  };
 }
 
+// --- STATIC CONTENT ---
 const aboutContent = {
   hero: {
-    title_en: 'About Bajra Media',
-    title_id: 'Tentang Bajra Media',
-    content_en: 'Bajra Media ( formerly Reduktor Development ) is a technology company specializing in innovative software development and integrated digital solutions. We dedicated to helping businesses of all sizes transform and thrive in the digital age. We are a trusted partner in designing, building, and managing technology that drives operational efficiency and competitive advantage for our clients.',
-    content_id: 'Bajra Media (sebelumnya Reduktor Development) adalah perusahaan teknologi yang mengkhususkan diri dalam pengembangan perangkat lunak inovatif dan solusi digital terintegrasi. Kami berdedikasi untuk membantu bisnis dari semua ukuran bertransformasi dan berkembang di era digital. Kami adalah mitra tepercaya dalam merancang, membangun, dan mengelola teknologi yang mendorong efisiensi operasional dan keunggulan kompetitif bagi klien kami.',
+    title_en: 'Pioneering Digital Transformation',
+    title_id: 'Merintis Transformasi Digital',
+    content_en: 'Bajra Media ( formerly Reduktor Development ) is a technology company specializing in innovative software development and integrated digital solutions. We dedicated to helping businesses of all sizes transform and thrive in the digital age.',
+    content_id: 'Bajra Media (sebelumnya Reduktor Development) adalah perusahaan teknologi yang mengkhususkan diri dalam pengembangan perangkat lunak inovatif dan solusi digital terintegrasi. Kami berdedikasi untuk membantu bisnis dari semua ukuran bertransformasi dan berkembang di era digital.',
   },
   story: {
-    title_en: 'Our Background Story',
-    title_id: 'Latar Belakang Kami',
+    title_en: 'Our Story',
+    title_id: 'Kisah Kami',
     content_en: 'Bajramedia was founded with a vision to bridge the gap between traditional businesses and the digital world. We recognized the growing need for UMKM (Micro, Small, and Medium Enterprises) and institutions to embrace digital transformation in this modern era.',
     content_id: 'Bajramedia didirikan dengan visi untuk menjembatani kesenjangan antara bisnis tradisional dan dunia digital. Kami menyadari kebutuhan yang berkembang bagi UMKM dan institusi untuk merangkul transformasi digital di era modern ini.',
   },
@@ -70,13 +77,15 @@ const aboutContent = {
     subtitle_id: 'Kami bangga dapat berkolaborasi dengan perusahaan dan institusi terkemuka.',
   },
   team: {
-    title_en: 'Meet Our Team',
-    title_id: 'Kenali Tim Kami',
+    title_en: 'Meet Our Agile Team',
+    title_id: 'Kenali Tim Andal Kami',
     subtitle_en: 'The passionate people behind our success.',
     subtitle_id: 'Orang-orang penuh semangat di balik kesuksesan kami.',
   }
 };
 
+
+// --- COMPONENT ---
 export default function AboutPage() {
   const [partners, setPartners] = useState<Partner[]>([]);
   const [team, setTeam] = useState<TeamMember[]>([]);
@@ -88,7 +97,7 @@ export default function AboutPage() {
   useEffect(() => {
     setIsClient(true);
     AOS.init({
-      duration: 1000,
+      duration: 800,
       once: true,
       mirror: false,
     });
@@ -99,19 +108,11 @@ export default function AboutPage() {
         const response = await fetch(`/api/partners`);
         if (!response.ok) throw new Error('Failed to fetch partners');
         const data = await response.json();
-        const formattedData = data.map((p: any) => ({
-          ...p,
-          // Memastikan nama properti sesuai dengan yang diharapkan komponen
-          logo: p.logo_url || p.logo,
-          name: p.name_en || p.name,
-          nameId: p.name_id || p.nameId,
-          description: p.description_en || p.description,
-          descriptionId: p.description_id || p.descriptionId,
-          website: p.website_url || p.website,
-        }));
-        setPartners(formattedData.filter((p: any) => p.is_featured).slice(0, 2));
+        // Trust the API bridge to provide the correct keys. No more client-side mapping.
+        setPartners(data.filter((p: any) => p.is_featured == 1).slice(0, 2));
       } catch (err) {
         console.error('Error fetching partners:', err);
+        setPartners([]); // Set to empty array on error
       } finally {
         setPartnersLoading(false);
       }
@@ -123,16 +124,22 @@ export default function AboutPage() {
         const response = await fetch('/api/team-members');
         if (!response.ok) throw new Error('Failed to fetch team');
         const data = await response.json();
+        
+        // Correctly map the fields from the API to what the component expects.
         const formattedData = data.map((t: any) => ({
-          ...t,
-          // Memetakan nama properti dari API ke yang diharapkan komponen
-          avatar: t.image_url || t.avatar,
-          position: t.role_en || t.position,
-          positionId: t.role_id || t.positionId,
+          id: t.id,
+          name: t.name,
+          avatar: t.image, // Use 'image' from the bridge
+          position: t.role, // Use 'role' from the bridge
+          positionId: t.roleId, // Use 'roleId' from the bridge
+          is_featured: t.is_featured,
+          social: t.social, // Pass the social object
         }));
-        setTeam(formattedData.filter((t: any) => t.is_featured));
+        
+        setTeam(formattedData.filter((t: any) => t.is_featured == 1));
       } catch (error) {
         console.error('Error fetching team:', error);
+        setTeam([]); // Set to empty array on error
       } finally {
         setTeamLoading(false);
       }
@@ -143,10 +150,6 @@ export default function AboutPage() {
       fetchTeam();
     }
   }, [isClient]);
-
-  if (!isClient) {
-    return null;
-  }
 
   const currentContent = (section: keyof typeof aboutContent) => {
     const content = aboutContent[section];
@@ -162,13 +165,35 @@ export default function AboutPage() {
     };
   };
 
+  if (!isClient) {
+    // Render a skeleton or loading state for SSR to avoid layout shifts
+    return (
+      <div className="pt-20 bg-white dark:bg-gray-900 min-h-screen">
+        <div className="w-full h-96 bg-gray-200 dark:bg-gray-800 animate-pulse"></div>
+        <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 py-16">
+          <div className="h-8 w-1/2 bg-gray-200 dark:bg-gray-800 animate-pulse mb-4 rounded"></div>
+          <div className="h-4 w-full bg-gray-200 dark:bg-gray-800 animate-pulse mb-2 rounded"></div>
+          <div className="h-4 w-3/4 bg-gray-200 dark:bg-gray-800 animate-pulse rounded"></div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <>
-      <main className="pt-20">
-        <section className="py-16 md:py-24 bg-gray-50 dark:bg-gray-800/50 about-hero" data-aos="fade-in">
-          <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 text-center">
-            <Heading variant="h1" className="mb-4">
-              {currentContent('hero').title}
+      <main className="pt-20 bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200">
+        
+        {/* Hero Section */}
+        <section 
+          className="relative py-24 md:py-32 flex items-center justify-center text-center bg-gray-50 dark:bg-gray-800/50" 
+          data-aos="fade-in"
+        >
+          <div className="absolute inset-0 bg-gradient-to-t from-white dark:from-gray-900 to-transparent"></div>
+          <div className="relative w-[95%] mx-auto px-4 sm:px-6 md:px-8 z-10">
+            <Heading variant="h1" className="mb-4 text-4xl md:text-6xl font-extrabold tracking-tight">
+              <span className='bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent'>
+                {currentContent('hero').title}
+              </span>
             </Heading>
             <Text className="text-lg md:text-xl max-w-3xl mx-auto text-gray-600 dark:text-gray-400">
               {currentContent('hero').content}
@@ -176,43 +201,44 @@ export default function AboutPage() {
           </div>
         </section>
 
-        <section className="py-16 md:py-24" data-aos="fade-up">
-          <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8">
+        {/* Story & Vision Section */}
+        <section className="py-16 md:py-24 space-y-24">
+          <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8" data-aos="fade-up">
             <div className="grid md:grid-cols-2 gap-12 items-center">
-              <div>
-                <Image
+              <div className='relative'>
+                 <div className="absolute -top-4 -left-4 w-full h-full bg-primary/10 rounded-lg transform rotate-[-3deg]"></div>
+                 <Image
                   src="/images/team-meeting.jpg"
                   alt="Our Story"
                   width={600}
                   height={400}
-                  className="rounded-lg shadow-lg"
+                  className="rounded-lg shadow-2xl relative z-10"
                 />
               </div>
               <div>
                 <Heading variant="h2" className="mb-4">{currentContent('story').title}</Heading>
-                <Text className="text-gray-600 dark:text-gray-400">
+                <Text className="text-gray-600 dark:text-gray-400 prose dark:prose-invert">
                   {currentContent('story').content}
                 </Text>
               </div>
             </div>
           </div>
-        </section>
-
-        <section className="py-16 md:py-24 bg-gray-50 dark:bg-gray-800/50" data-aos="fade-up">
-          <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8">
+          
+          <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8" data-aos="fade-up">
             <div className="grid md:grid-cols-2 gap-12 items-center">
-              <div className="md:order-2">
+              <div className="md:order-2 relative">
+                <div className="absolute -top-4 -right-4 w-full h-full bg-accent/10 rounded-lg transform rotate-[3deg]"></div>
                 <Image
                   src="/images/team-meeting-2.jpg"
                   alt="Our Vision"
                   width={600}
                   height={400}
-                  className="rounded-lg shadow-lg"
+                  className="rounded-lg shadow-2xl relative z-10"
                 />
               </div>
               <div className="md:order-1">
                 <Heading variant="h2" className="mb-4">{currentContent('vision').title}</Heading>
-                <Text className="text-gray-600 dark:text-gray-400">
+                <Text className="text-gray-600 dark:text-gray-400 prose dark:prose-invert">
                   {currentContent('vision').content}
                 </Text>
               </div>
@@ -220,20 +246,23 @@ export default function AboutPage() {
           </div>
         </section>
 
-        <section className="py-16 md:py-24" data-aos="fade-up">
+        {/* Mission Section */}
+        <section className="py-16 md:py-24 bg-gray-50 dark:bg-gray-800/50" data-aos="fade-up">
           <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8">
             <Heading variant="h2" color="foreground" className="text-center mb-12">
               {currentContent('mission').title}
             </Heading>
-            <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
               {(currentContent('mission').content as string[]).map((item, index) => {
                 const MissionIcon = aboutContent.mission.icons[index] || FiTarget;
                 return (
-                  <div key={index} className="bg-white dark:bg-gray-800/50 p-8 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700/50 text-center transition-all duration-300 hover:shadow-primary/20 hover:border-primary/30 hover:-translate-y-1">
-                    <div className="mb-4 inline-block p-4 rounded-full bg-primary/10 text-primary">
+                  <div key={index} className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg border border-transparent dark:border-gray-700/50 text-center transition-all duration-300 hover:shadow-primary/20 hover:border-primary/20 hover:-translate-y-2">
+                    <div className="mb-5 inline-block p-4 rounded-full bg-primary/10 text-primary">
                       <MissionIcon className="w-8 h-8" />
                     </div>
-                    <Text className="text-gray-700 dark:text-gray-300">{item}</Text>
+                    <Text className="text-gray-700 dark:text-gray-300 text-lg">
+                      {item}
+                    </Text>
                   </div>
                 )
               })}
@@ -241,8 +270,8 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* Partners Section - Tetap Dinamis */}
-        <section className="py-16 md:py-24 bg-gray-50 dark:bg-gray-800/50" data-aos="fade-up">
+        {/* Partners Section */}
+        <section className="py-16 md:py-24" data-aos="fade-up">
           <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 text-center">
             <Heading variant="h2" color="foreground" className="mb-4">
               {currentContent('partners').title}
@@ -251,12 +280,17 @@ export default function AboutPage() {
               {currentContent('partners').content}
             </p>
             {partnersLoading && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
                 {[...Array(2)].map((_, i) => (
-                  <div key={i} className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md animate-pulse">
-                    <div className="h-16 w-32 bg-gray-200 dark:bg-gray-700 rounded-md mx-auto mb-4"></div>
-                    <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mx-auto mb-2"></div>
-                    <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mx-auto"></div>
+                  <div key={i} className="bg-gray-100 dark:bg-gray-800/50 p-8 rounded-xl animate-pulse">
+                    <div className="flex items-center space-x-6">
+                      <div className="w-20 h-20 rounded-md bg-gray-200 dark:bg-gray-700"></div>
+                      <div className="flex-1 space-y-3">
+                        <div className="h-5 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
+                        <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-full"></div>
+                        <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-1/2"></div>
+                      </div>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -264,23 +298,23 @@ export default function AboutPage() {
             {!partnersLoading && partners.length > 0 && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
                 {partners.map((partner) => (
-                  <div key={partner.id} className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700 text-left transition-transform transform hover:scale-105">
+                  <div key={partner.id} className="bg-gray-50 dark:bg-gray-800/50 p-8 rounded-xl border border-gray-200 dark:border-gray-700 text-left transition-all duration-300 hover:shadow-xl hover:border-transparent hover:bg-white dark:hover:bg-gray-800">
                     <div className="flex items-start space-x-6">
-                      <Image src={partner.logo} alt={language === 'id' ? partner.nameId : partner.name} width={80} height={80} className="w-20 h-20 object-contain"/>
+                      <Image src={partner.logo} alt={language === 'id' ? partner.nameId : partner.name} width={80} height={80} className="w-20 h-20 object-contain flex-shrink-0"/>
                       <div>
                         <h3 className="font-bold text-xl mb-2 text-gray-900 dark:text-white">
                           {language === 'id' ? partner.nameId : partner.name}
                         </h3>
-                        <p className="text-gray-600 dark:text-gray-400 mb-4">
+                        <p className="text-gray-600 dark:text-gray-400 mb-4 text-sm">
                           {language === 'id' ? partner.descriptionId : partner.description}
                         </p>
                         <Link href={partner.website} passHref legacyBehavior>
-                          <a target="_blank" rel="noopener noreferrer">
-                            <Button variant="outline" size="sm">
-                              {t('about.partners.visit')} <FiArrowRight className="ml-2" />
-                            </Button>
-                          </a>
-                        </Link>
+                           <a target="_blank" rel="noopener noreferrer">
+                             <Button variant="outline" size="sm">
+                               {t('about.partners.visit')} <FiArrowRight className="ml-2" />
+                             </Button>
+                           </a>
+                         </Link>
                       </div>
                     </div>
                   </div>
@@ -290,22 +324,22 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* Team Section - Tetap Dinamis */}
-        <section className="py-16 md:py-24" data-aos="fade-up">
+        {/* Team Section */}
+        <section className="py-16 md:py-24 bg-gray-50 dark:bg-gray-800/50" data-aos="fade-up">
           <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 text-center">
             <Heading variant="h2" color="foreground" className="mb-4">
               {currentContent('team').title}
             </Heading>
-            <Text className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-12">
+            <Text className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-16">
               {currentContent('team').content}
             </Text>
             {teamLoading && (
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-12">
                 {[...Array(4)].map((_, i) => (
                   <div key={i} className="animate-pulse">
-                    <div className="w-full aspect-square bg-gray-200 dark:bg-gray-700 rounded-full mx-auto mb-4"></div>
-                    <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mx-auto mb-2"></div>
-                    <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mx-auto"></div>
+                    <div className="w-32 h-32 rounded-full bg-gray-200 dark:bg-gray-700 mx-auto mb-4"></div>
+                    <div className="h-5 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mx-auto mb-2"></div>
+                    <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mx-auto"></div>
                   </div>
                 ))}
               </div>
@@ -314,17 +348,22 @@ export default function AboutPage() {
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-8 gap-y-12">
                 {team.map((member) => (
                   <div key={member.id} className="text-center group">
-                    <div className="relative w-32 h-32 md:w-40 md:h-40 mx-auto mb-4 rounded-full overflow-hidden shadow-lg transition-all duration-300 transform group-hover:scale-105 group-hover:shadow-xl">
+                    <div className="relative w-32 h-32 md:w-40 md:h-40 mx-auto mb-4">
                       <Image
                         src={member.avatar || '/images/team/default-avatar.jpg'}
                         alt={member.name}
                         fill
                         sizes="(max-width: 768px) 128px, 160px"
-                        className="object-cover"
+                        className="object-cover rounded-full shadow-lg transition-all duration-500 transform group-hover:scale-110"
                       />
+                      <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-300 rounded-full flex items-center justify-center space-x-3">
+                        {member.social?.linkedin && <a href={member.social.linkedin} target="_blank" rel="noopener noreferrer" className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-2 group-hover:translate-y-0"><FiLinkedin /></a>}
+                        {member.social?.github && <a href={member.social.github} target="_blank" rel="noopener noreferrer" className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100 transform translate-y-2 group-hover:translate-y-0"><FiGithub /></a>}
+                        {member.social?.instagram && <a href={member.social.instagram} target="_blank" rel="noopener noreferrer" className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-200 transform translate-y-2 group-hover:translate-y-0"><FiInstagram /></a>}
+                      </div>
                     </div>
                     <h3 className="font-bold text-lg text-gray-900 dark:text-white">{member.name}</h3>
-                    <p className="text-gray-500 dark:text-gray-400">{language === 'id' ? member.positionId : member.position}</p>
+                    <p className="text-primary dark:text-accent text-sm">{language === 'id' ? member.positionId : member.position}</p>
                   </div>
                 ))}
               </div>
