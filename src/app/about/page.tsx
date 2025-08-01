@@ -108,8 +108,18 @@ export default function AboutPage() {
         const response = await fetch(`/api/partners`);
         if (!response.ok) throw new Error('Failed to fetch partners');
         const data = await response.json();
-        // Trust the API bridge to provide the correct keys. No more client-side mapping.
-        setPartners(data.filter((p: any) => p.is_featured == 1).slice(0, 2));
+        // Correctly map the partner data fields
+        const formattedData = data.map((p: any) => ({
+          id: p.id,
+          name: language === 'id' ? p.name_id : p.name_en,
+          nameId: p.name_id,
+          description: language === 'id' ? p.description_id : p.description_en,
+          descriptionId: p.description_id,
+          logo: p.logo_url,
+          website: p.website_url,
+          is_featured: p.is_featured,
+        }));
+        setPartners(formattedData.filter((p: any) => p.is_featured == 1).slice(0, 2));
       } catch (err) {
         console.error('Error fetching partners:', err);
         setPartners([]); // Set to empty array on error
@@ -125,15 +135,19 @@ export default function AboutPage() {
         if (!response.ok) throw new Error('Failed to fetch team');
         const data = await response.json();
         
-        // Correctly map the fields from the API to what the component expects.
+        // Correctly map the team data fields from the raw API response
         const formattedData = data.map((t: any) => ({
           id: t.id,
           name: t.name,
-          avatar: t.image, // Use 'image' from the bridge
-          position: t.role, // Use 'role' from the bridge
-          positionId: t.roleId, // Use 'roleId' from the bridge
+          avatar: t.image_url,
+          position: t.role_en,
+          positionId: t.role_id,
           is_featured: t.is_featured,
-          social: t.social, // Pass the social object
+          social: {
+            linkedin: t.linkedin_url,
+            github: t.github_url,
+            instagram: t.instagram_url,
+          },
         }));
         
         setTeam(formattedData.filter((t: any) => t.is_featured == 1));
@@ -149,7 +163,7 @@ export default function AboutPage() {
       fetchPartners();
       fetchTeam();
     }
-  }, [isClient]);
+  }, [isClient, language]); // Add language to dependency array
 
   const currentContent = (section: keyof typeof aboutContent) => {
     const content = aboutContent[section];
@@ -185,10 +199,9 @@ export default function AboutPage() {
         
         {/* Hero Section */}
         <section 
-          className="relative py-24 md:py-32 flex items-center justify-center text-center bg-gray-50 dark:bg-gray-800/50" 
+          className="py-24 md:py-32 flex items-center justify-center text-center bg-gray-50 dark:bg-gray-800/50" 
           data-aos="fade-in"
         >
-          <div className="absolute inset-0 bg-gradient-to-t from-white dark:from-gray-900 to-transparent"></div>
           <div className="relative w-[95%] mx-auto px-4 sm:px-6 md:px-8 z-10">
             <Heading variant="h1" className="mb-4 text-4xl md:text-6xl font-extrabold tracking-tight">
               <span className='bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent'>
@@ -201,8 +214,8 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* Story & Vision Section */}
-        <section className="py-16 md:py-24 space-y-24">
+        {/* Story Section */}
+        <section className="py-16 md:py-24">
           <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8" data-aos="fade-up">
             <div className="grid md:grid-cols-2 gap-12 items-center">
               <div className='relative'>
@@ -223,31 +236,20 @@ export default function AboutPage() {
               </div>
             </div>
           </div>
-          
-          <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8" data-aos="fade-up">
-            <div className="grid md:grid-cols-2 gap-12 items-center">
-              <div className="md:order-2 relative">
-                <div className="absolute -top-4 -right-4 w-full h-full bg-accent/10 rounded-lg transform rotate-[3deg]"></div>
-                <Image
-                  src="/images/team-meeting-2.jpg"
-                  alt="Our Vision"
-                  width={600}
-                  height={400}
-                  className="rounded-lg shadow-2xl relative z-10"
-                />
-              </div>
-              <div className="md:order-1">
-                <Heading variant="h2" className="mb-4">{currentContent('vision').title}</Heading>
-                <Text className="text-gray-600 dark:text-gray-400 prose dark:prose-invert">
-                  {currentContent('vision').content}
-                </Text>
-              </div>
-            </div>
+        </section>
+        
+        {/* Vision Section */}
+        <section className="py-16 md:py-24 bg-gray-50 dark:bg-gray-800/50" data-aos="fade-up">
+          <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 text-center">
+            <Heading variant="h2" className="mb-4">{currentContent('vision').title}</Heading>
+            <Text className="text-gray-600 dark:text-gray-400 prose dark:prose-invert max-w-3xl mx-auto">
+              {currentContent('vision').content}
+            </Text>
           </div>
         </section>
 
         {/* Mission Section */}
-        <section className="py-16 md:py-24 bg-gray-50 dark:bg-gray-800/50" data-aos="fade-up">
+        <section className="py-16 md:py-24" data-aos="fade-up">
           <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8">
             <Heading variant="h2" color="foreground" className="text-center mb-12">
               {currentContent('mission').title}
@@ -271,7 +273,7 @@ export default function AboutPage() {
         </section>
 
         {/* Partners Section */}
-        <section className="py-16 md:py-24" data-aos="fade-up">
+        <section className="py-16 md:py-24 bg-gray-50 dark:bg-gray-800/50" data-aos="fade-up">
           <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 text-center">
             <Heading variant="h2" color="foreground" className="mb-4">
               {currentContent('partners').title}
@@ -282,7 +284,7 @@ export default function AboutPage() {
             {partnersLoading && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
                 {[...Array(2)].map((_, i) => (
-                  <div key={i} className="bg-gray-100 dark:bg-gray-800/50 p-8 rounded-xl animate-pulse">
+                  <div key={i} className="bg-white dark:bg-gray-800 p-8 rounded-xl animate-pulse">
                     <div className="flex items-center space-x-6">
                       <div className="w-20 h-20 rounded-md bg-gray-200 dark:bg-gray-700"></div>
                       <div className="flex-1 space-y-3">
@@ -298,15 +300,15 @@ export default function AboutPage() {
             {!partnersLoading && partners.length > 0 && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
                 {partners.map((partner) => (
-                  <div key={partner.id} className="bg-gray-50 dark:bg-gray-800/50 p-8 rounded-xl border border-gray-200 dark:border-gray-700 text-left transition-all duration-300 hover:shadow-xl hover:border-transparent hover:bg-white dark:hover:bg-gray-800">
+                  <div key={partner.id} className="bg-white dark:bg-gray-800 p-8 rounded-xl border border-gray-200 dark:border-gray-700 text-left transition-all duration-300 hover:shadow-xl hover:border-transparent hover:bg-white dark:hover:bg-gray-800">
                     <div className="flex items-start space-x-6">
                       <Image src={partner.logo} alt={language === 'id' ? partner.nameId : partner.name} width={80} height={80} className="w-20 h-20 object-contain flex-shrink-0"/>
                       <div>
                         <h3 className="font-bold text-xl mb-2 text-gray-900 dark:text-white">
-                          {language === 'id' ? partner.nameId : partner.name}
+                          {partner.name}
                         </h3>
                         <p className="text-gray-600 dark:text-gray-400 mb-4 text-sm">
-                          {language === 'id' ? partner.descriptionId : partner.description}
+                          {partner.description}
                         </p>
                         <Link href={partner.website} passHref legacyBehavior>
                            <a target="_blank" rel="noopener noreferrer">
@@ -325,7 +327,7 @@ export default function AboutPage() {
         </section>
 
         {/* Team Section */}
-        <section className="py-16 md:py-24 bg-gray-50 dark:bg-gray-800/50" data-aos="fade-up">
+        <section className="py-16 md:py-24" data-aos="fade-up">
           <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 text-center">
             <Heading variant="h2" color="foreground" className="mb-4">
               {currentContent('team').title}
