@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useLanguage } from '@/context/LanguageContext';
-import { translations } from '@/translations/id';
 import Heading from '@/components/Heading';
 import Text from '@/components/Text';
 import Button from '@/components/Button';
@@ -251,11 +250,13 @@ export default function AboutPage() {
                         <p className="text-gray-600 dark:text-gray-400 mb-4">
                           {language === 'id' ? partner.descriptionId : partner.description}
                         </p>
-                        <Button asChild variant="outline" size="sm">
-                          <a href={partner.website} target="_blank" rel="noopener noreferrer">
-                            {t('about.partners.visit')} <FiArrowRight className="ml-2" />
+                        <Link href={partner.website} passHref legacyBehavior>
+                          <a target="_blank" rel="noopener noreferrer">
+                            <Button variant="outline" size="sm">
+                              {t('about.partners.visit')} <FiArrowRight className="ml-2" />
+                            </Button>
                           </a>
-                        </Button>
+                        </Link>
                       </div>
                     </div>
                   </div>
