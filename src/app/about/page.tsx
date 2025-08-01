@@ -28,6 +28,8 @@ interface Partner {
   id: string | number;
   name: string;
   nameId: string;
+  description: string;
+  descriptionId: string;
   logo: string;
   website: string;
 }
@@ -110,17 +112,22 @@ export default function AboutPage() {
     const fetchAboutContent = async () => {
       try {
         setContentLoading(true);
-        const response = await fetch(`/api/content/about?language=${language}`);
+        const response = await fetch(`/api/content/about`);
         if (!response.ok) throw new Error('Failed to fetch about content');
-        const data = await response.json();
+        const data: AboutContent[] = await response.json();
         
-        // Pastikan data bukan null atau undefined
-        if (data && typeof data === 'object') {
-          setAboutContent(data);
-        } else {
-          console.warn('Received invalid data format:', data);
-          setAboutContent({});
-        }
+        // Mengubah array data menjadi objek yang lebih mudah digunakan
+        const contentObject = data.reduce((acc, item) => {
+          acc[item.section_key] = {
+            title_en: item.title_en,
+            title_id: item.title_id,
+            content_en: item.content_en,
+            content_id: item.content_id,
+          };
+          return acc;
+        }, {} as { [key: string]: any });
+
+        setAboutContent(contentObject);
       } catch (err) {
         console.error('Error fetching about content:', err);
         setContentError(err instanceof Error ? err.message : 'Gagal memuat konten');
@@ -250,12 +257,12 @@ export default function AboutPage() {
           <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 text-center">
             <AnimatedText>
               <Heading variant="h1" color="foreground" className="mb-6 text-4xl md:text-5xl lg:text-6xl font-extrabold">
-                {aboutContent['heroo']?.title || t('about.hero.title')}
+                {language === 'id' ? aboutContent['hero']?.title_id : aboutContent['hero']?.title_en}
               </Heading>
             </AnimatedText>
             <AnimatedText>
               <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed">
-                {aboutContent['heroo']?.content || t('about.hero.content')}
+                {language === 'id' ? aboutContent['hero']?.content_id : aboutContent['hero']?.content_en}
               </p>
             </AnimatedText>
           </div>
@@ -276,13 +283,11 @@ export default function AboutPage() {
               </div>
               <div data-aos="fade-left" data-aos-delay="200">
                 <Heading variant="h2" color="foreground" className="mb-6">
-                  {aboutContent['background']?.title || t('about.story.title') || 'Cerita Kami'}
+                  {language === 'id' ? aboutContent['story']?.title_id : aboutContent['story']?.title_en}
                 </Heading>
                 <div className="prose prose-lg dark:prose-invert max-w-none text-gray-600 dark:text-gray-300 space-y-4">
                   <div dangerouslySetInnerHTML={{ 
-                    __html: aboutContent['background']?.content || 
-                            t('about.story.content') || 
-                            'Bajramedia didirikan dengan visi untuk membantu bisnis berkembang di era digital. Kami menggabungkan kreativitas dan teknologi untuk menciptakan solusi yang inovatif.' 
+                    __html: language === 'id' ? aboutContent['story']?.content_id : aboutContent['story']?.content_en
                   }} />
                 </div>
               </div>
@@ -295,24 +300,20 @@ export default function AboutPage() {
             <div className="grid md:grid-cols-2 gap-12 md:gap-16">
               <div data-aos="fade-right">
                 <Heading variant="h2" color="foreground" className="mb-6">
-                  {aboutContent['mission']?.title || t('about.mission.title') || 'Misi Kami'}
+                  {language === 'id' ? aboutContent['mission']?.title_id : aboutContent['mission']?.title_en}
                 </Heading>
                 <div className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed" 
                      dangerouslySetInnerHTML={{ 
-                       __html: aboutContent['mission']?.content || 
-                               t('about.mission.content') || 
-                               'Memberikan layanan digital terbaik dengan standar internasional untuk membantu bisnis berkembang di era digital.' 
+                       __html: language === 'id' ? aboutContent['mission']?.content_id : aboutContent['mission']?.content_en
                      }} />
               </div>
               <div data-aos="fade-left" data-aos-delay="200">
                 <Heading variant="h2" color="foreground" className="mb-6">
-                  {aboutContent['vision']?.title || t('about.vision.title') || 'Visi Kami'}
+                  {language === 'id' ? aboutContent['vision']?.title_id : aboutContent['vision']?.title_en}
                 </Heading>
                 <div className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed"
                      dangerouslySetInnerHTML={{ 
-                       __html: aboutContent['vision']?.content || 
-                               t('about.vision.content') || 
-                               'Menjadi mitra terpercaya dalam transformasi digital untuk bisnis di Indonesia dan Asia Tenggara.' 
+                       __html: language === 'id' ? aboutContent['vision']?.content_id : aboutContent['vision']?.content_en
                      }} />
               </div>
             </div>
@@ -322,7 +323,7 @@ export default function AboutPage() {
         <section className="py-16 md:py-24" data-aos="fade-up">
           <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 text-center">
             <Heading variant="h2" color="foreground" className="mb-12">
-              {aboutContent['values']?.title || t('about.values.title')}
+              {language === 'id' ? aboutContent['values']?.title_id : aboutContent['values']?.title_en}
             </Heading>
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 about-values-grid">
               {[
@@ -344,10 +345,10 @@ export default function AboutPage() {
         <section className="py-16 md:py-24 bg-gray-50 dark:bg-gray-800/50" data-aos="fade-up">
           <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 text-center">
             <Heading variant="h2" color="foreground" className="mb-4">
-              {aboutContent['team']?.title || t('about.team.title')}
+              {language === 'id' ? aboutContent['team']?.title_id : aboutContent['team']?.title_en}
             </Heading>
             <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-12">
-              {aboutContent['team']?.content || t('about.team.subtitle')}
+              {language === 'id' ? aboutContent['team']?.content_id : aboutContent['team']?.content_en}
             </p>
             {teamLoading && (
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 about-team-grid">
@@ -397,42 +398,59 @@ export default function AboutPage() {
         <section className="py-16 md:py-24" data-aos="fade-up">
           <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 text-center">
             <Heading variant="h2" color="foreground" className="mb-12">
-              {aboutContent['partners']?.title || t('about.partners.title')}
+              {language === 'id' ? aboutContent['partners']?.title_id : aboutContent['partners']?.title_en}
             </Heading>
             <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-12">
-              {aboutContent['partners']?.content || t('about.partners.subtitle')}
+              {language === 'id' ? aboutContent['partners']?.content_id : aboutContent['partners']?.content_en}
             </p>
             {partnersLoading && (
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-                {[...Array(4)].map((_, i) => (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {[...Array(2)].map((_, i) => (
                   <div key={i} className="bg-white dark:bg-gray-800 rounded-xl p-6 animate-pulse">
-                    <div className="h-16 bg-gray-200 dark:bg-gray-700 rounded-lg"></div>
+                    <div className="h-16 bg-gray-200 dark:bg-gray-700 rounded-lg mb-4"></div>
+                    <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mb-2"></div>
+                    <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-full"></div>
+                    <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mt-1"></div>
+                    <div className="h-10 bg-gray-200 dark:bg-gray-700 rounded w-1/3 mt-4"></div>
                   </div>
                 ))}
               </div>
             )}
             {partnersError && <p className="text-red-500">{partnersError}</p>}
             {!partnersLoading && !partnersError && (
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-                {partners.map((partner) => (
-                  <Link 
-                    key={partner.id} 
-                    href={partner.website} 
-                    target="_blank" 
-                    className="bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group"
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                {partners.slice(0, 2).map((partner) => (
+                  <div
+                    key={partner.id}
+                    className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 text-left flex flex-col"
                     data-aos="zoom-in"
                   >
-                    <div className="relative h-16 flex items-center justify-center">
-                      <Image 
-                        src={partner.logo} 
-                        alt={language === 'id' ? partner.nameId : partner.name} 
-                        width={150} 
-                        height={60} 
-                        className="object-contain filter-none group-hover:scale-105 transition-transform duration-300" 
-                        style={{ maxHeight: '100%' }}
+                    <div className="relative h-16 mb-6 flex items-start">
+                      <Image
+                        src={partner.logo}
+                        alt={language === 'id' ? partner.nameId : partner.name}
+                        width={150}
+                        height={60}
+                        className="object-contain"
                       />
                     </div>
-                  </Link>
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                      {language === 'id' ? partner.nameId : partner.name}
+                    </h3>
+                    <p className="text-gray-600 dark:text-gray-400 mb-6 flex-grow">
+                      {language === 'id' ? partner.descriptionId : partner.description}
+                    </p>
+                    <Link
+                      href={partner.website}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-auto"
+                    >
+                      <Button variant="outline" size="sm">
+                        {t('about.partners.visit')}
+                      </Button>
+                    </Link>
+                  </div>
                 ))}
               </div>
             )}
@@ -442,10 +460,10 @@ export default function AboutPage() {
         <section className="py-16 md:py-24 bg-gray-50 dark:bg-gray-800/50" data-aos="fade-up">
           <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 text-center">
             <Heading variant="h2" color="foreground" className="mb-6">
-              {aboutContent['cta']?.title || t('about.cta.title')}
+              {language === 'id' ? aboutContent['cta']?.title_id : aboutContent['cta']?.title_en}
             </Heading>
             <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-8">
-              {aboutContent['cta']?.content || t('about.cta.subtitle')}
+              {language === 'id' ? aboutContent['cta']?.content_id : aboutContent['cta']?.content_en}
             </p>
             <Link href="/contact">
               <Button variant="primary" size="lg">{t('common.contactUs')}</Button>
