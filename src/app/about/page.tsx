@@ -7,7 +7,7 @@ import { useLanguage } from '@/context/LanguageContext';
 import Heading from '@/components/Heading';
 import Text from '@/components/Text';
 import Button from '@/components/Button';
-import { FiArrowRight } from 'react-icons/fi';
+import { FiArrowRight, FiAward, FiTarget, FiUsers } from 'react-icons/fi';
 import 'aos/dist/aos.css';
 import AOS from 'aos';
 
@@ -61,6 +61,7 @@ const aboutContent = {
       'Memupuk inovasi dan kreativitas dalam setiap proyek yang kami kerjakan',
       'Membangun kemitraan jangka panjang dengan klien berdasarkan kepercayaan dan keunggulan',
     ],
+    icons: [FiTarget, FiAward, FiUsers]
   },
   partners: {
     title_en: 'Trusted by Great Companies',
@@ -98,7 +99,17 @@ export default function AboutPage() {
         const response = await fetch(`/api/partners`);
         if (!response.ok) throw new Error('Failed to fetch partners');
         const data = await response.json();
-        setPartners(data.filter((p: any) => p.is_featured).slice(0, 2));
+        const formattedData = data.map((p: any) => ({
+          ...p,
+          // Memastikan nama properti sesuai dengan yang diharapkan komponen
+          logo: p.logo_url || p.logo,
+          name: p.name_en || p.name,
+          nameId: p.name_id || p.nameId,
+          description: p.description_en || p.description,
+          descriptionId: p.description_id || p.descriptionId,
+          website: p.website_url || p.website,
+        }));
+        setPartners(formattedData.filter((p: any) => p.is_featured).slice(0, 2));
       } catch (err) {
         console.error('Error fetching partners:', err);
       } finally {
@@ -112,7 +123,14 @@ export default function AboutPage() {
         const response = await fetch('/api/team-members');
         if (!response.ok) throw new Error('Failed to fetch team');
         const data = await response.json();
-        setTeam(data.filter((t: any) => t.is_featured));
+        const formattedData = data.map((t: any) => ({
+          ...t,
+          // Memetakan nama properti dari API ke yang diharapkan komponen
+          avatar: t.image_url || t.avatar,
+          position: t.role_en || t.position,
+          positionId: t.role_id || t.positionId,
+        }));
+        setTeam(formattedData.filter((t: any) => t.is_featured));
       } catch (error) {
         console.error('Error fetching team:', error);
       } finally {
@@ -208,11 +226,17 @@ export default function AboutPage() {
               {currentContent('mission').title}
             </Heading>
             <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-              {(currentContent('mission').content as string[]).map((item, index) => (
-                <div key={index} className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700">
-                  <Text className="text-gray-700 dark:text-gray-300">{item}</Text>
-                </div>
-              ))}
+              {(currentContent('mission').content as string[]).map((item, index) => {
+                const MissionIcon = aboutContent.mission.icons[index] || FiTarget;
+                return (
+                  <div key={index} className="bg-white dark:bg-gray-800/50 p-8 rounded-xl shadow-lg border border-gray-100 dark:border-gray-700/50 text-center transition-all duration-300 hover:shadow-primary/20 hover:border-primary/30 hover:-translate-y-1">
+                    <div className="mb-4 inline-block p-4 rounded-full bg-primary/10 text-primary">
+                      <MissionIcon className="w-8 h-8" />
+                    </div>
+                    <Text className="text-gray-700 dark:text-gray-300">{item}</Text>
+                  </div>
+                )
+              })}
             </div>
           </div>
         </section>
@@ -287,10 +311,10 @@ export default function AboutPage() {
               </div>
             )}
             {!teamLoading && team.length > 0 && (
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-8">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-8 gap-y-12">
                 {team.map((member) => (
-                  <div key={member.id}>
-                    <div className="relative w-32 h-32 md:w-40 md:h-40 mx-auto mb-4 rounded-full overflow-hidden shadow-lg">
+                  <div key={member.id} className="text-center group">
+                    <div className="relative w-32 h-32 md:w-40 md:h-40 mx-auto mb-4 rounded-full overflow-hidden shadow-lg transition-all duration-300 transform group-hover:scale-105 group-hover:shadow-xl">
                       <Image
                         src={member.avatar || '/images/team/default-avatar.jpg'}
                         alt={member.name}
