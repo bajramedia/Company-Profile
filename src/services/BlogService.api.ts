@@ -237,21 +237,39 @@ class BlogServiceAPI {
     }
   }
 
-  async getPostsByCategory(categorySlug: string, limit: number = 4): Promise<BlogPost[]> {
+  async getPostsByCategory(categorySlug: string, limit: number = 10): Promise<BlogPost[]> {
     try {
       const allPosts = await this.getAllPosts(1, 100);
-      return allPosts.filter(post => post.category.slug === categorySlug).slice(0, limit);
+      // Memperbaiki filter dengan pengecekan tipe untuk 'category'
+      return allPosts.filter(post => {
+        const category = post.category;
+        if (typeof category === 'object' && category !== null) {
+          return category.slug === categorySlug;
+        }
+        if (typeof category === 'string') {
+          // Asumsikan string adalah slug atau nama yang bisa dibandingkan
+          return category.toLowerCase().replace(/ /g, '-') === categorySlug;
+        }
+        return false;
+      }).slice(0, limit);
     } catch (error) {
       console.error('Error fetching posts by category:', error);
       console.log('🔄 API connection failed, loading fallback posts by category:', categorySlug);
       
-      // Use fallback dummy data
-      const fallbackData = getFallbackData();
-      const formattedBlogPosts = formatBlogForDisplay(fallbackData.blogPosts);
-      const categoryPosts = formattedBlogPosts.filter(post => post.category.slug === categorySlug);
-      
-      console.log('✅ Fallback category posts loaded:', categoryPosts.length, 'posts');
-      return categoryPosts.slice(0, limit);
+      // Perbaiki juga filter untuk fallback data
+      return getFallbackData()
+        .filter(post => {
+          const category = post.category;
+          if (typeof category === 'object' && category !== null) {
+            return category.slug === categorySlug;
+          }
+          if (typeof category === 'string') {
+            return category.toLowerCase().replace(/ /g, '-') === categorySlug;
+          }
+          return false;
+        })
+        .slice(0, limit)
+        .map(formatBlogForDisplay);
     }
   }
 
