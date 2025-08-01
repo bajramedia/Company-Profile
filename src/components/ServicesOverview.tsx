@@ -37,14 +37,14 @@ const services = [
         features: ['User Research', 'Wireframing', 'Prototyping', 'Design System']
     },
     {
-        id: 'digital-marketing',
-        title: 'Digital Marketing',
-        titleId: 'Digital Marketing Terpadu',
-        description: 'Strategi pemasaran digital yang komprehensif untuk meningkatkan brand awareness dan penjualan.',
-        descriptionEn: 'Comprehensive digital marketing strategies to increase brand awareness and sales.',
-        icon: BarChart3,
+        id: 'aset-game-development',
+        title: 'Aset Game Development',
+        titleId: 'Aset Game Development',
+        description: 'Aset & karakter untuk game.',
+        descriptionEn: 'Assets & characters for games.',
+        icon: BarChart3, // Ganti dengan ikon yang sesuai, untuk sementara pakai ini
         color: 'from-[#00D084] to-[#00B873]',
-        features: ['SEO/SEM', 'Social Media Ads', 'Content Marketing', 'Analytics & Reporting']
+        features: ['Character Design', 'Environment Design', '3D Modeling', 'Animation']
   },
   {
     id: 'sistem-development',
@@ -57,14 +57,14 @@ const services = [
         features: ['ERP System', 'CRM System', 'Custom Development', 'Integration Support']
     },
     {
-        id: 'consulting',
-        title: 'Consulting',
-        titleId: 'Konsultasi Teknologi & Strategi',
-        description: 'Konsultasi teknologi dan strategi digital untuk mengoptimalkan proses bisnis dan transformasi digital.',
-        descriptionEn: 'Technology consulting and digital strategy to optimize business processes and digital transformation.',
-        icon: Lightbulb,
+        id: 'sosial-media-management',
+        title: 'Sosial Media Management',
+        titleId: 'Sosial Media Management',
+        description: 'Kelola media sosial bisnis.',
+        descriptionEn: 'Manage business social media.',
+        icon: Lightbulb, // Ganti dengan ikon yang sesuai, untuk sementara pakai ini
         color: 'from-[#00D084] to-[#00B873]',
-        features: ['Digital Strategy', 'Tech Consultation', 'Process Optimization', 'Business Analysis']
+        features: ['Content Strategy', 'Community Management', 'Performance Analysis', 'Campaign Management']
     }
 ];
 

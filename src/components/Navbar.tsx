@@ -161,6 +161,19 @@ export default function Navbar({
                                             </Link>
 
                                             <Link
+                                                href="/services/mobile-apps"
+                                                className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200"
+                                            >
+                                                <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-teal-500 to-teal-600 flex items-center justify-center text-white text-sm">
+                                                    📱
+                                                </div>
+                                                <div>
+                                                    <div className="font-medium text-gray-900 dark:text-white text-sm">Mobile App Development</div>
+                                                    <div className="text-gray-500 dark:text-gray-400 text-xs">Aplikasi iOS & Android</div>
+                                                </div>
+                                            </Link>
+
+                                            <Link
                                                 href="/services/sistem-development"
                                                 className="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200"
                                             >
