@@ -114,20 +114,25 @@ export default function AboutPage() {
         setContentLoading(true);
         const response = await fetch(`/api/content/about`);
         if (!response.ok) throw new Error('Failed to fetch about content');
-        const data: AboutContent[] = await response.json();
+        const data = await response.json();
         
-        // Mengubah array data menjadi objek yang lebih mudah digunakan
-        const contentObject = data.reduce((acc, item) => {
-          acc[item.section_key] = {
-            title_en: item.title_en,
-            title_id: item.title_id,
-            content_en: item.content_en,
-            content_id: item.content_id,
-          };
-          return acc;
-        }, {} as { [key: string]: any });
-
-        setAboutContent(contentObject);
+        // Memastikan data adalah array sebelum menggunakan .reduce()
+        if (Array.isArray(data)) {
+          const contentObject = data.reduce((acc, item: AboutContent) => {
+            acc[item.section_key] = {
+              title_en: item.title_en,
+              title_id: item.title_id,
+              content_en: item.content_en,
+              content_id: item.content_id,
+            };
+            return acc;
+          }, {} as { [key: string]: any });
+          setAboutContent(contentObject);
+        } else {
+          // Jika data bukan array (misalnya objek tunggal atau null), tangani dengan sesuai
+          console.warn('Received non-array data for about content:', data);
+          setAboutContent(data || {}); // Set data langsung jika itu objek, atau objek kosong jika null
+        }
       } catch (err) {
         console.error('Error fetching about content:', err);
         setContentError(err instanceof Error ? err.message : 'Gagal memuat konten');
