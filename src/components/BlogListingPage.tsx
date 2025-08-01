@@ -89,7 +89,7 @@ const ModernBlogPostCard: React.FC<{ post: BlogPost }> = ({ post }) => {
           <div className="border-t border-gray-100 dark:border-gray-700 pt-3 mt-auto flex justify-between items-center">
             {/* Author info */}
             <div className="flex items-center">
-              {post.author.avatar && (
+              {typeof post.author === 'object' && post.author.avatar ? (
                 <Image
                   src={post.author.avatar}
                   alt={post.author.name}
@@ -97,8 +97,12 @@ const ModernBlogPostCard: React.FC<{ post: BlogPost }> = ({ post }) => {
                   height={24}
                   className="w-6 h-6 rounded-full mr-2 border border-gray-200 dark:border-gray-600"
                 />
+              ) : (
+                <div className="w-6 h-6 rounded-full bg-gray-200 dark:bg-gray-700 mr-2"></div>
               )}
-              <span className="text-xs font-medium">{post.author.name}</span>
+              <span className="text-xs font-medium">
+                {typeof post.author === 'object' ? post.author.name : post.author}
+              </span>
             </div>
 
             {/* Action icons */}
@@ -211,7 +215,7 @@ export default function BlogListingPage() {
       "dateModified": post.date,
       "author": {
         "@type": "Person",
-        "name": post.author.name
+        "name": typeof post.author === 'object' ? post.author.name : post.author
       },
       "url": `https://bajramedia.com/blog/${post.slug}`
     }))
@@ -363,9 +367,11 @@ export default function BlogListingPage() {
                                 className="w-8 h-8 rounded-full mr-3 border border-gray-200 dark:border-gray-600"
                               />
                             ) : (
-                              <div className="w-8 h-8 rounded-full bg-gray-200 mr-3"></div>
+                              <div className="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 mr-3"></div>
                             )}
-                            <span className="text-sm font-medium">{typeof post.author === 'object' ? post.author.name : post.author}</span>
+                            <span className="text-sm font-medium">
+                              {typeof post.author === 'object' ? post.author.name : post.author}
+                            </span>
                           </div>
 
                           <div className="text-primary font-medium text-sm flex items-center">
