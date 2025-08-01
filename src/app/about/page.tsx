@@ -104,10 +104,12 @@ export default function AboutPage() {
     const fetchPartners = async () => {
       try {
         setPartnersLoading(true);
-        const response = await fetch(`/api/partners`);
+        const response = await fetch('/api/partners');
         if (!response.ok) throw new Error('Failed to fetch partners');
         const data = await response.json();
-        setPartners(data.filter((p: Partner) => p.is_active == 1).slice(0, 2));
+        // Ambil hanya 2 partner yang aktif
+        const activePartners = data.filter((p: any) => p.is_active === 1).slice(0, 2);
+        setPartners(activePartners);
       } catch (err) {
         console.error('Error fetching partners:', err);
         setPartners([]);
@@ -161,17 +163,15 @@ export default function AboutPage() {
       <main className="pt-20 bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200">
         
         {/* Hero Section */}
-        <section className="relative py-20 overflow-hidden">
+        <section className="py-20 bg-white dark:bg-gray-900">
           <div className="container mx-auto max-w-7xl">
-            <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8">
-              <Heading variant="h1" className="mb-4 text-4xl md:text-6xl font-extrabold tracking-tight">
+            <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 text-center">
+              <Heading variant="h1" className="mb-6 text-4xl md:text-6xl font-extrabold tracking-tight">
                 <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                   {currentContent('hero').title}
                 </span>
               </Heading>
-              <Text
-                className="text-lg md:text-xl max-w-3xl mx-auto text-gray-600 dark:text-gray-400 line-clamp-3"
-              >
+              <Text className="text-lg md:text-xl max-w-3xl mx-auto text-gray-600 dark:text-gray-400">
                 {currentContent('hero').content}
               </Text>
             </div>
@@ -245,14 +245,16 @@ export default function AboutPage() {
         {/* Partners Section */}
         <section className="py-20">
           <div className="container mx-auto max-w-7xl">
-            <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 text-center">
-              <Heading variant="h2" color="foreground" className="mb-4">
-                {currentContent('partners').title}
-              </Heading>
-              <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-12">
-                {language === 'id' ? aboutContent.partners.subtitle_id : aboutContent.partners.subtitle_en}
-              </p>
-              
+            <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8">
+              <div className="text-center mb-12">
+                <Heading variant="h2" className="mb-4">
+                  {currentContent('partners').title}
+                </Heading>
+                <Text className="text-gray-600 dark:text-gray-400">
+                  {language === 'id' ? aboutContent.partners.subtitle_id : aboutContent.partners.subtitle_en}
+                </Text>
+              </div>
+
               {partnersLoading ? (
                 <div className="flex justify-center">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
@@ -264,7 +266,7 @@ export default function AboutPage() {
                       <div className="flex items-start space-x-6">
                         <div className="w-20 h-20 flex-shrink-0 bg-white rounded-lg p-2">
                           <Image 
-                            src={partner.logo_url} 
+                            src={partner.logo_url || '/images/placeholder.jpg'} 
                             alt={language === 'id' ? partner.name_id : partner.name_en}
                             width={80} 
                             height={80}
@@ -278,7 +280,7 @@ export default function AboutPage() {
                           <p className="text-gray-600 dark:text-gray-400 mb-4 text-sm">
                             {language === 'id' ? partner.description_id : partner.description_en}
                           </p>
-                          <Link href={partner.website_url} passHref legacyBehavior>
+                          <Link href={partner.website_url || '#'} passHref legacyBehavior>
                             <a target="_blank" rel="noopener noreferrer">
                               <Button variant="outline" size="sm">
                                 {t('about.partners.visitWebsite')}

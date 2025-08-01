@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { API_BASE_URL } from '@/config/api';
+import API_BASE_URL from '@/config/api';
 
 export async function GET() {
   try {
@@ -11,16 +11,8 @@ export async function GET() {
     
     const data = await response.json();
     
-    // Transform data sesuai dengan struktur yang diharapkan
-    const transformedPartners = data.map((partner: any) => ({
-      id: partner.id,
-      name: partner.name_en,
-      nameId: partner.name_id,
-      logo: partner.logo_url || '/images/partners/placeholder.jpg',
-      website: partner.website_url || '#'
-    }));
-    
-    return NextResponse.json(transformedPartners);
+    // Return raw data from API without transformation
+    return NextResponse.json(data);
   } catch (error) {
     console.error('Error fetching partners:', error);
     return NextResponse.json(
