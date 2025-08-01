@@ -38,8 +38,8 @@ interface TeamMember {
 // --- STATIC CONTENT ---
 const aboutContent = {
   hero: {
-    title_en: 'Pioneering Digital Transformation',
-    title_id: 'Merintis Transformasi Digital',
+    title_en: 'About Me',
+    title_id: 'Tentang Kami',
     content_en: 'Bajra Media ( formerly Reduktor Development ) is a technology company specializing in innovative software development and integrated digital solutions. We dedicated to helping businesses of all sizes transform and thrive in the digital age.',
     content_id: 'Bajra Media (sebelumnya Reduktor Development) adalah perusahaan teknologi yang mengkhususkan diri dalam pengembangan perangkat lunak inovatif dan solusi digital terintegrasi. Kami berdedikasi untuk membantu bisnis dari semua ukuran bertransformasi dan berkembang di era digital.',
   },
@@ -160,182 +160,187 @@ export default function AboutPage() {
     <>
       <main className="pt-20 bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200">
         
-        {/* Hero Section - NO BLUR */}
-        <section className="py-24 md:py-32 text-center" data-aos="fade-in">
-          <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8">
-            <Heading variant="h1" className="mb-4 text-4xl md:text-6xl font-extrabold tracking-tight">
-              <span className='bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent'>
-                {currentContent('hero').title}
-              </span>
-            </Heading>
-            <Text className="text-lg md:text-xl max-w-3xl mx-auto text-gray-600 dark:text-gray-400">
-              {currentContent('hero').content}
-            </Text>
+        {/* Hero Section */}
+        <section className="relative py-20 overflow-hidden">
+          <div className="container mx-auto max-w-7xl">
+            <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8">
+              <Heading variant="h1" className="mb-4 text-4xl md:text-6xl font-extrabold tracking-tight">
+                <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                  {currentContent('hero').title}
+                </span>
+              </Heading>
+              <Text
+                className="text-lg md:text-xl max-w-3xl mx-auto text-gray-600 dark:text-gray-400 line-clamp-3"
+              >
+                {currentContent('hero').content}
+              </Text>
+            </div>
           </div>
         </section>
 
         {/* Story Section */}
-        <section className="py-16 md:py-24">
-          <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8" data-aos="fade-up">
-            <div className="grid md:grid-cols-2 gap-12 items-center">
-              <div className='relative'>
-                 <div className="absolute -top-4 -left-4 w-full h-full bg-primary/10 rounded-lg transform rotate-[-3deg]"></div>
-                 <Image
-                  src="/images/team-meeting.jpg"
-                  alt="Our Story"
-                  width={600}
-                  height={400}
-                  className="rounded-lg shadow-2xl relative z-10"
-                />
-              </div>
-              <div>
-                <Heading variant="h2" className="mb-4">{currentContent('story').title}</Heading>
-                <Text className="text-gray-600 dark:text-gray-400 prose dark:prose-invert">
-                  {currentContent('story').content}
-                </Text>
+        <section className="py-20 bg-gray-50 dark:bg-gray-900">
+          <div className="container mx-auto max-w-7xl">
+            <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8" data-aos="fade-up">
+              <div className="grid md:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
+                <div className='relative'>
+                   <div className="absolute -top-4 -left-4 w-full h-full bg-primary/10 rounded-lg transform rotate-[-3deg]"></div>
+                   <Image
+                    src="/images/team-meeting.jpg"
+                    alt="Our Story"
+                    width={600}
+                    height={400}
+                    className="rounded-lg shadow-2xl relative z-10"
+                  />
+                </div>
+                <div>
+                  <Heading variant="h2" className="mb-4">{currentContent('story').title}</Heading>
+                  <Text className="text-gray-600 dark:text-gray-400 prose dark:prose-invert">
+                    {currentContent('story').content}
+                  </Text>
+                </div>
               </div>
             </div>
           </div>
         </section>
         
-        {/* Vision Section - Centered, No Image */}
-        <section className="py-16 md:py-24 bg-gray-50 dark:bg-gray-800/50" data-aos="fade-up">
-          <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 text-center">
-            <Heading variant="h2" className="mb-4">{currentContent('vision').title}</Heading>
-            <Text className="text-gray-600 dark:text-gray-400 prose dark:prose-invert max-w-3xl mx-auto">
-              {currentContent('vision').content}
-            </Text>
-          </div>
-        </section>
-
-        {/* Mission Section */}
-        <section className="py-16 md:py-24" data-aos="fade-up">
-          <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8">
-            <Heading variant="h2" color="foreground" className="text-center mb-12">
-              {currentContent('mission').title}
-            </Heading>
-            <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-              {(currentContent('mission').content as string[]).map((item, index) => {
-                const MissionIcon = aboutContent.mission.icons[index] || FiTarget;
-                return (
-                  <div key={index} className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg border border-transparent dark:border-gray-700/50 text-center transition-all duration-300 hover:shadow-primary/20 hover:border-primary/20 hover:-translate-y-2">
-                    <div className="mb-5 inline-block p-4 rounded-full bg-primary/10 text-primary">
-                      <MissionIcon className="w-8 h-8" />
-                    </div>
-                    <Text className="text-gray-700 dark:text-gray-300 text-lg">
-                      {item}
-                    </Text>
-                  </div>
-                )
-              })}
+        {/* Vision Section */}
+        <section className="py-20">
+          <div className="container mx-auto max-w-7xl">
+            <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 text-center">
+              <Heading variant="h2" className="mb-4">{currentContent('vision').title}</Heading>
+              <Text className="text-gray-600 dark:text-gray-400 prose dark:prose-invert max-w-3xl mx-auto">
+                {currentContent('vision').content}
+              </Text>
             </div>
           </div>
         </section>
 
-        {/* Partners Section - Show 2 partners with full info */}
-        <section className="py-16 md:py-24 bg-gray-50 dark:bg-gray-800/50" data-aos="fade-up">
-          <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 text-center">
-            <Heading variant="h2" color="foreground" className="mb-4">
-              {currentContent('partners').title}
-            </Heading>
-            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-12">
-              {currentContent('partners').content}
-            </p>
-            
-            {partnersLoading && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                {[...Array(2)].map((_, i) => (
-                  <div key={i} className="bg-white dark:bg-gray-800 p-8 rounded-xl animate-pulse">
-                    <div className="flex items-center space-x-6">
-                      <div className="w-20 h-20 rounded-md bg-gray-200 dark:bg-gray-700"></div>
-                      <div className="flex-1 space-y-3">
-                        <div className="h-5 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
-                        <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-full"></div>
+        {/* Mission Section */}
+        <section className="py-20 bg-gray-50 dark:bg-gray-900">
+          <div className="container mx-auto max-w-7xl">
+            <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8">
+              <Heading variant="h2" color="foreground" className="text-center mb-12">
+                {currentContent('mission').title}
+              </Heading>
+              <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                {(currentContent('mission').content as string[]).map((item, index) => {
+                  const MissionIcon = aboutContent.mission.icons[index] || FiTarget;
+                  return (
+                    <div key={index} className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg border border-transparent dark:border-gray-700/50 text-center transition-all duration-300 hover:shadow-primary/20 hover:border-primary/20 hover:-translate-y-2">
+                      <div className="mb-5 inline-block p-4 rounded-full bg-primary/10 text-primary">
+                        <MissionIcon className="w-8 h-8" />
                       </div>
+                      <Text className="text-gray-700 dark:text-gray-300 text-lg">
+                        {item}
+                      </Text>
                     </div>
-                  </div>
-                ))}
+                  )
+                })}
               </div>
-            )}
-
-            {!partnersLoading && partners.length > 0 && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                {partners.map((partner) => (
-                  <div key={partner.id} className="bg-white dark:bg-gray-800 p-8 rounded-xl border border-gray-200 dark:border-gray-700 text-left transition-all duration-300 hover:shadow-xl">
-                    <div className="flex items-start space-x-6">
-                      <Image 
-                        src={partner.logo_url} 
-                        alt={language === 'id' ? partner.name_id : partner.name_en} 
-                        width={80} height={80} 
-                        className="w-20 h-20 object-contain flex-shrink-0"
-                      />
-                      <div>
-                        <h3 className="font-bold text-xl mb-2 text-gray-900 dark:text-white">
-                          {language === 'id' ? partner.name_id : partner.name_en}
-                        </h3>
-                        <p className="text-gray-600 dark:text-gray-400 mb-4 text-sm">
-                          {language === 'id' ? partner.description_id : partner.description_en}
-                        </p>
-                        <Link href={partner.website_url} passHref legacyBehavior>
-                           <a target="_blank" rel="noopener noreferrer">
-                             <Button variant="outline" size="sm">
-                              {t('about.partners.visitWebsite')} <FiArrowRight className="ml-2" />
-                            </Button>
-                          </a>
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
+            </div>
           </div>
         </section>
 
-        {/* Team Section - Fixed Data Display */}
-        <section className="py-16 md:py-24" data-aos="fade-up">
-          <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 text-center">
-            <Heading variant="h2" color="foreground" className="mb-4">
-              {currentContent('team').title}
-            </Heading>
-            <Text className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-16">
-              {currentContent('team').content}
-            </Text>
-            {teamLoading && (
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-12">
-                {[...Array(4)].map((_, i) => (
-                  <div key={i} className="animate-pulse">
-                    <div className="w-32 h-32 rounded-full bg-gray-200 dark:bg-gray-700 mx-auto mb-4"></div>
-                    <div className="h-5 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mx-auto mb-2"></div>
-                    <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mx-auto"></div>
-                  </div>
-                ))}
-              </div>
-            )}
-            {!teamLoading && team.length > 0 && (
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-8 gap-y-12">
-                {team.map((member) => (
-                  <div key={member.id} className="text-center group">
-                    <div className="relative w-32 h-32 md:w-40 md:h-40 mx-auto mb-4">
-                      <Image
-                        src={member.image_url || '/images/team/default-avatar.jpg'}
-                        alt={member.name}
-                        fill
-                        sizes="(max-width: 768px) 128px, 160px"
-                        className="object-cover rounded-full shadow-lg transition-all duration-500 transform group-hover:scale-110"
-                      />
-                      <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-300 rounded-full flex items-center justify-center space-x-3">
-                        {member.linkedin_url && <a href={member.linkedin_url} target="_blank" rel="noopener noreferrer" className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-2 group-hover:translate-y-0"><FiLinkedin /></a>}
-                        {member.github_url && <a href={member.github_url} target="_blank" rel="noopener noreferrer" className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100 transform translate-y-2 group-hover:translate-y-0"><FiGithub /></a>}
-                        {member.instagram_url && <a href={member.instagram_url} target="_blank" rel="noopener noreferrer" className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-200 transform translate-y-2 group-hover:translate-y-0"><FiInstagram /></a>}
+        {/* Partners Section */}
+        <section className="py-20">
+          <div className="container mx-auto max-w-7xl">
+            <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 text-center">
+              <Heading variant="h2" color="foreground" className="mb-4">
+                {currentContent('partners').title}
+              </Heading>
+              <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-12">
+                {language === 'id' ? aboutContent.partners.subtitle_id : aboutContent.partners.subtitle_en}
+              </p>
+              
+              {partnersLoading ? (
+                <div className="flex justify-center">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                </div>
+              ) : (
+                <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                  {partners.map((partner) => (
+                    <div key={partner.id} className="bg-white dark:bg-gray-800 p-8 rounded-xl border border-gray-200 dark:border-gray-700 text-left transition-all duration-300 hover:shadow-xl">
+                      <div className="flex items-start space-x-6">
+                        <div className="w-20 h-20 flex-shrink-0 bg-white rounded-lg p-2">
+                          <Image 
+                            src={partner.logo_url} 
+                            alt={language === 'id' ? partner.name_id : partner.name_en}
+                            width={80} 
+                            height={80}
+                            className="w-full h-full object-contain"
+                          />
+                        </div>
+                        <div className="flex-1">
+                          <h3 className="font-bold text-xl mb-2 text-gray-900 dark:text-white">
+                            {language === 'id' ? partner.name_id : partner.name_en}
+                          </h3>
+                          <p className="text-gray-600 dark:text-gray-400 mb-4 text-sm">
+                            {language === 'id' ? partner.description_id : partner.description_en}
+                          </p>
+                          <Link href={partner.website_url} passHref legacyBehavior>
+                            <a target="_blank" rel="noopener noreferrer">
+                              <Button variant="outline" size="sm">
+                                {t('about.partners.visitWebsite')}
+                              </Button>
+                            </a>
+                          </Link>
+                        </div>
                       </div>
                     </div>
-                    <h3 className="font-bold text-lg text-gray-900 dark:text-white">{member.name}</h3>
-                    <p className="text-primary dark:text-accent text-sm">{language === 'id' ? member.role_id : member.role_en}</p>
-                  </div>
-                ))}
-              </div>
-            )}
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </section>
+
+        {/* Team Section */}
+        <section className="py-20 bg-gray-50 dark:bg-gray-900">
+          <div className="container mx-auto max-w-7xl">
+            <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 text-center">
+              <Heading variant="h2" color="foreground" className="mb-4">
+                {currentContent('team').title}
+              </Heading>
+              <Text className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-16">
+                {currentContent('team').content}
+              </Text>
+              {teamLoading && (
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-12">
+                  {[...Array(4)].map((_, i) => (
+                    <div key={i} className="animate-pulse">
+                      <div className="w-32 h-32 rounded-full bg-gray-200 dark:bg-gray-700 mx-auto mb-4"></div>
+                      <div className="h-5 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mx-auto mb-2"></div>
+                      <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mx-auto"></div>
+                    </div>
+                  ))}
+                </div>
+              )}
+              {!teamLoading && team.length > 0 && (
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-8 gap-y-12">
+                  {team.map((member) => (
+                    <div key={member.id} className="text-center group">
+                      <div className="relative w-32 h-32 md:w-40 md:h-40 mx-auto mb-4">
+                        <Image
+                          src={member.image_url || '/images/team/default-avatar.jpg'}
+                          alt={member.name}
+                          fill
+                          sizes="(max-width: 768px) 128px, 160px"
+                          className="object-cover rounded-full shadow-lg transition-all duration-500 transform group-hover:scale-110"
+                        />
+                        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-300 rounded-full flex items-center justify-center space-x-3">
+                          {member.linkedin_url && <a href={member.linkedin_url} target="_blank" rel="noopener noreferrer" className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-2 group-hover:translate-y-0"><FiLinkedin /></a>}
+                          {member.github_url && <a href={member.github_url} target="_blank" rel="noopener noreferrer" className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100 transform translate-y-2 group-hover:translate-y-0"><FiGithub /></a>}
+                          {member.instagram_url && <a href={member.instagram_url} target="_blank" rel="noopener noreferrer" className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-200 transform translate-y-2 group-hover:translate-y-0"><FiInstagram /></a>}
+                        </div>
+                      </div>
+                      <h3 className="font-bold text-lg text-gray-900 dark:text-white">{member.name}</h3>
+                      <p className="text-primary dark:text-accent text-sm">{language === 'id' ? member.role_id : member.role_en}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         </section>
       </main>
