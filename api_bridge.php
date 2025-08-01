@@ -683,21 +683,25 @@ function handleGet($pdo, $endpoint, $id) {
 
             case 'about':
             case 'about-content':
-                if ($id) {
-                    // Get single about content by ID
-                    $stmt = $pdo->prepare("SELECT * FROM about_content WHERE id = ?");
-                    $stmt->execute([$id]);
-                    $result = $stmt->fetch();
-                    echo json_encode($result);
-                } else {
-                    // Get all about content
-                    $stmt = $pdo->query("
-                        SELECT * FROM about_content 
-                        WHERE is_active = 1 
-                        ORDER BY id ASC
-                    ");
+                try {
+                    $stmt = $pdo->query("SELECT * FROM about_content WHERE is_active = 1 ORDER BY id ASC");
                     $results = $stmt->fetchAll();
-                    echo json_encode($results);
+                    
+                    // Mengolah data menjadi format yang diinginkan frontend
+                    $contentObject = [];
+                    foreach ($results as $row) {
+                        $contentObject[$row['section_key']] = [
+                            'title_en' => $row['title_en'],
+                            'title_id' => $row['title_id'],
+                            'content_en' => $row['content_en'],
+                            'content_id' => $row['content_id']
+                        ];
+                    }
+                    
+                    echo json_encode($contentObject);
+                } catch (Exception $e) {
+                    http_response_code(500);
+                    echo json_encode(['error' => 'Gagal mengambil konten about: ' . $e->getMessage()]);
                 }
                 break;
 

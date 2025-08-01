@@ -116,23 +116,8 @@ export default function AboutPage() {
         if (!response.ok) throw new Error('Failed to fetch about content');
         const data = await response.json();
         
-        // Memastikan data adalah array sebelum menggunakan .reduce()
-        if (Array.isArray(data)) {
-          const contentObject = data.reduce((acc, item: AboutContent) => {
-            acc[item.section_key] = {
-              title_en: item.title_en,
-              title_id: item.title_id,
-              content_en: item.content_en,
-              content_id: item.content_id,
-            };
-            return acc;
-          }, {} as { [key: string]: any });
-          setAboutContent(contentObject);
-        } else {
-          // Jika data bukan array (misalnya objek tunggal atau null), tangani dengan sesuai
-          console.warn('Received non-array data for about content:', data);
-          setAboutContent(data || {}); // Set data langsung jika itu objek, atau objek kosong jika null
-        }
+        // Langsung set data karena sudah diolah oleh API
+        setAboutContent(data || {});
       } catch (err) {
         console.error('Error fetching about content:', err);
         setContentError(err instanceof Error ? err.message : 'Gagal memuat konten');
@@ -292,7 +277,7 @@ export default function AboutPage() {
                 </Heading>
                 <div className="prose prose-lg dark:prose-invert max-w-none text-gray-600 dark:text-gray-300 space-y-4">
                   <div dangerouslySetInnerHTML={{ 
-                    __html: language === 'id' ? aboutContent['story']?.content_id : aboutContent['story']?.content_en
+                    __html: (language === 'id' ? aboutContent['story']?.content_id : aboutContent['story']?.content_en) || ''
                   }} />
                 </div>
               </div>
@@ -309,7 +294,7 @@ export default function AboutPage() {
                 </Heading>
                 <div className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed" 
                      dangerouslySetInnerHTML={{ 
-                       __html: language === 'id' ? aboutContent['mission']?.content_id : aboutContent['mission']?.content_en
+                       __html: (language === 'id' ? aboutContent['mission']?.content_id : aboutContent['mission']?.content_en) || ''
                      }} />
               </div>
               <div data-aos="fade-left" data-aos-delay="200">
@@ -318,7 +303,7 @@ export default function AboutPage() {
                 </Heading>
                 <div className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed"
                      dangerouslySetInnerHTML={{ 
-                       __html: language === 'id' ? aboutContent['vision']?.content_id : aboutContent['vision']?.content_en
+                       __html: (language === 'id' ? aboutContent['vision']?.content_id : aboutContent['vision']?.content_en) || ''
                      }} />
               </div>
             </div>
@@ -409,7 +394,7 @@ export default function AboutPage() {
               {language === 'id' ? aboutContent['partners']?.content_id : aboutContent['partners']?.content_en}
             </p>
             {partnersLoading && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
                 {[...Array(2)].map((_, i) => (
                   <div key={i} className="bg-white dark:bg-gray-800 rounded-xl p-6 animate-pulse">
                     <div className="h-16 bg-gray-200 dark:bg-gray-700 rounded-lg mb-4"></div>
