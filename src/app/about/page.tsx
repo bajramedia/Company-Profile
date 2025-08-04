@@ -107,8 +107,8 @@ export default function AboutPage() {
         const response = await fetch('/api/partners');
         if (!response.ok) throw new Error('Failed to fetch partners');
         const data = await response.json();
-        // Ambil semua partner yang aktif
-        const activePartners = data.filter((p: any) => p.is_active === 1 || p.isActive === 1);
+        // Ambil hanya 2 partner yang aktif
+        const activePartners = data.filter((p: any) => p.is_active === 1).slice(0, 2);
         setPartners(activePartners);
       } catch (err) {
         console.error('Error fetching partners:', err);
@@ -255,13 +255,13 @@ export default function AboutPage() {
                 </Text>
               </div>
 
-                                {partnersLoading ? (
+              {partnersLoading ? (
                 <div className="flex justify-center">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
                 </div>
               ) : (
                 <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                  {partners.map((partner) => (
+                                      {partners.map((partner) => (
                     <div key={partner.id} className="bg-white dark:bg-gray-800 p-8 rounded-xl border border-gray-200 dark:border-gray-700 text-center transition-all duration-300 hover:shadow-xl hover:-translate-y-2">
                       <div className="flex flex-col items-center space-y-6">
                         <div className="w-32 h-32 bg-white rounded-lg p-4 shadow-md">
@@ -273,20 +273,27 @@ export default function AboutPage() {
                             className="w-full h-full object-contain"
                           />
                         </div>
-                        <div className="text-center">
-                          <h3 className="font-bold text-2xl mb-4 text-gray-900 dark:text-white bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                        <div className="space-y-4">
+                          <h3 className="font-bold text-2xl text-gray-900 dark:text-white">
                             {language === 'id' ? partner.name_id : partner.name_en}
                           </h3>
-                          <p className="text-gray-600 dark:text-gray-400 mb-6 text-base leading-relaxed">
+                          <p className="text-gray-600 dark:text-gray-400 text-base leading-relaxed">
                             {language === 'id' ? partner.description_id : partner.description_en}
                           </p>
-                          <Link href={partner.website_url || '#'} passHref legacyBehavior>
-                            <a target="_blank" rel="noopener noreferrer" className="inline-block">
-                              <Button className="group flex items-center space-x-2 bg-gradient-to-r from-primary to-accent hover:opacity-90">
-                                <span>{t('about.partners.visitWebsite')}</span>
-                                <FiArrowRight className="transform group-hover:translate-x-1 transition-transform" />
-                              </Button>
-                            </a>
+                          <Link 
+                            href={partner.website_url || '#'} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="inline-block"
+                          >
+                            <Button 
+                              variant="outline" 
+                              size="lg"
+                              className="group hover:bg-primary hover:text-white transition-all duration-300"
+                            >
+                              {t('about.partners.visitWebsite')}
+                              <FiArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
+                            </Button>
                           </Link>
                         </div>
                       </div>
