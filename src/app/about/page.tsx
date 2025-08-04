@@ -255,35 +255,36 @@ export default function AboutPage() {
                 </Text>
               </div>
 
-              {partnersLoading ? (
+                                {partnersLoading ? (
                 <div className="flex justify-center">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
                 </div>
               ) : (
                 <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
                   {partners.map((partner) => (
-                    <div key={partner.id} className="bg-white dark:bg-gray-800 p-8 rounded-xl border border-gray-200 dark:border-gray-700 text-left transition-all duration-300 hover:shadow-xl">
-                      <div className="flex items-start space-x-6">
-                        <div className="w-20 h-20 flex-shrink-0 bg-white rounded-lg p-2">
+                    <div key={partner.id} className="bg-white dark:bg-gray-800 p-8 rounded-xl border border-gray-200 dark:border-gray-700 text-center transition-all duration-300 hover:shadow-xl hover:-translate-y-2">
+                      <div className="flex flex-col items-center space-y-6">
+                        <div className="w-32 h-32 bg-white rounded-lg p-4 shadow-md">
                           <Image 
                             src={partner.logo_url || '/images/placeholder.jpg'} 
                             alt={language === 'id' ? partner.name_id : partner.name_en}
-                            width={80} 
-                            height={80}
+                            width={128} 
+                            height={128}
                             className="w-full h-full object-contain"
                           />
                         </div>
-                        <div className="flex-1">
-                          <h3 className="font-bold text-xl mb-2 text-gray-900 dark:text-white">
+                        <div className="text-center">
+                          <h3 className="font-bold text-2xl mb-4 text-gray-900 dark:text-white bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                             {language === 'id' ? partner.name_id : partner.name_en}
                           </h3>
-                          <p className="text-gray-600 dark:text-gray-400 mb-4 text-sm">
+                          <p className="text-gray-600 dark:text-gray-400 mb-6 text-base leading-relaxed">
                             {language === 'id' ? partner.description_id : partner.description_en}
                           </p>
                           <Link href={partner.website_url || '#'} passHref legacyBehavior>
-                            <a target="_blank" rel="noopener noreferrer">
-                              <Button variant="outline" size="sm">
-                                {t('about.partners.visitWebsite')}
+                            <a target="_blank" rel="noopener noreferrer" className="inline-block">
+                              <Button className="group flex items-center space-x-2 bg-gradient-to-r from-primary to-accent hover:opacity-90">
+                                <span>{t('about.partners.visitWebsite')}</span>
+                                <FiArrowRight className="transform group-hover:translate-x-1 transition-transform" />
                               </Button>
                             </a>
                           </Link>
