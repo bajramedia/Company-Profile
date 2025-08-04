@@ -133,56 +133,55 @@ export default function HomePage() {
 
                                 {/* Text Content */}
                                 <div className="lg:col-span-7 order-2 lg:order-1">
-                                    <AnimatedText as="div">
-                                        <div className="mb-6">
-                                            <span className="text-green-500 font-semibold text-sm tracking-wider uppercase">
-                                                {language === 'id' ? 'Solusi Digital Terdepan' : 'Leading Digital Solutions'}
-                                            </span>
-                                        </div>
+                                                                    <div data-aos="fade-up">
+                                    <div className="mb-6">
+                                        <span className="text-green-500 font-semibold text-sm tracking-wider uppercase">
+                                            {language === 'id' ? 'Solusi Digital Terdepan' : 'Leading Digital Solutions'}
+                                        </span>
                                     </div>
+                                </div>
 
-                                    <AnimatedText as="div">
-                                        <Heading variant="h1" color="foreground" className="mb-8 text-[36px] md:text-[44px] lg:text-[52px] xl:text-[56px] font-extrabold leading-[1.1] tracking-tight">
-                                            {language === 'id' ? 'Kami Membangun ' : 'We Build '}
-                                            <span className="text-green-500 relative inline-block">
-                                                <span className="relative z-10">{language === 'id' ? 'Solusi Digital' : 'Digital Solutions'}</span>
-                                            </span>
-                                            <br />
-                                            {language === 'id' ? 'Yang Mendorong Kesuksesan' : 'That Drive Success'}
-                                        </Heading>
-                                    </div>
+                                <div data-aos="fade-up" data-aos-delay="100">
+                                    <Heading variant="h1" color="foreground" className="mb-8 text-[36px] md:text-[44px] lg:text-[52px] xl:text-[56px] font-extrabold leading-[1.1] tracking-tight">
+                                        {language === 'id' ? 'Kami Membangun ' : 'We Build '}
+                                        <span className="text-green-500 relative inline-block">
+                                            <span className="relative z-10">{language === 'id' ? 'Solusi Digital' : 'Digital Solutions'}</span>
+                                        </span>
+                                        <br />
+                                        {language === 'id' ? 'Yang Mendorong Kesuksesan' : 'That Drive Success'}
+                                    </Heading>
+                                </div>
 
-                                    <AnimatedText as="div">
-                                        <Text color="secondary" className="mb-10 text-[16px] md:text-[18px] leading-relaxed max-w-2xl">
-                                            {language === 'id'
-                                                ? 'Transformasikan bisnis Anda dengan pengembangan web yang canggih, aplikasi mobile, dan solusi pemasaran digital yang disesuaikan dengan kebutuhan Anda.'
-                                                : 'Transform your business with cutting-edge web development, mobile apps, and digital marketing solutions tailored to your needs.'
-                                            }
-                                        </Text>
-                                    </div>
+                                <div data-aos="fade-up" data-aos-delay="200">
+                                    <Text color="secondary" className="mb-10 text-[16px] md:text-[18px] leading-relaxed max-w-2xl">
+                                        {language === 'id'
+                                            ? 'Transformasikan bisnis Anda dengan pengembangan web yang canggih, aplikasi mobile, dan solusi pemasaran digital yang disesuaikan dengan kebutuhan Anda.'
+                                            : 'Transform your business with cutting-edge web development, mobile apps, and digital marketing solutions tailored to your needs.'
+                                        }
+                                    </Text>
+                                </div>
 
-                                    <AnimatedText as="div">
-                                        <div className="flex flex-col sm:flex-row gap-4 mb-12">
-                                            <Link href="/about">
-                                                <Button variant="primary" size="lg" className="px-8 py-4 text-base font-semibold w-full sm:w-auto bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 transform hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-2xl">
-                                                    {language === 'id' ? 'Konsultasi Gratis' : 'Get Free Consultation'}
-                                                </Button>
-                                            </Link>
-                                            <Link href="/portfolio">
-                                                <Button variant="outline" size="lg" className="px-8 py-4 text-base font-semibold border-2 border-green-500 text-green-500 hover:bg-green-500 hover:text-white w-full sm:w-auto transform hover:scale-105 transition-all duration-300">
-                                                    {language === 'id' ? 'Lihat Portfolio Kami' : 'View Our Portfolio'}
-                                                </Button>
-                                            </Link>
-                                        </div>
+                                <div data-aos="fade-up" data-aos-delay="300">
+                                    <div className="flex flex-col sm:flex-row gap-4 mb-12">
+                                        <Link href="/about">
+                                            <Button variant="primary" size="lg" className="px-8 py-4 text-base font-semibold w-full sm:w-auto bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 transform hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-2xl">
+                                                {language === 'id' ? 'Konsultasi Gratis' : 'Get Free Consultation'}
+                                            </Button>
+                                        </Link>
+                                        <Link href="/portfolio">
+                                            <Button variant="outline" size="lg" className="px-8 py-4 text-base font-semibold border-2 border-green-500 text-green-500 hover:bg-green-500 hover:text-white w-full sm:w-auto transform hover:scale-105 transition-all duration-300">
+                                                {language === 'id' ? 'Lihat Portfolio Kami' : 'View Our Portfolio'}
+                                            </Button>
+                                        </Link>
                                     </div>
+                                </div>
 
                                     {/* Hero Image */}
                                 </div>
 
                                 {/* Hero Image */}
-                                <div className="lg:col-span-5 order-1 lg:order-2">
-                                    <AnimatedText as="div">
-                                        <div className="relative">
+                                <div className="lg:col-span-5 order-1 lg:order-2" data-aos="fade-left" data-aos-delay="400">
+                                    <div className="relative">
                                             {/* Main Image Container */}
                                             <div className="relative w-full h-[400px] md:h-[500px] lg:h-[600px] rounded-3xl overflow-hidden shadow-2xl bg-gradient-to-br from-green-500/10 to-blue-500/10">
                                                 <div className="absolute inset-0">
@@ -407,21 +406,19 @@ export default function HomePage() {
                     {/* Why Choose Us Section */}
                     <section className="py-20 bg-gray-50 dark:bg-gray-800 transition-colors duration-300">
                         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                            <div className="text-center mb-16">
-                                <AnimatedText as="div">
-                                    <span className="text-green-500 font-medium text-sm tracking-wider uppercase mb-6 block">
-                                        {language === 'id' ? 'Mengapa Memilih Kami' : 'Why Choose Us'}
-                                    </span>
-                                    <Heading variant="h2" color="foreground" className="mb-4 text-[28px] md:text-[32px] lg:text-[36px] font-extrabold">
-                                        {language === 'id' ? 'Keunggulan Bajramedia' : 'Bajramedia Advantages'}
-                                    </Heading>
-                                    <Text color="secondary" className="max-w-3xl mx-auto text-base leading-relaxed">
-                                        {language === 'id'
-                                            ? 'Kami memberikan nilai lebih dengan kombinasi keahlian teknis, kreativitas, dan komitmen untuk kesuksesan proyek Anda.'
-                                            : 'We provide added value with a combination of technical expertise, creativity, and commitment to your project success.'
-                                        }
-                                    </Text>
-                                </div>
+                            <div className="text-center mb-16" data-aos="fade-up">
+                                <span className="text-green-500 font-medium text-sm tracking-wider uppercase mb-6 block">
+                                    {language === 'id' ? 'Mengapa Memilih Kami' : 'Why Choose Us'}
+                                </span>
+                                <Heading variant="h2" color="foreground" className="mb-4 text-[28px] md:text-[32px] lg:text-[36px] font-extrabold">
+                                    {language === 'id' ? 'Keunggulan Bajramedia' : 'Bajramedia Advantages'}
+                                </Heading>
+                                <Text color="secondary" className="max-w-3xl mx-auto text-base leading-relaxed">
+                                    {language === 'id'
+                                        ? 'Kami memberikan nilai lebih dengan kombinasi keahlian teknis, kreativitas, dan komitmen untuk kesuksesan proyek Anda.'
+                                        : 'We provide added value with a combination of technical expertise, creativity, and commitment to your project success.'
+                                    }
+                                </Text>
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -517,21 +514,19 @@ export default function HomePage() {
                     {/* Process Section */}
                     <section className="py-20 bg-white dark:bg-gray-900 transition-colors duration-300">
                         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                            <div className="text-center mb-16">
-                                <AnimatedText as="div">
-                                    <span className="text-green-500 font-medium text-sm tracking-wider uppercase mb-6 block">
-                                        {language === 'id' ? 'Proses Kerja' : 'Work Process'}
-                                    </span>
-                                    <Heading variant="h2" color="foreground" className="mb-4 text-[28px] md:text-[32px] lg:text-[36px] font-extrabold">
-                                        {language === 'id' ? 'Bagaimana Kami Bekerja' : 'How We Work'}
-                                    </Heading>
-                                    <Text color="secondary" className="max-w-3xl mx-auto text-base leading-relaxed">
-                                        {language === 'id'
-                                            ? 'Proses kerja yang terstruktur dan transparan untuk memastikan hasil terbaik bagi proyek Anda.'
-                                            : 'Structured and transparent work process to ensure the best results for your project.'
-                                        }
-                                    </Text>
-                                </div>
+                            <div className="text-center mb-16" data-aos="fade-up">
+                                <span className="text-green-500 font-medium text-sm tracking-wider uppercase mb-6 block">
+                                    {language === 'id' ? 'Proses Kerja' : 'Work Process'}
+                                </span>
+                                <Heading variant="h2" color="foreground" className="mb-4 text-[28px] md:text-[32px] lg:text-[36px] font-extrabold">
+                                    {language === 'id' ? 'Bagaimana Kami Bekerja' : 'How We Work'}
+                                </Heading>
+                                <Text color="secondary" className="max-w-3xl mx-auto text-base leading-relaxed">
+                                    {language === 'id'
+                                        ? 'Proses kerja yang terstruktur dan transparan untuk memastikan hasil terbaik bagi proyek Anda.'
+                                        : 'Structured and transparent work process to ensure the best results for your project.'
+                                    }
+                                </Text>
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
