@@ -3,6 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from 'react';
+import 'aos/dist/aos.css';
+import AOS from 'aos';
 import { Button, Heading, Text, Logo, LanguageSwitcher, AnimatedText, SupportedBy, CTA, Blog, Portfolio, Team, WhatsAppChat, Navbar, Home, ServicesOverview, FAQ } from "@/components";
 import { useLanguage } from "@/context/LanguageContext";
 import { usePublicSettings } from "@/hooks/useSettings";
@@ -11,6 +13,14 @@ import EnhancedSEO from '@/components/EnhancedSEO';
 export default function HomePage() {
     const { t, language } = useLanguage();
     const { settings: publicSettings, loading: settingsLoading } = usePublicSettings();
+
+    useEffect(() => {
+        AOS.init({
+            duration: 800,
+            once: true,
+            offset: 50,
+        });
+    }, []);
 
     return (
         <>
@@ -223,11 +233,11 @@ export default function HomePage() {
                     </section>
 
                     {/* About Section */}
-                    <section className="py-16 bg-white dark:bg-gray-900 transition-colors duration-300">
+                                        <section className="py-16 bg-white dark:bg-gray-900 transition-colors duration-300" data-aos="fade-up">
                         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                                 {/* Text Content */}
-                                <div>
+                                <div data-aos="fade-right" data-aos-delay="200">
                                     <div className="mb-6 flex items-center space-x-2">
                                         <span className="text-green-500 font-medium text-sm tracking-wider uppercase">
                                             {language === 'id' ? 'Tentang Kami' : 'About Us'}
@@ -249,7 +259,7 @@ export default function HomePage() {
                                         }
                                     </Text>
 
-                               
+                                
 
                                     <div className="flex flex-col sm:flex-row gap-4">
                                         <Link href="/about">
@@ -266,7 +276,7 @@ export default function HomePage() {
                                 </div>
 
                                 {/* Image */}
-                                <div className="relative">
+                                <div className="relative" data-aos="fade-left" data-aos-delay="400">
                                     <div className="relative w-full h-[400px] rounded-2xl overflow-hidden shadow-2xl">
                                         <Image
                                             src="/images/team.jpg"
@@ -297,9 +307,9 @@ export default function HomePage() {
                     </section>
 
                     {/* Testimonials Section */}
-                    <section className="py-16 bg-gray-50 dark:bg-gray-800 transition-colors duration-300">
+                    <section className="py-16 bg-gray-50 dark:bg-gray-800 transition-colors duration-300" data-aos="fade-up">
                         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                            <div className="text-center mb-12">
+                            <div className="text-center mb-12" data-aos="fade-up">
                                 <div className="mb-6 flex items-center justify-center space-x-2">
                                     <span className="text-green-500 font-medium text-sm tracking-wider uppercase">
                                         {language === 'id' ? 'Testimoni Klien' : 'Client Testimonials'}
@@ -320,7 +330,7 @@ export default function HomePage() {
 
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                                 {/* Testimonial 1 */}
-                                <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 border border-gray-200 dark:border-gray-600">
+                                <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 border border-gray-200 dark:border-gray-600" data-aos="fade-up" data-aos-delay="100">
                                     <div className="flex items-center mb-4">
                                         {[...Array(5)].map((_, i) => (
                                             <svg key={i} className="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 20 20">
@@ -343,7 +353,7 @@ export default function HomePage() {
                                 </div>
 
                                 {/* Testimonial 2 */}
-                                <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 border border-gray-200 dark:border-gray-600">
+                                <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 border border-gray-200 dark:border-gray-600" data-aos="fade-up" data-aos-delay="200">
                                     <div className="flex items-center mb-4">
                                         {[...Array(5)].map((_, i) => (
                                             <svg key={i} className="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 20 20">
@@ -366,7 +376,7 @@ export default function HomePage() {
                                 </div>
 
                                 {/* Testimonial 3 */}
-                                <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 border border-gray-200 dark:border-gray-600">
+                                <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 border border-gray-200 dark:border-gray-600" data-aos="fade-up" data-aos-delay="300">
                                     <div className="flex items-center mb-4">
                                         {[...Array(5)].map((_, i) => (
                                             <svg key={i} className="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 20 20">

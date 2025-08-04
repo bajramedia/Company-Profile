@@ -91,11 +91,10 @@ export default function AboutPage() {
   const [team, setTeam] = useState<TeamMember[]>([]);
   const [partnersLoading, setPartnersLoading] = useState(true);
   const [teamLoading, setTeamLoading] = useState(true);
-  const [isClient, setIsClient] = useState(false);
+
   const { language, t } = useLanguage();
 
   useEffect(() => {
-    setIsClient(true);
     AOS.init({
       duration: 800,
       once: true,
@@ -133,11 +132,9 @@ export default function AboutPage() {
       }
     };
 
-    if (isClient) {
-      fetchPartners();
-      fetchTeam();
-    }
-  }, [isClient]);
+    fetchPartners();
+    fetchTeam();
+  }, []);
 
   const currentContent = (section: keyof typeof aboutContent) => {
     const content = aboutContent[section];
@@ -153,10 +150,7 @@ export default function AboutPage() {
     };
   };
 
-  if (!isClient) {
-    // Render a skeleton loading state for SSR
-    return <div className="min-h-screen pt-20 bg-white dark:bg-gray-900"></div>;
-  }
+
 
   return (
     <>
