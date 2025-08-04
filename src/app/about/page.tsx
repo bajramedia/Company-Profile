@@ -161,11 +161,11 @@ export default function AboutPage() {
           <div className="container mx-auto max-w-7xl">
             <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8 text-center">
               <Heading variant="h1" className="mb-6 text-4xl md:text-6xl font-extrabold tracking-tight">
-                <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                <span className="text-primary">
                   {currentContent('hero').title}
                 </span>
               </Heading>
-              <Text className="text-lg md:text-xl max-w-3xl mx-auto text-gray-600 dark:text-gray-400">
+              <Text className="text-lg md:text-xl max-w-4xl mx-auto text-gray-600 dark:text-gray-400">
                 {currentContent('hero').content}
               </Text>
             </div>
@@ -178,8 +178,7 @@ export default function AboutPage() {
             <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8" data-aos="fade-up">
               <div className="grid md:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
                 <div className='relative'>
-                   <div className="absolute -top-4 -left-4 w-full h-full bg-primary/10 rounded-lg transform rotate-[-3deg]"></div>
-                   <Image
+                  <Image
                     src="/images/team-meeting.jpg"
                     alt="Our Story"
                     width={600}
