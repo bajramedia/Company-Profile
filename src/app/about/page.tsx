@@ -255,41 +255,40 @@ export default function AboutPage() {
               ) : (
                 <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
                                       {partners.map((partner) => (
-                    <div key={partner.id} className="bg-white dark:bg-gray-800 p-8 rounded-xl border border-gray-200 dark:border-gray-700 text-center transition-all duration-300 hover:shadow-xl hover:-translate-y-2">
-                      <div className="flex flex-col items-center space-y-6">
-                        <div className="w-32 h-32 bg-white rounded-lg p-4 shadow-md">
-                          <Image 
-                            src={partner.logo_url || '/images/placeholder.jpg'} 
-                            alt={language === 'id' ? partner.name_id : partner.name_en}
-                            width={128} 
-                            height={128}
-                            className="w-full h-full object-contain"
-                          />
-                        </div>
-                        <div className="space-y-4">
-                          <h3 className="font-bold text-2xl text-gray-900 dark:text-white">
-                            {language === 'id' ? partner.name_id : partner.name_en}
-                          </h3>
-                          <p className="text-gray-600 dark:text-gray-400 text-base leading-relaxed">
-                            {language === 'id' ? partner.description_id : partner.description_en}
-                          </p>
-                          <Link 
-                            href={partner.website_url || '#'} 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            className="inline-block"
-                          >
-                            <Button 
-                              variant="outline" 
-                              size="lg"
-                              className="group hover:bg-primary hover:text-white transition-all duration-300"
-                            >
-                              {t('about.partners.visitWebsite')}
-                              <FiArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
-                            </Button>
-                          </Link>
-                        </div>
+                    <div
+                      key={partner.id}
+                      className="bg-white dark:bg-gray-900 p-10 rounded-2xl border border-gray-200 dark:border-gray-700 text-center shadow-lg transition-all duration-300 hover:shadow-2xl hover:border-primary/40 hover:-translate-y-2 group flex flex-col items-center"
+                    >
+                      <div className="w-28 h-28 flex items-center justify-center rounded-xl bg-gray-50 dark:bg-gray-800 mb-6 shadow-md p-4">
+                        <Image
+                          src={partner.logo_url || '/images/placeholder.jpg'}
+                          alt={language === 'id' ? partner.name_id : partner.name_en}
+                          width={96}
+                          height={96}
+                          className="w-full h-full object-contain"
+                        />
                       </div>
+                      <h3 className="font-extrabold text-2xl text-gray-900 dark:text-white mb-2 tracking-tight group-hover:text-primary transition-colors">
+                        {language === 'id' ? partner.name_id : partner.name_en}
+                      </h3>
+                      <p className="text-gray-500 dark:text-gray-300 text-base mb-6 leading-relaxed max-w-xs mx-auto">
+                        {language === 'id' ? partner.description_id : partner.description_en}
+                      </p>
+                      <Link
+                        href={partner.website_url || '#'}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full"
+                      >
+                        <Button
+                          variant="outline"
+                          size="lg"
+                          className="w-full flex items-center justify-center gap-2 border-primary text-primary group-hover:bg-primary group-hover:text-white transition-all duration-300 font-semibold"
+                        >
+                          {t('about.partners.visitWebsite')}
+                          <FiArrowRight className="ml-1 group-hover:translate-x-1 transition-transform" />
+                        </Button>
+                      </Link>
                     </div>
                   ))}
                 </div>
