@@ -107,8 +107,8 @@ export default function AboutPage() {
         const response = await fetch('/api/partners');
         if (!response.ok) throw new Error('Failed to fetch partners');
         const data = await response.json();
-        // Ambil hanya 2 partner yang aktif
-        const activePartners = data.filter((p: any) => p.is_active === 1).slice(0, 2);
+        // Ambil semua partner yang aktif
+        const activePartners = data.filter((p: any) => p.is_active === 1 || p.isActive === 1);
         setPartners(activePartners);
       } catch (err) {
         console.error('Error fetching partners:', err);

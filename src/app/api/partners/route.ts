@@ -11,8 +11,19 @@ export async function GET() {
     
     const data = await response.json();
     
-    // Return raw data from API without transformation
-    return NextResponse.json(data);
+    // Transform data to match frontend expectations
+    const transformedData = Array.isArray(data) ? data.map(partner => ({
+      id: partner.id,
+      name_en: partner.name_en || partner.nameEn || partner.name || '',
+      name_id: partner.name_id || partner.nameId || partner.name || '',
+      description_en: partner.description_en || partner.descriptionEn || partner.description || '',
+      description_id: partner.description_id || partner.descriptionId || partner.description || '',
+      logo_url: partner.logo_url || partner.logoUrl || partner.logo || '',
+      website_url: partner.website_url || partner.websiteUrl || partner.website || '',
+      is_active: partner.is_active || partner.isActive || 1
+    })) : [];
+    
+    return NextResponse.json(transformedData);
   } catch (error) {
     console.error('Error fetching partners:', error);
     return NextResponse.json(
