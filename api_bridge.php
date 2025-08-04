@@ -669,6 +669,7 @@ function handleGet($pdo, $endpoint, $id) {
                     $result['logo'] = $result['logo_url'];
                     $result['website'] = $result['website_url'];
                     $result['type'] = $result['partner_type'];
+                    $result['is_active'] = (int)($result['is_active'] ?? 0);
                     
                     // Keep legacy format for admin compatibility
                     $result['nameEn'] = $result['name_en'];

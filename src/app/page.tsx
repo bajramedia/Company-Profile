@@ -139,7 +139,7 @@ export default function HomePage() {
                                                 {language === 'id' ? 'Solusi Digital Terdepan' : 'Leading Digital Solutions'}
                                             </span>
                                         </div>
-                                    </AnimatedText>
+                                    </div>
 
                                     <AnimatedText as="div">
                                         <Heading variant="h1" color="foreground" className="mb-8 text-[36px] md:text-[44px] lg:text-[52px] xl:text-[56px] font-extrabold leading-[1.1] tracking-tight">
@@ -150,7 +150,7 @@ export default function HomePage() {
                                             <br />
                                             {language === 'id' ? 'Yang Mendorong Kesuksesan' : 'That Drive Success'}
                                         </Heading>
-                                    </AnimatedText>
+                                    </div>
 
                                     <AnimatedText as="div">
                                         <Text color="secondary" className="mb-10 text-[16px] md:text-[18px] leading-relaxed max-w-2xl">
@@ -159,7 +159,7 @@ export default function HomePage() {
                                                 : 'Transform your business with cutting-edge web development, mobile apps, and digital marketing solutions tailored to your needs.'
                                             }
                                         </Text>
-                                    </AnimatedText>
+                                    </div>
 
                                     <AnimatedText as="div">
                                         <div className="flex flex-col sm:flex-row gap-4 mb-12">
@@ -174,7 +174,7 @@ export default function HomePage() {
                                                 </Button>
                                             </Link>
                                         </div>
-                                    </AnimatedText>
+                                    </div>
 
                                     {/* Hero Image */}
                                 </div>
@@ -226,7 +226,7 @@ export default function HomePage() {
                                             <div className="absolute -top-6 -right-6 w-32 h-32 bg-green-500/10 rounded-full blur-2xl"></div>
                                             <div className="absolute -bottom-6 -left-6 w-40 h-40 bg-blue-500/10 rounded-full blur-2xl"></div>
                                         </div>
-                                    </AnimatedText>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -421,12 +421,12 @@ export default function HomePage() {
                                             : 'We provide added value with a combination of technical expertise, creativity, and commitment to your project success.'
                                         }
                                     </Text>
-                                </AnimatedText>
+                                </div>
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                                 {/* Advantage 1 */}
-                                <AnimatedText as="div">
+                                <div data-aos="fade-up" data-aos-delay="100">
                                     <div className="text-center">
                                         <div className="w-20 h-20 bg-green-500/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
                                             <svg className="w-10 h-10 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -443,10 +443,10 @@ export default function HomePage() {
                                             }
                                         </p>
                                     </div>
-                                </AnimatedText>
+                                </div>
 
                                 {/* Advantage 2 */}
-                                <AnimatedText as="div">
+                                <div data-aos="fade-up" data-aos-delay="200">
                                     <div className="text-center">
                                         <div className="w-20 h-20 bg-blue-500/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
                                             <svg className="w-10 h-10 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -463,10 +463,10 @@ export default function HomePage() {
                                             }
                                         </p>
                                     </div>
-                                </AnimatedText>
+                                </div>
 
                                 {/* Advantage 3 */}
-                                <AnimatedText as="div">
+                                <div data-aos="fade-up" data-aos-delay="300">
                                     <div className="text-center">
                                         <div className="w-20 h-20 bg-purple-500/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
                                             <svg className="w-10 h-10 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -483,10 +483,10 @@ export default function HomePage() {
                                             }
                                         </p>
                                     </div>
-                                </AnimatedText>
+                                </div>
 
                                 {/* Advantage 4 */}
-                                <AnimatedText as="div">
+                                <div data-aos="fade-up" data-aos-delay="400">
                                     <div className="text-center">
                                         <div className="w-20 h-20 bg-red-500/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
                                             <svg className="w-10 h-10 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -503,7 +503,7 @@ export default function HomePage() {
                                             }
                                         </p>
                                     </div>
-                                </AnimatedText>
+                                </div>
                             </div>
                         </div>
                     </section>
@@ -531,81 +531,73 @@ export default function HomePage() {
                                             : 'Structured and transparent work process to ensure the best results for your project.'
                                         }
                                     </Text>
-                                </AnimatedText>
+                                </div>
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                                 {/* Step 1 */}
-                                <AnimatedText as="div">
-                                    <div className="text-center relative">
-                                        <div className="w-16 h-16 bg-green-500 rounded-2xl flex items-center justify-center mx-auto mb-6 text-white font-bold text-xl">
-                                            1
-                                        </div>
-                                        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
-                                            {language === 'id' ? 'Konsultasi' : 'Consultation'}
-                                        </h3>
-                                        <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
-                                            {language === 'id'
-                                                ? 'Diskusi mendalam tentang kebutuhan, tujuan, dan visi proyek Anda.'
-                                                : 'In-depth discussion about your project needs, goals, and vision.'
-                                            }
-                                        </p>
+                                <div className="text-center relative" data-aos="fade-up" data-aos-delay="100">
+                                    <div className="w-16 h-16 bg-green-500 rounded-2xl flex items-center justify-center mx-auto mb-6 text-white font-bold text-xl">
+                                        1
                                     </div>
-                                </AnimatedText>
+                                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
+                                        {language === 'id' ? 'Konsultasi' : 'Consultation'}
+                                    </h3>
+                                    <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                                        {language === 'id'
+                                            ? 'Diskusi mendalam tentang kebutuhan, tujuan, dan visi proyek Anda.'
+                                            : 'In-depth discussion about your project needs, goals, and vision.'
+                                        }
+                                    </p>
+                                </div>
 
                                 {/* Step 2 */}
-                                <AnimatedText as="div">
-                                    <div className="text-center relative">
-                                        <div className="w-16 h-16 bg-blue-500 rounded-2xl flex items-center justify-center mx-auto mb-6 text-white font-bold text-xl">
-                                            2
-                                        </div>
-                                        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
-                                            {language === 'id' ? 'Perencanaan' : 'Planning'}
-                                        </h3>
-                                        <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
-                                            {language === 'id'
-                                                ? 'Pembuatan roadmap detail, timeline, dan spesifikasi teknis proyek.'
-                                                : 'Creating detailed roadmap, timeline, and technical specifications.'
-                                            }
-                                        </p>
+                                <div className="text-center relative" data-aos="fade-up" data-aos-delay="200">
+                                    <div className="w-16 h-16 bg-blue-500 rounded-2xl flex items-center justify-center mx-auto mb-6 text-white font-bold text-xl">
+                                        2
                                     </div>
-                                </AnimatedText>
+                                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
+                                        {language === 'id' ? 'Perencanaan' : 'Planning'}
+                                    </h3>
+                                    <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                                        {language === 'id'
+                                            ? 'Pembuatan roadmap detail, timeline, dan spesifikasi teknis proyek.'
+                                            : 'Creating detailed roadmap, timeline, and technical specifications.'
+                                        }
+                                    </p>
+                                </div>
 
                                 {/* Step 3 */}
-                                <AnimatedText as="div">
-                                    <div className="text-center relative">
-                                        <div className="w-16 h-16 bg-purple-500 rounded-2xl flex items-center justify-center mx-auto mb-6 text-white font-bold text-xl">
-                                            3
-                                        </div>
-                                        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
-                                            {language === 'id' ? 'Pengembangan' : 'Development'}
-                                        </h3>
-                                        <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
-                                            {language === 'id'
-                                                ? 'Eksekusi proyek dengan update berkala dan komunikasi yang transparan.'
-                                                : 'Project execution with regular updates and transparent communication.'
-                                            }
-                                        </p>
+                                <div className="text-center relative" data-aos="fade-up" data-aos-delay="300">
+                                    <div className="w-16 h-16 bg-purple-500 rounded-2xl flex items-center justify-center mx-auto mb-6 text-white font-bold text-xl">
+                                        3
                                     </div>
-                                </AnimatedText>
+                                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
+                                        {language === 'id' ? 'Pengembangan' : 'Development'}
+                                    </h3>
+                                    <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                                        {language === 'id'
+                                            ? 'Eksekusi proyek dengan update berkala dan komunikasi yang transparan.'
+                                            : 'Project execution with regular updates and transparent communication.'
+                                        }
+                                    </p>
+                                </div>
 
                                 {/* Step 4 */}
-                                <AnimatedText as="div">
-                                    <div className="text-center">
-                                        <div className="w-16 h-16 bg-red-500 rounded-2xl flex items-center justify-center mx-auto mb-6 text-white font-bold text-xl">
-                                            4
-                                        </div>
-                                        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
-                                            {language === 'id' ? 'Delivery & Support' : 'Delivery & Support'}
-                                        </h3>
-                                        <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
-                                            {language === 'id'
-                                                ? 'Penyerahan proyek yang telah teruji dan dukungan berkelanjutan.'
-                                                : 'Delivery of tested project and ongoing support.'
-                                            }
-                                        </p>
+                                <div className="text-center" data-aos="fade-up" data-aos-delay="400">
+                                    <div className="w-16 h-16 bg-red-500 rounded-2xl flex items-center justify-center mx-auto mb-6 text-white font-bold text-xl">
+                                        4
                                     </div>
-                                </AnimatedText>
+                                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
+                                        {language === 'id' ? 'Delivery & Support' : 'Delivery & Support'}
+                                    </h3>
+                                    <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                                        {language === 'id'
+                                            ? 'Penyerahan proyek yang telah teruji dan dukungan berkelanjutan.'
+                                            : 'Delivery of tested project and ongoing support.'
+                                        }
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </section>
