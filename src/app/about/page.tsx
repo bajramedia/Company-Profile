@@ -165,7 +165,7 @@ export default function AboutPage() {
                   {currentContent('hero').title}
                 </span>
               </Heading>
-              <Text className="text-lg md:text-xl max-w-4xl mx-auto text-gray-600 dark:text-gray-400">
+              <Text className="text-lg md:text-xl max-w-6xl mx-auto text-gray-600 dark:text-gray-400">
                 {currentContent('hero').content}
               </Text>
             </div>
