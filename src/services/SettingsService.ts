@@ -1,13 +1,3 @@
-export interface SocialLinks {
-  twitter: string;
-  facebook: string;
-  instagram: string;
-  linkedin: string;
-  youtube: string;
-  github: string;
-  discord: string;
-}
-
 export interface SiteSettings {
   siteName: string;
   siteDescription: string;
@@ -21,7 +11,15 @@ export interface SiteSettings {
   contactEmail: string;
   contactPhone: string;
   contactAddress: string;
-  socialLinks: SocialLinks;
+  socialLinks: {
+    facebook: string;
+    twitter: string;
+    instagram: string;
+    linkedin: string;
+    youtube: string;
+    github: string;
+    discord: string;
+  };
   seoSettings: {
     metaTitle: string;
     metaDescription: string;
@@ -48,9 +46,7 @@ export const defaultSettings: SiteSettings = {
     twitter: '',
     instagram: '',
     linkedin: '',
-    youtube: '',
-    github: '',
-    discord: ''
+    youtube: ''
   },
   seoSettings: {
     metaTitle: 'Bajramedia - Creative Digital Agency',
@@ -264,9 +260,7 @@ class SettingsService {
           twitter: data.socialLinks?.twitter || '',
           instagram: data.socialLinks?.instagram || '',
           linkedin: data.socialLinks?.linkedin || '',
-          youtube: data.socialLinks?.youtube || '',
-          github: data.socialLinks?.github || '',
-          discord: data.socialLinks?.discord || ''
+          youtube: data.socialLinks?.youtube || ''
         }
       };
     } catch (error) {
