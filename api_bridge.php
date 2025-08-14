@@ -722,10 +722,7 @@ function handleGet($pdo, $endpoint, $id) {
                     $result['socialInstagram'] = $result['social_instagram'];
                     $result['socialLinkedin'] = $result['social_linkedin'];
                     $result['socialGithub'] = $result['social_github'];
-                    $result['socialDiscord'] = $result['social_discord'] ?? '';
-                    $result['socialFacebook'] = $result['social_facebook'] ?? '';
-                    $result['socialTwitter'] = $result['social_twitter'] ?? '';
-                    $result['socialYoutube'] = $result['social_youtube'] ?? '';
+                    $result['socialDiscord'] = $result['social_discord'];
                 }
                 
                 echo json_encode($result ?: []);

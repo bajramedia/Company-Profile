@@ -70,7 +70,8 @@ const fallbackSettings = {
     twitter: '',
     instagram: '',
     linkedin: '',
-    youtube: ''
+    youtube: '',
+    discord: ''
   },
   seoSettings: {
     metaTitle: 'Bajramedia - Digital Solutions Agency',
