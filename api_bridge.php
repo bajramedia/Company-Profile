@@ -723,6 +723,9 @@ function handleGet($pdo, $endpoint, $id) {
                     $result['socialLinkedin'] = $result['social_linkedin'];
                     $result['socialGithub'] = $result['social_github'];
                     $result['socialDiscord'] = $result['social_discord'] ?? '';
+                    $result['socialFacebook'] = $result['social_facebook'] ?? '';
+                    $result['socialTwitter'] = $result['social_twitter'] ?? '';
+                    $result['socialYoutube'] = $result['social_youtube'] ?? '';
                 }
                 
                 echo json_encode($result ?: []);
