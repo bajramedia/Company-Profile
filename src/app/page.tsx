@@ -259,7 +259,7 @@ export default function HomePage() {
                                         }
                                     </Text>
 
-                                
+                               
 
                                     <div className="flex flex-col sm:flex-row gap-4">
                                         <Link href="/about">
@@ -537,67 +537,67 @@ export default function HomePage() {
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                                 {/* Step 1 */}
                                 <div className="text-center relative" data-aos="fade-up" data-aos-delay="100">
-                                    <div className="w-16 h-16 bg-green-500 rounded-2xl flex items-center justify-center mx-auto mb-6 text-white font-bold text-xl">
-                                        1
+                                        <div className="w-16 h-16 bg-green-500 rounded-2xl flex items-center justify-center mx-auto mb-6 text-white font-bold text-xl">
+                                            1
+                                        </div>
+                                        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
+                                            {language === 'id' ? 'Konsultasi' : 'Consultation'}
+                                        </h3>
+                                        <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                                            {language === 'id'
+                                                ? 'Diskusi mendalam tentang kebutuhan, tujuan, dan visi proyek Anda.'
+                                                : 'In-depth discussion about your project needs, goals, and vision.'
+                                            }
+                                        </p>
                                     </div>
-                                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
-                                        {language === 'id' ? 'Konsultasi' : 'Consultation'}
-                                    </h3>
-                                    <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
-                                        {language === 'id'
-                                            ? 'Diskusi mendalam tentang kebutuhan, tujuan, dan visi proyek Anda.'
-                                            : 'In-depth discussion about your project needs, goals, and vision.'
-                                        }
-                                    </p>
-                                </div>
 
                                 {/* Step 2 */}
                                 <div className="text-center relative" data-aos="fade-up" data-aos-delay="200">
-                                    <div className="w-16 h-16 bg-blue-500 rounded-2xl flex items-center justify-center mx-auto mb-6 text-white font-bold text-xl">
-                                        2
+                                        <div className="w-16 h-16 bg-blue-500 rounded-2xl flex items-center justify-center mx-auto mb-6 text-white font-bold text-xl">
+                                            2
+                                        </div>
+                                        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
+                                            {language === 'id' ? 'Perencanaan' : 'Planning'}
+                                        </h3>
+                                        <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                                            {language === 'id'
+                                                ? 'Pembuatan roadmap detail, timeline, dan spesifikasi teknis proyek.'
+                                                : 'Creating detailed roadmap, timeline, and technical specifications.'
+                                            }
+                                        </p>
                                     </div>
-                                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
-                                        {language === 'id' ? 'Perencanaan' : 'Planning'}
-                                    </h3>
-                                    <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
-                                        {language === 'id'
-                                            ? 'Pembuatan roadmap detail, timeline, dan spesifikasi teknis proyek.'
-                                            : 'Creating detailed roadmap, timeline, and technical specifications.'
-                                        }
-                                    </p>
-                                </div>
 
                                 {/* Step 3 */}
                                 <div className="text-center relative" data-aos="fade-up" data-aos-delay="300">
-                                    <div className="w-16 h-16 bg-purple-500 rounded-2xl flex items-center justify-center mx-auto mb-6 text-white font-bold text-xl">
-                                        3
+                                        <div className="w-16 h-16 bg-purple-500 rounded-2xl flex items-center justify-center mx-auto mb-6 text-white font-bold text-xl">
+                                            3
+                                        </div>
+                                        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
+                                            {language === 'id' ? 'Pengembangan' : 'Development'}
+                                        </h3>
+                                        <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                                            {language === 'id'
+                                                ? 'Eksekusi proyek dengan update berkala dan komunikasi yang transparan.'
+                                                : 'Project execution with regular updates and transparent communication.'
+                                            }
+                                        </p>
                                     </div>
-                                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
-                                        {language === 'id' ? 'Pengembangan' : 'Development'}
-                                    </h3>
-                                    <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
-                                        {language === 'id'
-                                            ? 'Eksekusi proyek dengan update berkala dan komunikasi yang transparan.'
-                                            : 'Project execution with regular updates and transparent communication.'
-                                        }
-                                    </p>
-                                </div>
 
                                 {/* Step 4 */}
                                 <div className="text-center" data-aos="fade-up" data-aos-delay="400">
-                                    <div className="w-16 h-16 bg-red-500 rounded-2xl flex items-center justify-center mx-auto mb-6 text-white font-bold text-xl">
-                                        4
+                                        <div className="w-16 h-16 bg-red-500 rounded-2xl flex items-center justify-center mx-auto mb-6 text-white font-bold text-xl">
+                                            4
+                                        </div>
+                                        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
+                                            {language === 'id' ? 'Delivery & Support' : 'Delivery & Support'}
+                                        </h3>
+                                        <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                                            {language === 'id'
+                                                ? 'Penyerahan proyek yang telah teruji dan dukungan berkelanjutan.'
+                                                : 'Delivery of tested project and ongoing support.'
+                                            }
+                                        </p>
                                     </div>
-                                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
-                                        {language === 'id' ? 'Delivery & Support' : 'Delivery & Support'}
-                                    </h3>
-                                    <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
-                                        {language === 'id'
-                                            ? 'Penyerahan proyek yang telah teruji dan dukungan berkelanjutan.'
-                                            : 'Delivery of tested project and ongoing support.'
-                                        }
-                                    </p>
-                                </div>
                             </div>
                         </div>
                     </section>

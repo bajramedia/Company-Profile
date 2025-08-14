@@ -630,9 +630,6 @@ function handleGet($pdo, $endpoint, $id) {
                     $result['behanceUrl'] = $result['behance_url'];
                     $result['roleEn'] = $result['role_en'];
                     $result['bioEn'] = $result['bio_en'];
-                    $result['socialLinkedin'] = $result['social_linkedin'];
-                    $result['socialGithub'] = $result['social_github'];
-                    $result['socialDiscord'] = $result['social_discord'] ?? '';
                 }
                 
                 echo json_encode($results);
@@ -679,9 +676,6 @@ function handleGet($pdo, $endpoint, $id) {
                     $result['logoUrl'] = $result['logo_url'];
                     $result['websiteUrl'] = $result['website_url'];
                     $result['partnerType'] = $result['partner_type'];
-                    $result['socialLinkedin'] = $result['social_linkedin'];
-                    $result['socialGithub'] = $result['social_github'];
-                    $result['socialDiscord'] = $result['social_discord'] ?? '';
                 }
                 
                 echo json_encode($results);
@@ -728,6 +722,7 @@ function handleGet($pdo, $endpoint, $id) {
                     $result['socialInstagram'] = $result['social_instagram'];
                     $result['socialLinkedin'] = $result['social_linkedin'];
                     $result['socialGithub'] = $result['social_github'];
+                    $result['socialDiscord'] = $result['social_discord'] ?? '';
                 }
                 
                 echo json_encode($result ?: []);

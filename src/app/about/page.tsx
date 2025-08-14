@@ -132,8 +132,8 @@ export default function AboutPage() {
       }
     };
 
-    fetchPartners();
-    fetchTeam();
+      fetchPartners();
+      fetchTeam();
   }, []);
 
   const currentContent = (section: keyof typeof aboutContent) => {
@@ -178,7 +178,7 @@ export default function AboutPage() {
             <div className="w-[95%] mx-auto px-4 sm:px-6 md:px-8" data-aos="fade-up">
               <div className="grid md:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
                 <div className='relative'>
-                  <Image
+                   <Image
                     src="/images/team-meeting.jpg"
                     alt="Our Story"
                     width={600}
@@ -254,26 +254,26 @@ export default function AboutPage() {
                 </div>
               ) : (
                 <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                                      {partners.map((partner) => (
+                  {partners.map((partner) => (
                     <div
                       key={partner.id}
                       className="bg-white dark:bg-gray-900 p-10 rounded-2xl border border-gray-200 dark:border-gray-700 text-center shadow-lg transition-all duration-300 hover:shadow-2xl hover:border-primary/40 hover:-translate-y-2 group flex flex-col items-center"
                     >
                       <div className="w-28 h-28 flex items-center justify-center rounded-xl bg-gray-50 dark:bg-gray-800 mb-6 shadow-md p-4">
-                        <Image
-                          src={partner.logo_url || '/images/placeholder.jpg'}
-                          alt={language === 'id' ? partner.name_id : partner.name_en}
+                          <Image 
+                            src={partner.logo_url || '/images/placeholder.jpg'} 
+                            alt={language === 'id' ? partner.name_id : partner.name_en}
                           width={96}
                           height={96}
-                          className="w-full h-full object-contain"
-                        />
-                      </div>
+                            className="w-full h-full object-contain"
+                          />
+                        </div>
                       <h3 className="font-extrabold text-2xl text-gray-900 dark:text-white mb-2 tracking-tight group-hover:text-primary transition-colors">
-                        {language === 'id' ? partner.name_id : partner.name_en}
-                      </h3>
+                            {language === 'id' ? partner.name_id : partner.name_en}
+                          </h3>
                       <p className="text-gray-500 dark:text-gray-300 text-base mb-6 leading-relaxed max-w-xs mx-auto">
-                        {language === 'id' ? partner.description_id : partner.description_en}
-                      </p>
+                            {language === 'id' ? partner.description_id : partner.description_en}
+                          </p>
                       <Link
                         href={partner.website_url || '#'}
                         target="_blank"
@@ -285,10 +285,10 @@ export default function AboutPage() {
                           size="lg"
                           className="w-full flex items-center justify-center gap-2 border-primary text-primary group-hover:bg-primary group-hover:text-white transition-all duration-300 font-semibold"
                         >
-                          {t('about.partners.visitWebsite')}
+                                {t('about.partners.visitWebsite')}
                           <FiArrowRight className="ml-1 group-hover:translate-x-1 transition-transform" />
-                        </Button>
-                      </Link>
+                              </Button>
+                          </Link>
                     </div>
                   ))}
                 </div>
