@@ -46,7 +46,9 @@ export const defaultSettings: SiteSettings = {
     twitter: '',
     instagram: '',
     linkedin: '',
-    youtube: ''
+    youtube: '',
+    github: '',
+    discord: '',
   },
   seoSettings: {
     metaTitle: 'Bajramedia - Creative Digital Agency',
@@ -70,7 +72,9 @@ const fallbackSettings = {
     twitter: '',
     instagram: '',
     linkedin: '',
-    youtube: ''
+    youtube: '',
+    github: '',
+    discord: '',
   },
   seoSettings: {
     metaTitle: 'Bajramedia - Digital Solutions Agency',
@@ -222,50 +226,33 @@ class SettingsService {
   }
 
   // Method untuk mendapatkan public settings dari database
-  async getPublicSettings() {
+  async getPublicSettings(): Promise<any> {
     try {
-      const timestamp = Date.now();
-      const response = await fetch(`/api/settings?_t=${timestamp}`, {
-        method: 'GET',
-        cache: 'no-cache',
-        headers: {
-          'Cache-Control': 'no-cache, no-store, must-revalidate',
-          'Pragma': 'no-cache'
-        }
-      });
-      
+      const response = await fetch('/api/settings');
       if (!response.ok) {
-        console.error(`Settings API error: ${response.status}`);
-        return defaultSettings;
+        throw new Error('Failed to fetch public settings');
       }
-      
       const data = await response.json();
-      
-      // Jika data kosong atau error, gunakan default settings
-      if (!data || data.error) {
-        console.warn('Using default settings due to API error or empty data');
-        return defaultSettings;
-      }
-      
-      // Pastikan data dalam format yang benar untuk frontend
-      return {
-        siteName: data.siteName || defaultSettings.siteName,
-        siteDescription: data.siteDescription || defaultSettings.siteDescription,
-        siteUrl: data.siteUrl || defaultSettings.siteUrl,
-        contactEmail: data.contactEmail || defaultSettings.contactEmail,
-        contactPhone: data.contactPhone || defaultSettings.contactPhone,
-        contactAddress: data.contactAddress || defaultSettings.contactAddress,
-        socialLinks: {
-          facebook: data.socialLinks?.facebook || '',
-          twitter: data.socialLinks?.twitter || '',
-          instagram: data.socialLinks?.instagram || '',
-          linkedin: data.socialLinks?.linkedin || '',
-          youtube: data.socialLinks?.youtube || ''
+
+      // Transform flat structure to nested structure for frontend consistency
+      const settings: { [key: string]: any } = {};
+      const socialLinks: { [key: string]: any } = {};
+
+      for (const key in data) {
+        if (data.hasOwnProperty(key)) {
+          if (key.startsWith('social_')) {
+            const platform = key.replace('social_', '');
+            socialLinks[platform] = data[key];
+          } else {
+            settings[key] = data[key];
+          }
         }
-      };
+      }
+
+      return { ...settings, socialLinks };
     } catch (error) {
-      console.error('Error fetching public settings:', error);
-      return defaultSettings;
+      console.error('Error in getPublicSettings:', error);
+      return { socialLinks: {} }; // Return with empty socialLinks to prevent frontend errors
     }
   }
 }
