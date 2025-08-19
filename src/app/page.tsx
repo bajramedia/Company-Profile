@@ -9,41 +9,10 @@ import { Button, Heading, Text, Logo, LanguageSwitcher, AnimatedText, SupportedB
 import { useLanguage } from "@/context/LanguageContext";
 import { usePublicSettings } from "@/hooks/useSettings";
 import EnhancedSEO from '@/components/EnhancedSEO';
-import { blogService, BlogPost } from '@/services/BlogService.api';
-import { getFallbackData, formatPortfolioForDisplay } from '@/utils/fallback-data';
-
-interface PortfolioItem {
-    id: number;
-    slug: string;
-    title: string;
-    description?: string;
-    excerpt?: string;
-    featuredImage?: string;
-    featured_image?: string;
-    images?: string;
-    categoryId?: number;
-    categoryName?: string;
-    categorySlug?: string;
-    categoryIcon?: string;
-    published: boolean;
-    featured: boolean;
-    clientName?: string;
-    client_name?: string;
-    projectUrl?: string;
-    project_url?: string;
-    technologies?: string;
-    createdAt?: string;
-    date?: string;
-    views?: number;
-    viewCount?: number;
-}
 
 export default function HomePage() {
     const { t, language } = useLanguage();
     const { settings: publicSettings, loading: settingsLoading } = usePublicSettings();
-    const [posts, setPosts] = useState<BlogPost[]>([]);
-    const [portfolioItems, setPortfolioItems] = useState<PortfolioItem[]>([]);
-    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         AOS.init({
@@ -51,31 +20,6 @@ export default function HomePage() {
             once: true,
             offset: 50,
         });
-
-        const fetchData = async () => {
-            try {
-                setLoading(true);
-                const [blogPosts, portfolioData] = await Promise.all([
-                    blogService.getFeaturedPosts(3),
-                    fetch('/api/portfolio').then(res => {
-                        if (!res.ok) throw new Error('Failed to fetch portfolio data');
-                        return res.json();
-                    })
-                ]);
-                
-                const portfolioItems = portfolioData.portfolios || portfolioData || [];
-
-                setPosts(blogPosts);
-                setPortfolioItems(Array.isArray(portfolioItems) ? portfolioItems : []);
-            } catch (error) {
-                console.error("Error fetching data for homepage:", error);
-                // Optionally use fallback data here too
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchData();
     }, []);
 
     return (
@@ -565,10 +509,10 @@ export default function HomePage() {
                     </section>
 
                     {/* Blog Section */}
-                    {posts.length > 0 && <Blog />}
+                    <Blog />
 
                     {/* Portfolio Section */}
-                    {portfolioItems.length > 0 && <Portfolio />}
+                    <Portfolio />
 
                     {/* Process Section */}
                     <section className="py-20 bg-white dark:bg-gray-900 transition-colors duration-300" data-aos="fade-up">
