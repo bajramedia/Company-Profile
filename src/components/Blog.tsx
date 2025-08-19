@@ -219,8 +219,18 @@ const Blog: React.FC<BlogProps> = ({ className = '' }) => {
               </div>
             ))
           ) : posts.length === 0 ? (
-            <div className="col-span-3 py-10 text-center text-gray-500 dark:text-gray-400 transition-colors duration-300">
-              {t('blog.noPosts') || 'No blog posts available at the moment.'}
+            <div className="col-span-1 md:col-span-2 lg:col-span-3 text-center py-16">
+              <div className="inline-block bg-green-100 dark:bg-green-900/20 p-4 rounded-full mb-4">
+                <svg className="w-10 h-10 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+              </div>
+              <h3 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">
+                {t('blog.comingSoon.title') || 'Coming Soon!'}
+              </h3>
+              <p className="text-gray-500 dark:text-gray-400 max-w-md mx-auto">
+                {t('blog.comingSoon.description') || 'We are preparing new articles. Stay tuned!'}
+              </p>
             </div>
           ) : (
             posts.map(post => (
